@@ -1,0 +1,22 @@
+{
+    "name": "express_api",
+    "version": "1.0.0",
+    "description": "express api to omh docker",
+    "author": "Future Tech team D",
+    "license": "MIT",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app.js"
+    },
+    "keywords": [
+      "nodejs",
+      "express"
+    ],
+    "dependencies": {
+      "express": "^4.16.4",
+      "uuid": "^3.3.2",
+      "request": "^2.88.0",
+      "dotenv": "^7.0.0"
+    
+    }
+  }

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class org.openmhealth.dsu.controller.EndUserControllerIntegrationTests</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class org.openmhealth.dsu.controller.EndUserControllerIntegrationTests</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/org.openmhealth.dsu.controller.html">org.openmhealth.dsu.controller</a> &gt; EndUserControllerIntegrationTests</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">10</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.269s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">registerUserShouldReturnBadRequestOnEmptyContent</td>
+<td>0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">registerUserShouldReturnBadRequestOnEmptyPassword</td>
+<td>0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">registerUserShouldReturnBadRequestOnEmptyUsername</td>
+<td>0.009s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">registerUserShouldReturnBadRequestOnMalformedEmailAddress</td>
+<td>0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">registerUserShouldReturnBadRequestOnUndefinedPassword</td>
+<td>0.195s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">registerUserShouldReturnBadRequestOnUndefinedUsername</td>
+<td>0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">registerUserShouldReturnConflictOnExistingUsername</td>
+<td>0.007s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">registerUserShouldReturnCreatedOnContentHavingEmailAddress</td>
+<td>0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">registerUserShouldReturnCreatedOnContentNotHavingEmailAddress</td>
+<td>0.015s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">registerUserShouldReturnUnsupportedMediaTypeOnNonJsonContentType</td>
+<td>0.007s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>15:02:28.549 [Test worker] DEBUG o.s.t.c.j.SpringJUnit4ClassRunner - SpringJUnit4ClassRunner constructor called with [class org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]
+15:02:28.553 [Test worker] DEBUG o.s.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+15:02:28.557 [Test worker] DEBUG o.s.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+15:02:28.568 [Test worker] DEBUG o.s.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests] from class [org.springframework.test.context.web.WebTestContextBootstrapper]
+15:02:28.587 [Test worker] DEBUG o.s.t.c.w.WebTestContextBootstrapper - Found explicit ContextLoader class [org.springframework.boot.test.SpringApplicationContextLoader] for context configuration attributes [ContextConfigurationAttributes@5f748237 declaringClass = 'org.openmhealth.dsu.controller.EndUserControllerIntegrationTests', classes = '{class org.openmhealth.dsu.configuration.Application, class org.openmhealth.dsu.controller.EndUserControllerIntegrationTests$Configuration}', locations = '{}', inheritLocations = true, initializers = '{}', inheritInitializers = true, name = [null], contextLoaderClass = 'org.springframework.boot.test.SpringApplicationContextLoader']
+15:02:28.592 [Test worker] DEBUG o.s.t.c.s.AbstractContextLoader - Did not detect default resource location for test class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]: class path resource [org/openmhealth/dsu/controller/EndUserControllerIntegrationTests-context.xml] does not exist
+15:02:28.593 [Test worker] DEBUG o.s.t.c.s.AbstractContextLoader - Did not detect default resource location for test class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]: class path resource [org/openmhealth/dsu/controller/EndUserControllerIntegrationTestsContext.groovy] does not exist
+15:02:28.593 [Test worker] INFO  o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+15:02:28.596 [Test worker] DEBUG o.s.t.c.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]
+15:02:28.599 [Test worker] DEBUG o.s.t.c.w.WebTestContextBootstrapper - @TestExecutionListeners is not present for class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]: using defaults.
+15:02:28.606 [Test worker] INFO  o.s.t.c.w.WebTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+15:02:28.626 [Test worker] INFO  o.s.t.c.w.WebTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@48de1648, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@79c947d3, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@6fd0a4b5, org.springframework.test.context.support.DirtiesContextTestExecutionListener@339d9da5, org.springframework.test.context.transaction.TransactionalTestExecutionListener@bc9a1c8, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@380d88bd]
+15:02:28.629 [Test worker] DEBUG o.s.t.annotation.ProfileValueUtils - Retrieved @ProfileValueSourceConfiguration [null] for test class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]
+15:02:28.629 [Test worker] DEBUG o.s.t.annotation.ProfileValueUtils - Retrieved ProfileValueSource type [class org.springframework.test.annotation.SystemProfileValueSource] for class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]
+15:02:28.630 [Test worker] DEBUG o.s.t.annotation.ProfileValueUtils - Retrieved @ProfileValueSourceConfiguration [null] for test class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]
+15:02:28.630 [Test worker] DEBUG o.s.t.annotation.ProfileValueUtils - Retrieved ProfileValueSource type [class org.springframework.test.annotation.SystemProfileValueSource] for class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]
+15:02:28.634 [Test worker] DEBUG o.s.t.c.s.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@73af3b27 testClass = EndUserControllerIntegrationTests, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@12c99e7e testClass = EndUserControllerIntegrationTests, locations = '{}', classes = '{class org.openmhealth.dsu.configuration.Application, class org.openmhealth.dsu.controller.EndUserControllerIntegrationTests$Configuration}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{}', resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.SpringApplicationContextLoader', parent = [null]]], class annotated with @DirtiesContext [false] with mode [null].
+15:02:28.635 [Test worker] DEBUG o.s.t.annotation.ProfileValueUtils - Retrieved @ProfileValueSourceConfiguration [null] for test class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]
+15:02:28.636 [Test worker] DEBUG o.s.t.annotation.ProfileValueUtils - Retrieved ProfileValueSource type [class org.springframework.test.annotation.SystemProfileValueSource] for class [org.openmhealth.dsu.controller.EndUserControllerIntegrationTests]
+15:02:28.727 [Test worker] DEBUG o.s.core.env.StandardEnvironment - Adding [systemProperties] PropertySource with lowest search precedence
+15:02:28.729 [Test worker] DEBUG o.s.core.env.StandardEnvironment - Adding [systemEnvironment] PropertySource with lowest search precedence
+15:02:28.730 [Test worker] DEBUG o.s.core.env.StandardEnvironment - Initialized StandardEnvironment with PropertySources [systemProperties,systemEnvironment]
+15:02:28.731 [Test worker] DEBUG o.s.core.env.StandardEnvironment - Adding [integrationTest] PropertySource with search precedence immediately lower than [systemEnvironment]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.3.3.RELEASE)
+
+2019-05-08 15:02:29.061  INFO 25772 --- [    Test worker] .o.d.c.EndUserControllerIntegrationTests : Starting EndUserControllerIntegrationTests on DESKTOP-2A24BLH with PID 25772 (D:\Git\omh-dsu-ri\authorization-server\build\classes\test started by Sebastian in D:\Git\omh-dsu-ri\authorization-server)
+2019-05-08 15:02:29.062  INFO 25772 --- [    Test worker] .o.d.c.EndUserControllerIntegrationTests : No active profile set, falling back to default profiles: default
+2019-05-08 15:02:29.121  INFO 25772 --- [    Test worker] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@556622aa: startup date [Wed May 08 15:02:29 CEST 2019]; root of context hierarchy
+2019-05-08 15:02:30.051  INFO 25772 --- [    Test worker] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'clientDetailsService' with a different definition: replacing [Root bean: class [org.springframework.aop.scope.ScopedProxyFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in BeanDefinition defined in class path resource [org/springframework/security/oauth2/config/annotation/configuration/ClientDetailsServiceConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=jdbcOAuth2SupportConfiguration; factoryMethodName=clientDetailsService; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/openmhealth/dsu/configuration/JdbcOAuth2SupportConfiguration.class]]
+2019-05-08 15:02:30.224  INFO 25772 --- [    Test worker] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'beanNameViewResolver' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration; factoryMethodName=beanNameViewResolver; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/web/ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter; factoryMethodName=beanNameViewResolver; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.class]]
+2019-05-08 15:02:30.565  INFO 25772 --- [    Test worker] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [class org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$2c337404] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-05-08 15:02:32.500  INFO 25772 --- [    Test worker] .s.o.p.e.FrameworkEndpointHandlerMapping : Mapped &quot;{[/oauth/authorize]}&quot; onto public org.springframework.web.servlet.ModelAndView org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint.authorize(java.util.Map&lt;java.lang.String, java.lang.Object&gt;,java.util.Map&lt;java.lang.String, java.lang.String&gt;,org.springframework.web.bind.support.SessionStatus,java.security.Principal)
+2019-05-08 15:02:32.502  INFO 25772 --- [    Test worker] .s.o.p.e.FrameworkEndpointHandlerMapping : Mapped &quot;{[/oauth/authorize],methods=[POST],params=[user_oauth_approval]}&quot; onto public org.springframework.web.servlet.View org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint.approveOrDeny(java.util.Map&lt;java.lang.String, java.lang.String&gt;,java.util.Map&lt;java.lang.String, ?&gt;,org.springframework.web.bind.support.SessionStatus,java.security.Principal)
+2019-05-08 15:02:32.504  INFO 25772 --- [    Test worker] .s.o.p.e.FrameworkEndpointHandlerMapping : Mapped &quot;{[/oauth/token],methods=[POST]}&quot; onto public org.springframework.http.ResponseEntity&lt;org.springframework.security.oauth2.common.OAuth2AccessToken&gt; org.springframework.security.oauth2.provider.endpoint.TokenEndpoint.postAccessToken(java.security.Principal,java.util.Map&lt;java.lang.String, java.lang.String&gt;) throws org.springframework.web.HttpRequestMethodNotSupportedException
+2019-05-08 15:02:32.504  INFO 25772 --- [    Test worker] .s.o.p.e.FrameworkEndpointHandlerMapping : Mapped &quot;{[/oauth/token],methods=[GET]}&quot; onto public org.springframework.http.ResponseEntity&lt;org.springframework.security.oauth2.common.OAuth2AccessToken&gt; org.springframework.security.oauth2.provider.endpoint.TokenEndpoint.getAccessToken(java.security.Principal,java.util.Map&lt;java.lang.String, java.lang.String&gt;) throws org.springframework.web.HttpRequestMethodNotSupportedException
+2019-05-08 15:02:32.505  INFO 25772 --- [    Test worker] .s.o.p.e.FrameworkEndpointHandlerMapping : Mapped &quot;{[/oauth/check_token]}&quot; onto public java.util.Map&lt;java.lang.String, ?&gt; org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint.checkToken(java.lang.String)
+2019-05-08 15:02:32.506  INFO 25772 --- [    Test worker] .s.o.p.e.FrameworkEndpointHandlerMapping : Mapped &quot;{[/oauth/confirm_access]}&quot; onto public org.springframework.web.servlet.ModelAndView org.springframework.security.oauth2.provider.endpoint.WhitelabelApprovalEndpoint.getAccessConfirmation(java.util.Map&lt;java.lang.String, java.lang.Object&gt;,javax.servlet.http.HttpServletRequest) throws java.lang.Exception
+2019-05-08 15:02:32.506  INFO 25772 --- [    Test worker] .s.o.p.e.FrameworkEndpointHandlerMapping : Mapped &quot;{[/oauth/error]}&quot; onto public org.springframework.web.servlet.ModelAndView org.springframework.security.oauth2.provider.endpoint.WhitelabelErrorEndpoint.handleError(javax.servlet.http.HttpServletRequest)
+2019-05-08 15:02:32.653  INFO 25772 --- [    Test worker] org.eclipse.jetty.util.log               : Logging initialized @5455ms
+2019-05-08 15:02:33.027  INFO 25772 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: OrRequestMatcher [requestMatchers=[Ant [pattern='/oauth/token'], Ant [pattern='/oauth/token_key'], Ant [pattern='/oauth/check_token']]], [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7131f62f, org.springframework.security.web.context.SecurityContextPersistenceFilter@5bf99e50, org.springframework.security.web.header.HeaderWriterFilter@27d261d5, org.springframework.security.web.authentication.logout.LogoutFilter@4e01ecf5, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@5d2d401b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6b5b6009, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@66d3f419, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4c771d62, org.springframework.security.web.session.SessionManagementFilter@66264f26, org.springframework.security.web.access.ExceptionTranslationFilter@c0eb160, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@212f83ff]
+2019-05-08 15:02:33.031  INFO 25772 --- [    Test worker] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: org.springframework.security.web.util.matcher.AnyRequestMatcher@1, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4a3b8063, org.springframework.security.web.context.SecurityContextPersistenceFilter@72d2af42, org.springframework.security.web.header.HeaderWriterFilter@38df0f32, org.springframework.security.web.authentication.logout.LogoutFilter@2d749230, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2111186, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@42772869, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@402c2583, org.springframework.security.web.session.SessionManagementFilter@1bde8659, org.springframework.security.web.access.ExceptionTranslationFilter@fefeb9d]
+2019-05-08 15:02:33.287  INFO 25772 --- [    Test worker] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.web.context.support.GenericWebApplicationContext@556622aa: startup date [Wed May 08 15:02:29 CEST 2019]; root of context hierarchy
+2019-05-08 15:02:33.329  INFO 25772 --- [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped &quot;{[/users],methods=[POST],produces=[application/json]}&quot; onto public org.springframework.http.ResponseEntity&lt;?&gt; org.openmhealth.dsu.controller.EndUserController.registerUser(org.openmhealth.dsu.domain.EndUserRegistrationData)
+2019-05-08 15:02:33.332  INFO 25772 --- [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped &quot;{[/error]}&quot; onto public org.springframework.http.ResponseEntity&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-05-08 15:02:33.332  INFO 25772 --- [    Test worker] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped &quot;{[/error],produces=[text/html]}&quot; onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-05-08 15:02:33.363  INFO 25772 --- [    Test worker] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-05-08 15:02:33.363  INFO 25772 --- [    Test worker] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-05-08 15:02:33.400  INFO 25772 --- [    Test worker] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-05-08 15:02:33.646  INFO 25772 --- [    Test worker] .o.d.c.EndUserControllerIntegrationTests : Started EndUserControllerIntegrationTests in 4.903 seconds (JVM running for 6.45)
+2019-05-08 15:02:33.680  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.680  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.694  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 14 ms
+2019-05-08 15:02:33.855  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.855  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.858  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 3 ms
+2019-05-08 15:02:33.864  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.864  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.867  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 3 ms
+2019-05-08 15:02:33.873  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.873  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.876  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 3 ms
+2019-05-08 15:02:33.882  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.882  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.885  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 3 ms
+2019-05-08 15:02:33.898  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.898  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.902  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 4 ms
+2019-05-08 15:02:33.907  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.907  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.910  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 3 ms
+2019-05-08 15:02:33.914  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.914  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.917  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 2 ms
+2019-05-08 15:02:33.922  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.922  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.924  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 2 ms
+2019-05-08 15:02:33.929  INFO 25772 --- [    Test worker] o.s.b.test.SpringBootMockServletContext  : Initializing Spring FrameworkServlet ''
+2019-05-08 15:02:33.929  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization started
+2019-05-08 15:02:33.932  INFO 25772 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 3 ms
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 2.11</a> at May 8, 2019 3:02:54 PM</p>
+</div>
+</div>
+</body>
+</html>

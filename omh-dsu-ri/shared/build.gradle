@@ -1,0 +1,14 @@
+dependencies {
+    compile 'org.springframework.data:spring-data-commons'
+    compile 'org.springframework.data:spring-data-mongodb'
+    compile 'org.springframework:spring-jdbc'
+    compile 'org.springframework:spring-tx'
+    // the tomcat-jdbc dependency chooses the connection pool to use when talking to a relational database and triggers
+    // the creation of a javax.sql.DataSource by DataSourceAutoConfiguration
+    runtime 'org.apache.tomcat:tomcat-jdbc'
+
+    testCompile 'org.mongodb:mongo-java-driver'
+    // if you're using MySQL instead of PostgreSQL, pull in the mysql-connector-java dependency
+    // testCompile 'mysql:mysql-connector-java'
+    testCompile "org.postgresql:postgresql"
+}

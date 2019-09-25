@@ -1,0 +1,179 @@
+/*
+ * Copyright 2015 Open mHealth
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+ * Copyright 2015 Open mHealth
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.unselectable {
+  -webkit-user-select: none;
+  /* Chrome/Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+ */
+  /* Rules below may not be implemented in browser */
+  -o-user-select: none;
+  user-select: none;
+}
+.plottable .x-axis,
+.plottable .y-axis {
+  cursor: default;
+}
+.plottable .axis .tick-label {
+  fill: #a4a4a4;
+}
+.plottable .axis-label text {
+  fill: #a4a4a4;
+  text-transform: none;
+  font-size: 12px;
+  font-weight: normal;
+}
+.plottable .axis-label .background-container .background-fill {
+  fill: #fff;
+  -webkit-transform: translateX(1px);
+      -ms-transform: translateX(1px);
+          transform: translateX(1px);
+}
+.plottable .content > .component-group:first-child .axis-label .background-container .background-fill {
+  -webkit-transform: translateX(-1px);
+      -ms-transform: translateX(-1px);
+          transform: translateX(-1px);
+}
+.plottable .axis-label text {
+  letter-spacing: 0px;
+}
+.plottable .legend .content {
+  -webkit-transform: translateX(-5px);
+      -ms-transform: translateX(-5px);
+          transform: translateX(-5px);
+}
+.plottable .legend text {
+  fill: #a4a4a4;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: normal;
+}
+.d3-tip {
+  padding-bottom: 20px;
+  pointer-events: none !important;
+  -webkit-transition: opacity 0.5s ease-in-out;
+          transition: opacity 0.5s ease-in-out;
+}
+.omh-tooltip {
+  width: auto;
+  height: auto;
+  padding: 10px 15px;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  background-color: #fff;
+  font-family: "Helvetica Neue", sans-serif;
+  text-align: center;
+}
+.omh-tooltip .value {
+  font-size: 20px;
+  color: #4a90e2;
+}
+.omh-tooltip .value.above-threshold {
+  color: #e8ac4e;
+}
+.omh-tooltip .time {
+  font-size: 12px;
+}
+.omh-tooltip .provider {
+  font-size: 12px;
+  text-transform: capitalize;
+  color: #dedede;
+}
+.omh-chart-container {
+  padding-bottom: 30px;
+}
+.omh-chart-container .zoom-hint-label {
+  cursor: pointer;
+  -webkit-transition: opacity 2s;
+          transition: opacity 2s;
+}
+.omh-chart-container .zoom-hint-label text {
+  font-size: 12px;
+  fill: #a4a4a4;
+  font-style: italic;
+  font-weight: normal;
+}
+.omh-chart-container .zoom-hint-label.hidden {
+  display: block !important;
+  opacity: 0;
+}
+.omh-chart-container .zoom-hint-label .background-fill {
+  fill: #fff;
+  opacity: 0.9;
+}
+.omh-chart-container .omh-chart-toolbar {
+  -webkit-user-select: none;
+  /* Chrome/Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+ */
+  /* Rules below may not be implemented in browser */
+  -o-user-select: none;
+  user-select: none;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+  padding: 5px;
+}
+.omh-chart-container .omh-chart-toolbar .zoom-button,
+.omh-chart-container .omh-chart-toolbar .time-button,
+.omh-chart-container .omh-chart-toolbar .previous-time-period-button,
+.omh-chart-container .omh-chart-toolbar .next-time-period-button {
+  color: #dedede;
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: normal;
+}
+.omh-chart-container .omh-chart-toolbar .zoom-button:hover,
+.omh-chart-container .omh-chart-toolbar .time-button:hover,
+.omh-chart-container .omh-chart-toolbar .previous-time-period-button:hover,
+.omh-chart-container .omh-chart-toolbar .next-time-period-button:hover,
+.omh-chart-container .omh-chart-toolbar .zoom-button.active,
+.omh-chart-container .omh-chart-toolbar .time-button.active,
+.omh-chart-container .omh-chart-toolbar .previous-time-period-button.active,
+.omh-chart-container .omh-chart-toolbar .next-time-period-button.active {
+  color: #a4a4a4;
+}
+.omh-chart-container .omh-chart-toolbar .zoom-button {
+  font-size: 16px;
+}
+.omh-chart-container .omh-chart-toolbar .zoom-buttons-label {
+  margin-left: 15px;
+}
+.omh-chart-container .previous-time-period-button {
+  float: left;
+}
+.omh-chart-container .next-time-period-button {
+  margin-right: 10px;
+  float: right;
+}

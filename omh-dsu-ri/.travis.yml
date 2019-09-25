@@ -1,0 +1,27 @@
+language: java
+jdk:
+- oraclejdk8
+
+notifications:
+  slack:
+    rooms:
+      secure: HxrF1m7dSi+gSAAqHtV9+a4DO6T2ggRTxzJ3F8lJRgnA+mPj7uoOfyoUVipf6G0YNAGqeV6mDsvM1U//qEAgoUOUxLwCc8xvEu5moF8oiAuYDoEVBE/JZeiUGMZ7/xcqt9WlS7ef4uMNeN9BDIhnlCZs4IjXHUuRUFDsWquleFo=
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle/wrapper/dists/gradle-2.11-bin
+
+addons:
+  hosts:
+    - omh-mongo
+    - omh-postgres
+
+services:
+  - mongodb
+  - postgresql
+
+before_script:
+  - psql -f resources/rdbms/postgresql/create-database.sql -U postgres
+  - psql -f resources/rdbms/postgresql/oauth2-ddl.sql -U postgres
+

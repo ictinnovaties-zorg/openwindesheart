@@ -1,0 +1,23 @@
+# MongoDB is used to store data points and user account information.
+mongo:
+  image: mongo:latest
+
+# PostgreSQL is used to store OAuth 2.0 client credentials and access tokens.
+postgres:
+  image: postgres:latest
+
+authorizationserver:
+  image: openmhealth/omh-dsu-authorization-server:latest
+  links:
+    - mongo:omh-mongo
+    - postgres:omh-postgres
+  ports:
+    - "8082:8082"
+
+resourceserver:
+  image: openmhealth/omh-dsu-resource-server:latest
+  links:
+    - mongo:omh-mongo
+    - postgres:omh-postgres
+  ports:
+    - "8085:8083"

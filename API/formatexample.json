@@ -1,0 +1,24 @@
+{
+	"user" : {
+		"token" : "cc5cabb6-3507-4847-8df4-c658e60a3c50"
+	},
+	
+	"measurements" : [{
+		"timestamp": "0001-01-01T00:00:00Z",
+		"deviceId": "00000000-0000-0000-0000-000000000000",
+		"userId": 0,
+		"rawIntensity": 0,
+		"steps": 0,
+		"rawKind": 0,
+		"heartRate": 0
+		},
+		{
+		"timestamp": "0001-01-01T00:00:50Z",
+		"deviceId": "00000000-0000-0000-0000-000000000000",
+		"userId": 0,
+		"rawIntensity": 0,
+		"steps": 0,
+		"rawKind": 0,
+		"heartRate": 0
+		}]
+}

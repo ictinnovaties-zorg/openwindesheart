@@ -1,0 +1,30 @@
+﻿<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:helpers="clr-namespace:WindesHeart.Helpers;assembly=WindesHeart"
+             x:Class="WindesHeart.Pages.UnpairPopupView">
+
+    <StackLayout VerticalOptions="Center"
+                 BackgroundColor="White"
+                 Padding="20" Margin="20">
+
+        <cv:CarouselViewControl x:Name="CarouselView"
+                                ShowIndicators="true"
+                                Orientation="Horizontal"
+                                HeightRequest="300">
+            <cv:CarouselViewControl.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Spacing="20">
+                        <Label HorizontalTextAlignment="Center" FontSize="Large" Text="{Binding Title}"></Label>
+                        <Label Text="{Binding Text}"></Label>
+                        <Image Source="{Binding Image}" HeightRequest="100"/>
+                    </StackLayout>
+                </DataTemplate>
+            </cv:CarouselViewControl.ItemTemplate>
+        </cv:CarouselViewControl>
+
+        <Button x:Name="SkipBtn" Text="{helpers:Translate UnpairPopup_Ok}" Clicked="SkipBtn_OnClicked"></Button>
+    </StackLayout>
+    
+</pages:PopupPage>

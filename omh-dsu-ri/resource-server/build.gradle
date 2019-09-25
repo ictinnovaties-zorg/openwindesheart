@@ -1,0 +1,8 @@
+description = 'An OAuth 2.0 resource server that manages data point resources.'
+
+dependencies {
+    compile 'com.github.fge:json-schema-validator:2.2.5'
+    compile "org.openmhealth.schema:omh-schema-sdk:${omhSchemaSdkVersion}"
+
+    testCompile 'com.jayway.jsonpath:json-path'
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>WindesHeartSdk</id>
+    <version>0.6.0</version>
+    <title>Mi Band 3 Sdk</title>
+    <authors>Sebastian</authors>
+    <owners>Sebastian</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://bitbucket.org/ictinnovaties-zorg/2018_2019_ft/src</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Mi Band 3 tools for Xamarin Forms project</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>MiBand3 BLE Sqlite</tags>
+	<dependencies>
+      <dependency id="Newtonsoft.Json" version="12.0.2" />
+      <dependency id="sqlite-net-pcl" version="1.5.231" />
+      <dependency id="Plugin.BLE" version="2.0.0-pre1" />
+      <dependency id="Plugin.BluetoothLE" version="6.2.3" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\netstandard2.0\WindesHeartSdk.dll" target="lib\netstandard2.0\WindesHeartSdk.dll"/>
+  </files>
+</package>
