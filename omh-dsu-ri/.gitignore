@@ -1,6 +1,0 @@
-*.iml
-.idea
-target
-
-*.jar
-!gradle/wrapper/gradle-wrapper.jar

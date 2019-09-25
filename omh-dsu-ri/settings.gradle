@@ -1,5 +1,0 @@
-rootProject.name = 'omh-dsu-ri'
-include 'shared'
-include 'authorization-server'
-include 'resource-server'
-
