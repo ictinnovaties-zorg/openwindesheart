@@ -16,6 +16,7 @@ namespace WindesHeart
         {
             InitializeComponent();
             WindesHeart.Configure("MainPage", typeof(Pages.MainPage));
+            WindesHeart.Configure("TestPage", typeof(Pages.TestPage));
             WindesHeart.Configure("PairDevicePage", typeof(Pages.PairDevicePage));
             WindesHeart.Configure("Visualize", typeof(Pages.Visualize));
             WindesHeart.Configure("WebViewer", typeof(Pages.WebViewer));
@@ -27,7 +28,7 @@ namespace WindesHeart
 
             MiBandDevice = new MiBandDevice();
 
-            var mainPage = ((ViewNavigationService)WindesHeart).SetRootPage("MainPage");
+            var mainPage = ((ViewNavigationService)WindesHeart).SetRootPage("TestPage");
             MainPage = mainPage;
         }
 
