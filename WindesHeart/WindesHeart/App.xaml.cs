@@ -1,11 +1,11 @@
-﻿using System;
-using WindesHeartSdk.Services;
-using Xamarin.Forms.Xaml;
-using Microsoft.AppCenter;
+﻿using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using System;
 using WindesHeart.MiBand;
 using WindesHeart.Services;
+using WindesHeartSdk.Services;
+using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace WindesHeart
@@ -15,7 +15,6 @@ namespace WindesHeart
         public App()
         {
             InitializeComponent();
-            WindesHeart.Configure("LoginPage", typeof(Pages.LoginPage));
             WindesHeart.Configure("MainPage", typeof(Pages.MainPage));
             WindesHeart.Configure("PairDevicePage", typeof(Pages.PairDevicePage));
             WindesHeart.Configure("Visualize", typeof(Pages.Visualize));
@@ -25,10 +24,10 @@ namespace WindesHeart
             {
                 BleService.KnownDeviceId = (Guid)Current.Properties["device_id"];
             }
-            
+
             MiBandDevice = new MiBandDevice();
 
-            var mainPage = ((ViewNavigationService) WindesHeart).SetRootPage("LoginPage");
+            var mainPage = ((ViewNavigationService)WindesHeart).SetRootPage("MainPage");
             MainPage = mainPage;
         }
 
