@@ -1,8 +1,6 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using WindesHeartApp.Pages;
 using WindesHeartApp.Services;
-using WindesHeartApp.Views;
+using Xamarin.Forms;
 
 namespace WindesHeartApp
 {
