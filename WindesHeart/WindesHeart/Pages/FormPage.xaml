@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WindesHeart.Pages.FormPage">
+    <ContentPage.Content>
+        <RelativeLayout Margin="20">
+            <Label Text="Insuline advies" x:Name="Title" FontSize="Large" HorizontalOptions="Center"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" />
+            <Label x:Name="ActivityLabel" Text="Ga je zo sporten?"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=Title, Property=Y, Factor=1, Constant=80}"/>
+            <StackLayout x:Name="ActivityButtons" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="0"
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=ActivityLabel, Property=Y, Factor=1, Constant=20}">
+                <Button x:Name="ActivityBtnY" HorizontalOptions="FillAndExpand" Text="Ja" BorderColor="#2196F3" BorderWidth="1" CornerRadius="0"
+                        BackgroundColor="White" TextColor="#2196F3" Clicked="ActivityBtnY_OnClicked"></Button>
+                <Button x:Name="ActivityBtnN" HorizontalOptions="FillAndExpand" Text="Nee" BorderColor="#2196F3" BorderWidth="1" CornerRadius="0"
+                        BackgroundColor="#2196F3" TextColor="White" Clicked="ActivityBtnN_OnClicked"></Button>
+            </StackLayout>
+
+            <Label x:Name="SugarLabel" Text="Bloedsuiker"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=ActivityButtons, Property=Y, Factor=1, Constant=60}"/>
+            <Entry x:Name="SugarEntry" Text="{Binding Sugar}" Keyboard="Numeric" HeightRequest="40"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=SugarLabel, Property=Y, Factor=1, Constant=20}"
+                   Completed="SugarEntry_OnCompleted"></Entry>
+
+            <Label x:Name="CarbsLabel" Text="Koolhydraten"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=SugarEntry, Property=Y, Factor=1, Constant=60}"/>
+            <Entry x:Name="CarbsEntry" Text="{Binding Carbs}" Keyboard="Numeric" HeightRequest="40"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=CarbsLabel, Property=Y, Factor=1, Constant=20}"
+                   Completed="CarbsEntry_OnCompleted"></Entry>
+
+            <Label x:Name="BolusLabel" Text="Bolus"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=CarbsEntry, Property=Y, Factor=1, Constant=60}"/>
+            <Entry x:Name="BolusEntry" Text="{Binding Bolus}" Keyboard="Numeric" HeightRequest="40"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=BolusLabel, Property=Y, Factor=1, Constant=20}"></Entry>
+
+            <Label x:Name="BasaalLabel" Text="Zet je basaal een stuk lager gedurende de activiteit of nuttig ten minste 20 koolhydraten" TextColor="Red" IsVisible="False"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=BolusLabel, Property=Y, Factor=1, Constant=60}"/>
+
+            <Button Text="Klaar" TextColor="White" FontAttributes="Bold" FontSize="Large" HorizontalOptions="FillAndExpand" BackgroundColor="#2196F3" 
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1, Constant=-50}"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" 
+                    Clicked="Button_OnClicked"/>
+
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>

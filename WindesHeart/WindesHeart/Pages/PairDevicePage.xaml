@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:WindesHeart.Helpers;assembly=WindesHeart"
+             x:Class="WindesHeart.Pages.PairDevicePage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="Label" HorizontalTextAlignment="Center"
+                VerticalOptions="CenterAndExpand" Text="{Binding InfoLabel}"
+                HorizontalOptions="CenterAndExpand" />
+            <Button x:Name="RetryBtn" IsVisible="{Binding RetryBtnVisible}" Text="{helpers:Translate PairDevice_Retry}" Command="{Binding RetryCommand}"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
