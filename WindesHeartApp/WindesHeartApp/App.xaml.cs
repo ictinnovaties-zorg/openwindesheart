@@ -1,8 +1,5 @@
-﻿using System;
+﻿using WindesHeartApp.Services;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using WindesHeartApp.Services;
-using WindesHeartApp.Views;
 
 namespace WindesHeartApp
 {
@@ -14,7 +11,6 @@ namespace WindesHeartApp
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            MainPage = new MainPage();
         }
 
         protected override void OnStart()
