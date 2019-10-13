@@ -13,4 +13,7 @@
   <ItemGroup>
     <Folder Include="Pages\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\WindesHeartSDK\WindesHeartSDK.csproj" />
+  </ItemGroup>
 </Project>

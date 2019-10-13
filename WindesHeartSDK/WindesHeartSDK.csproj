@@ -9,4 +9,7 @@
     <Folder Include="Helpers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Plugin.BluetoothLE" Version="6.2.6" />
+  </ItemGroup>
 </Project>
