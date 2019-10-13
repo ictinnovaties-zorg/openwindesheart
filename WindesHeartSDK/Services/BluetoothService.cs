@@ -26,20 +26,26 @@ namespace WindesHeartSDK
                 {
                     //Trigger event and add to devices list
                     Console.WriteLine("Started scanning");
-                    var scanner = adapter.Scan().Subscribe(scanResult =>
+                    try
                     {
-                        if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && scanResult.Device.Name.Equals(deviceName) && !uniqueGuids.Contains(scanResult.Device.Uuid))
+                        var scanner = adapter.Scan().Subscribe(scanResult =>
                         {
-                            Console.WriteLine(deviceName + " found with signalstrength: " + scanResult.Rssi);
-                            deviceList.Add(scanResult.Device);
-                            uniqueGuids.Add(scanResult.Device.Uuid);
-                        }
-                    });
+                            if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && scanResult.Device.Name.Equals(deviceName) && !uniqueGuids.Contains(scanResult.Device.Uuid))
+                            {
+                                Console.WriteLine(deviceName + " found with signalstrength: " + scanResult.Rssi);
+                                deviceList.Add(scanResult.Device);
+                                uniqueGuids.Add(scanResult.Device.Uuid);
+                            }
+                        });
 
-                    //Stop scanning after delayed time.
-                    await Task.Delay(scanTimeInSeconds * 1000);
-                    Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + deviceList.Count);
-                    scanner.Dispose();
+                        //Stop scanning after delayed time.
+                        await Task.Delay(scanTimeInSeconds * 1000);
+                        Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + deviceList.Count);
+                        scanner.Dispose();
+                    } catch(Exception exp)
+                    {
+                        Console.WriteLine("Exception thrown: "+exp);
+                    }
                 }
                 else
                 {
