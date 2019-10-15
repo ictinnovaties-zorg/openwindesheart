@@ -15,7 +15,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
@@ -94,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WindesHeartApp\WindesHeartApp.csproj">
-      <Project>{82C1C051-D872-49A6-8140-B6BFDF72ED59}</Project>
+      <Project>{8CF0758E-881B-4E83-A446-F3E408213D16}</Project>
       <Name>WindesHeartApp</Name>
     </ProjectReference>
   </ItemGroup>
