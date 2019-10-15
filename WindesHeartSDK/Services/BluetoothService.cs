@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Plugin.BluetoothLE;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Plugin.BluetoothLE;
 
 namespace WindesHeartSDK
 {
@@ -42,9 +42,10 @@ namespace WindesHeartSDK
                         await Task.Delay(scanTimeInSeconds * 1000);
                         Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + deviceList.Count);
                         scanner.Dispose();
-                    } catch(Exception exp)
+                    }
+                    catch (Exception exp)
                     {
-                        Console.WriteLine("Exception thrown: "+exp);
+                        Console.WriteLine("Exception thrown: " + exp);
                     }
                 }
                 else
@@ -52,7 +53,7 @@ namespace WindesHeartSDK
                     Console.WriteLine("Bluetooth adapter is not powered on, try again!");
                 }
             });
-            
+
             return deviceList;
         }
     }
