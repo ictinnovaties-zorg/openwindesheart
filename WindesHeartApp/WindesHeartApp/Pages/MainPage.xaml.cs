@@ -1,4 +1,5 @@
 ﻿using System;
+using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,7 +15,7 @@ namespace WindesHeartApp.Pages
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-
+            BluetoothService.ScanForUniqueDevices();
         }
     }
 }
