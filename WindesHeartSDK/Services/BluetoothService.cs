@@ -60,13 +60,13 @@ namespace WindesHeartSDK
 
 
         /// <summary>
-        /// Tries to pair to the devices. If the pairing is succesfull returns true.
+        /// Tries to pair to the devices. If the pairing is successfull returns true.
         /// </summary>
         /// <param name="device"></param>
         /// <returns>bool</returns>
         public static bool PairDevice(IDevice device)
         {
-            bool succes = false;
+            bool success = false;
             // Checks if devices supports pairing
             if (device.IsPairingAvailable())
             {
@@ -76,20 +76,14 @@ namespace WindesHeartSDK
                     device.PairingRequest().Subscribe(isSuccessful =>
                     {
                         Console.WriteLine("Pairing Succesfull: " + isSuccessful);
-                        if (isSuccessful)
-                        {
-                            succes = true;
-                        }
+                        success = isSuccessful;
                     });
-                    return succes;
+                    return success;
                 }
-                else
-                {
-                    succes = true;
-                    return succes;
-                }
+                return true;
             }
-            return succes;
+            Console.WriteLine("Pairing unavailable!");
+            return false;
         }
     }
 }
