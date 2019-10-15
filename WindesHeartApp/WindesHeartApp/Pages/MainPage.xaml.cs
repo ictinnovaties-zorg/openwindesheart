@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using WindesHeartSDK;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace WindesHeartApp.Pages
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
         public MainPage()
@@ -12,9 +12,9 @@ namespace WindesHeartApp.Pages
             InitializeComponent();
         }
 
-        public void ScanningForDevices(object sender, EventArgs e)
+        private void Button_Clicked(object sender, EventArgs e)
         {
-            BluetoothService.ScanForUniqueDevices();
+
         }
     }
 }

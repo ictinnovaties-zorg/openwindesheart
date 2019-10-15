@@ -19,7 +19,4 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\WindesHeartSDK\WindesHeartSDK.csproj" />
-  </ItemGroup>
 </Project>
