@@ -15,7 +15,7 @@ namespace WindesHeartApp.Pages
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            BluetoothService.ScanForUniqueDevices();
+            BluetoothService.Start();
         }
     }
 }

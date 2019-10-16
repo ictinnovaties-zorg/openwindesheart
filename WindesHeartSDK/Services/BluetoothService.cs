@@ -1,20 +1,37 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace WindesHeartSDK
 {
     public static class BluetoothService
     {
+        public static Guid GuidCharacteristicAuth = new Guid("00000009-0000-3512-2118-0009af100700");
+        public static readonly byte[] AuthKey = { 0x01, 0x08, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45 };
+
+        public static async void Start()
+        {
+            var devices = await ScanForUniqueDevicesAsync();
+            await Task.Delay(11000);
+            if (devices[0] != null)
+            {
+                var connected = ConnectDevice(devices[0]);
+                if (connected)
+                {
+                    Console.WriteLine("Connected");
+                }
+            }       
+        }
 
         /// <summary>
         /// Scan for devices with a certain name that are not yet connected.
-        /// param: scanTimeInSeconds determines the time the scanning should take (default 10 seconds).
-        /// param: deviceName is the name that should be searched for while scanning (default Mi Band 3).
         /// </summary>
+        /// <param name="scanTimeInSeconds"></param>
+        /// <param name="deviceName"></param>
         /// <returns>List of IDevice</returns>
-        public static List<IDevice> ScanForUniqueDevices(int scanTimeInSeconds = 10, string deviceName = "Mi Band 3")
+        public static async Task<List<IDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10, string deviceName = "Mi Band 3")
         {
             var deviceList = new List<IDevice>();
             var uniqueGuids = new List<Guid>();
@@ -37,8 +54,8 @@ namespace WindesHeartSDK
                                 deviceList.Add(scanResult.Device);
                                 uniqueGuids.Add(scanResult.Device.Uuid);
                             }
-                        });
-
+                        });                        
+                        
                         //Stop scanning after delayed time.
                         await Task.Delay(scanTimeInSeconds * 1000);
                         Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + deviceList.Count);
@@ -54,7 +71,6 @@ namespace WindesHeartSDK
                     Console.WriteLine("Bluetooth adapter is not powered on, try again!");
                 }
             });
-
             return deviceList;
         }
 
@@ -85,6 +101,47 @@ namespace WindesHeartSDK
             Console.WriteLine("Pairing unavailable!");
             return false;
         }
+
+        public static bool ConnectDevice(IDevice device)
+        {
+            device.Connect(new ConnectionConfig
+            {
+                AutoConnect = true,
+                AndroidConnectionPriority = ConnectionPriority.High
+            });
+            Console.WriteLine("Connecting...");
+            device.WhenAnyCharacteristicDiscovered().Subscribe(characteristic =>
+            {
+                if (characteristic.Uuid == GuidCharacteristicAuth)
+                {
+                    characteristic.WriteWithoutResponse(AuthKey).Subscribe(result =>
+                    {
+                        Console.WriteLine("Connected");
+                    });
+                }
+            });
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// Disconnect current device.
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns>bool</returns>
+        public static bool DisconnectDevice(IDevice device)
+        {
+            //Cancel the connection
+            device.CancelConnection();
+
+            if(device.Status == ConnectionStatus.Disconnected)
+            {
+                return true;
+            }
+
+            return false;
+        }        
     }
 }
 
