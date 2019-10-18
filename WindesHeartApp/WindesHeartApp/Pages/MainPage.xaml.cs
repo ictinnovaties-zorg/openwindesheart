@@ -13,7 +13,7 @@ namespace WindesHeartApp.Pages
             InitializeComponent();
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private async void Button_Clicked(object sender, EventArgs e)
         {
             BluetoothService.Start();
         }

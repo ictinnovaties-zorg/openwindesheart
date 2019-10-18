@@ -7,6 +7,7 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Helpers\" />
+    <Folder Include="MiBand\" />
   </ItemGroup>
 
   <ItemGroup>
