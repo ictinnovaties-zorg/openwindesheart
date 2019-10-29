@@ -29,12 +29,11 @@ namespace WindesHeartSDK
         }
 
         /// <summary>
-        /// Scan for devices with a certain name that are not yet connected.
+        /// Scan for devices, Mi Band 3 or Xiaomi Band 3, that are not yet connected.
         /// </summary>
         /// <param name="scanTimeInSeconds"></param>
-        /// <param name="deviceName"></param>
         /// <returns>List of IScanResult</returns>
-        public static async Task<List<IScanResult>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10, string deviceName = "Mi Band 3")
+        public static async Task<List<IScanResult>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
         {
             var scanResults = new List<IScanResult>();
             var uniqueGuids = new List<Guid>();
@@ -48,9 +47,9 @@ namespace WindesHeartSDK
                     Console.WriteLine("Started scanning");
                     var scanner = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
                     {
-                        if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && scanResult.Device.Name.Equals(deviceName) && !uniqueGuids.Contains(scanResult.Device.Uuid))
+                        if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && (scanResult.Device.Name.Equals("Mi Band 3") || scanResult.Device.Name.Equals("Xiaomi Band 3")) && !uniqueGuids.Contains(scanResult.Device.Uuid))
                         {
-                            Console.WriteLine(deviceName + " found with signalstrength: " + scanResult.Rssi);
+                            Console.WriteLine("Mi Band 3 found with signalstrength: " + scanResult.Rssi);
                             scanResults.Add(scanResult);
                             uniqueGuids.Add(scanResult.Device.Uuid);
                         }
@@ -69,7 +68,7 @@ namespace WindesHeartSDK
             {
                 Console.WriteLine("Bluetooth-Adapter state is: " + CrossBleAdapter.Current.Status + ". Trying again!");
                 await Task.Delay(2000);
-                return await ScanForUniqueDevicesAsync(scanTimeInSeconds, deviceName);
+                return await ScanForUniqueDevicesAsync(scanTimeInSeconds);
             }
 
             //Order scanresults by descending signal strength
@@ -140,6 +139,10 @@ namespace WindesHeartSDK
             return Characteristics.Find(x => x.Uuid == uuid);
         }
 
+        /// <summary>
+        /// Connect a device
+        /// </summary>
+        /// <param name="device"></param>
         public static async void ConnectDevice(IDevice device)
         {
             if(device != null)
@@ -227,26 +230,19 @@ namespace WindesHeartSDK
         /// Disconnect current device.
         /// </summary>
         /// <param name="device"></param>
-        /// <returns>bool</returns>
-        public static bool DisconnectDevice(IDevice device)
+        public static void DisconnectDevice(IDevice device)
         {
-            if(device != null && device.Status == ConnectionStatus.Connected)
+            if(device != null)
             {
                 //Cancel the connection
-                Console.WriteLine("Disconnecting Device...");
+                Console.WriteLine("Trying to disconnect device...");
                 device.CancelConnection();
 
-                //Checking status
-                device.WhenStatusChanged().Subscribe(status =>
-                {
-                    Console.WriteLine("Status of device changed to: " + status);
-                });
-
                 //Clear the global variables
-                ClearGlobals();               
+                ClearGlobals();
+                return;
             }
             Console.WriteLine("No device has been given to disconnect, make sure device is not null!");
-            return false;
         }
 
         /// <summary>
