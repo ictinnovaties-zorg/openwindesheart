@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using WindesHeartSDK;
+using WindesHeartSDK.Exceptions;
 using WindesHeartSDK.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -18,12 +19,18 @@ namespace WindesHeartApp.Pages
         private async void Button_Clicked(object sender, EventArgs e)
         {
             await BluetoothService.ScanForUniqueDevicesAsync();
-            BluetoothService.FindAllCharacteristics(BluetoothService.ScanResults[0].Device);
+            if(BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
+            {
+                BluetoothService.FindAllCharacteristics(BluetoothService.ScanResults[0].Device);
+            }
         }
 
         private async void Connect(object sender, EventArgs e)
         {
-            BluetoothService.ConnectDevice(BluetoothService.ScanResults[0].Device);
+            if (BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
+            {
+                BluetoothService.ConnectDevice(BluetoothService.ScanResults[0].Device);
+            }
         }
 
         private async void Disconnect(object sender, EventArgs e)
@@ -36,9 +43,19 @@ namespace WindesHeartApp.Pages
             var connectedDevice = BluetoothService.ConnectedDevice;
             if (connectedDevice != null)
             {
-                var rawBattery = await MiBandService.GetRawBatteryData();
-                var battery = await MiBandService.GetCurrentBatteryData();
-                Console.WriteLine();
+                try
+                {
+                    var rawBattery = await MiBandService.GetRawBatteryData();
+                    var battery = await MiBandService.GetCurrentBatteryData();
+                    Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+                    Console.WriteLine("Batterystatus: " + battery.Status);
+                } catch(BatteryException exception)
+                {
+                    Console.WriteLine(exception);
+                }
+            } else
+            {
+                Console.WriteLine("There is no connected device.");
             }
         }
     }

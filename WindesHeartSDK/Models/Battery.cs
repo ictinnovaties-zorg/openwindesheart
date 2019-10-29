@@ -26,7 +26,5 @@ namespace WindesHeartSDK.Models
             get;
             set;
         }
-
-
     }
 }

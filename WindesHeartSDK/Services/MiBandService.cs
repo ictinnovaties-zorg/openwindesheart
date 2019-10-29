@@ -2,6 +2,7 @@
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Plugin.BluetoothLE;
+using WindesHeartSDK.Exceptions;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK.Services
@@ -9,33 +10,43 @@ namespace WindesHeartSDK.Services
     public static class MiBandService
     {
         /// <summary>
-        /// Get Raw Battery data
+        /// Get Raw Battery data. Throws BatteryException when something went wrong.
         /// </summary>
         /// <returns>byte[]</returns>
         public static async Task<byte[]> GetRawBatteryData()
         {
             var batteryCharacteristic = GetBatteryCharacteristic();
-            var gattResult = await batteryCharacteristic.Read();
-
-            if (gattResult.Characteristic.Value != null)
+            if(batteryCharacteristic != null)
             {
-                var rawData = gattResult.Characteristic.Value;
-                return rawData;
+                var gattResult = await batteryCharacteristic.Read();
+
+                if (gattResult.Characteristic.Value != null)
+                {
+                    var rawData = gattResult.Characteristic.Value;
+                    return rawData;
+                }
+
+                throw new BatteryException("Raw bytes have not been found in the battery-characteristic");
             }
 
-            return null;
+            throw new BatteryException("Batterycharacteristic could not be found.");
         }
 
 
         /// <summary>
-        /// Get Battery-object from raw data.
+        /// Get Battery-object from raw data. Throws BatteryException when something went wrong.
         /// </summary>
         /// <param name="rawData"></param>
         /// <returns>Battery</returns>
         public static async Task<Battery> GetCurrentBatteryData()
         {
             var rawData = await GetRawBatteryData();
-            return CreateBatteryObject(rawData);
+            if(rawData != null)
+            {
+                return CreateBatteryObject(rawData);
+            }
+
+            throw new BatteryException("Rawdata has not been found.");
         }
 
         /// <summary>
@@ -65,7 +76,7 @@ namespace WindesHeartSDK.Services
                 return battery;
             }
 
-            return null;
+            throw new BatteryException("Rawdata is structured incorrectly, try again!");
         }
 
         /// <summary>

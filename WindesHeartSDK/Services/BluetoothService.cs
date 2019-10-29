@@ -153,7 +153,7 @@ namespace WindesHeartSDK
                         {
                             Console.WriteLine("Connected device found, disconnecting..");
                             DisconnectDevice(ConnectedDevice);
-
+                            return;
                         }
 
                         Console.WriteLine("Connecting...");
@@ -230,23 +230,33 @@ namespace WindesHeartSDK
         /// <returns>bool</returns>
         public static bool DisconnectDevice(IDevice device)
         {
-            if(device != null)
+            if(device != null && device.Status == ConnectionStatus.Connected)
             {
                 //Cancel the connection
                 Console.WriteLine("Disconnecting Device...");
                 device.CancelConnection();
 
-                if (device.Status == ConnectionStatus.Disconnected)
+                //Checking status
+                device.WhenStatusChanged().Subscribe(status =>
                 {
-                    Console.WriteLine("Disconnected successfully");
-                    return true;
-                }
+                    Console.WriteLine("Status of device changed to: " + status);
+                });
 
-                Console.WriteLine("Disconnecting failed!");
-                return false;
+                //Clear the global variables
+                ClearGlobals();               
             }
             Console.WriteLine("No device has been given to disconnect, make sure device is not null!");
             return false;
+        }
+
+        /// <summary>
+        /// Clears the global variables for disconnecting
+        /// </summary>
+        private static void ClearGlobals()
+        {
+            ScanResults.Clear();
+            ConnectedDevice = null;
+            Characteristics.Clear();
         }
     }
 }
