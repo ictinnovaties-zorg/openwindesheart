@@ -10,8 +10,9 @@ namespace WindesHeartSDK
 {
     public static class BluetoothService
     {
-        public static List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
+        public static List<IScanResult> ScanResults = new List<IScanResult>();
         public static IDevice ConnectedDevice;
+        public static List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
 
         public static async void Start()
         {
@@ -20,6 +21,7 @@ namespace WindesHeartSDK
             {
                 FindAllCharacteristics(scanResults[0].Device);
                 ConnectDevice(scanResults[0].Device);
+                DisconnectDevice(ConnectedDevice);
             } else
             {
                 Console.WriteLine("No devices found");
@@ -72,6 +74,9 @@ namespace WindesHeartSDK
 
             //Order scanresults by descending signal strength
             scanResults = scanResults.OrderByDescending(x => x.Rssi).ToList();
+
+            //Set ScanResults global
+            ScanResults = scanResults;
             return scanResults;
         }
 
@@ -103,6 +108,10 @@ namespace WindesHeartSDK
             return false;
         }
 
+        /// <summary>
+        /// Find all characteristics for a device and store it in the Characteristics property
+        /// </summary>
+        /// <param name="device"></param>
         public static void FindAllCharacteristics(IDevice device)
         {
             device.Connect(new ConnectionConfig
@@ -121,80 +130,95 @@ namespace WindesHeartSDK
             });
         }
 
+        /// <summary>
+        /// Get a certain characteristic with its UUID.
+        /// </summary>
+        /// <param name="uuid"></param>
+        /// <returns>IGattCharacteristic</returns>
+        public static IGattCharacteristic GetCharacteristic(Guid uuid)
+        {
+            return Characteristics.Find(x => x.Uuid == uuid);
+        }
+
         public static async void ConnectDevice(IDevice device)
         {
-            if(Characteristics.Count > 0)
+            if(device != null)
             {
-                var authCharacteristic = Characteristics.Find(x => x.Uuid == MiBand.MiBandResource.GuidCharacteristicAuth);
-                if(authCharacteristic != null)
+                if (Characteristics.Count > 0)
                 {
-                    if(ConnectedDevice != null)
+                    var authCharacteristic = GetCharacteristic(MiBand.MiBandResource.GuidCharacteristicAuth);
+                    if (authCharacteristic != null)
                     {
-                        Console.WriteLine("Connected device found, disconnecting..");
-                        DisconnectDevice(ConnectedDevice);
-                        
-                    }
-
-                    Console.WriteLine("Connecting...");
-                    await authCharacteristic.WriteWithoutResponse(MiBand.MiBandResource.AuthKey);
-                    authCharacteristic.RegisterAndNotify().Timeout(TimeSpan.FromSeconds(20)).Subscribe(async result =>
-                    {
-                        var data = result.Data;
-                        if (data == null)
+                        if (ConnectedDevice != null)
                         {
-                            Console.WriteLine("No data found whilst authenticating");
-                            return;
+                            Console.WriteLine("Connected device found, disconnecting..");
+                            DisconnectDevice(ConnectedDevice);
+
                         }
 
-                        if (data[0] == MiBand.MiBandResource.AuthResponse && data[2] == MiBand.MiBandResource.AuthSuccess)
+                        Console.WriteLine("Connecting...");
+                        await authCharacteristic.WriteWithoutResponse(MiBand.MiBandResource.AuthKey);
+                        authCharacteristic.RegisterAndNotify().Timeout(TimeSpan.FromSeconds(20)).Subscribe(async result =>
                         {
-                            if (data[1] == MiBand.MiBandResource.AuthSendKey)
+                            var data = result.Data;
+                            if (data == null)
                             {
-                                Console.WriteLine("Authenticating.. Requesting Authorization-number");
-                                await authCharacteristic.WriteWithoutResponse(MiBand.MiBandResource.RequestNumber);
-                                Console.WriteLine("Authoriztion-number written..");
-                            }
-                            else if (data[1] == MiBand.MiBandResource.AuthRequestRandomAuthNumber)
-                            {
-                                Console.WriteLine("Authenticating.. Requesting random encryption key");
-                                await authCharacteristic.WriteWithoutResponse(Helpers.ConversionHelper.CreateKey(data));
-                                Console.WriteLine("Encryption key created and written..");
-                            }
-                            else if (data[1] == MiBand.MiBandResource.AuthSendEncryptedAuthNumber)
-                            {
-                                Console.WriteLine("Authenticated & Connected!");
-
-                                //Set ConnectedDevice
-                                ConnectedDevice = device;
-
-                                //Get Battery-percentage
-                                var percentage = await OnBatteryStatusChange();
-                                Console.WriteLine("Battery: " + percentage);
+                                Console.WriteLine("No data found whilst authenticating");
                                 return;
                             }
-                        }
-                        else
+
+                            if (data[0] == MiBand.MiBandResource.AuthResponse && data[2] == MiBand.MiBandResource.AuthSuccess)
+                            {
+                                if (data[1] == MiBand.MiBandResource.AuthSendKey)
+                                {
+                                    Console.WriteLine("Authenticating.. Requesting Authorization-number");
+                                    await authCharacteristic.WriteWithoutResponse(MiBand.MiBandResource.RequestNumber);
+                                    Console.WriteLine("Authoriztion-number written..");
+                                }
+                                else if (data[1] == MiBand.MiBandResource.AuthRequestRandomAuthNumber)
+                                {
+                                    Console.WriteLine("Authenticating.. Requesting random encryption key");
+                                    await authCharacteristic.WriteWithoutResponse(Helpers.ConversionHelper.CreateKey(data));
+                                    Console.WriteLine("Encryption key created and written..");
+                                }
+                                else if (data[1] == MiBand.MiBandResource.AuthSendEncryptedAuthNumber)
+                                {
+                                    Console.WriteLine("Authenticated & Connected!");
+
+                                    //Set ConnectedDevice
+                                    ConnectedDevice = device;
+                                    return;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("AuthResponse or AuthSuccess not correct");
+                                return;
+                            }
+                        },
+                        exception =>
                         {
-                            Console.WriteLine("AuthResponse or AuthSuccess not correct");
+                            Console.WriteLine("Connection exception: " + exception.Message);
                             return;
-                        }
-                    },
-                    exception =>
+                        });
+                    }
+                    else
                     {
-                        Console.WriteLine("Connection exception: "+exception.Message);
-                        return;
-                    });
-                } else
+                        Console.WriteLine("AuthCharacteristic not yet found, trying again..");
+                        await Task.Delay(2000);
+                        ConnectDevice(device);
+                    }
+                }
+                else
                 {
-                    Console.WriteLine("AuthCharacteristic not yet found, trying again..");
-                    await Task.Delay(2000);
+                    Console.WriteLine("No Characteristics found yet, trying again..");
+                    await Task.Delay(5000);
                     ConnectDevice(device);
                 }
             } else
             {
-                Console.WriteLine("No Characteristics found yet, trying again..");
-                await Task.Delay(5000);
-                ConnectDevice(device);
+                Console.WriteLine("No device has been given to connect with, be sure your device is not null!");
+                return;
             }
         }
 
@@ -206,36 +230,24 @@ namespace WindesHeartSDK
         /// <returns>bool</returns>
         public static bool DisconnectDevice(IDevice device)
         {
-            //Cancel the connection
-            Console.WriteLine("Disconnecting connected device..");
-            device.CancelConnection();
-
-            if(device.Status == ConnectionStatus.Disconnected)
+            if(device != null)
             {
-                Console.WriteLine("Disconnected successfully");
-                return true;
-            }
+                //Cancel the connection
+                Console.WriteLine("Disconnecting Device...");
+                device.CancelConnection();
 
-            Console.WriteLine("Disconnecting failed!");
+                if (device.Status == ConnectionStatus.Disconnected)
+                {
+                    Console.WriteLine("Disconnected successfully");
+                    return true;
+                }
+
+                Console.WriteLine("Disconnecting failed!");
+                return false;
+            }
+            Console.WriteLine("No device has been given to disconnect, make sure device is not null!");
             return false;
         }
-
-        /// <summary>
-        /// Set listener for battery changes. 
-        /// </summary>
-        public static async Task<int> OnBatteryStatusChange()
-        {
-            var batteryCharacteristic = Characteristics.Find(x => x.Uuid == MiBand.MiBandResource.GuidCharacteristic6BatteryInfo);
-            //var charBatterySub = batteryCharacteristic?.RegisterAndNotify().Subscribe(
-            //    x => new Battery(x.Characteristic.Value)
-            //);
-            var batteryData = await batteryCharacteristic?.Read();
-            var battery = new Battery(batteryData.Characteristic.Value);
-
-            return battery.GetLevelInPercent();                     
-        }
-
-        
     }
 }
 

@@ -1,22 +1,32 @@
 ﻿using System;
 namespace WindesHeartSDK.Models
 {
+    public enum StatusEnum
+    {
+        Charging,
+        NotCharging
+    }
+
     public class Battery
     {
-        private readonly byte[] _data;
-
-        public Battery(byte[] data)
+        public StatusEnum Status
         {
-            _data = data;
+            get;
+            set;
         }
 
-        public int GetLevelInPercent()
+        public int BatteryPercentage
         {
-            if (_data.Length >= 2)
-            {
-                return _data[1];
-            }
-            return 0; //Unknown
+            get;
+            set;
         }
+
+        public byte[] RawData
+        {
+            get;
+            set;
+        }
+
+
     }
 }
