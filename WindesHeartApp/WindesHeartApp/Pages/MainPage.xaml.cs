@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using WindesHeartSDK;
+using WindesHeartSDK.Devices.MiBand3.Services;
 using WindesHeartSDK.Exceptions;
-using WindesHeartSDK.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -45,8 +45,8 @@ namespace WindesHeartApp.Pages
             {
                 try
                 {
-                    var rawBattery = await MiBandService.GetRawBatteryData();
-                    var battery = await MiBandService.GetCurrentBatteryData();
+                    var rawBattery = await BatteryService.GetRawBatteryData();
+                    var battery = await BatteryService.GetCurrentBatteryData();
                     Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
                     Console.WriteLine("Batterystatus: " + battery.Status);
                 } catch(BatteryException exception)

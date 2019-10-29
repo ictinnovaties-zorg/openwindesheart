@@ -1,7 +1,7 @@
 ﻿using System;
-namespace WindesHeartSDK.MiBand
+namespace WindesHeartSDK.Devices.MiBand3.Resources
 {
-    public class MiBandResource
+    public static class MiBand3Resource
     {
         //Authentication
         public static Guid GuidCharacteristicAuth = new Guid("00000009-0000-3512-2118-0009af100700");

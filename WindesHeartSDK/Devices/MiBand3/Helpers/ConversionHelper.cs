@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace WindesHeartSDK.Helpers
+namespace WindesHeartSDK.Devices.MiBand3.Helpers
 {
     public static class ConversionHelper
     {

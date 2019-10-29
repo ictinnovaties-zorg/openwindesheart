@@ -1,36 +1,30 @@
-﻿using Plugin.BluetoothLE;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Models;
+using Plugin.BluetoothLE;
+using WindesHeartSDK.Devices.MiBand3.Resources;
+using WindesHeartSDK.Devices.MiBand3.Services;
+using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK
 {
     public static class BluetoothService
     {
+        //Globals
         public static List<IScanResult> ScanResults = new List<IScanResult>();
         public static IDevice ConnectedDevice;
         public static List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
 
-        public static async void Start()
-        {
-            var scanResults = await ScanForUniqueDevicesAsync();
-            if(scanResults.Count > 0 && scanResults[0].Device != null)
-            {
-                FindAllCharacteristics(scanResults[0].Device);
-                ConnectDevice(scanResults[0].Device);
-                DisconnectDevice(ConnectedDevice);
-            } else
-            {
-                Console.WriteLine("No devices found");
-            }
-        }
+        //Disposables
+        public static IDisposable characteristicsDisposable;
+ 
 
         /// <summary>
         /// Scan for devices, Mi Band 3 or Xiaomi Band 3, that are not yet connected.
         /// </summary>
+        /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="scanTimeInSeconds"></param>
         /// <returns>List of IScanResult</returns>
         public static async Task<List<IScanResult>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
@@ -42,28 +36,21 @@ namespace WindesHeartSDK
             if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOn)
             {
                 //Trigger event and add to devices list
-                try
+                Console.WriteLine("Started scanning");
+                var scanner = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
                 {
-                    Console.WriteLine("Started scanning");
-                    var scanner = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                    if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && (scanResult.Device.Name.Equals("Mi Band 3") || scanResult.Device.Name.Equals("Xiaomi Band 3")) && !uniqueGuids.Contains(scanResult.Device.Uuid))
                     {
-                        if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && (scanResult.Device.Name.Equals("Mi Band 3") || scanResult.Device.Name.Equals("Xiaomi Band 3")) && !uniqueGuids.Contains(scanResult.Device.Uuid))
-                        {
-                            Console.WriteLine("Mi Band 3 found with signalstrength: " + scanResult.Rssi);
-                            scanResults.Add(scanResult);
-                            uniqueGuids.Add(scanResult.Device.Uuid);
-                        }
-                    });
+                        Console.WriteLine("Mi Band 3 found with signalstrength: " + scanResult.Rssi);
+                        scanResults.Add(scanResult);
+                        uniqueGuids.Add(scanResult.Device.Uuid);
+                    }
+                });
 
-                    //Stop scanning after delayed time.
-                    await Task.Delay(scanTimeInSeconds * 1000);
-                    Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + scanResults.Count);
-                    scanner.Dispose();
-                }
-                catch (Exception exp)
-                {
-                    Console.WriteLine("Exception thrown: " + exp);
-                }
+                //Stop scanning after delayed time.
+                await Task.Delay(scanTimeInSeconds * 1000);
+                Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + scanResults.Count);
+                scanner.Dispose();
             } else
             {
                 Console.WriteLine("Bluetooth-Adapter state is: " + CrossBleAdapter.Current.Status + ". Trying again!");
@@ -77,35 +64,7 @@ namespace WindesHeartSDK
             //Set ScanResults global
             ScanResults = scanResults;
             return scanResults;
-        }
-
-
-        /// <summary>
-        /// Tries to pair to the devices. If the pairing is successfull returns true.
-        /// </summary>
-        /// <param name="device"></param>
-        /// <returns>bool</returns>
-        public static bool PairDevice(IDevice device)
-        {
-            bool success = false;
-            // Checks if devices supports pairing
-            if (device.IsPairingAvailable())
-            {
-                // If device isn't paired yet pair the device
-                if (device.PairingStatus != PairingStatus.Paired)
-                {
-                    device.PairingRequest().Subscribe(isSuccessful =>
-                    {
-                        Console.WriteLine("Pairing Succesfull: " + isSuccessful);
-                        success = isSuccessful;
-                    });
-                    return success;
-                }
-                return true;
-            }
-            Console.WriteLine("Pairing unavailable!");
-            return false;
-        }
+        }       
 
         /// <summary>
         /// Find all characteristics for a device and store it in the Characteristics property
@@ -113,14 +72,7 @@ namespace WindesHeartSDK
         /// <param name="device"></param>
         public static void FindAllCharacteristics(IDevice device)
         {
-            device.Connect(new ConnectionConfig
-            {
-                AutoConnect = true,
-                AndroidConnectionPriority = ConnectionPriority.High
-            });
-
-            Characteristics.Clear();
-            device.WhenAnyCharacteristicDiscovered().Subscribe(characteristic =>
+            characteristicsDisposable = device.WhenAnyCharacteristicDiscovered().Subscribe(characteristic =>
             {
                 if (!Characteristics.Contains(characteristic))
                 {
@@ -130,87 +82,31 @@ namespace WindesHeartSDK
         }
 
         /// <summary>
-        /// Get a certain characteristic with its UUID.
-        /// </summary>
-        /// <param name="uuid"></param>
-        /// <returns>IGattCharacteristic</returns>
-        public static IGattCharacteristic GetCharacteristic(Guid uuid)
-        {
-            return Characteristics.Find(x => x.Uuid == uuid);
-        }
-
-        /// <summary>
         /// Connect a device
         /// </summary>
         /// <param name="device"></param>
+        /// <exception cref="ConnectionException">Throws exception if device is null</exception>
         public static async void ConnectDevice(IDevice device)
         {
-            if(device != null)
+            if (device != null)
             {
+                //Connect with device
+                device.Connect(new ConnectionConfig
+                {
+                    AutoConnect = false,
+                    AndroidConnectionPriority = ConnectionPriority.Normal
+                });
+               
+                ////Find characteristics of device
+                if(characteristicsDisposable == null)
+                {
+                    FindAllCharacteristics(device);
+                }
+
                 if (Characteristics.Count > 0)
                 {
-                    var authCharacteristic = GetCharacteristic(MiBand.MiBandResource.GuidCharacteristicAuth);
-                    if (authCharacteristic != null)
-                    {
-                        if (ConnectedDevice != null)
-                        {
-                            Console.WriteLine("Connected device found, disconnecting..");
-                            DisconnectDevice(ConnectedDevice);
-                            return;
-                        }
-
-                        Console.WriteLine("Connecting...");
-                        await authCharacteristic.WriteWithoutResponse(MiBand.MiBandResource.AuthKey);
-                        authCharacteristic.RegisterAndNotify().Timeout(TimeSpan.FromSeconds(20)).Subscribe(async result =>
-                        {
-                            var data = result.Data;
-                            if (data == null)
-                            {
-                                Console.WriteLine("No data found whilst authenticating");
-                                return;
-                            }
-
-                            if (data[0] == MiBand.MiBandResource.AuthResponse && data[2] == MiBand.MiBandResource.AuthSuccess)
-                            {
-                                if (data[1] == MiBand.MiBandResource.AuthSendKey)
-                                {
-                                    Console.WriteLine("Authenticating.. Requesting Authorization-number");
-                                    await authCharacteristic.WriteWithoutResponse(MiBand.MiBandResource.RequestNumber);
-                                    Console.WriteLine("Authoriztion-number written..");
-                                }
-                                else if (data[1] == MiBand.MiBandResource.AuthRequestRandomAuthNumber)
-                                {
-                                    Console.WriteLine("Authenticating.. Requesting random encryption key");
-                                    await authCharacteristic.WriteWithoutResponse(Helpers.ConversionHelper.CreateKey(data));
-                                    Console.WriteLine("Encryption key created and written..");
-                                }
-                                else if (data[1] == MiBand.MiBandResource.AuthSendEncryptedAuthNumber)
-                                {
-                                    Console.WriteLine("Authenticated & Connected!");
-
-                                    //Set ConnectedDevice
-                                    ConnectedDevice = device;
-                                    return;
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("AuthResponse or AuthSuccess not correct");
-                                return;
-                            }
-                        },
-                        exception =>
-                        {
-                            Console.WriteLine("Connection exception: " + exception.Message);
-                            return;
-                        });
-                    }
-                    else
-                    {
-                        Console.WriteLine("AuthCharacteristic not yet found, trying again..");
-                        await Task.Delay(2000);
-                        ConnectDevice(device);
-                    }
+                    //Authentication
+                    AuthenticationService.AuthenticateDevice(device);
                 }
                 else
                 {
@@ -220,8 +116,7 @@ namespace WindesHeartSDK
                 }
             } else
             {
-                Console.WriteLine("No device has been given to connect with, be sure your device is not null!");
-                return;
+                throw new ConnectionException("No device has been given to connect with, be sure your device is not null!");
             }
         }
 
@@ -230,6 +125,7 @@ namespace WindesHeartSDK
         /// Disconnect current device.
         /// </summary>
         /// <param name="device"></param>
+        /// <exception cref="ConnectionException">Throws exception if device is null</exception>
         public static void DisconnectDevice(IDevice device)
         {
             if(device != null)
@@ -242,7 +138,7 @@ namespace WindesHeartSDK
                 ClearGlobals();
                 return;
             }
-            Console.WriteLine("No device has been given to disconnect, make sure device is not null!");
+            throw new ConnectionException("No device has been given to disconnect, make sure device is not null!");
         }
 
         /// <summary>
@@ -250,6 +146,9 @@ namespace WindesHeartSDK
         /// </summary>
         private static void ClearGlobals()
         {
+            AuthenticationService.authDisposable.Dispose();
+            characteristicsDisposable.Dispose();
+
             ScanResults.Clear();
             ConnectedDevice = null;
             Characteristics.Clear();

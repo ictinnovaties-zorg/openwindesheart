@@ -1,22 +1,25 @@
 ﻿using System;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Plugin.BluetoothLE;
 using WindesHeartSDK.Exceptions;
 using WindesHeartSDK.Models;
+using WindesHeartSDK.Devices.MiBand3.Resources;
+using System.Reactive.Linq;
+using WindesHeartSDK.Helpers;
 
-namespace WindesHeartSDK.Services
+namespace WindesHeartSDK.Devices.MiBand3.Services
 {
-    public static class MiBandService
+    public static class BatteryService
     {
         /// <summary>
-        /// Get Raw Battery data. Throws BatteryException when something went wrong.
+        /// Get Raw Battery data.
         /// </summary>
+        /// <exception cref="BatteryException">Throws BatteryException if no bytes where found or Battery-characteristic was not found</exception>
         /// <returns>byte[]</returns>
         public static async Task<byte[]> GetRawBatteryData()
         {
             var batteryCharacteristic = GetBatteryCharacteristic();
-            if(batteryCharacteristic != null)
+            if (batteryCharacteristic != null)
             {
                 var gattResult = await batteryCharacteristic.Read();
 
@@ -41,7 +44,7 @@ namespace WindesHeartSDK.Services
         public static async Task<Battery> GetCurrentBatteryData()
         {
             var rawData = await GetRawBatteryData();
-            if(rawData != null)
+            if (rawData != null)
             {
                 return CreateBatteryObject(rawData);
             }
@@ -56,7 +59,7 @@ namespace WindesHeartSDK.Services
         /// <returns>Battery</returns>
         private static Battery CreateBatteryObject(byte[] rawData)
         {
-            if(rawData != null)
+            if (rawData != null)
             {
                 var batteryPercentage = rawData[1];
                 StatusEnum status = StatusEnum.NotCharging;
@@ -87,7 +90,7 @@ namespace WindesHeartSDK.Services
         {
             var charBatterySub = GetBatteryCharacteristic().RegisterAndNotify().Subscribe(
                  x => callback(CreateBatteryObject(x.Characteristic.Value))
-             );            
+             );
 
             return charBatterySub;
         }
@@ -98,7 +101,7 @@ namespace WindesHeartSDK.Services
         /// <returns>IGattCharacteristic</returns>
         private static IGattCharacteristic GetBatteryCharacteristic()
         {
-            var batteryCharacteristic = BluetoothService.GetCharacteristic(MiBand.MiBandResource.GuidCharacteristic6BatteryInfo);
+            var batteryCharacteristic = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
             return batteryCharacteristic;
         }
     }
