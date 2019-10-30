@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Plugin.BluetoothLE;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Plugin.BluetoothLE;
 using WindesHeartSDK.Devices.MiBand3.Resources;
 using WindesHeartSDK.Devices.MiBand3.Services;
 using WindesHeartSDK.Exceptions;
+using WindesHeartSDK.Helpers;
 
 namespace WindesHeartSDK
 {
@@ -22,7 +23,7 @@ namespace WindesHeartSDK
         //Disposables
         public static IDisposable characteristicsDisposable;
         public static IDisposable statusDisposable;
- 
+
 
         /// <summary>
         /// Scan for devices, Mi Band 3 or Xiaomi Band 3, that are not yet connected.
@@ -54,7 +55,8 @@ namespace WindesHeartSDK
                 await Task.Delay(scanTimeInSeconds * 1000);
                 Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + scanResults.Count);
                 scanner.Dispose();
-            } else
+            }
+            else
             {
                 Console.WriteLine("Bluetooth-Adapter state is: " + CrossBleAdapter.Current.Status + ". Trying again!");
                 await Task.Delay(2000);
@@ -67,7 +69,7 @@ namespace WindesHeartSDK
             //Set ScanResults global
             ScanResults = scanResults;
             return scanResults;
-        }       
+        }
 
         /// <summary>
         /// Find all characteristics for a device and store it in the Characteristics property
@@ -103,7 +105,7 @@ namespace WindesHeartSDK
                     AndroidConnectionPriority = ConnectionPriority.High
                 });
 
-                if(statusDisposable == null)
+                if (statusDisposable == null)
                 {
                     ListenForConnectionChanges(device);
                 }
@@ -125,7 +127,8 @@ namespace WindesHeartSDK
                     await Task.Delay(5000);
                     ConnectDevice(device);
                 }
-            } else
+            }
+            else
             {
                 throw new NullReferenceException("Device is null!");
             }
@@ -139,7 +142,7 @@ namespace WindesHeartSDK
         /// <exception cref="ConnectionException">Throws exception if device is null</exception>
         public static void DisconnectDevice(IDevice device)
         {
-            if(device != null)
+            if (device != null)
             {
                 //Cancel the connection
                 Console.WriteLine("Trying to disconnect device...");
@@ -175,6 +178,26 @@ namespace WindesHeartSDK
             ScanResults.Clear();
             ConnectedDevice = null;
             Characteristics.Clear();
+        }
+
+
+        public static void SetTime(DateTime time)
+        {
+            if (ConnectedDevice != null)
+            {
+                //Convert time to bytes
+                byte[] timeToSet = ConversionHelper.GetTimeBytes(time, ConversionHelper.TimeUnit.Seconds);
+
+                //Send to MiBand
+                CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristicCurrentTime).Write(timeToSet).Subscribe(result =>
+                {
+                    Console.WriteLine("Time set to " + time.ToString());
+                });
+            }
+            else
+            {
+                throw new NullReferenceException("ConnectedDevice is null");
+            }
         }
     }
 }

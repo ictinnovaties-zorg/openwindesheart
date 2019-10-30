@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Plugin.BluetoothLE;
+using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Plugin.BluetoothLE;
 using WindesHeartSDK.Devices.MiBand3.Resources;
 using WindesHeartSDK.Helpers;
 
@@ -70,7 +70,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             {
                 Console.WriteLine("AuthCharacteristic not yet found, trying again..");
                 await Task.Delay(2000);
-                BluetoothService.ConnectDevice(device);
+                AuthenticateDevice(device);
             }
         }
 
