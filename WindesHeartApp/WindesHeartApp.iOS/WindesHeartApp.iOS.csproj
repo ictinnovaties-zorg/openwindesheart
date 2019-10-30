@@ -140,4 +140,10 @@
       <Name>WindesHeartApp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\WindesHeart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\WindesHeartTransparent.png" />
+  </ItemGroup>
 </Project>

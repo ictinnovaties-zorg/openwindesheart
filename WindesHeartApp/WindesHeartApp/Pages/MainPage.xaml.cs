@@ -58,5 +58,10 @@ namespace WindesHeartApp.Pages
                 Console.WriteLine("There is no connected device.");
             }
         }
+
+        private void Button_Clicked_1(object sender, EventArgs e)
+        {
+            Navigation.PushModalAsync(new MainPage());
+        }
     }
 }
