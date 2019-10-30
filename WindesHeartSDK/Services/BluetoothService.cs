@@ -17,8 +17,11 @@ namespace WindesHeartSDK
         public static IDevice ConnectedDevice;
         public static List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
 
+        private static ConnectionStatus ConnectionStatus;
+
         //Disposables
         public static IDisposable characteristicsDisposable;
+        public static IDisposable statusDisposable;
  
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace WindesHeartSDK
         /// Find all characteristics for a device and store it in the Characteristics property
         /// </summary>
         /// <param name="device"></param>
-        public static void FindAllCharacteristics(IDevice device)
+        public static async void FindAllCharacteristics(IDevice device)
         {
             characteristicsDisposable = device.WhenAnyCharacteristicDiscovered().Subscribe(characteristic =>
             {
@@ -90,15 +93,23 @@ namespace WindesHeartSDK
         {
             if (device != null)
             {
+                //Set current ConnectionStatus
+                ConnectionStatus = device.Status;
+
                 //Connect with device
                 device.Connect(new ConnectionConfig
                 {
                     AutoConnect = false,
                     AndroidConnectionPriority = ConnectionPriority.Normal
                 });
-               
+
+                if(statusDisposable == null)
+                {
+                    ListenForConnectionChanges(device);
+                }
+
                 ////Find characteristics of device
-                if(characteristicsDisposable == null)
+                if (characteristicsDisposable == null)
                 {
                     FindAllCharacteristics(device);
                 }
@@ -139,6 +150,18 @@ namespace WindesHeartSDK
                 return;
             }
             throw new ConnectionException("No device has been given to disconnect, make sure device is not null!");
+        }
+
+        private static async void ListenForConnectionChanges(IDevice device)
+        {
+            statusDisposable = device.WhenStatusChanged().Subscribe(status =>
+            {
+                if (ConnectionStatus != status)
+                {
+                    Console.WriteLine("Connectionstatus changed from: " + ConnectionStatus + " to: " + status);
+                    ConnectionStatus = status;
+                }
+            });
         }
 
         /// <summary>
