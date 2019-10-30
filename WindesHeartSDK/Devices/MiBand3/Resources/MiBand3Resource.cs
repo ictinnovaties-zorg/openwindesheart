@@ -17,7 +17,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
 
         public static byte AuthSuccess = 0x01;
 
-        //Battery Guid
+        //Data characteristics
         public static Guid GuidCharacteristic6BatteryInfo = new Guid("00000006-0000-3512-2118-0009af100700");
         public static Guid GuidCharacteristicCurrentTime = new Guid("00002A2B-0000-1000-8000-00805f9b34fb");
 
