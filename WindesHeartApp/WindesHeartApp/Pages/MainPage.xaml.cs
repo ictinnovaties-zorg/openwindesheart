@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using WindesHeartSDK;
 using WindesHeartSDK.Devices.MiBand3.Services;
 using WindesHeartSDK.Exceptions;
@@ -19,7 +18,7 @@ namespace WindesHeartApp.Pages
         private async void Button_Clicked(object sender, EventArgs e)
         {
             await BluetoothService.ScanForUniqueDevicesAsync();
-            if(BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
+            if (BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
             {
                 BluetoothService.FindAllCharacteristics(BluetoothService.ScanResults[0].Device);
             }
@@ -35,7 +34,14 @@ namespace WindesHeartApp.Pages
 
         private async void Disconnect(object sender, EventArgs e)
         {
-            BluetoothService.DisconnectDevice(BluetoothService.ConnectedDevice);
+            if (BluetoothService.ConnectedDevice != null)
+            {
+                BluetoothService.DisconnectDevice(BluetoothService.ConnectedDevice);
+            }
+            else
+            {
+                Console.WriteLine("There is no connected device.");
+            }
         }
 
         private async void ReadBattery(object sender, EventArgs e)
@@ -49,14 +55,21 @@ namespace WindesHeartApp.Pages
                     var battery = await BatteryService.GetCurrentBatteryData();
                     Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
                     Console.WriteLine("Batterystatus: " + battery.Status);
-                } catch(BatteryException exception)
+                }
+                catch (BatteryException exception)
                 {
                     Console.WriteLine(exception);
                 }
-            } else
+            }
+            else
             {
                 Console.WriteLine("There is no connected device.");
             }
+        }
+
+        private async void SetTime(object sender, EventArgs e)
+        {
+            BluetoothService.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
         }
     }
 }
