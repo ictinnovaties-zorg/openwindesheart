@@ -100,7 +100,7 @@ namespace WindesHeartSDK
                 device.Connect(new ConnectionConfig
                 {
                     AutoConnect = false,
-                    AndroidConnectionPriority = ConnectionPriority.Normal
+                    AndroidConnectionPriority = ConnectionPriority.High
                 });
 
                 if(statusDisposable == null)

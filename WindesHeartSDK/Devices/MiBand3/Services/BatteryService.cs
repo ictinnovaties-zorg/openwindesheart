@@ -23,9 +23,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             {
                 var gattResult = await batteryCharacteristic.Read();
 
-                if (gattResult.Characteristic.Value != null)
+                if (gattResult.Data != null)
                 {
-                    var rawData = gattResult.Characteristic.Value;
+                    var rawData = gattResult.Data;
                     return rawData;
                 }
 
@@ -89,7 +89,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         public static IDisposable GetBatteryStatusContinuously(Action<Battery> callback)
         {
             var charBatterySub = GetBatteryCharacteristic().RegisterAndNotify().Subscribe(
-                 x => callback(CreateBatteryObject(x.Characteristic.Value))
+                 x => callback(CreateBatteryObject(x.Data))
              );
 
             return charBatterySub;
