@@ -4,10 +4,10 @@
              x:Class="WindesHeartApp.Pages.MainPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            <Button Clicked="Button_Clicked" Text="De Knop der Knophoofden"/>
+            <Button Clicked="Button_Clicked" Text="Scannen" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,50,0,0"/>
+            <Button Clicked="Connect" Text="Connecten" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Button Clicked="ReadBattery" Text="Read battery" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Button Clicked="Disconnect" Text="Disconnecten" HorizontalOptions="Center" VerticalOptions="End"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
