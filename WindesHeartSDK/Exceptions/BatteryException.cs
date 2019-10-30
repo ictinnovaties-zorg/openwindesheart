@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace WindesHeartSDK.Exceptions
 {
     public class BatteryException : Exception

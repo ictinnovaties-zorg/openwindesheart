@@ -127,7 +127,7 @@ namespace WindesHeartSDK
                 }
             } else
             {
-                throw new ConnectionException("No device has been given to connect with, be sure your device is not null!");
+                throw new NullReferenceException("Device is null!");
             }
         }
 
@@ -149,7 +149,7 @@ namespace WindesHeartSDK
                 ClearGlobals();
                 return;
             }
-            throw new ConnectionException("No device has been given to disconnect, make sure device is not null!");
+            throw new NullReferenceException("Device is null!");
         }
 
         private static async void ListenForConnectionChanges(IDevice device)
