@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using WindesHeartSDK;
-using WindesHeartSDK.Devices.MiBand3.Services;
-using WindesHeartSDK.Exceptions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,6 +9,7 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
+        WindesHeartSDK.Device Device = null;
         public MainPage()
         {
             InitializeComponent();
@@ -18,45 +17,49 @@ namespace WindesHeartApp.Pages
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            await BluetoothService.ScanForUniqueDevicesAsync();
-            if(BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
+            List<WindesHeartSDK.Device> devices = await Windesheart.ScanForDevices();
+            if (devices.Count > 0)
             {
-                BluetoothService.FindAllCharacteristics(BluetoothService.ScanResults[0].Device);
+                Device = devices[0];
             }
         }
 
         private async void Connect(object sender, EventArgs e)
         {
-            if (BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
-            {
-                BluetoothService.ConnectDevice(BluetoothService.ScanResults[0].Device);
-            }
+            bool connected = await Device.Connect();
+            Console.WriteLine("Connected:" + connected);
         }
 
         private async void Disconnect(object sender, EventArgs e)
         {
-            BluetoothService.DisconnectDevice(BluetoothService.ConnectedDevice);
+            bool disconnected = await Device.Disconnect();
+            Console.WriteLine("Disconnected:" + disconnected);
         }
 
         private async void ReadBattery(object sender, EventArgs e)
         {
-            var connectedDevice = BluetoothService.ConnectedDevice;
-            if (connectedDevice != null)
-            {
-                try
-                {
-                    var rawBattery = await BatteryService.GetRawBatteryData();
-                    var battery = await BatteryService.GetCurrentBatteryData();
-                    Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-                    Console.WriteLine("Batterystatus: " + battery.Status);
-                } catch(BatteryException exception)
-                {
-                    Console.WriteLine(exception);
-                }
-            } else
-            {
-                Console.WriteLine("There is no connected device.");
-            }
+            var battery = await Device.GetBattery();
+            Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+
+            //var connectedDevice = BluetoothService.ConnectedDevice;
+            //if (connectedDevice != null)
+            //{
+            //    try
+            //    {
+            //        var rawBattery = await BatteryService.GetRawBatteryData();
+            //        var battery = await BatteryService.GetCurrentBatteryData();
+            //        Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+            //        Console.WriteLine("Batterystatus: " + battery.Status);
+            //    }
+            //    catch (BatteryException exception)
+            //    {
+            //        Console.WriteLine(exception);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("There is no connected device.");
+            //}
         }
     }
 }
