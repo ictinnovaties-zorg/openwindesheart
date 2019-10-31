@@ -8,13 +8,16 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 {
     public class MiBand3 : WDevice
     {
+        //MiBand 3 Services
         private readonly MiBand3BatteryService BatteryService;
         private readonly MiBand3DateTimeService DateTimeService;
+        private readonly MiBand3AuthenticationService AuthenticationService;
 
         public MiBand3(int rssi, IDevice device) : base(rssi, device)
         {
             BatteryService = new MiBand3BatteryService(this);
             DateTimeService = new MiBand3DateTimeService(this);
+            AuthenticationService = new MiBand3AuthenticationService(this);
         }
 
         public async override Task<bool> Connect()
@@ -24,7 +27,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             if (connected)
             {
                 //Authentication
-                await MiBand3AuthenticationService.AuthenticateDevice(this);
+                await AuthenticationService.Authenticate();
                 return true;
             }
             return false;

@@ -22,7 +22,6 @@ namespace WindesHeartApp.Pages
             if (devices.Count > 0)
             {
                 Device = devices[0];
-                //BluetoothService.ConnectDevice(BluetoothService.ScanResults[0].Device);
             }
         }
 
