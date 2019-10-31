@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Helpers\" />
+    <Folder Include="Models\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Devices\MiBand3\Services\" />
     <Folder Include="Devices\MiBand3\Helpers\" />

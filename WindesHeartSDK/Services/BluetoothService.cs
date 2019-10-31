@@ -5,8 +5,10 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Devices.MiBand3.Resources;
 using WindesHeartSDK.Devices.MiBand3.Services;
 using WindesHeartSDK.Exceptions;
+using WindesHeartSDK.Helpers;
 
 namespace WindesHeartSDK
 {
@@ -175,7 +177,6 @@ namespace WindesHeartSDK
             Characteristics.Clear();
         }
 
-
         private static Device GetDevice(IScanResult result)
         {
             switch (result.Device.Name)
@@ -185,6 +186,24 @@ namespace WindesHeartSDK
                     return new MiBand3(result.Rssi, result.Device);
             }
             return null;
+        }
+        public static void SetTime(DateTime time)
+        {
+            if (ConnectedDevice != null)
+            {
+                //Convert time to bytes
+                byte[] timeToSet = ConversionHelper.GetTimeBytes(time, ConversionHelper.TimeUnit.Seconds);
+
+                //Send to MiBand
+                CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristicCurrentTime).Write(timeToSet).Subscribe(result =>
+                {
+                    Console.WriteLine("Time set to " + time.ToString());
+                });
+            }
+            else
+            {
+                throw new NullReferenceException("ConnectedDevice is null");
+            }
         }
     }
 }

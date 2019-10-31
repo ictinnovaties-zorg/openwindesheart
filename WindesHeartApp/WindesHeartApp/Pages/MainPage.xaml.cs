@@ -61,5 +61,10 @@ namespace WindesHeartApp.Pages
             //    Console.WriteLine("There is no connected device.");
             //}
         }
+
+        private async void SetTime(object sender, EventArgs e)
+        {
+            BluetoothService.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
+        }
     }
 }
