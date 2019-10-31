@@ -11,51 +11,54 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
 {
     public static class BatteryService
     {
+        public static IDisposable batteryDisposable;
+
         /// <summary>
         /// Get Raw Battery data.
         /// </summary>
-        /// <exception cref="BatteryException">Throws BatteryException if no bytes where found or Battery-characteristic was not found</exception>
+        /// <exception cref="NullReferenceException">Throws exception if BatteryCharacteristic or its value is null.</exception>
         /// <returns>byte[]</returns>
-        public static async Task<byte[]> GetRawBatteryData()
+        public static async Task<byte[]> GetRawBatteryDataAsync()
         {
             var batteryCharacteristic = GetBatteryCharacteristic();
             if (batteryCharacteristic != null)
             {
                 var gattResult = await batteryCharacteristic.Read();
 
-                if (gattResult.Data != null)
+                if (gattResult.Characteristic.Value != null)
                 {
-                    var rawData = gattResult.Data;
+                    var rawData = gattResult.Characteristic.Value;
                     return rawData;
                 }
 
-                throw new BatteryException("Raw bytes have not been found in the battery-characteristic");
+                throw new NullReferenceException("BatteryCharacteristic value is null!");
             }
 
-            throw new BatteryException("Batterycharacteristic could not be found.");
+            throw new NullReferenceException("BatteryCharacteristic could not be found!");
         }
 
 
         /// <summary>
-        /// Get Battery-object from raw data. Throws BatteryException when something went wrong.
+        /// Get Battery-object from raw data.
         /// </summary>
-        /// <param name="rawData"></param>
+        /// <exception cref="NullReferenceException">Throws exception if rawData is null.</exception>
         /// <returns>Battery</returns>
-        public static async Task<Battery> GetCurrentBatteryData()
+        public static async Task<Battery> GetCurrentBatteryDataAsync()
         {
-            var rawData = await GetRawBatteryData();
+            var rawData = await GetRawBatteryDataAsync();
             if (rawData != null)
             {
                 return CreateBatteryObject(rawData);
             }
 
-            throw new BatteryException("Rawdata has not been found.");
+            throw new NullReferenceException("Rawdata is null!");
         }
 
         /// <summary>
         /// Creates Battery-object from rawData.
         /// </summary>
         /// <param name="rawData"></param>
+        /// <exception cref="NullReferenceException">Throws exception if rawData is null.</exception>
         /// <returns>Battery</returns>
         private static Battery CreateBatteryObject(byte[] rawData)
         {
@@ -79,19 +82,18 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                 return battery;
             }
 
-            throw new BatteryException("Rawdata is structured incorrectly, try again!");
+            throw new NullReferenceException("Rawdata of battery is null!");
         }
 
         /// <summary>
-        /// Set listener for battery changes. 
+        /// Receive BatteryStatus-updates continuously.
         /// </summary>
-        /// <returns>IDisposable</returns>
-        public static async Task<IDisposable> GetBatteryStatusContinuouslyAsync(Action<Battery> callback)
+        public static void EnableBatteryStatusUpdates(Action<Battery> callback)
         {
-            var charBatterySub = GetBatteryCharacteristic().RegisterAndNotify().Subscribe(
-                 x => callback(CreateBatteryObject(x.Data))
-             );
-            return charBatterySub;
+            batteryDisposable?.Dispose();
+            batteryDisposable = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
+                x => callback(CreateBatteryObject(x.Characteristic.Value))
+            );
         }
 
         /// <summary>
@@ -100,8 +102,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <returns>IGattCharacteristic</returns>
         private static IGattCharacteristic GetBatteryCharacteristic()
         {
-            var batteryCharacteristic = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
-            return batteryCharacteristic;
+            return CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
         }
     }
 }
