@@ -25,7 +25,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
 
                 TriggerAuthentication();
 
-                authDisposable = authCharacteristic.RegisterAndNotify().Subscribe(async result =>
+                authDisposable = authCharacteristic.RegisterAndNotify().Timeout(TimeSpan.FromSeconds(20)).Subscribe(async result =>
                 {
                     var data = result.Data;
                     if (data == null)
@@ -70,7 +70,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             {
                 Console.WriteLine("AuthCharacteristic not yet found, trying again..");
                 await Task.Delay(2000);
-                AuthenticateDevice(device);
+                BluetoothService.ConnectDevice(device);
             }
         }
 

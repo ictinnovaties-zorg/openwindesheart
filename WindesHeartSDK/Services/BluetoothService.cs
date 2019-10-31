@@ -45,7 +45,10 @@ namespace WindesHeartSDK
                     {
                         //Set device
                         Device device = GetDevice(scanResult);
-                        scanResults.Add(device);
+                        if (device != null)
+                        {
+                            scanResults.Add(device);
+                        }
                         uniqueGuids.Add(scanResult.Device.Uuid);
                     }
                 });
@@ -180,39 +183,14 @@ namespace WindesHeartSDK
 
         private static Device GetDevice(IScanResult result)
         {
-            switch (result.Device.Name)
+            Console.WriteLine(result.Device.Name);
+            var name = result.Device.Name;
+
+            if (name.Equals("Mi Band 3") || name.Equals("Xiaomi Mi Band 3"))
             {
-                case "Mi Band 3":
-                case "Xiaomi Mi Band 3":
-                    return new MiBand3(result.Rssi, result.Device);
+                return new MiBand3(result.Rssi, result.Device);
             }
             return null;
-        }
-
-
-        private async void ReadBatteryContinuous(object sender, EventArgs e)
-        {
-            var connectedDevice = BluetoothService.ConnectedDevice;
-            if (connectedDevice != null)
-            {
-                try
-                {
-                    BatteryService.EnableBatteryStatusUpdates(GetBatteryStatus);
-                }
-                catch (BatteryException exception)
-                {
-                    Console.WriteLine(exception);
-                }
-            }
-            else
-            {
-                Console.WriteLine("There is no connected device.");
-            }
-        }
-
-        private void GetBatteryStatus(Battery battery)
-        {
-            Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
         }
     }
 }

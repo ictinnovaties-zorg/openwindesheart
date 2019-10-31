@@ -15,6 +15,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public async override Task<bool> Connect()
         {
             bool connected = await BluetoothService.ConnectDevice(base.device);
+            Console.WriteLine("Connected: " + connected);
             if (connected)
             {
                 //Authentication
