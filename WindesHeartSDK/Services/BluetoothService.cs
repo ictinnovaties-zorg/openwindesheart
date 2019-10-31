@@ -188,6 +188,32 @@ namespace WindesHeartSDK
             }
             return null;
         }
+
+
+        private async void ReadBatteryContinuous(object sender, EventArgs e)
+        {
+            var connectedDevice = BluetoothService.ConnectedDevice;
+            if (connectedDevice != null)
+            {
+                try
+                {
+                    BatteryService.EnableBatteryStatusUpdates(GetBatteryStatus);
+                }
+                catch (BatteryException exception)
+                {
+                    Console.WriteLine(exception);
+                }
+            }
+            else
+            {
+                Console.WriteLine("There is no connected device.");
+            }
+        }
+
+        private void GetBatteryStatus(Battery battery)
+        {
+            Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
+        }
     }
 }
 

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using Plugin.BluetoothLE;
-using WindesHeartSDK.Exceptions;
-using WindesHeartSDK.Models;
-using WindesHeartSDK.Devices.MiBand3.Resources;
+﻿using Plugin.BluetoothLE;
+using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
+using WindesHeartSDK.Devices.MiBand3.Resources;
+using WindesHeartSDK.Exceptions;
 using WindesHeartSDK.Helpers;
+using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK.Devices.MiBand3.Services
 {
@@ -88,13 +88,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <returns>IDisposable</returns>
         public static async Task<IDisposable> GetBatteryStatusContinuouslyAsync(Action<Battery> callback)
         {
-            var charBatterySub = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
-                x => callback(CreateBatteryObject(x.Characteristic.Value))
-            );
-
-            //var batteryData = await CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).Read();
-            //callback(CreateBatteryObject(batteryData.Characteristic.Value));
-
+            var charBatterySub = GetBatteryCharacteristic().RegisterAndNotify().Subscribe(
+                 x => callback(CreateBatteryObject(x.Data))
+             );
             return charBatterySub;
         }
 

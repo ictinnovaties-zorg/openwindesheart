@@ -8,6 +8,7 @@
             <Button Clicked="Connect" Text="Connecten" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Button Clicked="ReadBattery" Text="Read battery" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Button Clicked="Disconnect" Text="Disconnecten" HorizontalOptions="Center" VerticalOptions="End"/>
+            <Button Clicked="SetTime" Text="Set time" HorizontalOptions="Center" VerticalOptions="End"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
