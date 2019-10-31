@@ -3,7 +3,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Plugin.BluetoothLE;
 using WindesHeartSDK.Devices.MiBand3.Resources;
-using WindesHeartSDK.Exceptions;
 using WindesHeartSDK.Helpers;
 
 namespace WindesHeartSDK.Devices.MiBand3.Services
@@ -13,13 +12,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         private static IGattCharacteristic authCharacteristic;
         public static IDisposable authDisposable;
 
-        /// <summary>
-        /// Authenticates Mi Band 3 devices
-        /// </summary>
-        /// <param name="device"></param>
-        /// <exception cref="NullReferenceException">Throws exception if AuthCharacteristic could not be found.</exception>
-        /// <exception cref="ConnectionException">Throws exception if authentication went wrong.</exception>
-        public static async Task AuthenticateDeviceAsync(IDevice device)
+        public static async void AuthenticateDevice(IDevice device)
         {
             authCharacteristic = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
             if (authCharacteristic != null)
@@ -30,11 +23,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                     return;
                 }
 
-                //Triggers vibration on Mi Band 3
-                await TriggerAuthenticationAsync();
+                TriggerAuthentication();
 
-                //Fired when Mi Band 3 is tapped
-                authDisposable = authCharacteristic.RegisterAndNotify().Subscribe(async result =>
+                authDisposable = authCharacteristic.RegisterAndNotify().Timeout(TimeSpan.FromSeconds(20)).Subscribe(async result =>
                 {
                     var data = result.Data;
                     if (data == null)
@@ -48,11 +39,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                     {
                         if (data[1] == MiBand3Resource.AuthSendKey)
                         {
-                            await RequestAuthorizationNumberAsync();
+                            RequestAuthorizationNumber();
                         }
                         else if (data[1] == MiBand3Resource.AuthRequestRandomAuthNumber)
                         {
-                            await RequestRandomEncryptionKeyAsync(data);
+                            RequestRandomEncryptionKey(data);
                         }
                         else if (data[1] == MiBand3Resource.AuthSendEncryptedAuthNumber)
                         {
@@ -71,28 +62,32 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                 },
                 exception =>
                 {
-                    throw new ConnectionException(exception.Message);
+                    Console.WriteLine("Connection exception: " + exception.Message);
+                    return;
                 });
-            } else
+            }
+            else
             {
-                throw new NullReferenceException("AuthCharacteristic is null!");
+                Console.WriteLine("AuthCharacteristic not yet found, trying again..");
+                await Task.Delay(2000);
+                BluetoothService.ConnectDevice(device);
             }
         }
 
-        private static async Task TriggerAuthenticationAsync()
+        private static async void TriggerAuthentication()
         {
             Console.WriteLine("Authenticating...");
             Console.WriteLine("Writing authentication-key..");
             await authCharacteristic.WriteWithoutResponse(MiBand3Resource.AuthKey);
         }
 
-        private static async Task RequestAuthorizationNumberAsync()
+        private static async void RequestAuthorizationNumber()
         {
             Console.WriteLine("1.Requesting Authorization-number");
             await authCharacteristic.WriteWithoutResponse(MiBand3Resource.RequestNumber);
         }
 
-        private static async Task RequestRandomEncryptionKeyAsync(byte[] data)
+        private static async void RequestRandomEncryptionKey(byte[] data)
         {
             Console.WriteLine("2.Requesting random encryption key");
             await authCharacteristic.WriteWithoutResponse(Helpers.ConversionHelper.CreateKey(data));

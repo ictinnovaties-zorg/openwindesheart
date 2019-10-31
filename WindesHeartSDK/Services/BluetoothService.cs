@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Plugin.BluetoothLE;
 using WindesHeartSDK.Devices.MiBand3.Resources;
 using WindesHeartSDK.Devices.MiBand3.Services;
+using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK
 {
@@ -21,8 +22,6 @@ namespace WindesHeartSDK
         //Disposables
         public static IDisposable characteristicsDisposable;
         public static IDisposable statusDisposable;
-        public static IDisposable connectedDeviceDisposable;
-        public static IDisposable disconnectionDisposable;
  
 
         /// <summary>
@@ -68,56 +67,65 @@ namespace WindesHeartSDK
             //Set ScanResults global
             ScanResults = scanResults;
             return scanResults;
-        }        
+        }       
+
+        /// <summary>
+        /// Find all characteristics for a device and store it in the Characteristics property
+        /// </summary>
+        /// <param name="device"></param>
+        public static async void FindAllCharacteristics(IDevice device)
+        {
+            characteristicsDisposable = device.WhenAnyCharacteristicDiscovered().Subscribe(characteristic =>
+            {
+                if (!Characteristics.Contains(characteristic))
+                {
+                    Characteristics.Add(characteristic);
+                }
+            });
+        }
 
         /// <summary>
         /// Connect a device
         /// </summary>
         /// <param name="device"></param>
-        /// <exception cref="NullReferenceException">Throws exception if device is null.</exception>
-        public static void ConnectDevice(IDevice device)
+        /// <exception cref="ConnectionException">Throws exception if device is null</exception>
+        public static async void ConnectDevice(IDevice device)
         {
             if (device != null)
             {
-                //Check if there is not already a connected device
-                if(ConnectedDevice != null)
-                {
-                    Console.WriteLine("A device is already connected, please disconnect first.");
-                    return;
-                }
+                //Set current ConnectionStatus
+                ConnectionStatus = device.Status;
 
-                //Check for status changes
-                StartListeningForConnectionChanges(device);
-
-                //Connect
+                //Connect with device
                 device.Connect(new ConnectionConfig
                 {
                     AutoConnect = false,
                     AndroidConnectionPriority = ConnectionPriority.High
                 });
 
-                //Check when connected to device
-                connectedDeviceDisposable = device.WhenConnected().Subscribe(connectedDevice =>
+                if(statusDisposable == null)
                 {
-                    Characteristics.Clear();
+                    ListenForConnectionChanges(device);
+                }
 
-                    //Find unique characteristics
-                    characteristicsDisposable = device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
-                    {
-                        if (!Characteristics.Contains(characteristic))
-                        {
-                            Characteristics.Add(characteristic);
+                ////Find characteristics of device
+                if (characteristicsDisposable == null)
+                {
+                    FindAllCharacteristics(device);
+                }
 
-                            //Check if authCharacteristic has been found, then authenticate
-                            if(characteristic.Uuid == MiBand3Resource.GuidCharacteristicAuth)
-                            {
-                                await AuthenticationService.AuthenticateDeviceAsync(device);
-                            }
-                        }
-                    });
-                });                
-            }
-            else
+                if (Characteristics.Count > 0)
+                {
+                    //Authentication
+                    AuthenticationService.AuthenticateDevice(device);
+                }
+                else
+                {
+                    Console.WriteLine("No Characteristics found yet, trying again..");
+                    await Task.Delay(5000);
+                    ConnectDevice(device);
+                }
+            } else
             {
                 throw new NullReferenceException("Device is null!");
             }
@@ -128,7 +136,7 @@ namespace WindesHeartSDK
         /// Disconnect current device.
         /// </summary>
         /// <param name="device"></param>
-        /// <exception cref="NullReferenceException">Throws exception if device is null</exception>
+        /// <exception cref="ConnectionException">Throws exception if device is null</exception>
         public static void DisconnectDevice(IDevice device)
         {
             if(device != null)
@@ -137,23 +145,15 @@ namespace WindesHeartSDK
                 Console.WriteLine("Trying to disconnect device...");
                 device.CancelConnection();
 
-                //Clear the global variables and disposables
-                disconnectionDisposable = device.WhenDisconnected().Subscribe(disconnectedDevice =>
-                {
-                    ClearGlobals();
-                });
+                //Clear the global variables
+                ClearGlobals();
                 return;
             }
             throw new NullReferenceException("Device is null!");
         }
 
-        /// <summary>
-        /// Enables logging of device status on change.
-        /// </summary>
-        /// <param name="device"></param>
-        private static void StartListeningForConnectionChanges(IDevice device)
+        private static async void ListenForConnectionChanges(IDevice device)
         {
-            statusDisposable?.Dispose();
             statusDisposable = device.WhenStatusChanged().Subscribe(status =>
             {
                 if (ConnectionStatus != status)
@@ -165,31 +165,16 @@ namespace WindesHeartSDK
         }
 
         /// <summary>
-        /// Disables device status logs.
-        /// </summary>
-        public static void StopListeningForConnectionChanges()
-        {
-            statusDisposable?.Dispose();
-        }
-
-        /// <summary>
-        /// Clears the global variables and disposables.
+        /// Clears the global variables for disconnecting
         /// </summary>
         private static void ClearGlobals()
         {
-            //Global variables
+            AuthenticationService.authDisposable.Dispose();
+            characteristicsDisposable.Dispose();
+
             ScanResults.Clear();
             ConnectedDevice = null;
             Characteristics.Clear();
-
-            //Disposables
-            AuthenticationService.authDisposable?.Dispose();
-            characteristicsDisposable?.Dispose();
-            connectedDeviceDisposable?.Dispose();
-            statusDisposable?.Dispose();
-
-            disconnectionDisposable?.Dispose();
-
         }
     }
 }
