@@ -9,7 +9,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
 
         public static byte AuthResponse = 0x10;
 
-        public static byte AuthSendKey = 0x01; 
+        public static byte AuthSendKey = 0x01;
         public static readonly byte[] RequestNumber = { 0x02, 0x00 };
         public static byte AuthRequestRandomAuthNumber = 0x02;
 
@@ -23,7 +23,10 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
         //Current Time Guid
         public static Guid GuidCharacteristicCurrentTime = new Guid("00002A2B-0000-1000-8000-00805f9b34fb");
 
+        //Heartrate Control Point Guid
+        public static Guid GuidCharacteristicHeartrateControl = new Guid("00002A39-0000-1000-8000-00805f9b34fb");
 
-
+        public static Guid GuidCharacteristicHeartrate = new Guid("00002A37-0000-1000-8000-00805f9b34fb");
+        public static Guid GuidCharacteristicHeartrate2 = new Guid("0000180d-0000-1000-8000-00805f9b34fb");
     }
 }

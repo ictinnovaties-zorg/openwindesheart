@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using WindesHeartSDK;
 using WindesHeartSDK.Devices.MiBand3.Services;
 using WindesHeartSDK.Exceptions;
@@ -20,7 +19,7 @@ namespace WindesHeartApp.Pages
         private async void Button_Clicked(object sender, EventArgs e)
         {
             await BluetoothService.ScanForUniqueDevicesAsync();
-            if(BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
+            if (BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
             {
                 BluetoothService.ConnectDevice(BluetoothService.ScanResults[0].Device);
             }
@@ -50,11 +49,13 @@ namespace WindesHeartApp.Pages
                     var battery = await BatteryService.GetCurrentBatteryDataAsync();
                     Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
                     Console.WriteLine("Batterystatus: " + battery.Status);
-                } catch(BatteryException exception)
+                }
+                catch (BatteryException exception)
                 {
                     Console.WriteLine(exception);
                 }
-            } else
+            }
+            else
             {
                 Console.WriteLine("There is no connected device.");
             }
@@ -83,11 +84,25 @@ namespace WindesHeartApp.Pages
         private void SetTime(object sender, EventArgs e)
         {
             DateTimeService.SetTime(DateTime.Now);
+            MiBand3HeartrateService.SetMeasurementInterval(1);
+            MiBand3HeartrateService.EnableHeartrateUpdates(HeartrateCallback);
         }
 
         private void GetBatteryStatus(Battery battery)
         {
             Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
+
+        }
+
+        private void HeartrateCallback(Heartrate heartrate)
+        {
+            Console.WriteLine(heartrate.rawdata);
+            Console.WriteLine("Hi");
+        }
+
+        public void GetHeartRate(object sender, EventArgs e)
+        {
+            MiBand3HeartrateService.GetHeartrate();
         }
     }
 }
