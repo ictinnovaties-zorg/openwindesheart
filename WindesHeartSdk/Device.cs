@@ -17,7 +17,7 @@ namespace WindesHeartSDK
         }
         public abstract Task<bool> Connect();
         public abstract Task<bool> Disconnect();
-        public abstract Task<bool> SetTime();
+        public abstract Task<bool> SetTime(System.DateTime dateTime);
         public abstract Task<bool> GetSteps();
         public abstract Task<Battery> GetBattery();
     }

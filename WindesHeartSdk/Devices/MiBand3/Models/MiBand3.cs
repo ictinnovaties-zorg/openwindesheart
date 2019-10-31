@@ -1,4 +1,5 @@
 ﻿using Plugin.BluetoothLE;
+using System;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3.Services;
 using WindesHeartSDK.Models;
@@ -38,9 +39,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             throw new System.NotImplementedException();
         }
 
-        public override Task<bool> SetTime()
+        public async override Task<bool> SetTime(DateTime dateTime)
         {
-            throw new System.NotImplementedException();
+            return await TimeService.SetTime(dateTime);
         }
     }
 }

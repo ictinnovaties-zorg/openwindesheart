@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -61,6 +60,12 @@ namespace WindesHeartApp.Pages
             //{
             //    Console.WriteLine("There is no connected device.");
             //}
+        }
+
+        private async void SetTime(object sender, EventArgs e)
+        {
+            bool timeset = await Device.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
+            Console.WriteLine("Time set " + timeset);
         }
     }
 }
