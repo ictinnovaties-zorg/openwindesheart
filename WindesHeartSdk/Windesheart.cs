@@ -1,13 +1,10 @@
-﻿using Plugin.BluetoothLE;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WindesHeartSDK
 {
     public class Windesheart
     {
-        public static List<IScanResult> ScanResults = new List<IScanResult>();
-
         /// <summary>
         /// Scan for devices that are not yet connected.
         /// </summary>

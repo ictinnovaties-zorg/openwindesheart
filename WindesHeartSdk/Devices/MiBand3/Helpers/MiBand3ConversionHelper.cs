@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace WindesHeartSDK.Devices.MiBand3.Helpers
 {
-    public static class ConversionHelper
+    public static class MiBand3ConversionHelper
     {
         public static byte[] CopyOfRange(byte[] src, int start, int end)
         {
