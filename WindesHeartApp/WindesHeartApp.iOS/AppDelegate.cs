@@ -4,6 +4,7 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using WindesHeartApp.Resources;
 
 namespace WindesHeartApp.iOS
 {
@@ -25,6 +26,8 @@ namespace WindesHeartApp.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
+            Globals.screenHeight = (int)UIScreen.MainScreen.Bounds.Height;
+            Globals.screenWidth = (int)UIScreen.MainScreen.Bounds.Width;
             return base.FinishedLaunching(app, options);
         }
     }

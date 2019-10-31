@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,18 +15,19 @@ namespace WindesHeartApp.Pages
         public AboutPage()
         {
             InitializeComponent();
+
         }
 
         private void Logo_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("Ramon En HielkeSex 1234Clicked");
-            Navigation.PushModalAsync(new MainPage());
+            Console.WriteLine("Logo - Clicked.");
+            Navigation.PushModalAsync(new HomePage());
         }
 
         private void LearnMore_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("Ramon En HielkeSex 1234Clicked");
-            Navigation.PushModalAsync(new MainPage());
+            Console.WriteLine("Learn More - Clicked.");
+            Vibration.Vibrate(5000);
         }
     }
 }

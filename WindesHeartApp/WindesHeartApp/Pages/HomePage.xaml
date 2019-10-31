@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WindesHeartApp.Pages.HomePage">
+
+    <ContentPage.Content>
+        <AbsoluteLayout x:Name="AbsoluteLayout" >
+            <Grid>
+                <Image Grid.Column="0" x:Name="HeartImage" Source="HeartOnlyTransparent.png"></Image>
+                <Image Grid.Column="0" x:Name="TextImage" Source="TextOnlyTransparent.png"></Image>
+
+            </Grid>
+           
+
+            <Button Text="Test" x:Name="TestButton" BorderColor="White" BorderWidth="1"/>
+
+
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -44,7 +44,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <FormattedString.Spans>
-                            <Span Text="It's "/>
+                            <Span Text="}It's "/>
                             <Span Text="main purpose " FontAttributes="Bold" FontSize="20"/>
                             <Span Text="is to "/>
                             <Span Text="demo " FontAttributes="Bold" FontSize="20"/>

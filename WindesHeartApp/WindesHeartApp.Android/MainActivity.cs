@@ -1,11 +1,11 @@
 ﻿using System;
-
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using WindesHeartApp.Resources;
 
 namespace WindesHeartApp.Droid
 {
@@ -22,6 +22,9 @@ namespace WindesHeartApp.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
+
+            Globals.screenHeight = (int)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
+            Globals.screenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

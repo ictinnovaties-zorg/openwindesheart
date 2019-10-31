@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Devices.MiBand3.Services;
 using WindesHeartSDK.Exceptions;
@@ -9,13 +10,41 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : ContentPage
+    public partial class HomePage : ContentPage
     {
-        public MainPage()
+        public HomePage()
         {
             InitializeComponent();
         }
+        
+        protected override void OnAppearing()
+        {
+            AbsoluteLayout.BackgroundColor = Globals.primaryColor;
+            //AbsoluteLayout.WidthRequest = Globals.screenWidth;
+            //AbsoluteLayout.HeightRequest = Globals.screenHeight;
 
+            var screenRatioFactor = Globals.screenHeight / Globals.screenWidth;
+
+            HeartImage.BackgroundColor = Globals.primaryColor;
+            TextImage.BackgroundColor = Globals.primaryColor;
+
+            //AbsoluteLayout.SetLayoutBounds(HeartImage, new Rectangle(0.5, 0.5, Globals.buttonSize, Globals.buttonSize));
+            //AbsoluteLayout.SetLayoutFlags(HeartImage, AbsoluteLayoutFlags.All);
+            //AbsoluteLayout.SetLayoutBounds(TextImage, new Rectangle(0.8, 0.8, Globals.buttonSize*Globals.screenratioFactor, Globals.buttonSize));
+            //AbsoluteLayout.SetLayoutFlags(TextImage, AbsoluteLayoutFlags.All);
+
+            AbsoluteLayout.SetLayoutBounds(TestButton, new Rectangle(0.5, 0.5, Globals.buttonSize * Globals.screenratioFactor, Globals.buttonSize));
+            AbsoluteLayout.SetLayoutFlags(TestButton, AbsoluteLayoutFlags.All);
+            TestButton.CornerRadius = (int)(Globals.screenHeight / 8 / 2);
+
+        }
+
+        /*<Image Margin = "10,10,500, 500" Source="WindesHeartTransparent.png" BackgroundColor="{StaticResource Primary}">
+</Image>
+
+
+<Button HeightRequest = "50" WidthRequest="50" Text="About" AbsoluteLayout.LayoutBounds="0.15,0.45" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+*/
         private async void Button_Clicked(object sender, EventArgs e)
         {
             await BluetoothService.ScanForUniqueDevicesAsync();
@@ -61,7 +90,7 @@ namespace WindesHeartApp.Pages
 
         private void Button_Clicked_1(object sender, EventArgs e)
         {
-            Navigation.PushModalAsync(new MainPage());
+            Navigation.PushModalAsync(new HomePage());
         }
     }
 }
