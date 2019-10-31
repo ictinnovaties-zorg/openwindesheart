@@ -15,6 +15,7 @@ namespace WindesHeartSDK
             this.device = device;
             BluetoothService.FindAllCharacteristics(device);
         }
+
         public abstract Task<bool> Connect();
         public abstract Task<bool> Disconnect();
         public abstract Task<bool> SetTime(System.DateTime dateTime);
