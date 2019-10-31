@@ -1,7 +1,7 @@
-﻿using Plugin.BluetoothLE;
-using System;
+﻿using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Plugin.BluetoothLE;
 using WindesHeartSDK.Devices.MiBand3.Resources;
 using WindesHeartSDK.Helpers;
 
@@ -25,7 +25,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
 
                 TriggerAuthentication();
 
-                authDisposable = authCharacteristic.RegisterAndNotify().Subscribe(async result =>
+                authDisposable = authCharacteristic.RegisterAndNotify().Timeout(TimeSpan.FromSeconds(20)).Subscribe(async result =>
                 {
                     var data = result.Data;
                     if (data == null)
@@ -70,7 +70,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             {
                 Console.WriteLine("AuthCharacteristic not yet found, trying again..");
                 await Task.Delay(2000);
-                AuthenticateDevice(device);
+                BluetoothService.ConnectDevice(device);
             }
         }
 

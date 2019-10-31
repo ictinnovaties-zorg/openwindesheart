@@ -86,11 +86,14 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// Set listener for battery changes. 
         /// </summary>
         /// <returns>IDisposable</returns>
-        public static IDisposable GetBatteryStatusContinuously(Action<Battery> callback)
+        public static async Task<IDisposable> GetBatteryStatusContinuouslyAsync(Action<Battery> callback)
         {
-            var charBatterySub = GetBatteryCharacteristic().RegisterAndNotify().Subscribe(
-                 x => callback(CreateBatteryObject(x.Data))
-             );
+            var charBatterySub = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
+                x => callback(CreateBatteryObject(x.Characteristic.Value))
+            );
+
+            //var batteryData = await CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).Read();
+            //callback(CreateBatteryObject(batteryData.Characteristic.Value));
 
             return charBatterySub;
         }
