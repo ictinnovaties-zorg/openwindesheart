@@ -3,22 +3,25 @@ using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3.Resources;
-using WindesHeartSDK.Exceptions;
-using WindesHeartSDK.Helpers;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK.Devices.MiBand3.Services
 {
-    public static class BatteryService
+    public class MiBand3BatteryService
     {
+        private WDevice WDevice;
         public static IDisposable batteryDisposable;
 
+        public MiBand3BatteryService(WDevice wDevice)
+        {
+            WDevice = wDevice;
+        }
         /// <summary>
         /// Get Raw Battery data.
         /// </summary>
         /// <exception cref="NullReferenceException">Throws exception if BatteryCharacteristic or its value is null.</exception>
         /// <returns>byte[]</returns>
-        public static async Task<byte[]> GetRawBatteryDataAsync()
+        public async Task<byte[]> GetRawBatteryData()
         {
             var batteryCharacteristic = GetBatteryCharacteristic();
             if (batteryCharacteristic != null)
@@ -43,9 +46,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// </summary>
         /// <exception cref="NullReferenceException">Throws exception if rawData is null.</exception>
         /// <returns>Battery</returns>
-        public static async Task<Battery> GetCurrentBatteryDataAsync()
+        public async Task<Battery> GetCurrentBatteryData()
         {
-            var rawData = await GetRawBatteryDataAsync();
+            var rawData = await GetRawBatteryData();
             if (rawData != null)
             {
                 return CreateBatteryObject(rawData);
@@ -60,7 +63,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <param name="rawData"></param>
         /// <exception cref="NullReferenceException">Throws exception if rawData is null.</exception>
         /// <returns>Battery</returns>
-        private static Battery CreateBatteryObject(byte[] rawData)
+        private Battery CreateBatteryObject(byte[] rawData)
         {
             if (rawData != null)
             {
@@ -88,10 +91,10 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <summary>
         /// Receive BatteryStatus-updates continuously.
         /// </summary>
-        public static void EnableBatteryStatusUpdates(Action<Battery> callback)
+        public void EnableBatteryStatusUpdates(Action<Battery> callback)
         {
             batteryDisposable?.Dispose();
-            batteryDisposable = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
+            batteryDisposable = WDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
                 x => callback(CreateBatteryObject(x.Characteristic.Value))
             );
         }
@@ -100,9 +103,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// Get Battery Characteristic
         /// </summary>
         /// <returns>IGattCharacteristic</returns>
-        private static IGattCharacteristic GetBatteryCharacteristic()
+        private IGattCharacteristic GetBatteryCharacteristic()
         {
-            return CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
+            return WDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
         }
     }
 }

@@ -2,13 +2,13 @@
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using WindesHeartSDK.Devices.MiBand3.Helpers;
 using WindesHeartSDK.Devices.MiBand3.Resources;
 using WindesHeartSDK.Exceptions;
-using WindesHeartSDK.Helpers;
 
 namespace WindesHeartSDK.Devices.MiBand3.Services
 {
-    public static class AuthenticationService
+    public static class MiBand3AuthenticationService
     {
         private static IGattCharacteristic authCharacteristic;
         public static IDisposable authDisposable;
@@ -19,16 +19,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <param name="device"></param>
         /// <exception cref="NullReferenceException">Throws exception if AuthCharacteristic could not be found.</exception>
         /// <exception cref="ConnectionException">Throws exception if authentication went wrong.</exception>
-        public static async Task AuthenticateDeviceAsync(IDevice device)
+        public static async Task AuthenticateDevice(WDevice device)
         {
-            authCharacteristic = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
+            authCharacteristic = device.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
             if (authCharacteristic != null)
             {
-                if (BluetoothService.ConnectedDevice != null)
-                {
-                    Console.WriteLine("Connected device already");
-                    return;
-                }
 
                 //Triggers vibration on Mi Band 3
                 await TriggerAuthenticationAsync();
@@ -57,9 +52,6 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                         else if (data[1] == MiBand3Resource.AuthSendEncryptedAuthNumber)
                         {
                             Console.WriteLine("Authenticated & Connected!");
-
-                            //Set ConnectedDevice
-                            BluetoothService.ConnectedDevice = device;
                             return;
                         }
                     }
@@ -73,7 +65,8 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                 {
                     throw new ConnectionException(exception.Message);
                 });
-            } else
+            }
+            else
             {
                 throw new NullReferenceException("AuthCharacteristic is null!");
             }
@@ -95,7 +88,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         private static async Task RequestRandomEncryptionKeyAsync(byte[] data)
         {
             Console.WriteLine("2.Requesting random encryption key");
-            await authCharacteristic.WriteWithoutResponse(Helpers.ConversionHelper.CreateKey(data));
+            await authCharacteristic.WriteWithoutResponse(MiBand3ConversionHelper.CreateKey(data));
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using WindesHeartSDK;
-using WindesHeartSDK.Devices.MiBand3.Services;
-using WindesHeartSDK.Exceptions;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,7 +10,7 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
-        WindesHeartSDK.Device Device = null;
+        WDevice Device = null;
         public MainPage()
         {
             InitializeComponent();
@@ -20,7 +18,7 @@ namespace WindesHeartApp.Pages
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            List<WindesHeartSDK.Device> devices = await Windesheart.ScanForDevices();
+            List<WDevice> devices = await Windesheart.ScanForDevices();
             if (devices.Count > 0)
             {
                 Device = devices[0];
@@ -53,47 +51,16 @@ namespace WindesHeartApp.Pages
 
         }
 
-        private async void GetBattery()
+        private async void GetCurrentBattery()
         {
-            var connectedDevice = BluetoothService.ConnectedDevice;
-            if (connectedDevice != null)
-            {
-                try
-                {
-                    var rawBattery = await BatteryService.GetRawBatteryDataAsync();
-                    var battery = await BatteryService.GetCurrentBatteryDataAsync();
-                    Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-                    Console.WriteLine("Batterystatus: " + battery.Status);
-                }
-                catch (BatteryException exception)
-                {
-                    Console.WriteLine(exception);
-                }
-            }
-            else
-            {
-                Console.WriteLine("There is no connected device.");
-            }
+            var battery = await Device.GetBattery();
+            Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+            Console.WriteLine("Batterystatus: " + battery.Status);
         }
 
         private async void ReadBatteryContinuous(object sender, EventArgs e)
         {
-            var connectedDevice = BluetoothService.ConnectedDevice;
-            if (connectedDevice != null)
-            {
-                try
-                {
-                    BatteryService.EnableBatteryStatusUpdates(GetBatteryStatus);
-                }
-                catch (BatteryException exception)
-                {
-                    Console.WriteLine(exception);
-                }
-            }
-            else
-            {
-                Console.WriteLine("There is no connected device.");
-            }
+            Device.EnableRealTimeBattery(GetBatteryStatus);
         }
 
         private void GetBatteryStatus(Battery battery)
