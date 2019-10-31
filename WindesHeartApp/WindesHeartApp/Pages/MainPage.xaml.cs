@@ -40,26 +40,6 @@ namespace WindesHeartApp.Pages
         {
             var battery = await Device.GetBattery();
             Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-
-            //var connectedDevice = BluetoothService.ConnectedDevice;
-            //if (connectedDevice != null)
-            //{
-            //    try
-            //    {
-            //        var rawBattery = await BatteryService.GetRawBatteryData();
-            //        var battery = await BatteryService.GetCurrentBatteryData();
-            //        Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-            //        Console.WriteLine("Batterystatus: " + battery.Status);
-            //    }
-            //    catch (BatteryException exception)
-            //    {
-            //        Console.WriteLine(exception);
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine("There is no connected device.");
-            //}
         }
 
         private async void SetTime(object sender, EventArgs e)
