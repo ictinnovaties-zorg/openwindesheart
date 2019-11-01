@@ -10,7 +10,7 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
-        WDevice Device = null;
+        BLEDevice Device = null;
         public MainPage()
         {
             InitializeComponent();
@@ -18,7 +18,7 @@ namespace WindesHeartApp.Pages
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            List<WDevice> devices = await Windesheart.ScanForDevices();
+            List<BLEDevice> devices = await Windesheart.ScanForDevices();
             if (devices.Count > 0)
             {
                 Device = devices[0];

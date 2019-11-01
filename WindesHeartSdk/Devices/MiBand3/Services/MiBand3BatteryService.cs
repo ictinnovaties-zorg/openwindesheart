@@ -9,12 +9,12 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
 {
     public class MiBand3BatteryService
     {
-        private WDevice WDevice;
+        private readonly BLEDevice BLEDevice;
         public static IDisposable batteryDisposable;
 
-        public MiBand3BatteryService(WDevice wDevice)
+        public MiBand3BatteryService(BLEDevice device)
         {
-            WDevice = wDevice;
+            BLEDevice = device;
         }
         /// <summary>
         /// Get Raw Battery data.
@@ -94,7 +94,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         public void EnableBatteryStatusUpdates(Action<Battery> callback)
         {
             batteryDisposable?.Dispose();
-            batteryDisposable = WDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
+            batteryDisposable = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
                 x => callback(CreateBatteryObject(x.Characteristic.Value))
             );
         }
@@ -105,7 +105,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <returns>IGattCharacteristic</returns>
         private IGattCharacteristic GetBatteryCharacteristic()
         {
-            return WDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
+            return BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
         }
     }
 }

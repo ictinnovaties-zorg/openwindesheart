@@ -6,7 +6,7 @@ using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK
 {
-    public abstract class WDevice
+    public abstract class BLEDevice
     {
         public int Rssi;
         public readonly IDevice Device;
@@ -15,7 +15,7 @@ namespace WindesHeartSDK
         //Services
         public readonly BluetoothService BluetoothService;
 
-        public WDevice(int rssi, IDevice device)
+        public BLEDevice(int rssi, IDevice device)
         {
             this.Rssi = rssi;
             this.Device = device;

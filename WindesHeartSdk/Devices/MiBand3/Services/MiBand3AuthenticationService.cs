@@ -11,12 +11,12 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
     public class MiBand3AuthenticationService
     {
         private static IGattCharacteristic authCharacteristic;
-        private readonly WDevice WDevice;
+        private readonly BLEDevice BLEDevice;
 
 
-        public MiBand3AuthenticationService(WDevice wDevice)
+        public MiBand3AuthenticationService(BLEDevice device)
         {
-            WDevice = wDevice;
+            BLEDevice = device;
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <exception cref="ConnectionException">Throws exception if authentication went wrong.</exception>
         public async Task Authenticate()
         {
-            authCharacteristic = WDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
+            authCharacteristic = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
             if (authCharacteristic != null)
             {
 

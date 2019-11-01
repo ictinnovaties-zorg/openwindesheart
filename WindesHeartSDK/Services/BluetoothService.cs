@@ -11,15 +11,15 @@ namespace WindesHeartSDK
     public class BluetoothService
     {
         //Globals
-        public WDevice WDevice;
-        private IDevice Device => WDevice.Device;
+        private readonly BLEDevice BLEDevice;
+        private IDevice IDevice => BLEDevice.Device;
 
         private static ConnectionStatus ConnectionStatus;
 
 
-        public BluetoothService(WDevice wDevice)
+        public BluetoothService(BLEDevice device)
         {
-            WDevice = wDevice;
+            BLEDevice = device;
         }
 
         /// <summary>
@@ -28,9 +28,9 @@ namespace WindesHeartSDK
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="scanTimeInSeconds"></param>
         /// <returns>List of IScanResult</returns>
-        public static async Task<List<WDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
+        public static async Task<List<BLEDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
         {
-            var scanResults = new List<WDevice>();
+            var scanResults = new List<BLEDevice>();
             var uniqueGuids = new List<Guid>();
 
             //Start scanning when adapter is powered on.
@@ -43,7 +43,7 @@ namespace WindesHeartSDK
                     if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && !uniqueGuids.Contains(scanResult.Device.Uuid))
                     {
                         //Set device
-                        WDevice device = GetDevice(scanResult);
+                        BLEDevice device = GetDevice(scanResult);
                         if (device != null)
                         {
                             scanResults.Add(device);
@@ -84,7 +84,7 @@ namespace WindesHeartSDK
             StartListeningForConnectionChanges();
 
             //Connect
-            Device.Connect(new ConnectionConfig
+            IDevice.Connect(new ConnectionConfig
             {
                 AutoConnect = false,
                 AndroidConnectionPriority = ConnectionPriority.High
@@ -100,7 +100,7 @@ namespace WindesHeartSDK
         {
             //Cancel the connection
             Console.WriteLine("Trying to disconnect device...");
-            Device.CancelConnection();
+            IDevice.CancelConnection();
             return true;
         }
 
@@ -109,7 +109,7 @@ namespace WindesHeartSDK
         /// </summary>
         private void StartListeningForConnectionChanges()
         {
-            Device.WhenStatusChanged().Subscribe(status =>
+            IDevice.WhenStatusChanged().Subscribe(status =>
             {
                 if (ConnectionStatus != status)
                 {
@@ -122,7 +122,7 @@ namespace WindesHeartSDK
         /// <summary>
         /// Returns the right WDevice based on the ScanResult
         /// </summary>
-        private static WDevice GetDevice(IScanResult result)
+        private static BLEDevice GetDevice(IScanResult result)
         {
             Console.WriteLine(result.Device.Name);
             var name = result.Device.Name;

@@ -7,7 +7,7 @@ using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK.Devices.MiBand3.Models
 {
-    public class MiBand3 : WDevice
+    public class MiBand3 : BLEDevice
     {
         //MiBand 3 Services
         private readonly MiBand3BatteryService BatteryService;
@@ -53,15 +53,13 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
         public override void OnConnect()
         {
-            Console.WriteLine("DEVICE CONNECTED!!!!!!!!!!");
+            Console.WriteLine("Device Connected!");
 
             //Find unique characteristics
             Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
             {
                 if (!Characteristics.Contains(characteristic))
                 {
-                    Console.WriteLine("Characteric found!");
-
                     Characteristics.Add(characteristic);
 
                     //Check if authCharacteristic has been found, then authenticate
