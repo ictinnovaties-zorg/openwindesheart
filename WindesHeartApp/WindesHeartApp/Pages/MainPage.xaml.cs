@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -65,15 +66,15 @@ namespace WindesHeartApp.Pages
             Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
         }
 
-        private void HeartrateCallback(Heartrate heartrate)
+        private void GetHeartrate(Heartrate heartrate)
         {
             Console.WriteLine(heartrate.HeartrateValue);
         }
 
         public void GetHeartRate(object sender, EventArgs e)
         {
-            MiBand3HeartrateService.SetMeasurementInterval(1);
-            MiBand3HeartrateService.EnableHeartrateUpdates(HeartrateCallback);
+            Device.SetMeasurementInterval(1);
+            Device.EnableRealTimeHeartrate(GetHeartrate);
         }
     }
 }

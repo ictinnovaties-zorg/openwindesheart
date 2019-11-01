@@ -2,26 +2,39 @@
 using System;
 using System.Reactive.Linq;
 using WindesHeartSDK.Devices.MiBand3.Resources;
-using WindesHeartSDK.Helpers;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK.Devices.MiBand3.Services
 {
     public class MiBand3HeartrateService
     {
-        public static IDisposable heartrateDisposable;
+        private readonly BLEDevice BLEDevice;
+        public IDisposable heartrateDisposable;
 
-        public static void EnableHeartrateUpdates(Action<Heartrate> callback)
+        public MiBand3HeartrateService(BLEDevice device)
+        {
+            BLEDevice = device;
+        }
+
+        /// <summary>
+        /// Add a callback to run everytime the user manually measures their heartrate
+        /// </summary>
+        /// <param name="callback"></param>
+        public void EnableHeartrateUpdates(Action<Heartrate> callback)
         {
             heartrateDisposable?.Dispose();
-            heartrateDisposable = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrate).RegisterAndNotify().Subscribe(
+            heartrateDisposable = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrate).RegisterAndNotify().Subscribe(
                 x => callback(new Heartrate(x.Characteristic.Value))
             );
         }
 
-        public static void SetMeasurementInterval(int minutes)
+        /// <summary>
+        /// Set the interval for automatic heartrate measurements
+        /// </summary>
+        /// <param name="minutes"></param>
+        public void SetMeasurementInterval(int minutes)
         {
-            var Char = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrateControl);
+            var Char = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrateControl);
             Char.Write(new byte[] { 0x14, (byte)minutes });
         }
     }
