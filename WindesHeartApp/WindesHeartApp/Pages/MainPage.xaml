@@ -9,7 +9,7 @@
             <Button Clicked="ReadCurrentBattery" Text="Read current battery" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Button Clicked="SetTime" Text="Set current time" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Button Clicked="Disconnect" Text="Disconnecten" HorizontalOptions="Center" VerticalOptions="End"/>
-            <Button Clicked="GetHeartRate" Text="HR" HorizontalOptions="Center" VerticalOptions="End"/>
+            <Button Clicked="GetHeartRate" Text="Read Heartrate Continuous" HorizontalOptions="Center" VerticalOptions="End"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

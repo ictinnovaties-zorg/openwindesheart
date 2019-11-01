@@ -84,25 +84,22 @@ namespace WindesHeartApp.Pages
         private void SetTime(object sender, EventArgs e)
         {
             DateTimeService.SetTime(DateTime.Now);
-            MiBand3HeartrateService.SetMeasurementInterval(1);
-            MiBand3HeartrateService.EnableHeartrateUpdates(HeartrateCallback);
         }
 
         private void GetBatteryStatus(Battery battery)
         {
             Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
-
         }
 
         private void HeartrateCallback(Heartrate heartrate)
         {
             Console.WriteLine(heartrate.rawdata);
-            Console.WriteLine("Hi");
         }
 
         public void GetHeartRate(object sender, EventArgs e)
         {
-            MiBand3HeartrateService.GetHeartrate();
+            MiBand3HeartrateService.SetMeasurementInterval(1);
+            MiBand3HeartrateService.EnableHeartrateUpdates(HeartrateCallback);
         }
     }
 }
