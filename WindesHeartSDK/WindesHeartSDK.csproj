@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Exceptions\" />
     <Folder Include="Helpers\" />
     <Folder Include="Devices\MiBand3\Helpers\" />
     <Folder Include="Devices\MiBand3\Resources\" />

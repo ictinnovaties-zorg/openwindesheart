@@ -1,7 +1,5 @@
 ﻿using System;
 using WindesHeartSDK;
-using WindesHeartSDK.Devices.MiBand3.Services;
-using WindesHeartSDK.Exceptions;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,6 +9,7 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
+        BLEDevice Device = null;
         public MainPage()
         {
             InitializeComponent();
@@ -18,72 +17,47 @@ namespace WindesHeartApp.Pages
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            await BluetoothService.ScanForUniqueDevicesAsync();
-            if (BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
+            List<BLEDevice> devices = await Windesheart.ScanForDevices();
+            if (devices.Count > 0)
             {
-                BluetoothService.ConnectDevice(BluetoothService.ScanResults[0].Device);
-            }
-        }
-
-        private async void Connect(object sender, EventArgs e)
-        {
-            if (BluetoothService.ScanResults.Count > 0 && BluetoothService.ScanResults[0] != null)
-            {
-                BluetoothService.ConnectDevice(BluetoothService.ScanResults[0].Device);
+                Device = devices[0];
+                Device.Connect();
             }
         }
 
         private async void Disconnect(object sender, EventArgs e)
         {
-            BluetoothService.DisconnectDevice(BluetoothService.ConnectedDevice);
+            Device.Disconnect();
         }
 
         private async void ReadCurrentBattery(object sender, EventArgs e)
         {
-            var connectedDevice = BluetoothService.ConnectedDevice;
-            if (connectedDevice != null)
-            {
-                try
-                {
-                    var rawBattery = await BatteryService.GetRawBatteryDataAsync();
-                    var battery = await BatteryService.GetCurrentBatteryDataAsync();
-                    Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-                    Console.WriteLine("Batterystatus: " + battery.Status);
-                }
-                catch (BatteryException exception)
-                {
-                    Console.WriteLine(exception);
-                }
-            }
-            else
-            {
-                Console.WriteLine("There is no connected device.");
-            }
+            var battery = await Device.GetBattery();
+            Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+        }
+
+        private async void SetTime(object sender, EventArgs e)
+        {
+            bool timeset = await Device.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
+            Console.WriteLine("Time set " + timeset);
+        }
+
+        private async void SetCurrentTime(object sender, EventArgs e)
+        {
+            bool timeset = await Device.SetTime(DateTime.Now);
+            Console.WriteLine("Time set " + timeset);
+        }
+
+        private async void GetCurrentBattery()
+        {
+            var battery = await Device.GetBattery();
+            Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+            Console.WriteLine("Batterystatus: " + battery.Status);
         }
 
         private async void ReadBatteryContinuous(object sender, EventArgs e)
         {
-            var connectedDevice = BluetoothService.ConnectedDevice;
-            if (connectedDevice != null)
-            {
-                try
-                {
-                    BatteryService.EnableBatteryStatusUpdates(GetBatteryStatus);
-                }
-                catch (BatteryException exception)
-                {
-                    Console.WriteLine(exception);
-                }
-            }
-            else
-            {
-                Console.WriteLine("There is no connected device.");
-            }
-        }
-
-        private void SetTime(object sender, EventArgs e)
-        {
-            DateTimeService.SetTime(DateTime.Now);
+            Device.EnableRealTimeBattery(GetBatteryStatus);
         }
 
         private void GetBatteryStatus(Battery battery)
