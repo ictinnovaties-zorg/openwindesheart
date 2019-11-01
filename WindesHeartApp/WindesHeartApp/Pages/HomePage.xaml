@@ -4,17 +4,8 @@
              x:Class="WindesHeartApp.Pages.HomePage">
 
     <ContentPage.Content>
-        <AbsoluteLayout x:Name="AbsoluteLayout" >
-            <Grid>
-                <Image Grid.Column="0" x:Name="HeartImage" Source="HeartOnlyTransparent.png"></Image>
-                <Image Grid.Column="0" x:Name="TextImage" Source="TextOnlyTransparent.png"></Image>
-
-            </Grid>
-           
-
-            <Button Text="Test" x:Name="TestButton" BorderColor="White" BorderWidth="1"/>
-
-
+        <AbsoluteLayout x:Name="layout">
+       
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,5 +1,4 @@
 ﻿using WindesHeartApp.Pages;
-using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using Xamarin.Forms;
 
