@@ -6,11 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Devices\" />
-    <Folder Include="Devices\MiBand3\" />
-    <Folder Include="Devices\MiBand3\Services\" />
     <Folder Include="Devices\MiBand3\Helpers\" />
     <Folder Include="Devices\MiBand3\Resources\" />
   </ItemGroup>
