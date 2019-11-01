@@ -1,15 +1,22 @@
-﻿namespace WindesHeartSDK.Models
+﻿using WindesHeartSDK.Exceptions;
+
+namespace WindesHeartSDK.Models
 {
     public class Heartrate
     {
-        public byte[] rawdata { get; set; }
+        public byte[] Rawdata { get; set; }
 
-        public int heartrate { get; set; }
+        public int HeartrateValue { get; set; }
 
         public Heartrate(byte[] rawdata)
         {
-            this.rawdata = rawdata;
-            heartrate = rawdata[0];
+            if (rawdata[0] != 0)
+            {
+                throw new ReadException("Error while reading raw heartrate data");
+            }
+
+            Rawdata = rawdata;
+            HeartrateValue = rawdata[1];
         }
     }
 }

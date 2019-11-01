@@ -93,7 +93,7 @@ namespace WindesHeartApp.Pages
 
         private void HeartrateCallback(Heartrate heartrate)
         {
-            Console.WriteLine(heartrate.rawdata);
+            Console.WriteLine(heartrate.HeartrateValue);
         }
 
         public void GetHeartRate(object sender, EventArgs e)

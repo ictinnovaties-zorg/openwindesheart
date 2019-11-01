@@ -14,7 +14,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         public static void EnableHeartrateUpdates(Action<Heartrate> callback)
         {
             heartrateDisposable?.Dispose();
-            heartrateDisposable = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrateControl).RegisterAndNotify().Subscribe(
+            heartrateDisposable = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrate).RegisterAndNotify().Subscribe(
                 x => callback(new Heartrate(x.Characteristic.Value))
             );
         }

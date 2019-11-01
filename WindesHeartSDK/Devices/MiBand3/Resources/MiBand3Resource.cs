@@ -26,7 +26,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
         //Heartrate Control Point Guid
         public static Guid GuidCharacteristicHeartrateControl = new Guid("00002A39-0000-1000-8000-00805f9b34fb");
 
+        //Heartrate Realtime Guid
         public static Guid GuidCharacteristicHeartrate = new Guid("00002A37-0000-1000-8000-00805f9b34fb");
-        public static Guid GuidCharacteristicHeartrate2 = new Guid("0000180d-0000-1000-8000-00805f9b34fb");
     }
 }
