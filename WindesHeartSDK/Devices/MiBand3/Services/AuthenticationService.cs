@@ -21,15 +21,15 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <exception cref="ConnectionException">Throws exception if authentication went wrong.</exception>
         public static async Task AuthenticateDeviceAsync(IDevice device)
         {
+            if(BluetoothService.ConnectedDevice != null)
+            {
+                Console.WriteLine("Device has been re-connected, authentication has been skipped to not lose data.");
+                return;
+            }
+
             authCharacteristic = CharacteristicHelper.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
             if (authCharacteristic != null)
             {
-                if (BluetoothService.ConnectedDevice != null)
-                {
-                    Console.WriteLine("Connected device already");
-                    return;
-                }
-
                 //Triggers vibration on Mi Band 3
                 await TriggerAuthenticationAsync();
 

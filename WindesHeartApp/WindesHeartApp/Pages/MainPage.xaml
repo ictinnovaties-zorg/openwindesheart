@@ -8,6 +8,7 @@
             <Button Clicked="ReadBatteryContinuous" Text="Read battery Continuous" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Button Clicked="ReadCurrentBattery" Text="Read current battery" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Button Clicked="SetTime" Text="Set current time" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Label x:Name="result" HorizontalTextAlignment="center" Margin="0,20"></Label>
             <Button Clicked="Disconnect" Text="Disconnecten" HorizontalOptions="Center" VerticalOptions="End"/>
         </StackLayout>
     </ContentPage.Content>

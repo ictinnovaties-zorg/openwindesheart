@@ -75,7 +75,7 @@ namespace WindesHeartSDK
         /// </summary>
         /// <param name="device"></param>
         /// <exception cref="NullReferenceException">Throws exception if device is null.</exception>
-        public static void ConnectDevice(IDevice device)
+        public static void ConnectDevice(IDevice device, bool persistentConnection = true)
         {
             if (device != null)
             {
@@ -92,16 +92,18 @@ namespace WindesHeartSDK
                 //Connect
                 device.Connect(new ConnectionConfig
                 {
-                    AutoConnect = false,
+                    AutoConnect = persistentConnection,
                     AndroidConnectionPriority = ConnectionPriority.High
                 });
 
                 //Check when connected to device
+                connectedDeviceDisposable?.Dispose();
                 connectedDeviceDisposable = device.WhenConnected().Subscribe(connectedDevice =>
                 {
                     Characteristics.Clear();
 
                     //Find unique characteristics
+                    characteristicsDisposable?.Dispose();
                     characteristicsDisposable = device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
                     {
                         if (!Characteristics.Contains(characteristic))
@@ -138,6 +140,7 @@ namespace WindesHeartSDK
                 device.CancelConnection();
 
                 //Clear the global variables and disposables
+                disconnectionDisposable?.Dispose();
                 disconnectionDisposable = device.WhenDisconnected().Subscribe(disconnectedDevice =>
                 {
                     ClearGlobals();

@@ -50,6 +50,7 @@ namespace WindesHeartApp.Pages
                     var battery = await BatteryService.GetCurrentBatteryDataAsync();
                     Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
                     Console.WriteLine("Batterystatus: " + battery.Status);
+                    result.Text = "batterij is: " + battery.BatteryPercentage + "%";
                 } catch(BatteryException exception)
                 {
                     Console.WriteLine(exception);
