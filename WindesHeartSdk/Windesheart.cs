@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace WindesHeartSDK
 {
-    public class Windesheart
+    public static class Windesheart
     {
         /// <summary>
         /// Scan for devices that are not yet connected.
