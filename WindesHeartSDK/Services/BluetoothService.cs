@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3.Models;
-using WindesHeartSDK.Devices.MiBand3.Services;
 
 namespace WindesHeartSDK
 {
@@ -16,12 +15,6 @@ namespace WindesHeartSDK
         private IDevice Device => WDevice.Device;
 
         private static ConnectionStatus ConnectionStatus;
-
-        //Disposables
-        public static IDisposable characteristicsDisposable;
-        public static IDisposable statusDisposable;
-        public static IDisposable connectedDeviceDisposable;
-        public static IDisposable disconnectionDisposable;
 
 
         public BluetoothService(WDevice wDevice)
@@ -81,23 +74,9 @@ namespace WindesHeartSDK
         }
 
         /// <summary>
-        /// Find all characteristics for a device and store it in the Characteristics property
-        /// </summary>
-        public async void FindAllCharacteristics()
-        {
-            characteristicsDisposable = Device.WhenAnyCharacteristicDiscovered().Subscribe(characteristic =>
-            {
-                if (!WDevice.Characteristics.Contains(characteristic))
-                {
-                    WDevice.Characteristics.Add(characteristic);
-                }
-            });
-        }
-
-        /// <summary>
         /// Connects to the device
         /// </summary>
-        public async Task<bool> Connect()
+        public void Connect()
         {
             Console.WriteLine("Connecting started...");
 
@@ -110,18 +89,6 @@ namespace WindesHeartSDK
                 AutoConnect = false,
                 AndroidConnectionPriority = ConnectionPriority.High
             });
-
-            //If any characteristic found, it's connected!
-            if (WDevice.Characteristics.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("No Characteristics found yet, trying again..");
-                await Task.Delay(5000);
-                return await Connect();
-            }
         }
 
 
@@ -134,12 +101,6 @@ namespace WindesHeartSDK
             //Cancel the connection
             Console.WriteLine("Trying to disconnect device...");
             Device.CancelConnection();
-
-            //Clear the global variables and disposables
-            disconnectionDisposable = Device.WhenDisconnected().Subscribe(disconnectedDevice =>
-            {
-                ClearGlobals();
-            });
             return true;
         }
 
@@ -148,8 +109,7 @@ namespace WindesHeartSDK
         /// </summary>
         private void StartListeningForConnectionChanges()
         {
-            statusDisposable?.Dispose();
-            statusDisposable = Device.WhenStatusChanged().Subscribe(status =>
+            Device.WhenStatusChanged().Subscribe(status =>
             {
                 if (ConnectionStatus != status)
                 {
@@ -157,30 +117,6 @@ namespace WindesHeartSDK
                     ConnectionStatus = status;
                 }
             });
-        }
-
-        /// <summary>
-        /// Disables device status logs.
-        /// </summary>
-        public static void StopListeningForConnectionChanges()
-        {
-            statusDisposable?.Dispose();
-        }
-
-        /// <summary>
-        /// Clears the global variables and disposables.
-        /// </summary>
-        private static void ClearGlobals()
-        {
-
-            //Disposables
-            MiBand3AuthenticationService.authDisposable?.Dispose();
-            characteristicsDisposable?.Dispose();
-            connectedDeviceDisposable?.Dispose();
-            statusDisposable?.Dispose();
-
-            disconnectionDisposable?.Dispose();
-
         }
 
         /// <summary>

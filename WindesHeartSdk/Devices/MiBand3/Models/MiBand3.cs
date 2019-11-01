@@ -1,6 +1,7 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Threading.Tasks;
+using WindesHeartSDK.Devices.MiBand3.Resources;
 using WindesHeartSDK.Devices.MiBand3.Services;
 using WindesHeartSDK.Models;
 
@@ -20,17 +21,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             AuthenticationService = new MiBand3AuthenticationService(this);
         }
 
-        public async override Task<bool> Connect()
+        public override void Connect()
         {
-            bool connected = await BluetoothService.Connect();
-            Console.WriteLine("Connected: " + connected);
-            if (connected)
-            {
-                //Authentication
-                await AuthenticationService.Authenticate();
-                return true;
-            }
-            return false;
+            BluetoothService.Connect();
         }
 
         public async override Task<bool> Disconnect()
@@ -56,6 +49,28 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public async override Task<bool> SetTime(DateTime dateTime)
         {
             return await DateTimeService.SetTime(dateTime);
+        }
+
+        public override void OnConnect()
+        {
+            Console.WriteLine("DEVICE CONNECTED!!!!!!!!!!");
+
+            //Find unique characteristics
+            Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
+            {
+                if (!Characteristics.Contains(characteristic))
+                {
+                    Console.WriteLine("Characteric found!");
+
+                    Characteristics.Add(characteristic);
+
+                    //Check if authCharacteristic has been found, then authenticate
+                    if (characteristic.Uuid == MiBand3Resource.GuidCharacteristicAuth)
+                    {
+                        await AuthenticationService.Authenticate();
+                    }
+                }
+            });
         }
     }
 }

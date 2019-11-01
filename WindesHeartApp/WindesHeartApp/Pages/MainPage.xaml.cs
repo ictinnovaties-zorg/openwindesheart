@@ -22,13 +22,8 @@ namespace WindesHeartApp.Pages
             if (devices.Count > 0)
             {
                 Device = devices[0];
+                Device.Connect();
             }
-        }
-
-        private async void Connect(object sender, EventArgs e)
-        {
-            bool connected = await Device.Connect();
-            Console.WriteLine("Connected:" + connected);
         }
 
         private async void Disconnect(object sender, EventArgs e)
@@ -47,7 +42,12 @@ namespace WindesHeartApp.Pages
         {
             bool timeset = await Device.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
             Console.WriteLine("Time set " + timeset);
+        }
 
+        private async void SetCurrentTime(object sender, EventArgs e)
+        {
+            bool timeset = await Device.SetTime(DateTime.Now);
+            Console.WriteLine("Time set " + timeset);
         }
 
         private async void GetCurrentBattery()

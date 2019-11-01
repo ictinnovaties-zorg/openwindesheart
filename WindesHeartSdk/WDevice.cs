@@ -20,10 +20,11 @@ namespace WindesHeartSDK
             this.Rssi = rssi;
             this.Device = device;
             BluetoothService = new BluetoothService(this);
-            BluetoothService.FindAllCharacteristics();
+            Device.WhenConnected().Subscribe(x => OnConnect());
         }
 
-        public abstract Task<bool> Connect();
+        public abstract void OnConnect();
+        public abstract void Connect();
         public abstract Task<bool> Disconnect();
         public abstract Task<bool> SetTime(System.DateTime dateTime);
         public abstract Task<bool> GetSteps();

@@ -10,9 +10,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
 {
     public class MiBand3AuthenticationService
     {
-
         private static IGattCharacteristic authCharacteristic;
-        public static IDisposable authDisposable;
         private readonly WDevice WDevice;
 
 
@@ -24,7 +22,6 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <summary>
         /// Authenticates Mi Band 3 devices
         /// </summary>
-        /// <param name="device"></param>
         /// <exception cref="NullReferenceException">Throws exception if AuthCharacteristic could not be found.</exception>
         /// <exception cref="ConnectionException">Throws exception if authentication went wrong.</exception>
         public async Task Authenticate()
@@ -34,10 +31,10 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             {
 
                 //Triggers vibration on Mi Band 3
-                await TriggerAuthenticationAsync();
+                await TriggerAuthentication();
 
                 //Fired when Mi Band 3 is tapped
-                authDisposable = authCharacteristic.RegisterAndNotify().Subscribe(async result =>
+                authCharacteristic.RegisterAndNotify().Subscribe(async result =>
                 {
                     var data = result.Data;
                     if (data == null)
@@ -51,11 +48,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                     {
                         if (data[1] == MiBand3Resource.AuthSendKey)
                         {
-                            await RequestAuthorizationNumberAsync();
+                            await RequestAuthorizationNumber();
                         }
                         else if (data[1] == MiBand3Resource.AuthRequestRandomAuthNumber)
                         {
-                            await RequestRandomEncryptionKeyAsync(data);
+                            await RequestRandomEncryptionKey(data);
                         }
                         else if (data[1] == MiBand3Resource.AuthSendEncryptedAuthNumber)
                         {
@@ -80,20 +77,20 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             }
         }
 
-        private async Task TriggerAuthenticationAsync()
+        private async Task TriggerAuthentication()
         {
             Console.WriteLine("Authenticating...");
             Console.WriteLine("Writing authentication-key..");
             await authCharacteristic.WriteWithoutResponse(MiBand3Resource.AuthKey);
         }
 
-        private async Task RequestAuthorizationNumberAsync()
+        private async Task RequestAuthorizationNumber()
         {
             Console.WriteLine("1.Requesting Authorization-number");
             await authCharacteristic.WriteWithoutResponse(MiBand3Resource.RequestNumber);
         }
 
-        private async Task RequestRandomEncryptionKeyAsync(byte[] data)
+        private async Task RequestRandomEncryptionKey(byte[] data)
         {
             Console.WriteLine("2.Requesting random encryption key");
             await authCharacteristic.WriteWithoutResponse(MiBand3ConversionHelper.CreateKey(data));
