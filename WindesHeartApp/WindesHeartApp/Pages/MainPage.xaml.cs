@@ -65,5 +65,16 @@ namespace WindesHeartApp.Pages
         {
             Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
         }
+
+        private void GetHeartrate(Heartrate heartrate)
+        {
+            Console.WriteLine(heartrate.HeartrateValue);
+        }
+
+        public void GetHeartRate(object sender, EventArgs e)
+        {
+            Device.SetHeartrateMeasurementInterval(1);
+            Device.EnableRealTimeHeartrate(GetHeartrate);
+        }
     }
 }

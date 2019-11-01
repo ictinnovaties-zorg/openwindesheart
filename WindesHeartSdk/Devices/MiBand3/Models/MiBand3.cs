@@ -11,12 +11,14 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
     {
         //MiBand 3 Services
         private readonly MiBand3BatteryService BatteryService;
+        private readonly MiBand3HeartrateService HeartrateService;
         private readonly MiBand3DateTimeService DateTimeService;
         private readonly MiBand3AuthenticationService AuthenticationService;
 
         public MiBand3(int rssi, IDevice device) : base(rssi, device)
         {
             BatteryService = new MiBand3BatteryService(this);
+            HeartrateService = new MiBand3HeartrateService(this);
             DateTimeService = new MiBand3DateTimeService(this);
             AuthenticationService = new MiBand3AuthenticationService(this);
         }
@@ -39,6 +41,16 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public override Task<Battery> GetBattery()
         {
             return BatteryService.GetCurrentBatteryData();
+        }
+
+        public override void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate)
+        {
+            HeartrateService.EnableHeartrateUpdates(getHeartrate);
+        }
+
+        public override void SetHeartrateMeasurementInterval(int minutes)
+        {
+            HeartrateService.SetMeasurementInterval(minutes);
         }
 
         public override Task<bool> GetSteps()
