@@ -10,6 +10,7 @@ namespace WindesHeartSDK
     {
         public int Rssi;
         public readonly IDevice Device;
+        public bool Authenticated;
         public List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
 
         //Services

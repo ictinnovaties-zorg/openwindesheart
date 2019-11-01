@@ -73,9 +73,6 @@ namespace WindesHeartSDK
             return scanResults;
         }
 
-        /// <summary>
-        /// Connects to the device
-        /// </summary>
         public void Connect()
         {
             Console.WriteLine("Connecting started...");
@@ -86,20 +83,20 @@ namespace WindesHeartSDK
             //Connect
             IDevice.Connect(new ConnectionConfig
             {
-                AutoConnect = false,
+                AutoConnect = true,
                 AndroidConnectionPriority = ConnectionPriority.High
             });
         }
-
 
 
         /// <summary>
         /// Disconnect current device.
         /// </summary>
         public async void Disconnect()
-        {
+        {               
             //Cancel the connection
             Console.WriteLine("Trying to disconnect device...");
+            BLEDevice.Authenticated = false;
             IDevice.CancelConnection();
         }
 

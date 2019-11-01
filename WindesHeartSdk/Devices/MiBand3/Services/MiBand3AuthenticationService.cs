@@ -29,7 +29,6 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             authCharacteristic = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
             if (authCharacteristic != null)
             {
-
                 //Triggers vibration on Mi Band 3
                 await TriggerAuthentication();
 
@@ -39,8 +38,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                     var data = result.Data;
                     if (data == null)
                     {
-                        Console.WriteLine("No usable data found in device-response.");
-                        return;
+                        throw new NullReferenceException("No data found in authentication-result.");
                     }
 
                     //Check if response is valid
@@ -62,8 +60,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                     }
                     else
                     {
-                        Console.WriteLine("AuthResponse or AuthSuccess not correct");
-                        return;
+                        throw new ConnectionException("Authentication failed!");
                     }
                 },
                 exception =>

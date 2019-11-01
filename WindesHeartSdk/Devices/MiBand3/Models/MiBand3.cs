@@ -77,7 +77,12 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
                     //Check if authCharacteristic has been found, then authenticate
                     if (characteristic.Uuid == MiBand3Resource.GuidCharacteristicAuth)
                     {
-                        await AuthenticationService.Authenticate();
+                        //Check if this is a new connection that needs authentication
+                        if(!Authenticated)
+                        {
+                            await AuthenticationService.Authenticate();
+                            Authenticated = true;
+                        }
                     }
                 }
             });
