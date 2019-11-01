@@ -28,8 +28,7 @@ namespace WindesHeartApp.Pages
 
         private async void Disconnect(object sender, EventArgs e)
         {
-            bool disconnected = await Device.Disconnect();
-            Console.WriteLine("Disconnected:" + disconnected);
+            Device.Disconnect();
         }
 
         private async void ReadCurrentBattery(object sender, EventArgs e)

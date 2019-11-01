@@ -26,9 +26,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             BluetoothService.Connect();
         }
 
-        public async override Task<bool> Disconnect()
+        public async override void Disconnect()
         {
-            return await BluetoothService.Disconnect();
+            BluetoothService.Disconnect();
         }
 
         public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)

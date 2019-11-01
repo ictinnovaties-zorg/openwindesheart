@@ -96,12 +96,11 @@ namespace WindesHeartSDK
         /// <summary>
         /// Disconnect current device.
         /// </summary>
-        public async Task<bool> Disconnect()
+        public async void Disconnect()
         {
             //Cancel the connection
             Console.WriteLine("Trying to disconnect device...");
             IDevice.CancelConnection();
-            return true;
         }
 
         /// <summary>
