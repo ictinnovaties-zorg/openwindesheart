@@ -73,7 +73,7 @@ namespace WindesHeartApp.Pages
 
         public void GetHeartRate(object sender, EventArgs e)
         {
-            Device.SetMeasurementInterval(1);
+            Device.SetHeartrateMeasurementInterval(1);
             Device.EnableRealTimeHeartrate(GetHeartrate);
         }
     }

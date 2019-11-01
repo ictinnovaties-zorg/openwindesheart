@@ -48,7 +48,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             HeartrateService.EnableHeartrateUpdates(getHeartrate);
         }
 
-        public override void SetMeasurementInterval(int minutes)
+        public override void SetHeartrateMeasurementInterval(int minutes)
         {
             HeartrateService.SetMeasurementInterval(minutes);
         }

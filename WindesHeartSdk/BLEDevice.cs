@@ -43,6 +43,6 @@ namespace WindesHeartSDK
         public abstract void EnableRealTimeBattery(Action<Battery> getBatteryStatus);
         public abstract void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate);
 
-        public abstract void SetMeasurementInterval(int minutes);
+        public abstract void SetHeartrateMeasurementInterval(int minutes);
     }
 }
