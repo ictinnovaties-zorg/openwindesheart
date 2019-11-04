@@ -7,6 +7,8 @@ namespace WindesHeartApp.Resources
         public static double screenHeight { get; set; }
         public static double screenWidth { get; set; }
         public static Color primaryColor { get; set; }
+        public static Color headerColor { get; set; }
+        public static Color lighttextColor { get; set; }
         public static double buttonSize { get; set; }
         public static double screenratioFactor { get; set; }
         public static double buttonfontSize { get; set; }
@@ -21,6 +23,8 @@ namespace WindesHeartApp.Resources
             buttonSize = 20;
             buttonfontSize = 4;
             primaryColor = Color.FromHex("#96d1ff");
+            headerColor = Color.FromHex("#234A97");
+            lighttextColor = Color.FromHex("#999999");
             cornerRadius = ((screenHeight / 10 * 1) - buttonSize);
             screenratioFactor = screenHeight / screenWidth;
         }

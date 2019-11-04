@@ -4,8 +4,6 @@
              x:Class="WindesHeartApp.Pages.HomePage">
 
     <ContentPage.Content>
-        <AbsoluteLayout x:Name="layout">
-        </AbsoluteLayout>
-
+        <AbsoluteLayout x:Name="layout"/>
     </ContentPage.Content>
 </ContentPage>

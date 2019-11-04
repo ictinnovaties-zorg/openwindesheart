@@ -6,71 +6,8 @@
              xmlns:s="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              x:Class="WindesHeartApp.Pages.AboutPage">
-    
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Color x:Key="Primary">#96d1ff</Color>
-            <Color x:Key="LightTextColor">#999999</Color>
-        </ResourceDictionary>
-        
-    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <AbsoluteLayout x:Name="layout" BackgroundColor="{StaticResource Primary}">
-           
-            <Image Source="WindesHeartTransparent.png" BackgroundColor="{StaticResource Primary}">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer 
-                        Tapped="Logo_Clicked"
-                        NumberOfTapsRequired="1"/>
-                </Image.GestureRecognizers>
-            </Image>
-            
-            <Label TranslationY="-50" Margin="10" Text="About" HorizontalTextAlignment="Start"  FontSize="Title" ></Label>
-
-            <Label Text="{x:Static s:Environment.NewLine}"></Label>
-            <Label Text="{x:Static s:Environment.NewLine}"></Label>
-
-            <Label FontSize="20" HorizontalTextAlignment="Center">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <FormattedString.Spans>
-                            <Span Text="This app is written by Windesheim Students." />
-                        </FormattedString.Spans>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            
-            <Label FontSize="20" HorizontalTextAlignment="Center">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <FormattedString.Spans>
-                            <Span Text="}It's "/>
-                            <Span Text="main purpose " FontAttributes="Bold" FontSize="20"/>
-                            <Span Text="is to "/>
-                            <Span Text="demo " FontAttributes="Bold" FontSize="20"/>
-                            <Span Text="the "/>
-                            <Span Text="WindesHeartSDK" FontAttributes="Bold" FontSize="20"/>
-                        </FormattedString.Spans>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            
-            <Label Text="{x:Static s:Environment.NewLine}"></Label>
-            <Label Text="{x:Static s:Environment.NewLine}"></Label>
-
-            <Button Clicked="LearnMore_Clicked" Margin="20" CornerRadius="20"  BorderWidth="1" BorderColor="Black" Text="Learn More" BackgroundColor="{StaticResource Primary}"/>
-            <Label Text="{x:Static s:Environment.NewLine}"></Label>
-            
-                <Label Margin="20" FontSize="15" HorizontalTextAlignment="End">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="Version" FontAttributes="Bold" FontSize="15" />
-                                <Span Text="2.0" ForegroundColor="{StaticResource LightTextColor}" />
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-        </AbsoluteLayout>
+        <AbsoluteLayout x:Name="layout"/>
     </ContentPage.Content>
 </ContentPage>
