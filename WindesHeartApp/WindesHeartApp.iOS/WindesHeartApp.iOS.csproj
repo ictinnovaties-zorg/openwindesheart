@@ -158,4 +158,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\TextOnlyTransparent.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\GoBack.png" />
+  </ItemGroup>
 </Project>

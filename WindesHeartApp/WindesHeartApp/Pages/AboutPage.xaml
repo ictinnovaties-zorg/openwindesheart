@@ -15,7 +15,7 @@
         
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource Primary}">
+        <AbsoluteLayout x:Name="layout" BackgroundColor="{StaticResource Primary}">
            
             <Image Source="WindesHeartTransparent.png" BackgroundColor="{StaticResource Primary}">
                 <Image.GestureRecognizers>
@@ -71,6 +71,6 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-        </StackLayout>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

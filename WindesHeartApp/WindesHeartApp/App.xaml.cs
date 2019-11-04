@@ -1,4 +1,5 @@
 ﻿using WindesHeartApp.Pages;
+using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using Xamarin.Forms;
 
@@ -11,7 +12,8 @@ namespace WindesHeartApp
         {
             InitializeComponent();
             DependencyService.Register<MockDataStore>();
-            MainPage = new HomePage();
+            MainPage = new NavigationPage(new HomePage());
+
         }
 
         protected override void OnStart()

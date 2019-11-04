@@ -5,7 +5,7 @@
 
     <ContentPage.Content>
         <AbsoluteLayout x:Name="layout">
-       
         </AbsoluteLayout>
+
     </ContentPage.Content>
 </ContentPage>
