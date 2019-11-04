@@ -37,20 +37,19 @@ namespace WindesHeartApp.Pages
             grid.Children.Add(windesheartImage);
 
 
+
             //            <Label TranslationY="-50" Margin="10" Text="About" HorizontalTextAlignment="Start"  FontSize="Title" ></Label>
 
             Label aboutLabel = new Label
             {
                 Text = "About",
-                VerticalOptions = LayoutOptions.Start,
                 TextColor = Globals.lighttextColor,
                 HorizontalOptions = LayoutOptions.Start,
-                FontSize = Globals.screenHeight / 100 * 3.0,
-                LineBreakMode = LineBreakMode.WordWrap
+                FontSize = Globals.screenHeight / 100 * 3,
             };
             Grid box = new Grid();
             box.Margin = new Thickness(10, 0, 10, 0);
-            AbsoluteLayout.SetLayoutBounds(box, new Rectangle(0, (Globals.screenHeight / 100 * 35) - Globals.screenHeight / 100 * 5, Globals.screenWidth, Globals.screenHeight / 10));
+            AbsoluteLayout.SetLayoutBounds(box, new Rectangle(0, (Globals.screenHeight / 100 * 35) - Globals.screenHeight / 100 * 5, Globals.screenWidth, Globals.screenHeight / 100 * 3.5));
             box.Children.Add(aboutLabel);
             //layout.Children.Add(aboutLabel);
             //ImageButton returnButton = new ImageButton();
@@ -60,8 +59,28 @@ namespace WindesHeartApp.Pages
             //returnButton.Clicked += returnButton_Clicked;
             //returnButton.WidthRequest = Globals.screenHeight / 10;
             //returnButton.HeightRequest = Globals.screenHeight / 10;
-            //layout.Children.Add(returnButton);
+            //layout.Children.Add(returnButton);\
+
+
+
+
+            Grid grid1 = new Grid();
+            grid1.BackgroundColor = Color.Transparent;
+            grid1.Margin = new Thickness(25, 0, 25, 0);
+            AbsoluteLayout.SetLayoutFlags(grid1, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(grid1, new Rectangle(0, 0.5, Globals.screenWidth, Globals.screenHeight / 100 * 2.5));
+
+            Label writtenLabel = new Label
+            {
+                Text = "This app is written by Windesheim Students",
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                LineBreakMode = LineBreakMode.WordWrap
+            };
+            grid1.Children.Add(writtenLabel);
+
             layout.Children.Add(box);
+            layout.Children.Add(grid1);
         }
 
         private void returnButton_Clicked(object sender, EventArgs e)
