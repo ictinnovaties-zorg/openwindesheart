@@ -10,9 +10,9 @@ namespace WindesHeartApp
         public App()
         {
             InitializeComponent();
-
             DependencyService.Register<MockDataStore>();
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new HomePage());
+
         }
 
         protected override void OnStart()
