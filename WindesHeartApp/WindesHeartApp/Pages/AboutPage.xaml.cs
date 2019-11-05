@@ -48,7 +48,7 @@ namespace WindesHeartApp.Pages
                 FontSize = Globals.screenHeight / 100 * 3,
             };
             AbsoluteLayout.SetLayoutFlags(aboutLabel, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(aboutLabel, new Rectangle(Globals.screenWidth / 15, 0.28, Globals.screenWidth, Globals.screenHeight / 100 * 3.5));
+            AbsoluteLayout.SetLayoutBounds(aboutLabel, new Rectangle(0.05, 0.28, -1, -1));
             absoluteLayout.Children.Add(aboutLabel);
 
             Grid grid1 = new Grid();
@@ -108,7 +108,7 @@ namespace WindesHeartApp.Pages
             learnmoreButton.BackgroundColor = Globals.secondaryColor;
             learnmoreButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
             learnmoreButton.FontSize = Globals.screenHeight / 100 * 2;
-            AbsoluteLayout.SetLayoutBounds(learnmoreButton, new Rectangle(0.5, 0.80, Globals.screenHeight / 100 * 40, Globals.screenHeight / 100 * 7));
+            AbsoluteLayout.SetLayoutBounds(learnmoreButton, new Rectangle(0.5, 0.85, Globals.screenHeight / 100 * 40, Globals.screenHeight / 100 * 7));
             AbsoluteLayout.SetLayoutFlags(learnmoreButton, AbsoluteLayoutFlags.PositionProportional);
             learnmoreButton.Clicked += learnmoreButton_Clicked;
             absoluteLayout.Children.Add(learnmoreButton);
