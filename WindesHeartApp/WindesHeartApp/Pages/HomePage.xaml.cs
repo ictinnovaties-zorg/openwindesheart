@@ -26,7 +26,8 @@ namespace WindesHeartApp.Pages
             NavigationPage.SetHasNavigationBar(this, false);
 
             grid = new Grid();
-            grid.BackgroundColor = Globals.primaryColor;
+            grid.BackgroundColor = Color.DeepPink;
+
 
             layout.Children.Add(grid);
 
@@ -94,7 +95,6 @@ namespace WindesHeartApp.Pages
 
             var buttonStyle = new Style(typeof(Button))
             {
-                //BUTTON SIZE GLOBALS GAAN FOUT
                 Setters =
                 {
                     new Setter
