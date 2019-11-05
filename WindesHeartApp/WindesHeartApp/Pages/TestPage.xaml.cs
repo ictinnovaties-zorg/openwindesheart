@@ -15,7 +15,6 @@ namespace WindesHeartApp.Pages
         public TestPage()
         {
             InitializeComponent();
-
         }
 
         protected override void OnAppearing()

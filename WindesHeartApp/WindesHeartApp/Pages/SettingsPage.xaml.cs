@@ -121,7 +121,7 @@ namespace WindesHeartApp.Pages
                         else
                         {
                             _tempsecondaryColor = secondaryPicker.Items[secondaryPicker.SelectedIndex];
-                            savechangesButton.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
+                            savechangesButton.BackgroundColor = Globals.colorDictionary[_tempsecondaryColor];
                         }
                     };
             AbsoluteLayout.SetLayoutBounds(secondaryPicker, new Rectangle(0.5, 0.5, Globals.screenWidth - Globals.screenWidth / 100 * 2, Globals.screenHeight / 100 * 5));
