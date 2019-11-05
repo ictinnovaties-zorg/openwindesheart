@@ -12,7 +12,6 @@ namespace WindesHeartApp.Pages
         public HomePage()
         {
             InitializeComponent();
-
         }
 
         protected override void OnAppearing()
@@ -24,75 +23,23 @@ namespace WindesHeartApp.Pages
         private void BuildPage()
         {
             NavigationPage.SetHasNavigationBar(this, false);
-
-            grid = new Grid();
-            grid.BackgroundColor = Color.DeepPink;
-
-
-            layout.Children.Add(grid);
-
-            #region define Rows+Columns
-            RowDefinition row0 = new RowDefinition { Height = Globals.screenHeight / 10 };
-            RowDefinition row1 = new RowDefinition { Height = Globals.screenHeight / 10 * 2 };
-            RowDefinition row2 = new RowDefinition { Height = Globals.screenHeight / 10 * 2 };
-            RowDefinition row3 = new RowDefinition { Height = Globals.screenHeight / 10 * 2 };
-            RowDefinition row4 = new RowDefinition { Height = Globals.screenHeight / 10 * 2 };
-            RowDefinition row5 = new RowDefinition { Height = Globals.screenHeight / 10 };
-            ColumnDefinition colum0 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum1 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum2 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum3 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum4 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum5 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum6 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum7 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum8 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum9 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum10 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            ColumnDefinition colum11 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
-            #endregion
-
-            #region add Rows+Columns
-            grid.RowDefinitions.Add(row0);
-            grid.RowDefinitions.Add(row1);
-            grid.RowDefinitions.Add(row2);
-            grid.RowDefinitions.Add(row3);
-            grid.RowDefinitions.Add(row4);
-            grid.RowDefinitions.Add(row5);
-            grid.ColumnDefinitions.Add(colum0);
-            grid.ColumnDefinitions.Add(colum1);
-            grid.ColumnDefinitions.Add(colum2);
-            grid.ColumnDefinitions.Add(colum3);
-            grid.ColumnDefinitions.Add(colum4);
-            grid.ColumnDefinitions.Add(colum5);
-            grid.ColumnDefinitions.Add(colum6);
-            grid.ColumnDefinitions.Add(colum7);
-            grid.ColumnDefinitions.Add(colum8);
-            grid.ColumnDefinitions.Add(colum9);
-            grid.ColumnDefinitions.Add(colum10);
-            grid.ColumnDefinitions.Add(colum11);
-
-
-            #endregion
+            absoluteLayout.BackgroundColor = Globals.primaryColor;
 
             #region define and add Images
             Image heartonlyImage = new Image();
             heartonlyImage.Source = "HeartOnlyTransparent.png";
-            heartonlyImage.HorizontalOptions = LayoutOptions.StartAndExpand;
-            heartonlyImage.Margin = new Thickness(10, 0, 0, 0);
-            heartonlyImage.BackgroundColor = Globals.primaryColor;
-            grid.Children.Add(heartonlyImage, 0, 0);
+            AbsoluteLayout.SetLayoutFlags(heartonlyImage, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(heartonlyImage, new Rectangle(0.05, 0, Globals.screenWidth / 100 * 20, Globals.screenHeight / 100 * 10));
+            absoluteLayout.Children.Add(heartonlyImage);
 
             Image textonlyImage = new Image();
             textonlyImage.Source = "TextOnlyTransparent.png";
-            textonlyImage.HorizontalOptions = LayoutOptions.End;
-            textonlyImage.Margin = new Thickness(0, 0, 7, 0);
-            textonlyImage.BackgroundColor = Globals.primaryColor;
-            grid.Children.Add(textonlyImage, 1, 0);
+            AbsoluteLayout.SetLayoutFlags(textonlyImage, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(textonlyImage, new Rectangle(0.95, 0, Globals.screenWidth / 100 * 60, Globals.screenHeight / 100 * 10));
+            absoluteLayout.Children.Add(textonlyImage);
             #endregion
 
             #region define and add Buttons
-
             var buttonStyle = new Style(typeof(Button))
             {
                 Setters =
@@ -104,22 +51,17 @@ namespace WindesHeartApp.Pages
                     },
                     new Setter
                     {
-                        Property = Button.MarginProperty,
-                        Value = new Thickness(10, 10, 10, 10)
-                    },
-                    new Setter
-                    {
                         Property = Button.CornerRadiusProperty,
                         Value = (int)Globals.cornerRadius
                     },
                     new Setter
                     {
-                        Property = Button.WidthRequestProperty,
-                        Value = ((int)Globals.cornerRadius) * 2
+                        Property = WidthRequestProperty,
+                        Value = ((int)Globals.cornerRadius) *2
                     },
                     new Setter
                     {
-                        Property = Button.HeightRequestProperty,
+                        Property = HeightRequestProperty,
                         Value = ((int)Globals.cornerRadius) *2
                     },
                     new Setter
@@ -137,47 +79,51 @@ namespace WindesHeartApp.Pages
 
             Button aboutButton = new Button();
             aboutButton.Text = "About";
-            aboutButton.HorizontalOptions = LayoutOptions.End;
             aboutButton.Clicked += aboutbutton_Clicked;
             aboutButton.Style = buttonStyle;
-            grid.Children.Add(aboutButton, 0, 2);
+            AbsoluteLayout.SetLayoutFlags(aboutButton, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(aboutButton, new Rectangle(0.80, 0.90, -1, -1));
+            absoluteLayout.Children.Add(aboutButton);
 
             Button deviceButton = new Button();
             deviceButton.Text = "Device";
-            deviceButton.HorizontalOptions = LayoutOptions.Start;
             deviceButton.Clicked += deviceButton_Clicked;
             deviceButton.Style = buttonStyle;
-            grid.Children.Add(deviceButton, 1, 2);
+            AbsoluteLayout.SetLayoutFlags(deviceButton, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(deviceButton, new Rectangle(0.80, 0.40, -1, -1));
+            absoluteLayout.Children.Add(deviceButton);
 
             Button heartrateButton = new Button();
             heartrateButton.Text = "Heartrate";
-            heartrateButton.HorizontalOptions = LayoutOptions.End;
             heartrateButton.Clicked += heartrateButton_Clicked;
             heartrateButton.Style = buttonStyle;
-            heartrateButton.TranslationX = Globals.screenWidth * 0.5 / -4;
-            grid.Children.Add(heartrateButton, 0, 3);
+            AbsoluteLayout.SetLayoutFlags(heartrateButton, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(heartrateButton, new Rectangle(0.10, 0.65, -1, -1));
+            absoluteLayout.Children.Add(heartrateButton);
 
             Button stepsButton = new Button();
             stepsButton.Text = "Steps";
-            stepsButton.HorizontalOptions = LayoutOptions.Start;
             stepsButton.Clicked += stepsButton_Clicked;
             stepsButton.Style = buttonStyle;
-            stepsButton.TranslationX = Globals.screenWidth * 0.5 / 4;
-            grid.Children.Add(stepsButton, 1, 3);
+            AbsoluteLayout.SetLayoutFlags(stepsButton, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(stepsButton, new Rectangle(0.90, 0.65, -1, -1));
+            absoluteLayout.Children.Add(stepsButton);
 
             Button settingsButton = new Button();
             settingsButton.Text = "Settings";
-            settingsButton.HorizontalOptions = LayoutOptions.End;
             settingsButton.Clicked += settingsButton_Clicked;
             settingsButton.Style = buttonStyle;
-            grid.Children.Add(settingsButton, 0, 4);
+            AbsoluteLayout.SetLayoutFlags(settingsButton, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(settingsButton, new Rectangle(0.20, 0.90, -1, -1));
+            absoluteLayout.Children.Add(settingsButton);
 
             Button testButton = new Button();
             testButton.Text = "Test";
-            testButton.HorizontalOptions = LayoutOptions.Start;
             testButton.Clicked += testButton_Clicked;
             testButton.Style = buttonStyle;
-            grid.Children.Add(testButton, 1, 4);
+            AbsoluteLayout.SetLayoutFlags(testButton, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(testButton, new Rectangle(0.20, 0.40, -1, -1));
+            absoluteLayout.Children.Add(testButton);
             #endregion
         }
 
@@ -190,6 +136,7 @@ namespace WindesHeartApp.Pages
 
         private void settingsButton_Clicked(object sender, EventArgs e)
         {
+            Navigation.PushAsync(new SettingsPage());
             Console.WriteLine("SettingsButton CLICKED");
         }
 
