@@ -32,4 +32,6 @@ using System.Runtime.InteropServices;
 [assembly: UsesPermission(Android.Manifest.Permission.Internet)]
 [assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
 [assembly: UsesPermission(Android.Manifest.Permission.Vibrate)]
+[assembly: UsesPermission(Android.Manifest.Permission.BatteryStats)]
+
 
