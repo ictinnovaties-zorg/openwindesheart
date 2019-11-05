@@ -8,10 +8,10 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : ContentPage
+    public partial class TestPage : ContentPage
     {
         BLEDevice Device = null;
-        public MainPage()
+        public TestPage()
         {
             InitializeComponent();
         }
@@ -75,6 +75,11 @@ namespace WindesHeartApp.Pages
         {
             Device.SetHeartrateMeasurementInterval(1);
             Device.EnableRealTimeHeartrate(GetHeartrate);
+        }
+
+        private void GoBack_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopAsync();
         }
     }
 }

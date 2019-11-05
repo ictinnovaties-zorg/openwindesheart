@@ -199,6 +199,7 @@ namespace WindesHeartApp.Pages
         private void testButton_Clicked(object sender, EventArgs e)
         {
             Console.WriteLine("TestButton CLICKED");
+            Navigation.PushAsync(new TestPage());
         }
 
         private void settingsButton_Clicked(object sender, EventArgs e)

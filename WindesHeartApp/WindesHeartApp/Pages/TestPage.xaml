@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WindesHeartApp.Pages.MainPage">
+             x:Class="WindesHeartApp.Pages.TestPage">
     <ContentPage.Content>
         <StackLayout>
             <Button Clicked="Button_Clicked" Text="Scannen en Connecten" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,50,0,0"/>
@@ -11,6 +11,8 @@
             <Button Clicked="SetTime" Text="Set time" HorizontalOptions="Center" VerticalOptions="End"/>
             <Button Clicked="SetCurrentTime" Text="Set current time" HorizontalOptions="Center" VerticalOptions="Center"/>
             <Button Clicked="GetHeartRate" Text="Read Heartrate Continuous" HorizontalOptions="Center" VerticalOptions="End"/>
+            <Button Clicked="GoBack_Clicked" Text="Go Back" HorizontalOptions="Center" VerticalOptions="End"/>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
