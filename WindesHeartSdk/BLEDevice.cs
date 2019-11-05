@@ -28,7 +28,9 @@ namespace WindesHeartSDK
         public abstract void Connect();
         public abstract void Disconnect();
         public abstract Task<bool> SetTime(System.DateTime dateTime);
-        public abstract Task<bool> GetSteps();
+        public abstract Task<StepInfo> GetSteps();
+        public abstract void EnableRealTimeSteps(Action<StepInfo> OnStepsChanged);
+        public abstract void DisableRealTimeSteps();
         public abstract Task<Battery> GetBattery();
 
         /// <summary>

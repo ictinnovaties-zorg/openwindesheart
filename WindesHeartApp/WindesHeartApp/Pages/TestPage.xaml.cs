@@ -77,6 +77,29 @@ namespace WindesHeartApp.Pages
             Device.EnableRealTimeHeartrate(GetHeartrate);
         }
 
+        public async void GetSteps(object sender, EventArgs e)
+        {
+            StepInfo steps = await Device.GetSteps();
+            Console.WriteLine("Steps: " + steps.GetStepCount());
+        }
+
+        public void EnableRealTimeSteps(object sender, EventArgs e)
+        {
+            Device.EnableRealTimeSteps(OnStepsChanged);
+            Console.WriteLine("Enabled realtime steps");
+        }
+
+        public void DisableRealTimeSteps(object sender, EventArgs e)
+        {
+            Device.DisableRealTimeSteps();
+            Console.WriteLine("Disabled realtime steps");
+        }
+
+        public void OnStepsChanged(StepInfo steps)
+        {
+            Console.WriteLine("Steps updated: " + steps.GetStepCount());
+        }
+
         private void GoBack_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
