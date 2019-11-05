@@ -76,5 +76,10 @@ namespace WindesHeartApp.Pages
             Device.SetHeartrateMeasurementInterval(1);
             Device.EnableRealTimeHeartrate(GetHeartrate);
         }
+
+        public void FetchData(object sender, EventArgs e)
+        {
+            Device.FetchData();
+        }
     }
 }

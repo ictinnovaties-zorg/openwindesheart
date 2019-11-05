@@ -14,6 +14,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         private readonly MiBand3HeartrateService HeartrateService;
         private readonly MiBand3DateTimeService DateTimeService;
         private readonly MiBand3AuthenticationService AuthenticationService;
+        private readonly MiBand3FetchService FetchService;
 
         public MiBand3(int rssi, IDevice device) : base(rssi, device)
         {
@@ -21,6 +22,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             HeartrateService = new MiBand3HeartrateService(this);
             DateTimeService = new MiBand3DateTimeService(this);
             AuthenticationService = new MiBand3AuthenticationService(this);
+            FetchService = new MiBand3FetchService(this);
         }
 
         public override void Connect()
@@ -61,6 +63,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public async override Task<bool> SetTime(DateTime dateTime)
         {
             return await DateTimeService.SetTime(dateTime);
+        }
+
+        public override void FetchData()
+        {
+            FetchService.Fetch();
         }
 
         public override void OnConnect()

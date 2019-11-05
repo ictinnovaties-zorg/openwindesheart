@@ -29,6 +29,7 @@ namespace WindesHeartSDK
         public abstract Task<bool> SetTime(System.DateTime dateTime);
         public abstract Task<bool> GetSteps();
         public abstract Task<Battery> GetBattery();
+        public abstract void FetchData();
 
         /// <summary>
         /// Get a certain characteristic with its UUID.
