@@ -105,10 +105,8 @@ namespace WindesHeartApp.Pages
             #region learn more Button
             Button learnmoreButton = new Button();
             learnmoreButton.Text = "Learn More";
-            learnmoreButton.BackgroundColor = Color.Transparent;
-            learnmoreButton.BorderWidth = 1;
+            learnmoreButton.BackgroundColor = Globals.secondaryColor;
             learnmoreButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
-            learnmoreButton.BorderColor = Globals.headerColor;
             AbsoluteLayout.SetLayoutBounds(learnmoreButton, new Rectangle(0.5, 0.70, Globals.screenHeight / 100 * 40, Globals.screenHeight / 100 * 7));
             AbsoluteLayout.SetLayoutFlags(learnmoreButton, AbsoluteLayoutFlags.PositionProportional);
             learnmoreButton.Clicked += learnmoreButton_Clicked;

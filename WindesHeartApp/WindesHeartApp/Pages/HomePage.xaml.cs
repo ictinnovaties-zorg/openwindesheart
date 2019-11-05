@@ -51,7 +51,6 @@ namespace WindesHeartApp.Pages
             ColumnDefinition colum11 = new ColumnDefinition { Width = Globals.screenWidth * 0.5 };
             #endregion
 
-
             #region add Rows+Columns
             grid.RowDefinitions.Add(row0);
             grid.RowDefinitions.Add(row1);
@@ -91,8 +90,6 @@ namespace WindesHeartApp.Pages
             grid.Children.Add(textonlyImage, 1, 0);
             #endregion
 
-
-
             #region define and add Buttons
 
             var buttonStyle = new Style(typeof(Button))
@@ -127,25 +124,14 @@ namespace WindesHeartApp.Pages
                     },
                     new Setter
                     {
-                        Property = Button.BorderWidthProperty,
-                        Value = 1
-                    },
-                    new Setter
-                    {
-                        Property = Button.BorderColorProperty,
-                        Value = Color.White
-},
-                    new Setter
-                    {
                         Property = Button.BackgroundColorProperty,
-                        Value = Globals.primaryColor
+                        Value = Globals.secondaryColor
                     },
                     new Setter
                     {
                         Property = Button.VerticalOptionsProperty,
                         Value = LayoutOptions.Center
                     }
-
                 }
             };
 
