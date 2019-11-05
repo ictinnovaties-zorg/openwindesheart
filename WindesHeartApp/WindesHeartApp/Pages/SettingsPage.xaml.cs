@@ -9,6 +9,7 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : ContentPage
     {
+        private string _tempColor;
         public SettingsPage()
         {
             InitializeComponent();
@@ -18,7 +19,7 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Globals.BuildGlobals();
+            Globals.BuildGlobals("");
             BuildPage();
         }
 
@@ -76,8 +77,7 @@ namespace WindesHeartApp.Pages
                         }
                         else
                         {
-                            string colorName = picker.Items[picker.SelectedIndex];
-                            Globals.primaryColor = Globals.colorDictionary[colorName];
+                            _tempColor = picker.Items[picker.SelectedIndex];
                         }
                     };
 
@@ -119,6 +119,7 @@ namespace WindesHeartApp.Pages
 
         private void savechangesButton_Clicked(object sender, EventArgs e)
         {
+            Globals.BuildGlobals(_tempColor);
             Navigation.PopAsync();
         }
 

@@ -22,7 +22,7 @@ namespace WindesHeartApp.Resources
         //buttonSize : 10 being biggest, 100 being smallest. 
         //buttonfontSize : 2-10, 10 being smallest, 2 being largest.
 
-        public static void BuildGlobals()
+        public static void BuildGlobals(string primaryColor)
         {
             buttonSize = 20;
             buttonfontSize = 4;
@@ -39,6 +39,8 @@ namespace WindesHeartApp.Resources
                 { "Silver", Color.Silver }, { "Teal", Color.Teal },
                 { "White", Color.White }, { "Yellow", Color.Yellow }
             };
+            if (!string.IsNullOrEmpty(primaryColor))
+                Globals.primaryColor = colorDictionary[primaryColor];
         }
     };
 }

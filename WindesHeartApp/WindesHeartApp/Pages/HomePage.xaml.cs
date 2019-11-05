@@ -16,7 +16,7 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Globals.BuildGlobals();
+            Globals.BuildGlobals("");
             BuildPage();
         }
 
@@ -136,8 +136,8 @@ namespace WindesHeartApp.Pages
 
         private void settingsButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new SettingsPage());
             Console.WriteLine("SettingsButton CLICKED");
+            Navigation.PushAsync(new SettingsPage());
         }
 
         private void stepsButton_Clicked(object sender, EventArgs e)
