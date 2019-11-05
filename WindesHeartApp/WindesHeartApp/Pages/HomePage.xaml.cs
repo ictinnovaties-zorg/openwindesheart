@@ -26,7 +26,8 @@ namespace WindesHeartApp.Pages
             NavigationPage.SetHasNavigationBar(this, false);
 
             grid = new Grid();
-            grid.BackgroundColor = Globals.Pink;
+            grid.BackgroundColor = Color.DeepPink;
+
 
             layout.Children.Add(grid);
 
