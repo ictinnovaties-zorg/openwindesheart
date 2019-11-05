@@ -1,4 +1,4 @@
-﻿using System;
+﻿lelusing System;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -95,7 +95,6 @@ namespace WindesHeartApp.Pages
 
             var buttonStyle = new Style(typeof(Button))
             {
-                //BUTTON SIZE GLOBALS GAAN FOUT
                 Setters =
                 {
                     new Setter
