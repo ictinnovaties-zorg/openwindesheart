@@ -48,7 +48,7 @@ namespace WindesHeartApp.Pages
                 FontSize = Globals.screenHeight / 100 * 3,
             };
             AbsoluteLayout.SetLayoutFlags(aboutLabel, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(aboutLabel, new Rectangle(0.1, 0.3, Globals.screenWidth, Globals.screenHeight / 100 * 3));
+            AbsoluteLayout.SetLayoutBounds(aboutLabel, new Rectangle(Globals.screenWidth / 15, 0.28, Globals.screenWidth, Globals.screenHeight / 100 * 3));
             layout.Children.Add(aboutLabel);
 
             Grid grid1 = new Grid();
@@ -96,23 +96,50 @@ namespace WindesHeartApp.Pages
                 FontSize = Globals.screenHeight / 100 * 2,
                 FormattedText = versionLabelText
             };
-            AbsoluteLayout.SetLayoutBounds(versionLabel, new Rectangle(0.95, 0.80, ((int)Globals.screenHeight) / 100 * 10, ((int)Globals.screenHeight) / 100 * 5));
+            AbsoluteLayout.SetLayoutBounds(versionLabel, new Rectangle(0.95, 0.80, Globals.screenHeight / 100 * 10, Globals.screenHeight / 100 * 5));
             AbsoluteLayout.SetLayoutFlags(versionLabel, AbsoluteLayoutFlags.PositionProportional);
             layout.Children.Add(versionLabel);
 
             #endregion
 
+            #region learn more Button
+            Button learnmoreButton = new Button();
+            learnmoreButton.Text = "Learn More";
+            learnmoreButton.BackgroundColor = Color.Transparent;
+            learnmoreButton.BorderWidth = 1;
+            learnmoreButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
+            learnmoreButton.BorderColor = Globals.headerColor;
+            AbsoluteLayout.SetLayoutBounds(learnmoreButton, new Rectangle(0.5, 0.70, Globals.screenHeight / 100 * 40, Globals.screenHeight / 100 * 7));
+            AbsoluteLayout.SetLayoutFlags(learnmoreButton, AbsoluteLayoutFlags.PositionProportional);
+            learnmoreButton.Clicked += learnmoreButton_Clicked;
+            layout.Children.Add(learnmoreButton);
+            #endregion
+
             #region define return Button
+            //added extra grid behind imagebutton to make it clickable easier.
+            Grid returnGrid = new Grid();
+            AbsoluteLayout.SetLayoutBounds(returnGrid, new Rectangle(0.95, 0.95, Globals.screenHeight / 100 * 8, Globals.screenHeight / 100 * 8));
+            AbsoluteLayout.SetLayoutFlags(returnGrid, AbsoluteLayoutFlags.PositionProportional);
+            returnGrid.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                NumberOfTapsRequired = 1,
+                Command = new Command(execute: () => { returnButton_Clicked(this, EventArgs.Empty); })
+            });
             ImageButton returnButton = new ImageButton();
             returnButton.Source = "GoBack.png";
             returnButton.BackgroundColor = Color.Transparent;
-            returnButton.CornerRadius = (int)(Globals.screenWidth / 20);
-            AbsoluteLayout.SetLayoutBounds(returnButton, new Rectangle(0.95, 0.95, ((int)Globals.screenHeight) / 100 * 4, ((int)Globals.screenHeight) / 100 * 4));
+            AbsoluteLayout.SetLayoutBounds(returnButton, new Rectangle(0.95, 0.95, Globals.screenHeight / 100 * 6, Globals.screenHeight / 100 * 6));
             AbsoluteLayout.SetLayoutFlags(returnButton, AbsoluteLayoutFlags.PositionProportional);
             returnButton.Clicked += returnButton_Clicked;
+            layout.Children.Add(returnGrid);
             layout.Children.Add(returnButton);
-            
-                #endregion
+
+            #endregion
+        }
+
+        private void learnmoreButton_Clicked(object sender, EventArgs e)
+        {
+            Console.WriteLine("OPEN GITHUB PAGE?? ");
         }
 
         private void returnButton_Clicked(object sender, EventArgs e)
