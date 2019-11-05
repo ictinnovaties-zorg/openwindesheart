@@ -17,14 +17,14 @@ namespace WindesHeartApp.Pages
 
         private void BuildPage()
         {
-            layout.BackgroundColor = Globals.primaryColor;
+            absoluteLayout.BackgroundColor = Globals.primaryColor;
             NavigationPage.SetHasNavigationBar(this, false);
 
             #region define Image 
             Grid grid = new Grid();
             AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(0.5, 0, 1, 0.3));
-            layout.Children.Add(grid);
+            absoluteLayout.Children.Add(grid);
 
             Image windesheartImage = new Image();
             windesheartImage.Source = "WindesHeartTransparent.png";
@@ -49,14 +49,14 @@ namespace WindesHeartApp.Pages
             };
             AbsoluteLayout.SetLayoutFlags(aboutLabel, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(aboutLabel, new Rectangle(Globals.screenWidth / 15, 0.28, Globals.screenWidth, Globals.screenHeight / 100 * 3));
-            layout.Children.Add(aboutLabel);
+            absoluteLayout.Children.Add(aboutLabel);
 
             Grid grid1 = new Grid();
             grid1.BackgroundColor = Color.Transparent;
             grid1.Margin = new Thickness(15, 0, 15, 0);
             AbsoluteLayout.SetLayoutFlags(grid1, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(grid1, new Rectangle(0, 0.5, Globals.screenWidth, Globals.screenHeight / 100 * 25));
-            layout.Children.Add(grid1);
+            absoluteLayout.Children.Add(grid1);
 
             Label writtenLabel = new Label
             {
@@ -98,7 +98,7 @@ namespace WindesHeartApp.Pages
             };
             AbsoluteLayout.SetLayoutBounds(versionLabel, new Rectangle(0.95, 0.80, Globals.screenHeight / 100 * 10, Globals.screenHeight / 100 * 5));
             AbsoluteLayout.SetLayoutFlags(versionLabel, AbsoluteLayoutFlags.PositionProportional);
-            layout.Children.Add(versionLabel);
+            absoluteLayout.Children.Add(versionLabel);
 
             #endregion
 
@@ -110,7 +110,7 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutBounds(learnmoreButton, new Rectangle(0.5, 0.70, Globals.screenHeight / 100 * 40, Globals.screenHeight / 100 * 7));
             AbsoluteLayout.SetLayoutFlags(learnmoreButton, AbsoluteLayoutFlags.PositionProportional);
             learnmoreButton.Clicked += learnmoreButton_Clicked;
-            layout.Children.Add(learnmoreButton);
+            absoluteLayout.Children.Add(learnmoreButton);
             #endregion
 
             #region define return Button
@@ -129,8 +129,8 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutBounds(returnButton, new Rectangle(0.95, 0.95, Globals.screenHeight / 100 * 6, Globals.screenHeight / 100 * 6));
             AbsoluteLayout.SetLayoutFlags(returnButton, AbsoluteLayoutFlags.PositionProportional);
             returnButton.Clicked += returnButton_Clicked;
-            layout.Children.Add(returnGrid);
-            layout.Children.Add(returnButton);
+            absoluteLayout.Children.Add(returnGrid);
+            absoluteLayout.Children.Add(returnButton);
 
             #endregion
         }
