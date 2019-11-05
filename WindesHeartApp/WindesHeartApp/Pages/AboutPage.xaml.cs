@@ -25,14 +25,15 @@ namespace WindesHeartApp.Pages
             windesheartImage.BackgroundColor = Color.Transparent;
             windesheartImage.VerticalOptions = LayoutOptions.Start;
             windesheartImage.HorizontalOptions = LayoutOptions.Center;
+
             windesheartImage.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 NumberOfTapsRequired = 1,
                 Command = new Command(execute: () => { Logo_Clicked(this, EventArgs.Empty); })
             });
 
-            AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(0.5, 0, Globals.screenWidth, Globals.screenHeight / 100 * 35));
+            AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(0.5, 0, 1, 0.3));
             layout.Children.Add(grid);
             grid.Children.Add(windesheartImage);
 
@@ -44,43 +45,75 @@ namespace WindesHeartApp.Pages
             {
                 Text = "About",
                 TextColor = Globals.lighttextColor,
-                HorizontalOptions = LayoutOptions.Start,
                 FontSize = Globals.screenHeight / 100 * 3,
             };
-            Grid box = new Grid();
-            box.Margin = new Thickness(10, 0, 10, 0);
-            AbsoluteLayout.SetLayoutBounds(box, new Rectangle(0, (Globals.screenHeight / 100 * 35) - Globals.screenHeight / 100 * 5, Globals.screenWidth, Globals.screenHeight / 100 * 3.5));
-            box.Children.Add(aboutLabel);
-            //layout.Children.Add(aboutLabel);
-            //ImageButton returnButton = new ImageButton();
-            //returnButton.Source = "GoBack.png";
-            //returnButton.BackgroundColor = Color.Transparent; ;
-            //returnButton.CornerRadius = (int)(Globals.screenWidth / 20);
-            //returnButton.Clicked += returnButton_Clicked;
-            //returnButton.WidthRequest = Globals.screenHeight / 10;
-            //returnButton.HeightRequest = Globals.screenHeight / 10;
-            //layout.Children.Add(returnButton);\
-
-
-
+            AbsoluteLayout.SetLayoutFlags(aboutLabel, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(aboutLabel, new Rectangle(0.1, 0.3, Globals.screenWidth, Globals.screenHeight / 100 * 3));
+            layout.Children.Add(aboutLabel);
 
             Grid grid1 = new Grid();
             grid1.BackgroundColor = Color.Transparent;
-            grid1.Margin = new Thickness(25, 0, 25, 0);
+            grid1.Margin = new Thickness(15, 0, 15, 0);
             AbsoluteLayout.SetLayoutFlags(grid1, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(grid1, new Rectangle(0, 0.5, Globals.screenWidth, Globals.screenHeight / 100 * 2.5));
+            AbsoluteLayout.SetLayoutBounds(grid1, new Rectangle(0, 0.5, Globals.screenWidth, Globals.screenHeight / 100 * 25));
+
+
+            var ft = new FormattedString();
+            ft.Spans.Add(new Span
+            {
+                Text = "This app is written by Windesheim Students\nIt's",
+                FontSize = Globals.screenHeight / 100 * 2.5
+            });
+            ft.Spans.Add(new Span { Text = " main purpose", FontAttributes = FontAttributes.Bold, FontSize = Globals.screenHeight / 100 * 2.5 });
+            ft.Spans.Add(new Span
+            {
+                Text = " is to",
+                FontSize = Globals.screenHeight / 100 * 2.5
+            });
+            ft.Spans.Add(new Span { Text = " demo", FontAttributes = FontAttributes.Bold, FontSize = Globals.screenHeight / 100 * 2.5 });
+            ft.Spans.Add(new Span
+            {
+                Text = " the ",
+                FontSize = Globals.screenHeight / 100 * 2.5
+            });
+            ft.Spans.Add(new Span { Text = " WindesHeartSDK", FontAttributes = FontAttributes.Bold, FontSize = Globals.screenHeight / 100 * 2.5 });
 
             Label writtenLabel = new Label
             {
-                Text = "This app is written by Windesheim Students",
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
-                LineBreakMode = LineBreakMode.WordWrap
+                LineBreakMode = LineBreakMode.WordWrap,
+                XAlign = TextAlignment.Center,
+                FormattedText = ft
             };
             grid1.Children.Add(writtenLabel);
 
-            layout.Children.Add(box);
             layout.Children.Add(grid1);
+
+
+            ImageButton returnButton = new ImageButton();
+            returnButton.Source = "GoBack.png";
+            returnButton.BackgroundColor = Color.Transparent;
+            returnButton.CornerRadius = (int)(Globals.screenWidth / 20);
+            AbsoluteLayout.SetLayoutBounds(returnButton, new Rectangle(0.95, 0.95, ((int)Globals.screenHeight) / 100 * 4, ((int)Globals.screenHeight) / 100 * 4));
+            AbsoluteLayout.SetLayoutFlags(returnButton, AbsoluteLayoutFlags.PositionProportional);
+            returnButton.Clicked += returnButton_Clicked;
+            layout.Children.Add(returnButton);
+
+
+            FormattedString versionLabelText = new FormattedString();
+            versionLabelText.Spans.Add(new Span { Text = "Version", FontSize = Globals.screenHeight / 100 * 2 });
+            versionLabelText.Spans.Add(new Span { Text = " 2.0", FontSize = Globals.screenHeight / 100 * 2, FontAttributes = FontAttributes.Bold });
+            Label versionLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.End,
+                FontSize = Globals.screenHeight / 100 * 2,
+                FormattedText = versionLabelText
+            };
+            AbsoluteLayout.SetLayoutBounds(versionLabel, new Rectangle(0.95, 0.80, ((int)Globals.screenHeight) / 100 * 10, ((int)Globals.screenHeight) / 100 * 5));
+            AbsoluteLayout.SetLayoutFlags(versionLabel, AbsoluteLayoutFlags.PositionProportional);
+            layout.Children.Add(versionLabel);
+
         }
 
         private void returnButton_Clicked(object sender, EventArgs e)
@@ -92,12 +125,13 @@ namespace WindesHeartApp.Pages
         {
             Console.WriteLine("Logo - Clicked.");
             Navigation.PopAsync();
+            Vibration.Vibrate(4200);
         }
 
         private void LearnMore_Clicked(object sender, EventArgs e)
         {
             Console.WriteLine("Learn More - Clicked.");
-            Vibration.Vibrate(5000);
+            Vibration.Vibrate(4200);
         }
     }
 }
