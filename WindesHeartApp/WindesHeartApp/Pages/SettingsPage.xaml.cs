@@ -46,6 +46,13 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(textonlyImage);
             #endregion
 
+            #region define label
+            Label settingsLabel = new Label { Text = "Settings", TextColor = Globals.lighttextColor, FontSize = Globals.screenHeight / 100 * 3, };
+            AbsoluteLayout.SetLayoutFlags(settingsLabel, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(settingsLabel, new Rectangle(0.05, 0.11, -1, -1));
+            absoluteLayout.Children.Add(settingsLabel);
+            #endregion
+
             #region define return Button
             //added extra grid behind imagebutton to make it clickable easier.
             Grid returnGrid = new Grid();
@@ -80,7 +87,7 @@ namespace WindesHeartApp.Pages
 
             #region color Pickers with Labels
             Label primarycolorpickerLabel = new Label { Text = "Select Primary Color", TextColor = Globals.lighttextColor, FontSize = Globals.screenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
-            AbsoluteLayout.SetLayoutBounds(primarycolorpickerLabel, new Rectangle(0.5, 0.38, Globals.screenWidth / 2, Globals.screenHeight / 100 * 5));
+            AbsoluteLayout.SetLayoutBounds(primarycolorpickerLabel, new Rectangle(0.5, 0.38, -1, -1));
             AbsoluteLayout.SetLayoutFlags(primarycolorpickerLabel, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(primarycolorpickerLabel);
 
@@ -97,13 +104,13 @@ namespace WindesHeartApp.Pages
                 textonlyImage.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
                 returnButton.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
             };
-            AbsoluteLayout.SetLayoutBounds(primaryPicker, new Rectangle(0.5, 0.4, Globals.screenWidth - Globals.screenWidth / 100 * 4, Globals.screenHeight / 100 * 5));
+            AbsoluteLayout.SetLayoutBounds(primaryPicker, new Rectangle(0.5, 0.4, Globals.screenWidth - Globals.screenWidth / 100 * 4, -1));
             AbsoluteLayout.SetLayoutFlags(primaryPicker, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(primaryPicker);
 
 
             Label secondarycolorpickerlabel = new Label { Text = "Select Secondary Color", TextColor = Globals.lighttextColor, FontSize = Globals.screenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
-            AbsoluteLayout.SetLayoutBounds(secondarycolorpickerlabel, new Rectangle(0.5, 0.48, Globals.screenWidth - Globals.screenWidth / 100 * 4, Globals.screenHeight / 100 * 5));
+            AbsoluteLayout.SetLayoutBounds(secondarycolorpickerlabel, new Rectangle(0.5, 0.48, -1, -1));
             AbsoluteLayout.SetLayoutFlags(secondarycolorpickerlabel, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(secondarycolorpickerlabel);
 
@@ -124,7 +131,7 @@ namespace WindesHeartApp.Pages
                             savechangesButton.BackgroundColor = Globals.colorDictionary[_tempsecondaryColor];
                         }
                     };
-            AbsoluteLayout.SetLayoutBounds(secondaryPicker, new Rectangle(0.5, 0.5, Globals.screenWidth - Globals.screenWidth / 100 * 2, Globals.screenHeight / 100 * 5));
+            AbsoluteLayout.SetLayoutBounds(secondaryPicker, new Rectangle(0.5, 0.5, Globals.screenWidth - Globals.screenWidth / 100 * 4, -1));
             AbsoluteLayout.SetLayoutFlags(secondaryPicker, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(secondaryPicker);
             #endregion
