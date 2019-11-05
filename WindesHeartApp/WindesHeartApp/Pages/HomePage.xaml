@@ -2,9 +2,5 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WindesHeartApp.Pages.HomePage">
-<<<<<<< HEAD
         <AbsoluteLayout x:Name="absoluteLayout"/>
-=======
-    <AbsoluteLayout x:Name="absoluteLayout"/>
->>>>>>> master
 </ContentPage>
