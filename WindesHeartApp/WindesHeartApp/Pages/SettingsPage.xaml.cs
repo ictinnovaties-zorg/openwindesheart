@@ -9,7 +9,8 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : ContentPage
     {
-        private string _tempColor;
+        private string _tempprimaryColor;
+        private string _tempsecondaryColor;
         public SettingsPage()
         {
             InitializeComponent();
@@ -19,7 +20,6 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Globals.BuildGlobals("");
             BuildPage();
         }
 
@@ -64,54 +64,9 @@ namespace WindesHeartApp.Pages
             returnButton.Clicked += returnButton_Clicked;
             absoluteLayout.Children.Add(returnGrid);
             absoluteLayout.Children.Add(returnButton);
-
             #endregion
 
-            //Grid pickerGrid = new Grid();
-            //AbsoluteLayout.SetLayoutBounds(pickerGrid, new Rectangle(0.5, 0.5, Globals.screenWidth / 2, Globals.screenHeight / 100 * 5));
-            //AbsoluteLayout.SetLayoutFlags(pickerGrid, AbsoluteLayoutFlags.PositionProportional);
-            Label primarycolorpickerLabel = new Label
-            {
-                Text = "Select Main Color",
-                TextColor = Globals.lighttextColor,
-                FontSize = Globals.screenHeight / 100 * 3
-            };
-            AbsoluteLayout.SetLayoutBounds(primarycolorpickerLabel, new Rectangle(0.5, 0.45, Globals.screenWidth - Globals.screenWidth / 100 * 2, Globals.screenHeight / 100 * 5));
-            AbsoluteLayout.SetLayoutFlags(primarycolorpickerLabel, AbsoluteLayoutFlags.PositionProportional);
-            Picker picker = new Picker
-            {
-                Title = "Select..",
-            };
-            AbsoluteLayout.SetLayoutBounds(picker, new Rectangle(0.5, 0.5, Globals.screenWidth - Globals.screenWidth / 100 * 2, Globals.screenHeight / 100 * 5));
-            AbsoluteLayout.SetLayoutFlags(picker, AbsoluteLayoutFlags.PositionProportional);
-            picker.FontSize = Globals.screenHeight / 100 * 2.5;
-            absoluteLayout.Children.Add(picker);
-            absoluteLayout.Children.Add(primarycolorpickerLabel);
-            //absoluteLayout.Children.Add(pickerGrid);
-
-            foreach (string colorName in Globals.colorDictionary.Keys)
-            {
-                picker.Items.Add(colorName);
-            }
-
-
-            picker.SelectedIndexChanged += (sender, args) =>
-            {
-                if (picker.SelectedIndex == -1)
-                {
-                    Globals.primaryColor = Color.FromHex("#96d1ff");
-                }
-                else
-                {
-                    _tempColor = picker.Items[picker.SelectedIndex];
-                    absoluteLayout.BackgroundColor = Globals.colorDictionary[_tempColor];
-                    heartonlyImage.BackgroundColor = Globals.colorDictionary[_tempColor];
-                    textonlyImage.BackgroundColor = Globals.colorDictionary[_tempColor];
-                    returnButton.BackgroundColor = Globals.colorDictionary[_tempColor];
-                }
-            };
-
-            #region learn more Button
+            #region save changes Button
             Button savechangesButton = new Button();
             savechangesButton.Text = "Save Changes";
             savechangesButton.BackgroundColor = Globals.secondaryColor;
@@ -123,14 +78,61 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(savechangesButton);
             #endregion
 
+            #region color Pickers with Labels
+            Label primarycolorpickerLabel = new Label { Text = "Select Primary Color", TextColor = Globals.lighttextColor, FontSize = Globals.screenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
+            AbsoluteLayout.SetLayoutBounds(primarycolorpickerLabel, new Rectangle(0.5, 0.38, Globals.screenWidth / 2, Globals.screenHeight / 100 * 5));
+            AbsoluteLayout.SetLayoutFlags(primarycolorpickerLabel, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(primarycolorpickerLabel);
+
+            Picker primaryPicker = new Picker { Title = "Select..", FontSize = Globals.screenHeight / 100 * 2.5 };
+            foreach (string colorName in Globals.colorDictionary.Keys)
+            {
+                primaryPicker.Items.Add(colorName);
+            }
+            primaryPicker.SelectedIndexChanged += (sender, args) =>
+            {
+                _tempprimaryColor = primaryPicker.Items[primaryPicker.SelectedIndex];
+                absoluteLayout.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
+                heartonlyImage.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
+                textonlyImage.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
+                returnButton.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
+            };
+            AbsoluteLayout.SetLayoutBounds(primaryPicker, new Rectangle(0.5, 0.4, Globals.screenWidth - Globals.screenWidth / 100 * 4, Globals.screenHeight / 100 * 5));
+            AbsoluteLayout.SetLayoutFlags(primaryPicker, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(primaryPicker);
 
 
+            Label secondarycolorpickerlabel = new Label { Text = "Select Secondary Color", TextColor = Globals.lighttextColor, FontSize = Globals.screenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
+            AbsoluteLayout.SetLayoutBounds(secondarycolorpickerlabel, new Rectangle(0.5, 0.48, Globals.screenWidth - Globals.screenWidth / 100 * 4, Globals.screenHeight / 100 * 5));
+            AbsoluteLayout.SetLayoutFlags(secondarycolorpickerlabel, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(secondarycolorpickerlabel);
 
+            Picker secondaryPicker = new Picker { Title = "Select..", FontSize = Globals.screenHeight / 100 * 2.5 };
+            foreach (string colorName in Globals.colorDictionary.Keys)
+            {
+                secondaryPicker.Items.Add(colorName);
+            }
+            secondaryPicker.SelectedIndexChanged += (sender, args) =>
+                    {
+                        if (secondaryPicker.SelectedIndex == -1)
+                        {
+                            Globals.primaryColor = Color.FromHex("#96d1ff");
+                        }
+                        else
+                        {
+                            _tempsecondaryColor = secondaryPicker.Items[secondaryPicker.SelectedIndex];
+                            savechangesButton.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
+                        }
+                    };
+            AbsoluteLayout.SetLayoutBounds(secondaryPicker, new Rectangle(0.5, 0.5, Globals.screenWidth - Globals.screenWidth / 100 * 2, Globals.screenHeight / 100 * 5));
+            AbsoluteLayout.SetLayoutFlags(secondaryPicker, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(secondaryPicker);
+            #endregion
         }
 
         private void savechangesButton_Clicked(object sender, EventArgs e)
         {
-            Globals.BuildGlobals(_tempColor);
+            Globals.BuildGlobals(_tempprimaryColor, _tempsecondaryColor);
             Navigation.PopAsync();
         }
 

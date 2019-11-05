@@ -15,9 +15,13 @@ namespace WindesHeartApp.Pages
         public TestPage()
         {
             InitializeComponent();
+
+        }
+
+        protected override void OnAppearing()
+        {
             Layout.BackgroundColor = Globals.primaryColor;
             NavigationPage.SetHasNavigationBar(this, false);
-
         }
 
         private async void Button_Clicked(object sender, EventArgs e)

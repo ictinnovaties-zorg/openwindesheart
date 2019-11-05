@@ -16,7 +16,7 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Globals.BuildGlobals("");
+            Globals.BuildGlobals("", "");
             BuildPage();
         }
 
