@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -14,6 +15,7 @@ namespace WindesHeartApp.Pages
         public TestPage()
         {
             InitializeComponent();
+            Layout.BackgroundColor = Globals.primaryColor;
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
