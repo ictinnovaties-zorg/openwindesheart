@@ -19,6 +19,7 @@ namespace WindesHeartApp.Pages
         {
             Globals.BuildGlobals();
             BuildPage();
+            App.RequestLocationPermission();
         }
 
         private void BuildPage()

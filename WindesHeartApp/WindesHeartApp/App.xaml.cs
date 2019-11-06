@@ -1,4 +1,6 @@
-﻿using WindesHeartApp.Pages;
+﻿using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
+using WindesHeartApp.Pages;
 using WindesHeartApp.Services;
 using Xamarin.Forms;
 
@@ -28,6 +30,15 @@ namespace WindesHeartApp
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        public static async void RequestLocationPermission()
+        {
+            var permissionStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+            if (permissionStatus != PermissionStatus.Granted)
+            {
+                await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+            }
         }
     }
 }
