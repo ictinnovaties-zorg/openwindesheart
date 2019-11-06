@@ -36,6 +36,7 @@ namespace WindesHeartApp.Pages
             absoluteLayout.BackgroundColor = Globals.primaryColor;
 
             #region define and add Images
+
             Image heartonlyImage = new Image();
             heartonlyImage.Source = "HeartOnlyTransparent.png";
             AbsoluteLayout.SetLayoutFlags(heartonlyImage, AbsoluteLayoutFlags.PositionProportional);
@@ -47,26 +48,26 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(textonlyImage, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(textonlyImage, new Rectangle(0.95, 0, Globals.screenWidth / 100 * 60, Globals.screenHeight / 100 * 10));
             absoluteLayout.Children.Add(textonlyImage);
+
             #endregion
 
             #region define battery Label and ProgressBar
-            _batteryLabel = new Label
-            {
-                Text = $"Tracker batterylevel: {Battery.ChargeLevel * 100}",
-                FontSize = Globals.screenHeight / 100 * 2.5,
-                FontAttributes = FontAttributes.Bold
-            };
-            AbsoluteLayout.SetLayoutBounds(_batteryLabel, new Rectangle(0.5, 0.18, -1, -1));
+
+            _batteryLabel = new Label { Text = $"Tracker batterylevel: {Battery.ChargeLevel * 100}", FontSize = Globals.screenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold };
+            AbsoluteLayout.SetLayoutBounds(_batteryLabel, new Rectangle(0.95, 0.18, -1, -1));
             AbsoluteLayout.SetLayoutFlags(_batteryLabel, AbsoluteLayoutFlags.PositionProportional);
+
             _batteryBar = new ProgressBar { ProgressColor = Globals.headerColor, Progress = Battery.ChargeLevel };
-            AbsoluteLayout.SetLayoutBounds(_batteryBar, new Rectangle(0.5, 0.2, 0.5, 0.10));
+            AbsoluteLayout.SetLayoutBounds(_batteryBar, new Rectangle(0.95, 0.2, 0.5, 0.15));
             AbsoluteLayout.SetLayoutFlags(_batteryBar, AbsoluteLayoutFlags.All);
 
             absoluteLayout.Children.Add(_batteryBar);
             absoluteLayout.Children.Add(_batteryLabel);
+
             #endregion
 
             #region define and add Buttons
+
             var buttonStyle = new Style(typeof(Button))
             {
                 Setters =
@@ -151,6 +152,7 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(testButton, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(testButton, new Rectangle(0.20, 0.40, -1, -1));
             absoluteLayout.Children.Add(testButton);
+
             #endregion
 
         }
