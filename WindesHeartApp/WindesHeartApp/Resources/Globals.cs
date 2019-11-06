@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WindesHeartSDK;
 using Xamarin.Forms;
 
 namespace WindesHeartApp.Resources
@@ -17,12 +18,14 @@ namespace WindesHeartApp.Resources
         public static double cornerRadius { get; set; }
 
         public static Dictionary<string, Color> colorDictionary;
+        public static int batteryPercentage { get; set; }
+        public static int heartRate { get; set; }
+        public static BLEDevice device;
 
 
         //buttonSize : 10 being biggest, 100 being smallest. 
         //buttonfontSize : 2-10, 10 being smallest, 2 being largest.
-
-        public static void BuildGlobals(string primaryColor, string secondaryColor)
+        public static void BuildGlobals()
         {
             buttonSize = 20;
             buttonfontSize = 4;
@@ -30,7 +33,8 @@ namespace WindesHeartApp.Resources
             screenratioFactor = screenHeight / screenWidth;
             colorDictionary = new Dictionary<string, Color>
             {
-                { "Aqua", Color.Aqua }, { "Black", Color.Black },
+                { "Aqua", Color.Aqua},
+                { "Black", Color.Black},
                 { "LightBlue (Default)", Color.FromHex("#96d1ff")}, { "Fucshia", Color.Fuchsia },
                 { "Gray", Color.Gray }, { "Green", Color.Green },
                 { "Lime", Color.Lime }, { "Maroon", Color.Maroon },
@@ -39,10 +43,6 @@ namespace WindesHeartApp.Resources
                 { "Silver", Color.Silver }, { "Teal", Color.Teal },
                 { "White", Color.White }, { "Yellow", Color.Yellow }
             };
-            if (!string.IsNullOrEmpty(primaryColor))
-                Globals.primaryColor = colorDictionary[primaryColor];
-            if (!string.IsNullOrEmpty(secondaryColor))
-                Globals.secondaryColor = colorDictionary[secondaryColor];
         }
     };
 }

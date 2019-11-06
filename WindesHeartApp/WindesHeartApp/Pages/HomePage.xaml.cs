@@ -1,5 +1,6 @@
 ﻿using System;
 using WindesHeartApp.Resources;
+using WindesHeartSDK.Models;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -9,65 +10,53 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
-        private ProgressBar _batteryBar;
-        private Label _batteryLabel;
+        public static Label batteryLabel;
+        public static Label HRLabel;
+        public static AbsoluteLayout absoluteLayout;
         public HomePage()
         {
             InitializeComponent();
-            Battery.BatteryInfoChanged += Battery_BatteryInfoChanged;
-
         }
 
         private void Battery_BatteryInfoChanged(object sender, BatteryInfoChangedEventArgs e)
         {
-            _batteryBar.Progress = e.ChargeLevel;
-            _batteryLabel.Text = $"Tracker batterylevel: {e.ChargeLevel * 100}";
         }
 
         protected override void OnAppearing()
         {
-            Globals.BuildGlobals("", "");
+            Globals.BuildGlobals();
             BuildPage();
         }
 
         private void BuildPage()
         {
+            absoluteLayout = new AbsoluteLayout();
+            this.Content = absoluteLayout;
             NavigationPage.SetHasNavigationBar(this, false);
             absoluteLayout.BackgroundColor = Globals.primaryColor;
 
-            #region define and add Images
+            PageBuilder.BuildAndAddHeader(absoluteLayout);
 
-            Image heartonlyImage = new Image();
-            heartonlyImage.Source = "HeartOnlyTransparent.png";
-            AbsoluteLayout.SetLayoutFlags(heartonlyImage, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(heartonlyImage, new Rectangle(0.05, 0, Globals.screenWidth / 100 * 20, Globals.screenHeight / 100 * 10));
-            absoluteLayout.Children.Add(heartonlyImage);
+            #region define battery Label and ProgressBar TEST TEST
+            batteryLabel = new Label { FontSize = Globals.screenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold, Text = $"Battery level: {Globals.batteryPercentage.ToString()}" };
+            AbsoluteLayout.SetLayoutBounds(batteryLabel, new Rectangle(0.95, 0.18, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(batteryLabel, AbsoluteLayoutFlags.PositionProportional);
 
-            Image textonlyImage = new Image();
-            textonlyImage.Source = "TextOnlyTransparent.png";
-            AbsoluteLayout.SetLayoutFlags(textonlyImage, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(textonlyImage, new Rectangle(0.95, 0, Globals.screenWidth / 100 * 60, Globals.screenHeight / 100 * 10));
-            absoluteLayout.Children.Add(textonlyImage);
+            ProgressBar batteryBar = new ProgressBar { ProgressColor = Globals.secondaryColor, Progress = Globals.batteryPercentage / 100 };
+            AbsoluteLayout.SetLayoutBounds(batteryBar, new Rectangle(0.95, 0.2, 0.5, 0.15));
+            AbsoluteLayout.SetLayoutFlags(batteryBar, AbsoluteLayoutFlags.All);
 
+            absoluteLayout.Children.Add(batteryBar);
+            absoluteLayout.Children.Add(batteryLabel);
+
+            HRLabel = new Label { FontSize = Globals.screenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold, Text = $"HR {Globals.heartRate.ToString()}" };
+            AbsoluteLayout.SetLayoutBounds(HRLabel, new Rectangle(0.5, 0.18, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(HRLabel, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(HRLabel);
             #endregion
 
-            #region define battery Label and ProgressBar
-
-            _batteryLabel = new Label { Text = $"Tracker batterylevel: {Battery.ChargeLevel * 100}", FontSize = Globals.screenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold };
-            AbsoluteLayout.SetLayoutBounds(_batteryLabel, new Rectangle(0.95, 0.18, -1, -1));
-            AbsoluteLayout.SetLayoutFlags(_batteryLabel, AbsoluteLayoutFlags.PositionProportional);
-
-            _batteryBar = new ProgressBar { ProgressColor = Globals.headerColor, Progress = Battery.ChargeLevel };
-            AbsoluteLayout.SetLayoutBounds(_batteryBar, new Rectangle(0.95, 0.2, 0.5, 0.15));
-            AbsoluteLayout.SetLayoutFlags(_batteryBar, AbsoluteLayoutFlags.All);
-
-            absoluteLayout.Children.Add(_batteryBar);
-            absoluteLayout.Children.Add(_batteryLabel);
-
-            #endregion
 
             #region define and add Buttons
-
             var buttonStyle = new Style(typeof(Button))
             {
                 Setters =
@@ -152,7 +141,6 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(testButton, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(testButton, new Rectangle(0.20, 0.40, -1, -1));
             absoluteLayout.Children.Add(testButton);
-
             #endregion
 
         }
@@ -189,6 +177,19 @@ namespace WindesHeartApp.Pages
         {
             Console.WriteLine("AboutButton Clicked!");
             Navigation.PushAsync(new AboutPage());
+        }
+
+        public static void updateHeartrateLabel(int heartrateHeartrateValue)
+        {
+            HRLabel.Text = $"HR: {heartrateHeartrateValue}";
+        }
+
+        public void GetHeartrate(Heartrate heartrate)
+        {
+            Console.WriteLine(heartrate.HeartrateValue);
+            Device.BeginInvokeOnMainThread(delegate { HomePage.updateHeartrateLabel(heartrate.HeartrateValue); });
+
+
         }
     }
 }

@@ -5,8 +5,5 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="WindesHeartApp.Pages.SettingsPage">
-    <ScrollView>
-        <AbsoluteLayout x:Name ="absoluteLayout"/>
-    </ScrollView>
     
 </ContentPage>

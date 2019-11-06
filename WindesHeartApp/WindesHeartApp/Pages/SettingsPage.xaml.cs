@@ -14,8 +14,6 @@ namespace WindesHeartApp.Pages
         public SettingsPage()
         {
             InitializeComponent();
-
-
         }
 
         protected override void OnAppearing()
@@ -23,10 +21,10 @@ namespace WindesHeartApp.Pages
             BuildPage();
         }
 
-
-
         private void BuildPage()
         {
+            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+            this.Content = absoluteLayout;
             NavigationPage.SetHasNavigationBar(this, false);
             absoluteLayout.BackgroundColor = Globals.primaryColor;
 
@@ -139,7 +137,10 @@ namespace WindesHeartApp.Pages
 
         private void savechangesButton_Clicked(object sender, EventArgs e)
         {
-            Globals.BuildGlobals(_tempprimaryColor, _tempsecondaryColor);
+            if (_tempprimaryColor != null)
+                Globals.primaryColor = Globals.colorDictionary[_tempprimaryColor];
+            if (_tempsecondaryColor != null)
+                Globals.secondaryColor = Globals.colorDictionary[_tempsecondaryColor];
             Navigation.PopAsync();
         }
 

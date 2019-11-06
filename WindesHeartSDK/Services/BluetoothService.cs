@@ -83,7 +83,7 @@ namespace WindesHeartSDK
             //Connect
             IDevice.Connect(new ConnectionConfig
             {
-                AutoConnect = true,
+                AutoConnect = false,
                 AndroidConnectionPriority = ConnectionPriority.High
             });
         }
@@ -93,7 +93,7 @@ namespace WindesHeartSDK
         /// Disconnect current device.
         /// </summary>
         public async void Disconnect()
-        {               
+        {
             //Cancel the connection
             Console.WriteLine("Trying to disconnect device...");
             BLEDevice.Authenticated = false;

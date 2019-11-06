@@ -10,7 +10,7 @@
             <Button Clicked="Disconnect" Text="Disconnecten" HorizontalOptions="Center" VerticalOptions="End"/>
             <Button Clicked="SetTime" Text="Set time" HorizontalOptions="Center" VerticalOptions="End"/>
             <Button Clicked="SetCurrentTime" Text="Set current time" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Button Clicked="GetHeartRate" Text="Read Heartrate Continuous" HorizontalOptions="Center" VerticalOptions="End"/>
+            <Button Clicked="GetHeartRate_Clicked" Text="Read Heartrate Continuous" HorizontalOptions="Center" VerticalOptions="End"/>
             <Button Clicked="GoBack_Clicked" Text="Go Back" HorizontalOptions="Center" VerticalOptions="End"/>
 
         </StackLayout>
