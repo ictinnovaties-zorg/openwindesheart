@@ -84,6 +84,41 @@ namespace WindesHeartSDK.Helpers
             return (bytes[1] << 8 | bytes[0]);
         }
 
+        public static DateTime RawBytesToCalendar(byte[] value, bool honorDeviceTimeOffset)
+        {
+            if (value.Length >= 7)
+            {
+                int year = ToUint16(new byte[] { value[0], value[1], 0, 0 });
+                DateTime timestamp = new DateTime(
+                        year,
+                        (value[2] & 0xff),
+                        value[3] & 0xff,
+                        value[4] & 0xff,
+                        value[5] & 0xff,
+                        value[6] & 0xff
+                );
+                /*if (value.Length > 7)
+                {
+                    TimeZoneInfo timeZone = TimeZoneInfo.Local;
+                    timeZone.setRawOffset(value[7] * 15 * 60 * 1000);
+                    timestamp.;
+                }*/
+
+                /*if (honorDeviceTimeOffset)
+                {
+                    int offsetInHours = MiBandCoordinator.getDeviceTimeOffsetHours();
+                    if (offsetInHours != 0)
+                    {
+                        timestamp.add(Calendar.HOUR_OF_DAY, -offsetInHours);
+                    }
+                }*/
+
+                return timestamp;
+            }
+
+            return new DateTime();
+        }
+
         public static byte[] CopyOfRange(byte[] src, int start, int end)
         {
             int len = end - start;

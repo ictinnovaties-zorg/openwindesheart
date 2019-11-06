@@ -30,9 +30,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
         public static Guid GuidCharacteristicHeartrate = new Guid("00002A37-0000-1000-8000-00805f9b34fb");
 
         //Samples Bytes and Guids
-        public static Guid GuidUnknown = new Guid("00000004-0000-3512-2118-0009af100700");
+        public static Guid GuidUnknownCharacteristic4 = new Guid("00000004-0000-3512-2118-0009af100700");
 
-        public static Guid GuidActivity = new Guid("00000005-0000-3512-2118-0009af100700");
+        public static Guid GuidCharacteristic5ActivityData = new Guid("00000005-0000-3512-2118-0009af100700");
 
         public static byte Response = 0x10;
         public static byte CommandActivityDataStartDate = 0x01;

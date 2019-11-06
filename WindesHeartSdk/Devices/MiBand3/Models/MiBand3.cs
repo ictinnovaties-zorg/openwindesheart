@@ -67,7 +67,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
         public override void FetchData()
         {
-            FetchService.Fetch();
+            FetchService.InitiateFetching();
         }
 
         public override void OnConnect()
