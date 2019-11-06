@@ -15,7 +15,7 @@ namespace WindesHeartApp.Pages
         public TestPage()
         {
             InitializeComponent();
-            Layout.BackgroundColor = Globals.primaryColor;
+            layout.BackgroundColor = Globals.primaryColor;
         }
 
         private async void Button_Clicked(object sender, EventArgs e)

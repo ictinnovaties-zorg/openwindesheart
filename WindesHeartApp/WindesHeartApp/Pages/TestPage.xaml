@@ -4,7 +4,7 @@
              x:Class="WindesHeartApp.Pages.TestPage">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
+            <StackLayout x:Name="layout">
                 <Button Clicked="Button_Clicked" Text="Scannen en Connecten" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,50,0,0"/>
                 <Button Clicked="ReadBatteryContinuous" Text="Read battery Continuous" HorizontalOptions="Center" VerticalOptions="Center"/>
                 <Button Clicked="ReadCurrentBattery" Text="Read current battery" HorizontalOptions="Center" VerticalOptions="Center"/>
