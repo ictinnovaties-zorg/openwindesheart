@@ -92,8 +92,8 @@ namespace WindesHeartSDK
         /// <summary>
         /// Disconnect current device.
         /// </summary>
-        public async void Disconnect()
-        {               
+        public void Disconnect()
+        {
             //Cancel the connection
             Console.WriteLine("Trying to disconnect device...");
             BLEDevice.Authenticated = false;

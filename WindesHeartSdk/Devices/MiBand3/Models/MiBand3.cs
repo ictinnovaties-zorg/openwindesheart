@@ -30,7 +30,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             BluetoothService.Connect();
         }
 
-        public async override void Disconnect()
+        public override void Disconnect()
         {
             BluetoothService.Disconnect();
         }
@@ -90,7 +90,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
                     if (characteristic.Uuid == MiBand3Resource.GuidCharacteristicAuth)
                     {
                         //Check if this is a new connection that needs authentication
-                        if(!Authenticated)
+                        if (!Authenticated)
                         {
                             await AuthenticationService.Authenticate();
                             Authenticated = true;
