@@ -28,5 +28,8 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
 
         //Heartrate Realtime Guid
         public static Guid GuidCharacteristicHeartrate = new Guid("00002A37-0000-1000-8000-00805f9b34fb");
+
+        //Steps Realtime Guid
+        public static Guid GuidCharacteristic7RealtimeSteps = new Guid("00000007-0000-3512-2118-0009af100700");
     }
 }
