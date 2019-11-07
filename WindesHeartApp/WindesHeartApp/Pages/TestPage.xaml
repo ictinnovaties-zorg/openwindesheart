@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WindesHeartApp.Pages.TestPage">
-              <ScrollView>
+              
     <ContentPage.Content>
+        <ScrollView>
         <AbsoluteLayout  x:Name="Layout">
             <Button x:Name="scanButton" Clicked="Button_Clicked" Text="Scannen en Connecten"/>
             <Button x:Name="readBattContin" Clicked="ReadBatteryContinuous" Text="Read battery Continuous" />
@@ -12,10 +13,9 @@
             <Button x:Name="settimeButton" Clicked="SetTime" Text="Set time" />
             <Button x:Name="setcurrenttimeButton" Clicked="SetCurrentTime" Text="Set current time" />
             <Button x:Name ="getHeartrateButton" Clicked="GetHeartRate_Clicked" Text="Read Heartrate Continuous" />
-               <Button Clicked="GetSteps" Text="Get current steps" HorizontalOptions="Center" VerticalOptions="End"/>
-                <Button Clicked="EnableRealTimeSteps" Text="Enable Realtime Steps" HorizontalOptions="Center" VerticalOptions="End"/>
-                <Button Clicked="DisableRealTimeSteps" Text="Disable Realtime Steps" HorizontalOptions="Center" VerticalOptions="End"/>
-                <Button Clicked="GoBack_Clicked" Text="Go Back" HorizontalOptions="Center" VerticalOptions="End"/>
+                <Button x:Name="stepsButton" Clicked="GetSteps" Text="Get current steps" HorizontalOptions="Center" VerticalOptions="End"/>
+                <Button x:Name="realtimestepsButton" Clicked="EnableRealTimeSteps" Text="Enable Realtime Steps" HorizontalOptions="Center" VerticalOptions="End"/>
+                <Button x:Name="disablerealtimestepsButton" Clicked="DisableRealTimeSteps" Text="Disable Realtime Steps" HorizontalOptions="Center" VerticalOptions="End"/>
         </AbsoluteLayout>
                 </ScrollView>
     </ContentPage.Content>
