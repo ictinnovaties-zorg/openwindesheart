@@ -97,16 +97,12 @@ namespace WindesHeartApp.Pages
         {
             Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
             Globals.batteryPercentage = battery.BatteryPercentage;
-            HomePage.batteryLabel.Text = $"Battery level: {battery.BatteryPercentage}";
         }
 
         public void GetHeartrate(Heartrate heartrate)
         {
             Console.WriteLine(heartrate.HeartrateValue);
-            Device.BeginInvokeOnMainThread(delegate { HomePage.updateHeartrateLabel(heartrate.HeartrateValue); });
             Globals.heartRate = heartrate.HeartrateValue;
-
-
         }
 
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using WindesHeartApp.Resources;
 using WindesHeartSDK.Models;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,10 +15,6 @@ namespace WindesHeartApp.Pages
         public HomePage()
         {
             InitializeComponent();
-        }
-
-        private void Battery_BatteryInfoChanged(object sender, BatteryInfoChangedEventArgs e)
-        {
         }
 
         protected override void OnAppearing()
@@ -142,39 +137,38 @@ namespace WindesHeartApp.Pages
 
         }
 
-
+        #region button eventhandlers
         private void testButton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("TestButton CLICKED");
             Navigation.PushAsync(new TestPage());
         }
 
         private void settingsButton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("SettingsButton CLICKED");
             Navigation.PushAsync(new SettingsPage());
         }
 
         private void stepsButton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("StepsButton CLICKED");
+            Navigation.PushAsync(new StepsPage());
         }
 
         private void heartrateButton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("HeartrateButton CLICKED");
+            Navigation.PushAsync(new HeartratePage());
         }
 
         private void deviceButton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("DeiceButton Clicked");
+            Navigation.PushAsync(new DevicePage());
+
         }
 
         private void aboutbutton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("AboutButton Clicked!");
             Navigation.PushAsync(new AboutPage());
         }
+        #endregion
 
         public static void updateHeartrateLabel(int heartrateHeartrateValue)
         {
@@ -184,8 +178,12 @@ namespace WindesHeartApp.Pages
         public void GetHeartrate(Heartrate heartrate)
         {
             Console.WriteLine(heartrate.HeartrateValue);
-            Device.BeginInvokeOnMainThread(delegate { HomePage.updateHeartrateLabel(heartrate.HeartrateValue); });
 
+            Device.BeginInvokeOnMainThread(delegate
+            {
+                updateHeartrateLabel(heartrate.HeartrateValue);
+            });
+            //            HRLabel.Text = $"HR: {heartrate.HeartrateValue}";
 
         }
     }
