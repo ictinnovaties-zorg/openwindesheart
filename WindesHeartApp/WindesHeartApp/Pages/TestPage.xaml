@@ -3,16 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WindesHeartApp.Pages.TestPage">
     <ContentPage.Content>
-        <StackLayout  x:Name="Layout">
-            <Button Clicked="Button_Clicked" Text="Scannen en Connecten" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,50,0,0"/>
-            <Button Clicked="ReadBatteryContinuous" Text="Read battery Continuous" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Button Clicked="ReadCurrentBattery" Text="Read current battery" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Button Clicked="Disconnect" Text="Disconnecten" HorizontalOptions="Center" VerticalOptions="End"/>
-            <Button Clicked="SetTime" Text="Set time" HorizontalOptions="Center" VerticalOptions="End"/>
-            <Button Clicked="SetCurrentTime" Text="Set current time" HorizontalOptions="Center" VerticalOptions="Center"/>
-            <Button Clicked="GetHeartRate_Clicked" Text="Read Heartrate Continuous" HorizontalOptions="Center" VerticalOptions="End"/>
-            <Button Clicked="GoBack_Clicked" Text="Go Back" HorizontalOptions="Center" VerticalOptions="End"/>
-
-        </StackLayout>
+        <AbsoluteLayout  x:Name="Layout">
+            <Button x:Name="scanButton" Clicked="Button_Clicked" Text="Scannen en Connecten"/>
+            <Button x:Name="readBattContin" Clicked="ReadBatteryContinuous" Text="Read battery Continuous" />
+            <Button x:Name="readBattCurrent" Clicked="ReadCurrentBattery" Text="Read current battery" />
+            <Button x:Name="disconnButton" Clicked="Disconnect" Text="Disconnecten" />
+            <Button x:Name="settimeButton" Clicked="SetTime" Text="Set time" />
+            <Button x:Name="setcurrenttimeButton" Clicked="SetCurrentTime" Text="Set current time" />
+            <Button x:Name ="getHeartrateButton" Clicked="GetHeartRate_Clicked" Text="Read Heartrate Continuous" />
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

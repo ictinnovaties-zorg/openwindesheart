@@ -18,9 +18,8 @@ namespace WindesHeartApp.Pages
         private void BuildPage()
         {
             AbsoluteLayout absoluteLayout = new AbsoluteLayout();
-            absoluteLayout.BackgroundColor = Globals.primaryColor;
-            NavigationPage.SetHasNavigationBar(this, false);
-            this.Content = absoluteLayout;
+
+            PageBuilder.BuildPageBasics(absoluteLayout, this);
 
             #region define Image 
 
@@ -43,18 +42,9 @@ namespace WindesHeartApp.Pages
 
             #endregion
 
+            PageBuilder.BuildAndAddLabel(absoluteLayout, "About", 0.05, 0.27);
+
             #region define Text
-
-            Label aboutLabel = new Label
-            {
-                Text = "About",
-                TextColor = Globals.lighttextColor,
-                FontSize = Globals.screenHeight / 100 * 3,
-            };
-            AbsoluteLayout.SetLayoutFlags(aboutLabel, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(aboutLabel, new Rectangle(0.05, 0.28, -1, -1));
-            absoluteLayout.Children.Add(aboutLabel);
-
             Grid grid1 = new Grid();
             grid1.BackgroundColor = Color.Transparent;
             grid1.Margin = new Thickness(15, 0, 15, 0);
@@ -121,7 +111,6 @@ namespace WindesHeartApp.Pages
             #endregion
 
             #region learn more Button
-
             Button learnmoreButton = new Button();
             learnmoreButton.Text = "Learn More";
             learnmoreButton.BackgroundColor = Globals.secondaryColor;
@@ -132,7 +121,6 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(learnmoreButton, AbsoluteLayoutFlags.PositionProportional);
             learnmoreButton.Clicked += learnmoreButton_Clicked;
             absoluteLayout.Children.Add(learnmoreButton);
-
             #endregion
 
             PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);

@@ -4,9 +4,17 @@ using Xamarin.Forms;
 
 namespace WindesHeartApp.Pages
 {
+    //Builds and adds certain recurrent views to any AbsoluteLayout 
     public static class PageBuilder
     {
-        public static void BuildAndAddHeader(AbsoluteLayout layout)
+        public static void BuildPageBasics(AbsoluteLayout layout, object sender)
+        {
+            NavigationPage.SetHasNavigationBar((ContentPage)sender, false);
+            layout.BackgroundColor = Globals.primaryColor;
+            ((ContentPage)sender).Content = layout;
+        }
+
+        public static void BuildAndAddHeaderImages(AbsoluteLayout layout)
         {
             Image heartonlyImage = new Image();
             heartonlyImage.Source = "HeartOnlyTransparent.png";
@@ -34,7 +42,7 @@ namespace WindesHeartApp.Pages
             returnGrid.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 NumberOfTapsRequired = 1,
-                Command = new Command(execute: () => { returnButton_Clicked2(sender, EventArgs.Empty); })
+                Command = new Command(execute: () => { returnButton_Clicked(sender, EventArgs.Empty); })
             });
             ImageButton returnButton = new ImageButton();
             returnButton.Source = "GoBack.png";
@@ -49,16 +57,20 @@ namespace WindesHeartApp.Pages
 
         private static void returnButton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine(sender.ToString());
-            ((ImageButton)sender).Navigation.PopAsync();
-
+            Application.Current.MainPage.Navigation.PopAsync();
         }
-        private static void returnButton_Clicked2(object sender, EventArgs e)
+
+        public static void BuildAndAddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y)
         {
-            Console.WriteLine(sender.ToString());
-            ((Page)sender).Navigation.PopAsync();
-
+            Label label = new Label
+            {
+                Text = text,
+                TextColor = Globals.lighttextColor,
+                FontSize = Globals.screenHeight / 100 * 3,
+            };
+            AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(label, new Rectangle(x, y, -1, -1));
+            absoluteLayout.Children.Add(label);
         }
-
     }
 }

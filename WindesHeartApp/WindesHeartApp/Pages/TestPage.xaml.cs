@@ -19,8 +19,31 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Layout.BackgroundColor = Globals.primaryColor;
-            NavigationPage.SetHasNavigationBar(this, false);
+            BuildPage();
+        }
+
+        private void BuildPage()
+        {
+            PageBuilder.BuildPageBasics(Layout, this);
+            PageBuilder.BuildAndAddHeaderImages(Layout);
+            PageBuilder.BuildAndAddLabel(Layout, "TEST", 0.05, 0.10);
+            PageBuilder.BuildAndAddReturnButton(Layout, this);
+            PageBuilder.BuildAndAddReturnButton(Layout, this);
+
+            AbsoluteLayout.SetLayoutBounds(scanButton, new Rectangle(0.1, 0.3, 0.5, 0.1));
+            AbsoluteLayout.SetLayoutFlags(scanButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(disconnButton, new Rectangle(0.1, 0.4, 0.5, 0.1));
+            AbsoluteLayout.SetLayoutFlags(disconnButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(getHeartrateButton, new Rectangle(0.1, 0.5, 0.5, 0.1));
+            AbsoluteLayout.SetLayoutFlags(getHeartrateButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(setcurrenttimeButton, new Rectangle(0.1, 0.6, 0.5, 0.1));
+            AbsoluteLayout.SetLayoutFlags(setcurrenttimeButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(settimeButton, new Rectangle(0.1, 0.9, 0.5, 0.1));
+            AbsoluteLayout.SetLayoutFlags(settimeButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(readBattContin, new Rectangle(0.1, 0.7, 0.5, 0.1));
+            AbsoluteLayout.SetLayoutFlags(readBattContin, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(readBattCurrent, new Rectangle(0.1, 0.8, 0.5, 0.1));
+            AbsoluteLayout.SetLayoutFlags(readBattCurrent, AbsoluteLayoutFlags.All);
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
@@ -70,7 +93,6 @@ namespace WindesHeartApp.Pages
         {
             Globals.device.EnableRealTimeBattery(GetBatteryStatus);
         }
-
         private void GetBatteryStatus(Battery battery)
         {
             Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
@@ -82,6 +104,7 @@ namespace WindesHeartApp.Pages
         {
             Console.WriteLine(heartrate.HeartrateValue);
             Device.BeginInvokeOnMainThread(delegate { HomePage.updateHeartrateLabel(heartrate.HeartrateValue); });
+            Globals.heartRate = heartrate.HeartrateValue;
 
 
         }

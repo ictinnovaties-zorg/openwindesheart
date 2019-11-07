@@ -31,11 +31,9 @@ namespace WindesHeartApp.Pages
         private void BuildPage()
         {
             absoluteLayout = new AbsoluteLayout();
-            this.Content = absoluteLayout;
-            NavigationPage.SetHasNavigationBar(this, false);
-            absoluteLayout.BackgroundColor = Globals.primaryColor;
 
-            PageBuilder.BuildAndAddHeader(absoluteLayout);
+            PageBuilder.BuildPageBasics(absoluteLayout, this);
+            PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
 
             #region define battery Label and ProgressBar TEST TEST
             batteryLabel = new Label { FontSize = Globals.screenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold, Text = $"Battery level: {Globals.batteryPercentage.ToString()}" };
@@ -54,7 +52,6 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(HRLabel, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(HRLabel);
             #endregion
-
 
             #region define and add Buttons
             var buttonStyle = new Style(typeof(Button))
