@@ -26,30 +26,32 @@ namespace WindesHeartApp.Pages
         {
             PageBuilder.BuildPageBasics(Layout, this);
             PageBuilder.BuildAndAddHeaderImages(Layout);
-            PageBuilder.BuildAndAddLabel(Layout, "TEST", 0.05, 0.10);
+            PageBuilder.BuildAndAddLabel(Layout, "TEST", 0.05, 0.7);
             PageBuilder.BuildAndAddReturnButton(Layout, this);
             PageBuilder.BuildAndAddReturnButton(Layout, this);
 
-            AbsoluteLayout.SetLayoutBounds(scanButton, new Rectangle(0.05, 0.2, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(scanButton, new Rectangle(0.05, 0.2, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(scanButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(disconnButton, new Rectangle(0.05, 0.25, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(disconnButton, new Rectangle(0.05, 0.27, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(disconnButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(getHeartrateButton, new Rectangle(0.05, 0.30, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(getHeartrateButton, new Rectangle(0.05, 0.34, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(getHeartrateButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(setcurrenttimeButton, new Rectangle(0.05, 0.35, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(setcurrenttimeButton, new Rectangle(0.05, 0.41, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(setcurrenttimeButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(settimeButton, new Rectangle(0.05, 0.40, 0.50, 0.05));
+            AbsoluteLayout.SetLayoutBounds(settimeButton, new Rectangle(0.05, 0.48, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(settimeButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(readBattContin, new Rectangle(0.05, 0.45, 0.50, 0.05));
+            AbsoluteLayout.SetLayoutBounds(readBattContin, new Rectangle(0.05, 0.55, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(readBattContin, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(readBattCurrent, new Rectangle(0.05, 0.50, 0.50, 0.05));
+            AbsoluteLayout.SetLayoutBounds(readBattCurrent, new Rectangle(0.05, 0.62, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(readBattCurrent, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(stepsButton, new Rectangle(0.05, 0.55, 0.50, 0.05));
+            AbsoluteLayout.SetLayoutBounds(stepsButton, new Rectangle(0.05, 0.69, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(stepsButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(realtimestepsButton, new Rectangle(0.05, 0.60, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(realtimestepsButton, new Rectangle(0.05, 0.76, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(realtimestepsButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(disablerealtimestepsButton, new Rectangle(0.05, 0.65, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(disablerealtimestepsButton, new Rectangle(0.05, 0.83, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(disablerealtimestepsButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(fetchButton, new Rectangle(0.05, 0.9, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutFlags(fetchButton, AbsoluteLayoutFlags.All);
         }
         private async void Button_Clicked(object sender, EventArgs e)
         {
@@ -138,6 +140,11 @@ namespace WindesHeartApp.Pages
         public void OnStepsChanged(StepInfo steps)
         {
             Console.WriteLine("Steps updated: " + steps.GetStepCount());
+        }
+
+        public void FetchData(object sender, EventArgs e)
+        {
+            Globals.device.FetchData();
         }
 
         private void GoBack_Clicked(object sender, EventArgs e)
