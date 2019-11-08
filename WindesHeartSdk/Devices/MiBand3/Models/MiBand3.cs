@@ -13,6 +13,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         private readonly MiBand3BatteryService BatteryService;
         private readonly MiBand3HeartrateService HeartrateService;
         private readonly MiBand3DateTimeService DateTimeService;
+        private readonly MiBand3StepsService StepsService;
         private readonly MiBand3AuthenticationService AuthenticationService;
         private readonly MiBand3FetchService FetchService;
 
@@ -23,6 +24,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             DateTimeService = new MiBand3DateTimeService(this);
             AuthenticationService = new MiBand3AuthenticationService(this);
             FetchService = new MiBand3FetchService(this);
+            StepsService = new MiBand3StepsService(this);
         }
 
         public override void Connect()
@@ -30,7 +32,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             BluetoothService.Connect();
         }
 
-        public async override void Disconnect()
+        public override void Disconnect()
         {
             BluetoothService.Disconnect();
         }
@@ -55,9 +57,19 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             HeartrateService.SetMeasurementInterval(minutes);
         }
 
-        public override Task<bool> GetSteps()
+        public override Task<StepInfo> GetSteps()
         {
-            throw new NotImplementedException();
+            return StepsService.GetSteps();
+        }
+
+        public override void DisableRealTimeSteps()
+        {
+            StepsService.DisableRealTimeSteps();
+        }
+
+        public override void EnableRealTimeSteps(Action<StepInfo> onStepsChanged)
+        {
+            StepsService.EnableRealTimeSteps(onStepsChanged);
         }
 
         public async override Task<bool> SetTime(DateTime dateTime)
@@ -84,7 +96,12 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
                     //Check if authCharacteristic has been found, then authenticate
                     if (characteristic.Uuid == MiBand3Resource.GuidCharacteristicAuth)
                     {
-                        await AuthenticationService.Authenticate();
+                        //Check if this is a new connection that needs authentication
+                        if (!Authenticated)
+                        {
+                            await AuthenticationService.Authenticate();
+                            Authenticated = true;
+                        }
                     }
                 }
             });

@@ -140,4 +140,25 @@
       <Name>WindesHeartApp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\WindesHeart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\WindesHeartTransparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\HeartOnly.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\HeartOnlyTransparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\TextOnly.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\TextOnlyTransparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\GoBack.png" />
+  </ItemGroup>
 </Project>
