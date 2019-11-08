@@ -38,18 +38,18 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(getHeartrateButton, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(setcurrenttimeButton, new Rectangle(0.05, 0.35, 0.5, 0.05));
             AbsoluteLayout.SetLayoutFlags(setcurrenttimeButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(settimeButton, new Rectangle(0.05, 0.9, 0.40, 0.05));
+            AbsoluteLayout.SetLayoutBounds(settimeButton, new Rectangle(0.05, 0.40, 0.50, 0.05));
             AbsoluteLayout.SetLayoutFlags(settimeButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(readBattContin, new Rectangle(0.05, 0.7, 0.45, 0.05));
+            AbsoluteLayout.SetLayoutBounds(readBattContin, new Rectangle(0.05, 0.45, 0.50, 0.05));
             AbsoluteLayout.SetLayoutFlags(readBattContin, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(readBattCurrent, new Rectangle(0.05, 0.8, 0.50, 0.05));
+            AbsoluteLayout.SetLayoutBounds(readBattCurrent, new Rectangle(0.05, 0.50, 0.50, 0.05));
             AbsoluteLayout.SetLayoutFlags(readBattCurrent, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(stepsButton, new Rectangle(0.05, 0.9, 0.55, 0.05));
+            AbsoluteLayout.SetLayoutBounds(stepsButton, new Rectangle(0.05, 0.55, 0.50, 0.05));
             AbsoluteLayout.SetLayoutFlags(stepsButton, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(realtimestepsButton, new Rectangle(0.05, 0.60, 0.5, 0.05));
             AbsoluteLayout.SetLayoutFlags(realtimestepsButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(realtimestepsButton, new Rectangle(0.05, 0.65, 0.5, 0.05));
-            AbsoluteLayout.SetLayoutFlags(realtimestepsButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(disablerealtimestepsButton, new Rectangle(0.05, 0.65, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutFlags(disablerealtimestepsButton, AbsoluteLayoutFlags.All);
         }
         private async void Button_Clicked(object sender, EventArgs e)
         {
@@ -119,19 +119,19 @@ namespace WindesHeartApp.Pages
 
         public async void GetSteps(object sender, EventArgs e)
         {
-            StepInfo steps = await Device.GetSteps();
+            StepInfo steps = await Globals.device.GetSteps();
             Console.WriteLine("Steps: " + steps.GetStepCount());
         }
 
         public void EnableRealTimeSteps(object sender, EventArgs e)
         {
-            Device.EnableRealTimeSteps(OnStepsChanged);
+            Globals.device.EnableRealTimeSteps(OnStepsChanged);
             Console.WriteLine("Enabled realtime steps");
         }
 
         public void DisableRealTimeSteps(object sender, EventArgs e)
         {
-            Device.DisableRealTimeSteps();
+            Globals.device.DisableRealTimeSteps();
             Console.WriteLine("Disabled realtime steps");
         }
 

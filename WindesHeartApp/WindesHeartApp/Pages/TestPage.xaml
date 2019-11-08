@@ -13,9 +13,9 @@
             <Button x:Name="settimeButton" Clicked="SetTime" Text="Set time" />
             <Button x:Name="setcurrenttimeButton" Clicked="SetCurrentTime" Text="Set current time" />
             <Button x:Name ="getHeartrateButton" Clicked="GetHeartRate_Clicked" Text="Read Heartrate Continuous" />
-                <Button x:Name="stepsButton" Clicked="GetSteps" Text="Get current steps" HorizontalOptions="Center" VerticalOptions="End"/>
-                <Button x:Name="realtimestepsButton" Clicked="EnableRealTimeSteps" Text="Enable Realtime Steps" HorizontalOptions="Center" VerticalOptions="End"/>
-                <Button x:Name="disablerealtimestepsButton" Clicked="DisableRealTimeSteps" Text="Disable Realtime Steps" HorizontalOptions="Center" VerticalOptions="End"/>
+                <Button x:Name="stepsButton" Clicked="GetSteps" Text="Get current steps" />
+                <Button x:Name="realtimestepsButton" Clicked="EnableRealTimeSteps" Text="Enable Realtime Steps" />
+                <Button x:Name="disablerealtimestepsButton" Clicked="DisableRealTimeSteps" Text="Disable Realtime Steps" />
         </AbsoluteLayout>
                 </ScrollView>
     </ContentPage.Content>
