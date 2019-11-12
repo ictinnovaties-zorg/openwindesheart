@@ -1,5 +1,5 @@
 ﻿using System;
-namespace WindesHeartSDK.Devices.MiBand3.Resources
+namespace WindesHeartSDK.Devices.MiBand3Device.Resources
 {
     public static class MiBand3Resource
     {

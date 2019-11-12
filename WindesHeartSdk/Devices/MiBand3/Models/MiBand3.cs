@@ -1,11 +1,12 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Resources;
-using WindesHeartSDK.Devices.MiBand3.Services;
+using WindesHeartSDK.Devices.MiBand3Device.Services;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
+using WindesHeartSDK.Devices.MiBand3Device.Services;
 using WindesHeartSDK.Models;
 
-namespace WindesHeartSDK.Devices.MiBand3.Models
+namespace WindesHeartSDK.Devices.MiBand3Device.Models
 {
     public class MiBand3 : BLEDevice
     {

@@ -1,20 +1,23 @@
-﻿using Plugin.BluetoothLE;
+﻿
+
+using Plugin.BluetoothLE;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Resources;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Models;
 
-namespace WindesHeartSDK.Devices.MiBand3.Services
+namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3BatteryService
     {
-        private readonly BLEDevice BLEDevice;
+        private readonly MiBand3 MiBand;
         public static IDisposable batteryDisposable;
 
-        public MiBand3BatteryService(BLEDevice device)
+        public MiBand3BatteryService(MiBand3 device)
         {
-            BLEDevice = device;
+            MiBand = device;
         }
         /// <summary>
         /// Get Raw Battery data.
@@ -94,7 +97,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         public void EnableBatteryStatusUpdates(Action<Battery> callback)
         {
             batteryDisposable?.Dispose();
-            batteryDisposable = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
+            batteryDisposable = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
                 x => callback(CreateBatteryObject(x.Characteristic.Value))
             );
         }
@@ -105,7 +108,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <returns>IGattCharacteristic</returns>
         private IGattCharacteristic GetBatteryCharacteristic()
         {
-            return BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
+            return MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
         }
     }
 }

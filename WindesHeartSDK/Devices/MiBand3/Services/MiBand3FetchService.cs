@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using WindesHeartSdk.Model;
-using WindesHeartSDK.Devices.MiBand3.Resources;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using static WindesHeartSDK.Helpers.ConversionHelper;
 
-namespace WindesHeartSDK.Devices.MiBand3.Services
+namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     class MiBand3FetchService
     {
+        private readonly MiBand3 MiBand3;
         private readonly List<ActivitySample> Samples = new List<ActivitySample>();
         private sbyte LastPacketCounter;
         private DateTime StartTimestamp;
@@ -19,11 +21,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         private IDisposable CharUnknownSub;
         private IDisposable CharActivitySub;
         private int FetchCount;
-        public BLEDevice Device;
 
-        public MiBand3FetchService(BLEDevice bledevice)
+
+        public MiBand3FetchService(MiBand3 device)
         {
-            Device = bledevice;
+            MiBand3 = device;
         }
 
         public void InitiateFetching()
@@ -47,10 +49,10 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
 
             //When unknown characteristic changed, call OnUnknownCharactericticChange()
             CharUnknownSub?.Dispose();
-            CharUnknownSub = Device.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(OnUnknownCharacteristicChange);
+            CharUnknownSub = MiBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(OnUnknownCharacteristicChange);
 
             //Write fetchbytes to the unknown characteristic
-            await Device.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(fetchBytes);
+            await MiBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(fetchBytes);
         }
 
         private void PrintBytes(byte[] bytes, string name)
@@ -81,10 +83,10 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
 
                 CharActivitySub?.Dispose();
                 //When activity characteristic changed, call OnActivityCharacteristicChanged()
-                CharActivitySub = Device.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(OnActivityCharacteristicChanged);
+                CharActivitySub = MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(OnActivityCharacteristicChanged);
 
                 //write 2 to the UnknownCharacteristic (why?)
-                await Device.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
+                await MiBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
             }
             else
             {

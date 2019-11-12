@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 
 namespace WindesHeartSDK
 {
