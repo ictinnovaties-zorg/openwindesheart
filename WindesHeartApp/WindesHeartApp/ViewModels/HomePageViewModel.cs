@@ -6,22 +6,19 @@ namespace WindesHeartApp.ViewModels
 {
     public class HomePageViewModel : INotifyPropertyChanged
     {
-        public HomePageViewModel()
-        {
-            HeartRate = Globals.heartRate;
-            Battery = Globals.batteryPercentage;
-        }
-
+        private int battery;
+        private int heartRate;
         public event PropertyChangedEventHandler PropertyChanged;
-
         void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private int battery;
-        private int heartRate;
-
+        public HomePageViewModel()
+        {
+            HeartRate = Globals.heartRate;
+            Battery = Globals.batteryPercentage;
+        }
         public int Battery
         {
             get { return battery; }
@@ -32,7 +29,6 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(DisplayBatteryLevel));
             }
         }
-
         public int HeartRate
         {
             get { return heartRate; }
@@ -43,12 +39,10 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(DisplayHeartRate));
             }
         }
-
         public string DisplayHeartRate
         {
             get { return $"Your Last heartbeat was: {HeartRate.ToString()}"; }
         }
-
         public string DisplayBatteryLevel
         {
             get { return $"Your Batterylevel is: {Battery.ToString()}"; }

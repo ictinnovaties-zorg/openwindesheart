@@ -3,6 +3,5 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WindesHeartApp.Pages.HomePage">
     <AbsoluteLayout x:Name="absoluteLayout">
-    <Label x:Name="batteryLabel" Text="{Binding Battery}"></Label>
     </AbsoluteLayout>
 </ContentPage>
