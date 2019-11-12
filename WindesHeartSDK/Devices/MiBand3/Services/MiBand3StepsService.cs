@@ -11,7 +11,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
     public class MiBand3StepsService
     {
         private readonly MiBand3 MiBand3;
-        private IDisposable realtimeDisposable;
+        private IDisposable RealtimeDisposable;
 
         public MiBand3StepsService(MiBand3 device)
         {
@@ -24,8 +24,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <param name="callback"></param>
         public void EnableRealTimeSteps(Action<StepInfo> callback)
         {
-            realtimeDisposable?.Dispose();
-            realtimeDisposable = MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).RegisterAndNotify().Subscribe(
+            RealtimeDisposable?.Dispose();
+            RealtimeDisposable = MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).RegisterAndNotify().Subscribe(
                 x => callback(new StepInfo(x.Characteristic.Value)));
         }
 
@@ -34,7 +34,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// </summary>
         public void DisableRealTimeSteps()
         {
-            realtimeDisposable?.Dispose();
+            RealtimeDisposable?.Dispose();
         }
 
         public async Task<StepInfo> GetSteps()

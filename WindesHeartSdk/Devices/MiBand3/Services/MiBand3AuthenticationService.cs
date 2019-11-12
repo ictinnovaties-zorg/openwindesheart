@@ -11,8 +11,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3AuthenticationService
     {
-        private static IGattCharacteristic authCharacteristic;
         private readonly MiBand3 MiBand;
+        private IGattCharacteristic authCharacteristic;
+
 
 
         public MiBand3AuthenticationService(MiBand3 device)

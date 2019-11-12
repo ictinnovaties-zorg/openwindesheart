@@ -13,7 +13,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
     public class MiBand3BatteryService
     {
         private readonly MiBand3 MiBand;
-        public static IDisposable batteryDisposable;
+        private IDisposable RealTimeDisposible;
 
         public MiBand3BatteryService(MiBand3 device)
         {
@@ -94,12 +94,17 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <summary>
         /// Receive BatteryStatus-updates continuously.
         /// </summary>
-        public void EnableBatteryStatusUpdates(Action<Battery> callback)
+        public void EnableRealTimeBattery(Action<Battery> callback)
         {
-            batteryDisposable?.Dispose();
-            batteryDisposable = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
+            RealTimeDisposible?.Dispose();
+            RealTimeDisposible = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
                 x => callback(CreateBatteryObject(x.Characteristic.Value))
             );
+        }
+
+        public void DisableRealTimeBattery()
+        {
+            RealTimeDisposible?.Dispose();
         }
 
         /// <summary>

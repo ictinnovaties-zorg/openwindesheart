@@ -40,7 +40,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
 
         public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)
         {
-            BatteryService.EnableBatteryStatusUpdates(getBatteryStatus);
+            BatteryService.EnableRealTimeBattery(getBatteryStatus);
         }
 
         public override Task<Battery> GetBattery()
@@ -50,7 +50,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
 
         public override void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate)
         {
-            HeartrateService.EnableHeartrateUpdates(getHeartrate);
+            HeartrateService.EnableRealTimeHeartRate(getHeartrate);
         }
 
         public override void SetHeartrateMeasurementInterval(int minutes)
