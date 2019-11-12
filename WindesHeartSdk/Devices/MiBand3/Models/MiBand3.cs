@@ -1,7 +1,6 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3Device.Services;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Devices.MiBand3Device.Services;
 using WindesHeartSDK.Models;
@@ -50,7 +49,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
 
         public override void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate)
         {
-            HeartrateService.EnableRealTimeHeartRate(getHeartrate);
+            HeartrateService.EnableRealTimeHeartrate(getHeartrate);
         }
 
         public override void SetHeartrateMeasurementInterval(int minutes)
@@ -106,6 +105,16 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
                     }
                 }
             });
+        }
+
+        public override void DisableRealTimeBattery()
+        {
+            BatteryService.DisableRealTimeBattery();
+        }
+
+        public override void DisableRealTimeHeartrate()
+        {
+            HeartrateService.DisableRealTimeHeartrate();
         }
     }
 }

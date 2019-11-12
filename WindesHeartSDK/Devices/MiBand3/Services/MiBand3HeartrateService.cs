@@ -21,7 +21,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// Add a callback to run everytime the user manually measures their heartrate
         /// </summary>
         /// <param name="callback"></param>
-        public void EnableRealTimeHeartRate(Action<Heartrate> callback)
+        public void EnableRealTimeHeartrate(Action<Heartrate> callback)
         {
             RealtimeDisposible?.Dispose();
             RealtimeDisposible = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrate).RegisterAndNotify().Subscribe(
@@ -29,7 +29,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             );
         }
 
-        public void DisableRealTimeHeartRate()
+        public void DisableRealTimeHeartrate()
         {
             RealtimeDisposible?.Dispose();
         }

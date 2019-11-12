@@ -12,8 +12,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
     public class MiBand3AuthenticationService
     {
         private readonly MiBand3 MiBand;
-        private IGattCharacteristic authCharacteristic;
-
+        private IGattCharacteristic AuthCharacteristic;
 
 
         public MiBand3AuthenticationService(MiBand3 device)
@@ -28,14 +27,14 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <exception cref="ConnectionException">Throws exception if authentication went wrong.</exception>
         public async Task Authenticate()
         {
-            authCharacteristic = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
-            if (authCharacteristic != null)
+            AuthCharacteristic = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
+            if (AuthCharacteristic != null)
             {
                 //Triggers vibration on Mi Band 3
                 await TriggerAuthentication();
 
                 //Fired when Mi Band 3 is tapped
-                authCharacteristic.RegisterAndNotify().Subscribe(async result =>
+                AuthCharacteristic.RegisterAndNotify().Subscribe(async result =>
                 {
                     var data = result.Data;
                     if (data == null)
@@ -80,19 +79,19 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             Console.WriteLine("Authenticating...");
             Console.WriteLine("Writing authentication-key..");
-            await authCharacteristic.WriteWithoutResponse(MiBand3Resource.AuthKey);
+            await AuthCharacteristic.WriteWithoutResponse(MiBand3Resource.AuthKey);
         }
 
         private async Task RequestAuthorizationNumber()
         {
             Console.WriteLine("1.Requesting Authorization-number");
-            await authCharacteristic.WriteWithoutResponse(MiBand3Resource.RequestNumber);
+            await AuthCharacteristic.WriteWithoutResponse(MiBand3Resource.RequestNumber);
         }
 
         private async Task RequestRandomEncryptionKey(byte[] data)
         {
             Console.WriteLine("2.Requesting random encryption key");
-            await authCharacteristic.WriteWithoutResponse(MiBand3ConversionHelper.CreateKey(data));
+            await AuthCharacteristic.WriteWithoutResponse(MiBand3ConversionHelper.CreateKey(data));
         }
     }
 }
