@@ -12,6 +12,8 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TestPage : ContentPage
     {
+        public bool is24hour = true;
+
         public TestPage()
         {
             InitializeComponent();
@@ -50,6 +52,8 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(realtimestepsButton, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(disablerealtimestepsButton, new Rectangle(0.05, 0.65, 0.5, 0.05));
             AbsoluteLayout.SetLayoutFlags(disablerealtimestepsButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
         }
         private async void Button_Clicked(object sender, EventArgs e)
         {
@@ -140,9 +144,17 @@ namespace WindesHeartApp.Pages
             Console.WriteLine("Steps updated: " + steps.GetStepCount());
         }
 
+
+
         private void GoBack_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
+        }
+
+        private void Setln_Clicked(object sender, EventArgs e)
+        {
+            Globals.device.SetTimeDisplayUnit(is24hour);
+            is24hour = !is24hour;
         }
     }
 }

@@ -16,7 +16,8 @@
                 <Button FontSize ="20" x:Name="stepsButton" Clicked="GetSteps" Text="Get current steps" />
                 <Button FontSize ="20" x:Name="realtimestepsButton" Clicked="EnableRealTimeSteps" Text="Enable Realtime Steps" />
                 <Button FontSize ="20" x:Name="disablerealtimestepsButton" Clicked="DisableRealTimeSteps" Text="Disable Realtime Steps" />
-        </AbsoluteLayout>
+                <Button FontSize="20" x:Name="Setln" Clicked="Setln_Clicked" Text="Toggle Clock Unit" />
+            </AbsoluteLayout>
                 </ScrollView>
     </ContentPage.Content>
 </ContentPage>

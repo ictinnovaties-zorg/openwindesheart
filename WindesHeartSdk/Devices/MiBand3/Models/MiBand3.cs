@@ -35,6 +35,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             BluetoothService.Disconnect();
         }
 
+        public override void SetTimeDisplayUnit(bool is24hours)
+        {
+            DateTimeService.SetTimeDisplayUnit(is24hours);
+        }
+
         public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)
         {
             BatteryService.EnableBatteryStatusUpdates(getBatteryStatus);
