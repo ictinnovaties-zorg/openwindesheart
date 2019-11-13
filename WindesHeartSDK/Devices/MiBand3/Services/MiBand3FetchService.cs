@@ -40,7 +40,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             givenStartTimestamp = date;
             FetchCount++;
             LastPacketCounter = -128;
-            Samples.Clear();
 
             //Start date to get activitydata from
             byte[] timestamp = GetTimeBytes(date, TimeUnit.Minutes);
