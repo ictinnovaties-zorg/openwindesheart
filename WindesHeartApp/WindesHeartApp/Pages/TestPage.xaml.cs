@@ -12,6 +12,7 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TestPage : ContentPage
     {
+        public DateTime temptime = new DateTime(2019, 10, 10, 10, 1, 1);
         public TestPage()
         {
             InitializeComponent();
@@ -86,7 +87,8 @@ namespace WindesHeartApp.Pages
 
         private async void SetTime(object sender, EventArgs e)
         {
-            bool timeset = await Globals.device.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
+            temptime = temptime.AddHours(2);
+            bool timeset = await Globals.device.SetTime(temptime);
             Console.WriteLine("Time set " + timeset);
         }
 

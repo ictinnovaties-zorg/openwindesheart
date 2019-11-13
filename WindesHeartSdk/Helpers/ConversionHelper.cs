@@ -84,7 +84,7 @@ namespace WindesHeartSDK.Helpers
             return (bytes[1] << 8 | bytes[0]);
         }
 
-        public static DateTime RawBytesToCalendar(byte[] value, bool honorDeviceTimeOffset)
+        public static DateTime RawBytesToCalendar(byte[] value)
         {
             if (value.Length >= 7)
             {

@@ -13,7 +13,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
     {
         private readonly List<ActivitySample> Samples = new List<ActivitySample>();
         private sbyte LastPacketCounter;
+        private DateTime givenStartTimestamp;
         private DateTime StartTimestamp;
+        private DateTime SampleDate;
         private int ExpectedDataLength;
 
         private IDisposable CharUnknownSub;
@@ -26,18 +28,20 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             Device = bledevice;
         }
 
-        public void InitiateFetching()
+        public void InitiateFetching(DateTime date)
         {
-            StartFetching();
+            StartFetching(date);
         }
-        private async void StartFetching()
+
+        private async void StartFetching(DateTime date)
         {
+            givenStartTimestamp = date;
             FetchCount++;
             LastPacketCounter = -128;
             Samples.Clear();
 
             //Start date to get activitydata from
-            byte[] timestamp = GetTimeBytes(DateTime.Today.AddDays(-2), TimeUnit.Minutes);
+            byte[] timestamp = GetTimeBytes(date, TimeUnit.Minutes);
             byte[] fetchBytes = new byte[10] { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
 
             //Copy timestamp to last 8 bytes of fetchBytes
@@ -74,12 +78,14 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             //Confirmation is first 3 bytes of response
             byte[] confirmation = response.Take(3).ToArray();
 
+
             // first two bytes are whether our request was accepted
             if (confirmation.SequenceEqual(MiBand3Resource.ResponseActivityDataStartDateSuccess))
             {
                 HandleActivityMetadata(response);
 
                 CharActivitySub?.Dispose();
+
                 //When activity characteristic changed, call OnActivityCharacteristicChanged()
                 CharActivitySub = Device.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(OnActivityCharacteristicChanged);
 
@@ -103,19 +109,20 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                 throw new ArgumentException("Unexpected activity array size: " + len);
             }
 
-            for (int i = 1; i < len; i += 4)
-            {
-                //create the sample
-                ActivitySample sample = CreateSample(value[i], value[i + 1], value[i + 2], value[i + 3]);
-                Samples.Add(sample);
-                Console.WriteLine("Samples:  " + Samples.Count);
-            }
+            //for (int i = 1; i < len; i += 4)
+            //{
+            //create the sample
+            ActivitySample sample = CreateSample(value[1], value[2], value[3], value[4]);
+            Samples.Add(sample);
+            Console.WriteLine("Samples:  " + Samples.Count);
+            //}
         }
 
         private ActivitySample CreateSample(byte category, byte intensity, byte steps, byte heartrate)
         {
             ActivitySample sample = new ActivitySample
             {
+                Timestamp = SampleDate,
                 RawKind = category & 0xff,
                 RawIntensity = intensity & 0xff,
                 Steps = steps & 0xff,
@@ -144,6 +151,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                 {
                     LastPacketCounter++;
                     BufferActivityData(response);
+                    if (response.Length > 5)
+                    {
+                        givenStartTimestamp = SampleDate.AddMinutes(1);
+                        StartFetching(givenStartTimestamp);
+                    }
                 }
                 else
                 {
@@ -172,7 +184,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                     var timeStampBytes = new byte[8];
                     Array.Copy(value, 7, timeStampBytes, 0, 8);
 
-                    StartTimestamp = RawBytesToCalendar(timeStampBytes, false);
+                    SampleDate = RawBytesToCalendar(timeStampBytes);
                     Console.WriteLine("Expected data length: {0}", ExpectedDataLength);
                 }
                 else

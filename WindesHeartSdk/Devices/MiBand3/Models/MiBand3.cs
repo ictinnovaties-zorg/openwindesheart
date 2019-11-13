@@ -79,7 +79,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
         public override void FetchData()
         {
-            FetchService.InitiateFetching();
+            FetchService.InitiateFetching(DateTime.Today.AddDays(-100));
         }
 
         public override void OnConnect()
