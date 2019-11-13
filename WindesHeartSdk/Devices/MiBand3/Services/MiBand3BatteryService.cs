@@ -1,20 +1,23 @@
-﻿using Plugin.BluetoothLE;
+﻿
+
+using Plugin.BluetoothLE;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Resources;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Models;
 
-namespace WindesHeartSDK.Devices.MiBand3.Services
+namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3BatteryService
     {
-        private readonly BLEDevice BLEDevice;
-        public static IDisposable batteryDisposable;
+        private readonly MiBand3 MiBand;
+        private IDisposable RealTimeDisposible;
 
-        public MiBand3BatteryService(BLEDevice device)
+        public MiBand3BatteryService(MiBand3 device)
         {
-            BLEDevice = device;
+            MiBand = device;
         }
         /// <summary>
         /// Get Raw Battery data.
@@ -91,12 +94,17 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <summary>
         /// Receive BatteryStatus-updates continuously.
         /// </summary>
-        public void EnableBatteryStatusUpdates(Action<Battery> callback)
+        public void EnableRealTimeBattery(Action<Battery> callback)
         {
-            batteryDisposable?.Dispose();
-            batteryDisposable = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
+            RealTimeDisposible?.Dispose();
+            RealTimeDisposible = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
                 x => callback(CreateBatteryObject(x.Characteristic.Value))
             );
+        }
+
+        public void DisableRealTimeBattery()
+        {
+            RealTimeDisposible?.Dispose();
         }
 
         /// <summary>
@@ -105,7 +113,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         /// <returns>IGattCharacteristic</returns>
         private IGattCharacteristic GetBatteryCharacteristic()
         {
-            return BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
+            return MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
         }
     }
 }

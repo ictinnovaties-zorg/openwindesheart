@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 
 namespace WindesHeartSDK
 {
@@ -14,7 +14,7 @@ namespace WindesHeartSDK
         private readonly BLEDevice BLEDevice;
         private IDevice IDevice => BLEDevice.Device;
 
-        private static ConnectionStatus ConnectionStatus;
+        private ConnectionStatus ConnectionStatus;
 
 
         public BluetoothService(BLEDevice device)
@@ -28,7 +28,7 @@ namespace WindesHeartSDK
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="scanTimeInSeconds"></param>
         /// <returns>List of IScanResult</returns>
-        public static async Task<List<BLEDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
+        public static async Task<List<BLEDevice>> ScanForDevices(int scanTimeInSeconds = 10)
         {
             var scanResults = new List<BLEDevice>();
             var uniqueGuids = new List<Guid>();
@@ -61,7 +61,7 @@ namespace WindesHeartSDK
             {
                 Console.WriteLine("Bluetooth-Adapter state is: " + CrossBleAdapter.Current.Status + ". Trying again!");
                 await Task.Delay(2000);
-                return await ScanForUniqueDevicesAsync(scanTimeInSeconds);
+                return await ScanForDevices(scanTimeInSeconds);
             }
 
             //Order scanresults by descending signal strength

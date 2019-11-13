@@ -13,7 +13,7 @@ namespace WindesHeartSDK
         /// <returns>List of IScanResult</returns>
         public static async Task<List<BLEDevice>> ScanForDevices(int scanTimeInSeconds = 10)
         {
-            return await BluetoothService.ScanForUniqueDevicesAsync(scanTimeInSeconds);
+            return await BluetoothService.ScanForDevices(scanTimeInSeconds);
         }
     }
 }
