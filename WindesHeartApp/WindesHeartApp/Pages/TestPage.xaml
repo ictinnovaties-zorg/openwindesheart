@@ -6,17 +6,17 @@
     <ContentPage.Content>
         <ScrollView>
         <AbsoluteLayout  x:Name="Layout">
-            <Button FontSize ="20" x:Name="scanButton" Clicked="Button_Clicked" Text="Scannen en Connecten"/>
-                <Button FontSize ="20" x:Name="readBattContin" Clicked="ReadBatteryContinuous" Text="Read battery Continuous" />
-                <Button FontSize ="20" x:Name="readBattCurrent" Clicked="ReadCurrentBattery" Text="Read current battery" />
-                <Button FontSize ="20" x:Name="disconnButton" Clicked="Disconnect" Text="Disconnecten" />
-                <Button FontSize ="20" x:Name="settimeButton" Clicked="SetTime" Text="Set time" />
-                <Button FontSize ="20" x:Name="setcurrenttimeButton" Clicked="SetCurrentTime" Text="Set current time" />
-                <Button FontSize ="20" x:Name ="getHeartrateButton" Clicked="GetHeartRate_Clicked" Text="Read Heartrate Continuous" />
-                <Button FontSize ="20" x:Name="stepsButton" Clicked="GetSteps" Text="Get current steps" />
-                <Button FontSize ="20" x:Name="realtimestepsButton" Clicked="EnableRealTimeSteps" Text="Enable Realtime Steps" />
-                <Button FontSize ="20" x:Name="disablerealtimestepsButton" Clicked="DisableRealTimeSteps" Text="Disable Realtime Steps" />
-                <Button FontSize="20" x:Name="Setln" Clicked="Setln_Clicked" Text="Toggle Clock Unit" />
+            <Button FontSize ="10" x:Name="scanButton" Clicked="Button_Clicked" Text="Scannen en Connecten"/>
+                <Button FontSize ="10" x:Name="readBattContin" Clicked="ReadBatteryContinuous" Text="Read battery Continuous" />
+                <Button FontSize ="10" x:Name="readBattCurrent" Clicked="ReadCurrentBattery" Text="Read current battery" />
+                <Button FontSize ="10" x:Name="disconnButton" Clicked="Disconnect" Text="Disconnecten" />
+                <Button FontSize ="10" x:Name="settimeButton" Clicked="SetTime" Text="Set time" />
+                <Button FontSize ="10" x:Name="setcurrenttimeButton" Clicked="SetCurrentTime" Text="Set current time" />
+                <Button FontSize ="10" x:Name ="getHeartrateButton" Clicked="GetHeartRate_Clicked" Text="Read Heartrate Continuous" />
+                <Button FontSize ="10" x:Name="stepsButton" Clicked="GetSteps" Text="Get current steps" />
+                <Button FontSize ="10" x:Name="realtimestepsButton" Clicked="EnableRealTimeSteps" Text="Enable Realtime Steps" />
+                <Button FontSize ="10" x:Name="disablerealtimestepsButton" Clicked="DisableRealTimeSteps" Text="Disable Realtime Steps" />
+                <Button FontSize="10" x:Name="Setln" Clicked="Setln_Clicked" Text="Toggle Date and Time Format" />
             </AbsoluteLayout>
                 </ScrollView>
     </ContentPage.Content>

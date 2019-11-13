@@ -40,6 +40,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             DateTimeService.SetTimeDisplayUnit(is24hours);
         }
 
+        public override void SetDateDisplayFormat(bool isddMMYYYY)
+        {
+            DateTimeService.SetDateDisplayUnit(isddMMYYYY);
+        }
+
         public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)
         {
             BatteryService.EnableBatteryStatusUpdates(getBatteryStatus);

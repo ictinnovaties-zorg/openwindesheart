@@ -20,6 +20,12 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
         //General Guid for device settings
         public static Guid GuidDeviceConfiguration = new Guid("00000003-0000-3512-2118-0009af100700");
 
+        public static byte[] Byte_TimeFomat_24hours = new byte[] { 0x06, 0x02, 0x0, 0x1 };
+        public static byte[] Byte_TimeFomat_12hours = new byte[] { 0x06, 0x02, 0x0, 0x0 };
+
+        public static byte[] Byte_DateFormat_dd_MM_YYYY = new byte[] { 0x06, 30, 0x00, Convert.ToByte('d'), Convert.ToByte('d'), Convert.ToByte('/'), Convert.ToByte('M'), Convert.ToByte('M'), Convert.ToByte('/'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y') };
+        public static byte[] Byte_DateFormat_MM_dd_YYYY = new byte[] { 0x06, 30, 0x00, Convert.ToByte('M'), Convert.ToByte('M'), Convert.ToByte('/'), Convert.ToByte('d'), Convert.ToByte('d'), Convert.ToByte('/'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y') };
+
         //Battery Guid
         public static Guid GuidCharacteristic6BatteryInfo = new Guid("00000006-0000-3512-2118-0009af100700");
 
@@ -34,5 +40,6 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
 
         //Steps Realtime Guid
         public static Guid GuidCharacteristic7RealtimeSteps = new Guid("00000007-0000-3512-2118-0009af100700");
+
     }
 }

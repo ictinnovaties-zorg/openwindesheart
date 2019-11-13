@@ -153,6 +153,7 @@ namespace WindesHeartApp.Pages
 
         private void Setln_Clicked(object sender, EventArgs e)
         {
+            Globals.device.SetDateDisplayFormat(is24hour);
             Globals.device.SetTimeDisplayUnit(is24hour);
             is24hour = !is24hour;
         }

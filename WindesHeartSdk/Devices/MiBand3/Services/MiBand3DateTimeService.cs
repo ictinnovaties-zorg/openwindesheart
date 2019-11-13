@@ -36,11 +36,28 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         {
             if (is24format)
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(new byte[] { 0x06, 0x02, 0x0, 0x1 });
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_TimeFomat_24hours);
             }
             else
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(new byte[] { 0x06, 0x02, 0x0, 0x0 });
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_TimeFomat_12hours);
+            }
+        }
+
+        /// <summary>
+        /// Set the Mi Bands Date format to either dd/MM/YYYY if true or MM/dd/YYYY if false
+        /// </summary>
+        /// <param name="isdMY"></param>
+        public async void SetDateDisplayUnit(bool isdMY)
+        {
+            if (isdMY)
+            {
+
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DateFormat_dd_MM_YYYY);
+            }
+            else
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DateFormat_MM_dd_YYYY);
             }
         }
     }
