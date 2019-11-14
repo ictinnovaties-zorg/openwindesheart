@@ -15,6 +15,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         private readonly MiBand3DateTimeService DateTimeService;
         private readonly MiBand3StepsService StepsService;
         private readonly MiBand3AuthenticationService AuthenticationService;
+        private readonly MiBand3ConfigurationService ConfigurationService;
 
         public MiBand3(int rssi, IDevice device) : base(rssi, device)
         {
@@ -23,6 +24,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             DateTimeService = new MiBand3DateTimeService(this);
             AuthenticationService = new MiBand3AuthenticationService(this);
             StepsService = new MiBand3StepsService(this);
+            ConfigurationService = new MiBand3ConfigurationService(this);
         }
 
         public override void Connect()
@@ -43,6 +45,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public override void SetDateDisplayFormat(bool isddMMYYYY)
         {
             DateTimeService.SetDateDisplayUnit(isddMMYYYY);
+        }
+
+        public override void SetLanguage(string localeString)
+        {
+            ConfigurationService.SetLanguage(localeString);
         }
 
         public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)

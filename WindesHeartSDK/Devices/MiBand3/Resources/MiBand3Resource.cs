@@ -20,6 +20,8 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
         //General Guid for device settings
         public static Guid GuidDeviceConfiguration = new Guid("00000003-0000-3512-2118-0009af100700");
 
+        public static byte[] Byte_SetLanguage_Template = new byte[] { 0x06, 0x17, 0x00, 0, 0, 0, 0, 0 };
+
         public static byte[] Byte_TimeFomat_24hours = new byte[] { 0x06, 0x02, 0x0, 0x1 };
         public static byte[] Byte_TimeFomat_12hours = new byte[] { 0x06, 0x02, 0x0, 0x0 };
 

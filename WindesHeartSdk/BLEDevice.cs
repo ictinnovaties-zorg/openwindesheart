@@ -29,6 +29,7 @@ namespace WindesHeartSDK
         public abstract void Disconnect();
         public abstract void SetTimeDisplayUnit(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
+        public abstract void SetLanguage(string localeString);
         public abstract Task<bool> SetTime(System.DateTime dateTime);
         public abstract Task<StepInfo> GetSteps();
         public abstract void EnableRealTimeSteps(Action<StepInfo> OnStepsChanged);
