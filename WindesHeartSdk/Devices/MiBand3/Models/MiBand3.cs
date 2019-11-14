@@ -39,12 +39,12 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
         public override void SetTimeDisplayUnit(bool is24hours)
         {
-            DateTimeService.SetTimeDisplayUnit(is24hours);
+            ConfigurationService.SetTimeDisplayUnit(is24hours);
         }
 
         public override void SetDateDisplayFormat(bool isddMMYYYY)
         {
-            DateTimeService.SetDateDisplayUnit(isddMMYYYY);
+            ConfigurationService.SetDateDisplayUnit(isddMMYYYY);
         }
 
         public override void SetLanguage(string localeString)
