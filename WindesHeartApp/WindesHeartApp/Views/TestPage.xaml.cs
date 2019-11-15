@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Services;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -55,6 +56,7 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.05));
             AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
         }
+        
         private async void Button_Clicked(object sender, EventArgs e)
         {
             try
@@ -83,7 +85,29 @@ namespace WindesHeartApp.Pages
             var battery = await Globals.device.GetBattery();
             Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
             Globals.batteryPercentage = battery.BatteryPercentage;
-            HomePage.batteryLabel.Text = $"Battery level: {battery.BatteryPercentage}";
+            if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";
+                Globals.batteryImage = "BatteryQuart.png";
+            }
+            else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryHalf.png";
+                Globals.batteryImage = "BatteryHalf.png";
+            }
+            else if (battery.BatteryPercentage > 51 && battery.BatteryPercentage < 76)
+            {
+
+
+                Globals.homepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
+                Globals.batteryImage = "BatteryHalf.png";
+            }
+            else if (battery.BatteryPercentage >= 76)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
+                Globals.batteryImage = "BatteryHalf.png";
+
+            }
         }
 
         private async void SetTime(object sender, EventArgs e)
@@ -100,25 +124,17 @@ namespace WindesHeartApp.Pages
 
         private async void ReadBatteryContinuous(object sender, EventArgs e)
         {
-            Globals.device.EnableRealTimeBattery(GetBatteryStatus);
+            Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
         }
         private void GetBatteryStatus(Battery battery)
         {
-            Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
-            Globals.batteryPercentage = battery.BatteryPercentage;
-        }
 
-        public void GetHeartrate(Heartrate heartrate)
-        {
-            Console.WriteLine(heartrate.HeartrateValue);
-            Globals.heartRate = heartrate.HeartrateValue;
         }
-
 
         public void GetHeartRate_Clicked(object sender, EventArgs e)
         {
             Globals.device.SetHeartrateMeasurementInterval(1);
-            Globals.device.EnableRealTimeHeartrate(GetHeartrate);
+            Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
         }
 
         public async void GetSteps(object sender, EventArgs e)
