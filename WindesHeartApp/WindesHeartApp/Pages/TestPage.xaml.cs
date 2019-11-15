@@ -155,6 +155,7 @@ namespace WindesHeartApp.Pages
         {
             Globals.device.SetDateDisplayFormat(is24hour);
             Globals.device.SetTimeDisplayUnit(is24hour);
+            Globals.device.SetActivateOnLiftWrist(is24hour);
             if (is24hour)
             {
                 Globals.device.SetLanguage("nl-NL");

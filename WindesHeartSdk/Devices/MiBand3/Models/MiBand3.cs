@@ -52,6 +52,16 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             ConfigurationService.SetLanguage(localeString);
         }
 
+        public override void SetActivateOnLiftWrist(bool activate)
+        {
+            ConfigurationService.SetActivateOnWristLift(activate);
+        }
+
+        public override void SetActivateOnLiftWrist(DateTime from, DateTime to)
+        {
+            ConfigurationService.SetActivateOnWristLift(from, to);
+        }
+
         public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)
         {
             BatteryService.EnableBatteryStatusUpdates(getBatteryStatus);

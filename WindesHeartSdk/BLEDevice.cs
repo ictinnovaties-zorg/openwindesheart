@@ -32,6 +32,8 @@ namespace WindesHeartSDK
         public abstract void SetLanguage(string localeString);
         public abstract Task<bool> SetTime(System.DateTime dateTime);
         public abstract Task<StepInfo> GetSteps();
+        public abstract void SetActivateOnLiftWrist(bool activate);
+        public abstract void SetActivateOnLiftWrist(DateTime from, DateTime to);
         public abstract void EnableRealTimeSteps(Action<StepInfo> OnStepsChanged);
         public abstract void DisableRealTimeSteps();
         public abstract Task<Battery> GetBattery();

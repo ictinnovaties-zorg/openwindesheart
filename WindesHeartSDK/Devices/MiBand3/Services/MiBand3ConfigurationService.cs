@@ -59,5 +59,39 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                 await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DateFormat_MM_dd_YYYY);
             }
         }
+
+        /// <summary>
+        /// Set permanent activate on wrist lift. true for enable. false for disable
+        /// </summary>
+        /// <param name="activate"></param>
+        public async void SetActivateOnWristLift(bool activate)
+        {
+            if (activate)
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableActivateOnLiftWrist);
+            }
+            else
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableActivateOnLiftWrist);
+            }
+        }
+
+        /// <summary>
+        /// Set the activate display on lift wrist only to be active between the two given times. Date's dont matter
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        public async void SetActivateOnWristLift(DateTime from, DateTime to)
+        {
+            byte[] CommandByte = MiBand3Resource.Byte_ScheduleActivateOnLiftWrist_Template;
+
+            CommandByte[4] = Convert.ToByte(from.Hour);
+            CommandByte[5] = Convert.ToByte(from.Minute);
+
+            CommandByte[6] = Convert.ToByte(to.Hour);
+            CommandByte[7] = Convert.ToByte(to.Minute);
+
+            await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(CommandByte);
+        }
     }
 }
