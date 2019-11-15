@@ -23,26 +23,30 @@ namespace WindesHeartApp.Pages
 
         private void BuildPage()
         {
+            absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
 
             #region define battery Label and ProgressBar TEST TEST
+            Image batteryImage = new Image();
+            batteryImage.SetBinding(Image.SourceProperty, new Binding("BatteryImage"));
+            batteryImage.HeightRequest = Globals.screenHeight / 100 * 2.5;
+
+            AbsoluteLayout.SetLayoutBounds(batteryImage, new Rectangle(0.85, 0.18, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(batteryImage, AbsoluteLayoutFlags.PositionProportional);
+
             Label batteryLabel = new Label
             { FontSize = Globals.screenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold };
-            batteryLabel.SetBinding(Label.TextProperty, new Binding("DisplayBatteryLevel", BindingMode.OneWay));
+            batteryLabel.SetBinding(Label.TextProperty, new Binding("DisplayBattery"));
             AbsoluteLayout.SetLayoutBounds(batteryLabel, new Rectangle(0.95, 0.18, -1, -1));
             AbsoluteLayout.SetLayoutFlags(batteryLabel, AbsoluteLayoutFlags.PositionProportional);
 
-            ProgressBar batteryBar = new ProgressBar { ProgressColor = Globals.secondaryColor, Progress = 0.5 };
-            AbsoluteLayout.SetLayoutBounds(batteryBar, new Rectangle(0.95, 0.2, 0.5, 0.15));
-            AbsoluteLayout.SetLayoutFlags(batteryBar, AbsoluteLayoutFlags.All);
-
-            absoluteLayout.Children.Add(batteryBar);
+            absoluteLayout.Children.Add(batteryImage);
             absoluteLayout.Children.Add(batteryLabel);
 
             Label HRLabel = new Label
             { FontSize = Globals.screenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold };
-            HRLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartRate", BindingMode.OneWay));
+            HRLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartRate"));
             AbsoluteLayout.SetLayoutBounds(HRLabel, new Rectangle(0.05, 0.18, -1, -1));
             AbsoluteLayout.SetLayoutFlags(HRLabel, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(HRLabel);

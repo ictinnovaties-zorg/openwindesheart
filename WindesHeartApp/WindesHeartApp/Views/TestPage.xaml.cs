@@ -82,6 +82,29 @@ namespace WindesHeartApp.Pages
             var battery = await Globals.device.GetBattery();
             Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
             Globals.batteryPercentage = battery.BatteryPercentage;
+            if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";
+                Globals.batteryImage = "BatteryQuart.png";
+            }
+            else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryHalf.png";
+                Globals.batteryImage = "BatteryHalf.png";
+            }
+            else if (battery.BatteryPercentage > 51 && battery.BatteryPercentage < 76)
+            {
+
+
+                Globals.homepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
+                Globals.batteryImage = "BatteryHalf.png";
+            }
+            else if (battery.BatteryPercentage >= 76)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
+                Globals.batteryImage = "BatteryHalf.png";
+
+            }
         }
 
         private async void SetTime(object sender, EventArgs e)

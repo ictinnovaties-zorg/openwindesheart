@@ -8,7 +8,9 @@ namespace WindesHeartApp.ViewModels
     {
         private int battery;
         private int heartRate;
+        private string batteryImage = "";
         public event PropertyChangedEventHandler PropertyChanged;
+
         void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -18,7 +20,19 @@ namespace WindesHeartApp.ViewModels
         {
             HeartRate = Globals.heartRate;
             Battery = Globals.batteryPercentage;
+            BatteryImage = Globals.batteryImage;
         }
+
+        public string BatteryImage
+        {
+            get { return batteryImage; }
+            set
+            {
+                batteryImage = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int Battery
         {
             get { return battery; }
@@ -26,7 +40,7 @@ namespace WindesHeartApp.ViewModels
             {
                 battery = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(DisplayBatteryLevel));
+                OnPropertyChanged(nameof(DisplayBattery));
             }
         }
         public int HeartRate
@@ -43,9 +57,9 @@ namespace WindesHeartApp.ViewModels
         {
             get { return $"Your Last heartbeat was: {HeartRate.ToString()}"; }
         }
-        public string DisplayBatteryLevel
+        public string DisplayBattery
         {
-            get { return $"Your Batterylevel is: {Battery.ToString()}"; }
+            get { return $"{Battery.ToString()}%"; }
         }
     }
 }
