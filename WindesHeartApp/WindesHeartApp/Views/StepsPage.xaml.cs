@@ -25,10 +25,6 @@ namespace WindesHeartApp.Pages
             PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
             PageBuilder.BuildAndAddLabel(absoluteLayout, "Steps", 0.05, 0.10);
             PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
-
-
-            Button hielkebutton = new Button();
-            absoluteLayout.Children.Add(hielkebutton);
         }
     }
 }
