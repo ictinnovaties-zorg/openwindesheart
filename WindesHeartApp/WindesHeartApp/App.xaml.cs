@@ -1,6 +1,7 @@
 ﻿using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using WindesHeartApp.Pages;
+using WindesHeartApp.Resources;
 using Xamarin.Forms;
 
 namespace WindesHeartApp
@@ -12,12 +13,11 @@ namespace WindesHeartApp
         {
             InitializeComponent();
             MainPage = new NavigationPage(new HomePage());
-
         }
 
         protected override void OnStart()
         {
-            // Handle when your app starts
+            Globals.BuildGlobals();
         }
 
         protected override void OnSleep()

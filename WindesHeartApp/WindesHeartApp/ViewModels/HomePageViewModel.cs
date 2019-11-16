@@ -20,7 +20,7 @@ namespace WindesHeartApp.ViewModels
         {
             HeartRate = Globals.heartRate;
             Battery = Globals.batteryPercentage;
-            BatteryImage = Globals.batteryImage;
+            BatteryImage = "";
         }
 
         public string BatteryImage

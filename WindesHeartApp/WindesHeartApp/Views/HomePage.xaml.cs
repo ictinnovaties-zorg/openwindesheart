@@ -15,11 +15,11 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Globals.BuildGlobals();
             BindingContext = Globals.homepageviewModel;
             BuildPage();
             App.RequestLocationPermission();
         }
+
 
         private void BuildPage()
         {
@@ -89,7 +89,6 @@ namespace WindesHeartApp.Pages
                     }
                 }
             };
-
             Button aboutButton = new Button();
             aboutButton.Text = "About";
             aboutButton.Clicked += aboutbutton_Clicked;

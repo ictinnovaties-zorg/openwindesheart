@@ -13,7 +13,6 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         private static IGattCharacteristic authCharacteristic;
         private readonly BLEDevice BLEDevice;
 
-
         public MiBand3AuthenticationService(BLEDevice device)
         {
             BLEDevice = device;
