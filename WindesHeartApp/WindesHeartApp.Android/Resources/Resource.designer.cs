@@ -26,7 +26,6 @@ namespace WindesHeartApp.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Microcharts.Droid.Resource.String.library_name = global::WindesHeartApp.Droid.Resource.String.library_name;
 			global::Xamarin.Essentials.Resource.Attribute.font = global::WindesHeartApp.Droid.Resource.Attribute.font;
 			global::Xamarin.Essentials.Resource.Attribute.fontProviderAuthority = global::WindesHeartApp.Droid.Resource.Attribute.fontProviderAuthority;
 			global::Xamarin.Essentials.Resource.Attribute.fontProviderCerts = global::WindesHeartApp.Droid.Resource.Attribute.fontProviderCerts;
@@ -5447,28 +5446,25 @@ namespace WindesHeartApp.Droid
 			public const int character_counter_pattern = 2131492895;
 			
 			// aapt resource value: 0x7F0C0020
-			public const int library_name = 2131492896;
+			public const int password_toggle_content_description = 2131492896;
 			
 			// aapt resource value: 0x7F0C0021
-			public const int password_toggle_content_description = 2131492897;
+			public const int path_password_eye = 2131492897;
 			
 			// aapt resource value: 0x7F0C0022
-			public const int path_password_eye = 2131492898;
+			public const int path_password_eye_mask_strike_through = 2131492898;
 			
 			// aapt resource value: 0x7F0C0023
-			public const int path_password_eye_mask_strike_through = 2131492899;
+			public const int path_password_eye_mask_visible = 2131492899;
 			
 			// aapt resource value: 0x7F0C0024
-			public const int path_password_eye_mask_visible = 2131492900;
+			public const int path_password_strike_through = 2131492900;
 			
 			// aapt resource value: 0x7F0C0025
-			public const int path_password_strike_through = 2131492901;
+			public const int search_menu_title = 2131492901;
 			
 			// aapt resource value: 0x7F0C0026
-			public const int search_menu_title = 2131492902;
-			
-			// aapt resource value: 0x7F0C0027
-			public const int status_bar_notification_info_overflow = 2131492903;
+			public const int status_bar_notification_info_overflow = 2131492902;
 			
 			static String()
 			{
