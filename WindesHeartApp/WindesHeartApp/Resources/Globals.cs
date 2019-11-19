@@ -21,8 +21,10 @@ namespace WindesHeartApp.Resources
         public static Dictionary<string, Color> colorDictionary;
         public static int batteryPercentage { get; set; }
         public static int heartRate { get; set; }
-        public static BLEDevice device;
+
+        public static BLEDevice device = null;
         public static HeartrateViewModel hrviewModel;
+        public static StepsViewModel StepsViewModel;
         public static HomePageViewModel homepageviewModel;
 
         //buttonSize : 10 being biggest, 100 being smallest. 
@@ -34,6 +36,7 @@ namespace WindesHeartApp.Resources
             cornerRadius = ((screenHeight / 10 * 1) - buttonSize);
             screenratioFactor = screenHeight / screenWidth;
             hrviewModel = new HeartrateViewModel();
+            StepsViewModel = new StepsViewModel();
 
             homepageviewModel = new HomePageViewModel();
             colorDictionary = new Dictionary<string, Color>

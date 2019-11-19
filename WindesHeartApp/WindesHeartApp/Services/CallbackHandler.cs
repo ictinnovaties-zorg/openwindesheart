@@ -6,6 +6,7 @@ namespace WindesHeartApp.Services
 {
     public static class CallbackHandler
     {
+
         //OnHeartrateChange/Measurement
         public static void ChangeHeartRate(Heartrate heartrate)
         {
@@ -47,6 +48,13 @@ namespace WindesHeartApp.Services
                 Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
             }
 
+        }
+
+        public static void OnStepsUpdated(StepInfo stepsInfo)
+        {
+            var count = stepsInfo.StepCount;
+            Console.WriteLine($"Stepcount updated: {count}");
+            Globals.StepsViewModel.Steps = count;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.05));
             AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
         }
-        
+
         private async void Button_Clicked(object sender, EventArgs e)
         {
             try
@@ -139,7 +139,7 @@ namespace WindesHeartApp.Pages
         public async void GetSteps(object sender, EventArgs e)
         {
             StepInfo steps = await Globals.device.GetSteps();
-            Console.WriteLine("Steps: " + steps.GetStepCount());
+            Console.WriteLine("Steps: " + steps.StepCount);
         }
 
         public void EnableRealTimeSteps(object sender, EventArgs e)
@@ -156,10 +156,8 @@ namespace WindesHeartApp.Pages
 
         public void OnStepsChanged(StepInfo steps)
         {
-            Console.WriteLine("Steps updated: " + steps.GetStepCount());
+            Console.WriteLine("Steps updated: " + steps.StepCount);
         }
-
-
 
         private void GoBack_Clicked(object sender, EventArgs e)
         {

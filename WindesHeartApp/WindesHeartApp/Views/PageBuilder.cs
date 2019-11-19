@@ -60,7 +60,7 @@ namespace WindesHeartApp.Pages
             Application.Current.MainPage.Navigation.PopAsync();
         }
 
-        public static void BuildAndAddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y)
+        public static Label BuildAndAddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y)
         {
             Label label = new Label
             {
@@ -71,6 +71,7 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(label, new Rectangle(x, y, -1, -1));
             absoluteLayout.Children.Add(label);
+            return label;
         }
     }
 }
