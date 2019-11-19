@@ -1,13 +1,12 @@
-﻿
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class DevicePage : ContentPage
+    public partial class StepsPage : ContentPage
     {
-        public DevicePage()
+        public StepsPage()
         {
             InitializeComponent();
         }
@@ -23,7 +22,7 @@ namespace WindesHeartApp.Pages
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
-            PageBuilder.BuildAndAddLabel(absoluteLayout, "Device", 0.05, 0.10);
+            PageBuilder.BuildAndAddLabel(absoluteLayout, "Steps", 0.05, 0.10);
             PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
         }
     }

@@ -27,8 +27,13 @@ namespace WindesHeartSDK
         public abstract void OnConnect();
         public abstract void Connect();
         public abstract void Disconnect();
+        public abstract void SetTimeDisplayUnit(bool is24hours);
+        public abstract void SetDateDisplayFormat(bool isddMMYYYY);
+        public abstract void SetLanguage(string localeString);
         public abstract Task<bool> SetTime(DateTime dateTime);
         public abstract Task<StepInfo> GetSteps();
+        public abstract void SetActivateOnLiftWrist(bool activate);
+        public abstract void SetActivateOnLiftWrist(DateTime from, DateTime to);
         public abstract void EnableRealTimeSteps(Action<StepInfo> OnStepsChanged);
         public abstract void DisableRealTimeSteps();
         public abstract Task<Battery> GetBattery();

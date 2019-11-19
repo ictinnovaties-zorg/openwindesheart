@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Services;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -13,6 +14,8 @@ namespace WindesHeartApp.Pages
     public partial class TestPage : ContentPage
     {
         public DateTime temptime = new DateTime(2019, 10, 10, 10, 1, 1);
+        public bool is24hour = true;
+
         public TestPage()
         {
             InitializeComponent();
@@ -53,7 +56,10 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(disablerealtimestepsButton, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(fetchButton, new Rectangle(0.05, 0.9, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(fetchButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
         }
+        
         private async void Button_Clicked(object sender, EventArgs e)
         {
             try
@@ -82,7 +88,28 @@ namespace WindesHeartApp.Pages
             var battery = await Globals.device.GetBattery();
             Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
             Globals.batteryPercentage = battery.BatteryPercentage;
-            HomePage.batteryLabel.Text = $"Battery level: {battery.BatteryPercentage}";
+            Globals.homepageviewModel.Battery = battery.BatteryPercentage;
+            if (battery.Status == StatusEnum.Charging)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryCharging.png";
+                return;
+            }
+            if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";
+            }
+            else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryHalf.png";
+            }
+            else if (battery.BatteryPercentage >= 51 && battery.BatteryPercentage < 76)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
+            }
+            else if (battery.BatteryPercentage >= 76)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
+            }
         }
 
         private async void SetTime(object sender, EventArgs e)
@@ -100,25 +127,17 @@ namespace WindesHeartApp.Pages
 
         private async void ReadBatteryContinuous(object sender, EventArgs e)
         {
-            Globals.device.EnableRealTimeBattery(GetBatteryStatus);
+            Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
         }
         private void GetBatteryStatus(Battery battery)
         {
-            Console.WriteLine("Batterypercentage is now: " + battery.BatteryPercentage + "% || Batterystatus is: " + battery.Status);
-            Globals.batteryPercentage = battery.BatteryPercentage;
-        }
 
-        public void GetHeartrate(Heartrate heartrate)
-        {
-            Console.WriteLine(heartrate.HeartrateValue);
-            Globals.heartRate = heartrate.HeartrateValue;
         }
-
 
         public void GetHeartRate_Clicked(object sender, EventArgs e)
         {
             Globals.device.SetHeartrateMeasurementInterval(1);
-            Globals.device.EnableRealTimeHeartrate(GetHeartrate);
+            Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
         }
 
         public async void GetSteps(object sender, EventArgs e)
@@ -152,6 +171,22 @@ namespace WindesHeartApp.Pages
         private void GoBack_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
+        }
+
+        private void Setln_Clicked(object sender, EventArgs e)
+        {
+            Globals.device.SetDateDisplayFormat(is24hour);
+            Globals.device.SetTimeDisplayUnit(is24hour);
+            Globals.device.SetActivateOnLiftWrist(is24hour);
+            if (is24hour)
+            {
+                Globals.device.SetLanguage("nl-NL");
+            }
+            else
+            {
+                Globals.device.SetLanguage("en-EN");
+            }
+            is24hour = !is24hour;
         }
     }
 }

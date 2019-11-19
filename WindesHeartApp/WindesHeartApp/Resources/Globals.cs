@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WindesHeartApp.ViewModels;
 using WindesHeartSDK;
 using Xamarin.Forms;
 
@@ -21,7 +22,8 @@ namespace WindesHeartApp.Resources
         public static int batteryPercentage { get; set; }
         public static int heartRate { get; set; }
         public static BLEDevice device;
-
+        public static HeartrateViewModel hrviewModel;
+        public static HomePageViewModel homepageviewModel;
 
         //buttonSize : 10 being biggest, 100 being smallest. 
         //buttonfontSize : 2-10, 10 being smallest, 2 being largest.
@@ -31,6 +33,9 @@ namespace WindesHeartApp.Resources
             buttonfontSize = 4;
             cornerRadius = ((screenHeight / 10 * 1) - buttonSize);
             screenratioFactor = screenHeight / screenWidth;
+            hrviewModel = new HeartrateViewModel();
+
+            homepageviewModel = new HomePageViewModel();
             colorDictionary = new Dictionary<string, Color>
             {
                 { "Aqua", Color.Aqua},

@@ -1,7 +1,7 @@
 ﻿using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using WindesHeartApp.Pages;
-using WindesHeartApp.Services;
+using WindesHeartApp.Resources;
 using Xamarin.Forms;
 
 namespace WindesHeartApp
@@ -12,14 +12,12 @@ namespace WindesHeartApp
         public App()
         {
             InitializeComponent();
-            DependencyService.Register<MockDataStore>();
             MainPage = new NavigationPage(new HomePage());
-
         }
 
         protected override void OnStart()
         {
-            // Handle when your app starts
+            Globals.BuildGlobals();
         }
 
         protected override void OnSleep()

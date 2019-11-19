@@ -16,6 +16,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
         private readonly MiBand3StepsService StepsService;
         private readonly MiBand3AuthenticationService AuthenticationService;
         private readonly MiBand3FetchService FetchService;
+        private readonly MiBand3ConfigurationService ConfigurationService;
 
         public MiBand3(int rssi, IDevice device) : base(rssi, device)
         {
@@ -25,6 +26,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
             AuthenticationService = new MiBand3AuthenticationService(this);
             FetchService = new MiBand3FetchService(this);
             StepsService = new MiBand3StepsService(this);
+            ConfigurationService = new MiBand3ConfigurationService(this);
         }
 
         public override void Connect()
@@ -35,6 +37,31 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
         public override void Disconnect()
         {
             BluetoothService.Disconnect();
+        }
+
+        public override void SetTimeDisplayUnit(bool is24hours)
+        {
+            ConfigurationService.SetTimeDisplayUnit(is24hours);
+        }
+
+        public override void SetDateDisplayFormat(bool isddMMYYYY)
+        {
+            ConfigurationService.SetDateDisplayUnit(isddMMYYYY);
+        }
+
+        public override void SetLanguage(string localeString)
+        {
+            ConfigurationService.SetLanguage(localeString);
+        }
+
+        public override void SetActivateOnLiftWrist(bool activate)
+        {
+            ConfigurationService.SetActivateOnWristLift(activate);
+        }
+
+        public override void SetActivateOnLiftWrist(DateTime from, DateTime to)
+        {
+            ConfigurationService.SetActivateOnWristLift(from, to);
         }
 
         public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)

@@ -17,6 +17,7 @@
                 <Button FontSize ="10" x:Name="realtimestepsButton" Clicked="EnableRealTimeSteps" Text="Enable Realtime Steps" />
                 <Button FontSize ="10" x:Name="disablerealtimestepsButton" Clicked="DisableRealTimeSteps" Text="Disable Realtime Steps" />
                 <Button FontSize ="10" x:Name="fetchButton" Clicked="FetchData" Text="Fetch Data" />
+                <Button FontSize="10" x:Name="Setln" Clicked="Setln_Clicked" Text="Toggle Date and Time Format" />
             </AbsoluteLayout>
                 </ScrollView>
     </ContentPage.Content>
