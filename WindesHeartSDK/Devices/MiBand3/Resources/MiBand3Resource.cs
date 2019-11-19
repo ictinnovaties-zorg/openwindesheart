@@ -17,6 +17,21 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
 
         public static byte AuthSuccess = 0x01;
 
+        //General Guid for device settings
+        public static Guid GuidDeviceConfiguration = new Guid("00000003-0000-3512-2118-0009af100700");
+
+        public static byte[] Byte_EnableActivateOnLiftWrist = new byte[] { 0x06, 0x05, 0x00, 0x01 };
+        public static byte[] Byte_DisableActivateOnLiftWrist = new byte[] { 0x06, 0x05, 0x00, 0x00 };
+        public static byte[] Byte_ScheduleActivateOnLiftWrist_Template = new byte[] { 0x06, 0x05, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 };
+
+        public static byte[] Byte_SetLanguage_Template = new byte[] { 0x06, 0x17, 0x00, 0, 0, 0, 0, 0 };
+
+        public static byte[] Byte_TimeFomat_24hours = new byte[] { 0x06, 0x02, 0x0, 0x1 };
+        public static byte[] Byte_TimeFomat_12hours = new byte[] { 0x06, 0x02, 0x0, 0x0 };
+
+        public static byte[] Byte_DateFormat_dd_MM_YYYY = new byte[] { 0x06, 30, 0x00, Convert.ToByte('d'), Convert.ToByte('d'), Convert.ToByte('/'), Convert.ToByte('M'), Convert.ToByte('M'), Convert.ToByte('/'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y') };
+        public static byte[] Byte_DateFormat_MM_dd_YYYY = new byte[] { 0x06, 30, 0x00, Convert.ToByte('M'), Convert.ToByte('M'), Convert.ToByte('/'), Convert.ToByte('d'), Convert.ToByte('d'), Convert.ToByte('/'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y') };
+
         //Battery Guid
         public static Guid GuidCharacteristic6BatteryInfo = new Guid("00000006-0000-3512-2118-0009af100700");
 
@@ -31,5 +46,6 @@ namespace WindesHeartSDK.Devices.MiBand3.Resources
 
         //Steps Realtime Guid
         public static Guid GuidCharacteristic7RealtimeSteps = new Guid("00000007-0000-3512-2118-0009af100700");
+
     }
 }
