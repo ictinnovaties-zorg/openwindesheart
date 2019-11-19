@@ -7,11 +7,13 @@ namespace WindesHeartApp.Resources
 {
     public static class Globals
     {
+        public static BLEDevice device;
+        public static HeartrateViewModel heartrateviewModel;
+        public static HomePageViewModel homepageviewModel;
         public static double screenHeight { get; set; }
         public static double screenWidth { get; set; }
         public static Color primaryColor { get; set; } = Color.FromHex("#96d1ff");
         public static Color secondaryColor { get; set; } = Color.FromHex("#53b1ff");
-        public static Color headerColor { get; set; } = Color.FromHex("#234A97");
         public static Color lighttextColor { get; set; } = Color.FromHex("#999999");
         public static double buttonSize { get; set; }
         public static double screenratioFactor { get; set; }
@@ -19,11 +21,7 @@ namespace WindesHeartApp.Resources
         public static double cornerRadius { get; set; }
 
         public static Dictionary<string, Color> colorDictionary;
-        public static int batteryPercentage { get; set; }
-        public static int heartRate { get; set; }
-        public static BLEDevice device;
-        public static HeartrateViewModel hrviewModel;
-        public static HomePageViewModel homepageviewModel;
+
 
         //buttonSize : 10 being biggest, 100 being smallest. 
         //buttonfontSize : 2-10, 10 being smallest, 2 being largest.
@@ -33,9 +31,9 @@ namespace WindesHeartApp.Resources
             buttonfontSize = 4;
             cornerRadius = ((screenHeight / 10 * 1) - buttonSize);
             screenratioFactor = screenHeight / screenWidth;
-            hrviewModel = new HeartrateViewModel();
-
+            heartrateviewModel = new HeartrateViewModel();
             homepageviewModel = new HomePageViewModel();
+
             colorDictionary = new Dictionary<string, Color>
             {
                 { "Aqua", Color.Aqua},

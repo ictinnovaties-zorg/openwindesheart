@@ -10,7 +10,7 @@ namespace WindesHeartApp.Pages
         public HeartratePage()
         {
             InitializeComponent();
-            BindingContext = Globals.hrviewModel;
+            BindingContext = Globals.heartrateviewModel;
         }
 
         protected override void OnAppearing()
@@ -28,12 +28,6 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(heartrateLabel, AbsoluteLayoutFlags.PositionProportional);
             heartrateLabel.FontSize = 15;
 
-            Button button = new Button();
-            button.SetBinding(Button.CommandProperty, new Binding() { Path = "buttonClickedCommand" });
-            button.Text = "Click me, watch the HR change!";
-            AbsoluteLayout.SetLayoutBounds(button, new Rectangle(0.1, 0.7, 300, 50));
-            AbsoluteLayout.SetLayoutFlags(button, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(button);
         }
     }
 }
