@@ -9,6 +9,7 @@ namespace WindesHeartApp.Pages
     {
         public static Label CurrentStepsLabel;
         public static Button ToggleRealTimeStepsButton;
+
         public StepsPage()
         {
             InitializeComponent();
@@ -18,7 +19,6 @@ namespace WindesHeartApp.Pages
         {
             BindingContext = Globals.StepsViewModel;
             BuildPage();
-
         }
 
         private void BuildPage()
@@ -26,26 +26,15 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout absoluteLayout = new AbsoluteLayout();
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
-            PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
-            PageBuilder.BuildAndAddLabel(absoluteLayout, "Steps", 0.05, 0.10);
-            PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
+            PageBuilder.AddHeaderImages(absoluteLayout);
+            PageBuilder.AddLabel(absoluteLayout, "Steps", 0.05, 0.10);
+            PageBuilder.AddReturnButton(absoluteLayout, this);
 
-            CurrentStepsLabel = PageBuilder.BuildAndAddLabel(absoluteLayout, "Steps:", 0.2, 0.2);
+            CurrentStepsLabel = PageBuilder.AddLabel(absoluteLayout, "Steps:", 0.2, 0.2);
             CurrentStepsLabel.SetBinding(Label.TextProperty, new Binding("StepsLabelText"));
 
-            Button getStepsbutton = new Button();
-            getStepsbutton.SetBinding(Button.CommandProperty, new Binding("GetStepsBinding"));
-            getStepsbutton.Text = "Get steps";
-            AbsoluteLayout.SetLayoutBounds(getStepsbutton, new Rectangle(0.2, 0.4, 300, 50));
-            AbsoluteLayout.SetLayoutFlags(getStepsbutton, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(getStepsbutton);
-
-            ToggleRealTimeStepsButton = new Button();
-            ToggleRealTimeStepsButton.SetBinding(Button.CommandProperty, new Binding() { Path = "ToggleRealTimeStepsBinding" });
-            ToggleRealTimeStepsButton.Text = "Enable Realtime Steps";
-            AbsoluteLayout.SetLayoutBounds(ToggleRealTimeStepsButton, new Rectangle(0.2, 0.5, 300, 50));
-            AbsoluteLayout.SetLayoutFlags(ToggleRealTimeStepsButton, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(ToggleRealTimeStepsButton);
+            PageBuilder.AddButton(absoluteLayout, "Get steps", "GetStepsBinding", 0.2, 0.4, 300, 50);
+            ToggleRealTimeStepsButton = PageBuilder.AddButton(absoluteLayout, "Enable realtime steps", "ToggleRealTimeStepsBinding", 0.2, 0.5, 300, 50);
         }
     }
 }

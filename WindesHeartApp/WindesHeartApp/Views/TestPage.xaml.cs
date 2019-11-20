@@ -28,10 +28,10 @@ namespace WindesHeartApp.Pages
         private void BuildPage()
         {
             PageBuilder.BuildPageBasics(Layout, this);
-            PageBuilder.BuildAndAddHeaderImages(Layout);
-            PageBuilder.BuildAndAddLabel(Layout, "TEST", 0.05, 0.10);
-            PageBuilder.BuildAndAddReturnButton(Layout, this);
-            PageBuilder.BuildAndAddReturnButton(Layout, this);
+            PageBuilder.AddHeaderImages(Layout);
+            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10);
+            PageBuilder.AddReturnButton(Layout, this);
+            PageBuilder.AddReturnButton(Layout, this);
 
             AbsoluteLayout.SetLayoutBounds(scanButton, new Rectangle(0.05, 0.2, 0.5, 0.05));
             AbsoluteLayout.SetLayoutFlags(scanButton, AbsoluteLayoutFlags.All);

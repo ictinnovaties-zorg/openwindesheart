@@ -42,7 +42,7 @@ namespace WindesHeartApp.Pages
 
             #endregion
 
-            PageBuilder.BuildAndAddLabel(absoluteLayout, "About", 0.05, 0.27);
+            PageBuilder.AddLabel(absoluteLayout, "About", 0.05, 0.27);
 
             #region define Text
             Grid grid1 = new Grid();
@@ -123,7 +123,7 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(learnmoreButton);
             #endregion
 
-            PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
+            PageBuilder.AddReturnButton(absoluteLayout, this);
 
         }
 

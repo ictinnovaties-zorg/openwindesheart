@@ -14,7 +14,7 @@ namespace WindesHeartApp.Pages
             ((ContentPage)sender).Content = layout;
         }
 
-        public static void BuildAndAddHeaderImages(AbsoluteLayout layout)
+        public static void AddHeaderImages(AbsoluteLayout layout)
         {
             Image heartonlyImage = new Image();
             heartonlyImage.Source = "HeartOnlyTransparent.png";
@@ -32,7 +32,7 @@ namespace WindesHeartApp.Pages
 
         }
 
-        public static void BuildAndAddReturnButton(AbsoluteLayout layout, object sender)
+        public static void AddReturnButton(AbsoluteLayout layout, object sender)
         {
             //added extra grid behind imagebutton to make it clickable easier.
             Grid returnGrid = new Grid();
@@ -60,7 +60,7 @@ namespace WindesHeartApp.Pages
             Application.Current.MainPage.Navigation.PopAsync();
         }
 
-        public static Label BuildAndAddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y)
+        public static Label AddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y)
         {
             Label label = new Label
             {
@@ -72,6 +72,19 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutBounds(label, new Rectangle(x, y, -1, -1));
             absoluteLayout.Children.Add(label);
             return label;
+        }
+
+        public static Button AddButton(AbsoluteLayout absoluteLayout, string text, string bindingPath, double x, double y, double width, double height)
+        {
+            Button button = new Button
+            {
+                Text = text
+            };
+            button.SetBinding(Button.CommandProperty, new Binding() { Path = bindingPath });
+            AbsoluteLayout.SetLayoutFlags(button, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(button, new Rectangle(x, y, width, height));
+            absoluteLayout.Children.Add(button);
+            return button;
         }
     }
 }
