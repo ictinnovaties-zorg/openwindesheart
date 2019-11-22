@@ -106,7 +106,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
 
         public override void FetchData()
         {
-            FetchService.InitiateFetching(DateTime.Today.AddDays(-100));
+            FetchService.InitiateFetching(DateTime.Today.AddDays(-10));
+        }
+
+        public override void EnableSleepTracking(bool enable)
+        {
+            ConfigurationService.EnableSleepTracking(enable);
         }
 
         public override void OnConnect()

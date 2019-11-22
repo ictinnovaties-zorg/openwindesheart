@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WindesHeartSDK
@@ -12,7 +13,7 @@ namespace WindesHeartSDK
         /// <param name="scanTimeInSeconds"></param>
         /// <returns>List of IScanResult</returns>
         public static async Task<List<BLEDevice>> ScanForDevices(int scanTimeInSeconds = 10)
-        {
+        { 
             return await BluetoothService.ScanForDevices(scanTimeInSeconds);
         }
     }

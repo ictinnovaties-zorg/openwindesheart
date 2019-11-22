@@ -37,6 +37,7 @@ namespace WindesHeartSDK
         public abstract void EnableRealTimeSteps(Action<StepInfo> OnStepsChanged);
         public abstract void DisableRealTimeSteps();
         public abstract Task<Battery> GetBattery();
+        public abstract void EnableSleepTracking(bool enable);
         public abstract void FetchData();
 
         /// <summary>

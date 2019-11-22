@@ -56,7 +56,7 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(disablerealtimestepsButton, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(fetchButton, new Rectangle(0.05, 0.9, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(fetchButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.97, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
         }
         
@@ -175,6 +175,7 @@ namespace WindesHeartApp.Pages
 
         private void Setln_Clicked(object sender, EventArgs e)
         {
+            Globals.device.EnableSleepTracking(true);
             Globals.device.SetDateDisplayFormat(is24hour);
             Globals.device.SetTimeDisplayUnit(is24hour);
             Globals.device.SetActivateOnLiftWrist(is24hour);

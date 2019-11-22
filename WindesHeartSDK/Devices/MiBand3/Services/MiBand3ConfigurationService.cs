@@ -93,5 +93,22 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
             await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(CommandByte);
         }
+
+        /// <summary>
+        /// Enable or Disable the sleep measurement of the devices
+        /// </summary>
+        /// <param name="enable"></param>
+        public async void EnableSleepTracking(bool enable)
+        {
+            if (enable)
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableSleepMeasurement);
+            }
+            else
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableSleepMeasurement);
+
+            }
+        }
     }
 }

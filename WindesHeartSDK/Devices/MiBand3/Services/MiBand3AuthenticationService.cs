@@ -30,10 +30,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             AuthCharacteristic = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
             if (AuthCharacteristic != null)
             {
-                //Triggers vibration on Mi Band 3
-                await TriggerAuthentication();
-
-                //Fired when Mi Band 3 is tapped
+               //Fired when Mi Band 3 is tapped
                 AuthCharacteristic.RegisterAndNotify().Subscribe(async result =>
                 {
                     var data = result.Data;
@@ -68,6 +65,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 {
                     throw new ConnectionException(exception.Message);
                 });
+
+                //Triggers vibration on Mi Band 3
+                //await TriggerAuthentication();
+
+                await RequestAuthorizationNumber();
             }
             else
             {
