@@ -11,8 +11,10 @@ namespace WindesHeartSDK
         public int Rssi;
         public readonly IDevice Device;
         public bool Authenticated;
+        public bool NeedsAuthentication = false;
         public List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
-
+        public IDisposable ConnectionDisposable;
+        public IDisposable CharacteristicDisposable;
         //Services
         public readonly BluetoothService BluetoothService;
 
@@ -21,7 +23,13 @@ namespace WindesHeartSDK
             this.Rssi = rssi;
             this.Device = device;
             BluetoothService = new BluetoothService(this);
-            Device.WhenConnected().Subscribe(x => OnConnect());
+            ConnectionDisposable = Device.WhenConnected().Subscribe(x => OnConnect());
+        }
+
+        public void DisposeDisposables()
+        {
+            ConnectionDisposable?.Dispose();
+            CharacteristicDisposable?.Dispose();
         }
 
         public abstract void OnConnect();

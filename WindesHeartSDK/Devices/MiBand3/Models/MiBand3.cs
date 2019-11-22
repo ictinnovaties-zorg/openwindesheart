@@ -105,9 +105,13 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public override void OnConnect()
         {
             Console.WriteLine("Device Connected!");
+            Windesheart.ConnectedDevice?.DisposeDisposables();
+            Windesheart.ConnectedDevice?.Device.CancelConnection();
+            Windesheart.ConnectedDevice = this;
+            Characteristics?.Clear();
 
             //Find unique characteristics
-            Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
+            CharacteristicDisposable = Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
             {
                 if (!Characteristics.Contains(characteristic))
                 {
@@ -119,8 +123,8 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
                         //Check if this is a new connection that needs authentication
                         if (!Authenticated)
                         {
-                            await AuthenticationService.Authenticate();
                             Authenticated = true;
+                            await AuthenticationService.Authenticate();
                         }
                     }
                 }

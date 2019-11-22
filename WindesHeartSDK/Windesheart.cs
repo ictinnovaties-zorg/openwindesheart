@@ -5,6 +5,8 @@ namespace WindesHeartSDK
 {
     public static class Windesheart
     {
+        public static BLEDevice ConnectedDevice;
+
         /// <summary>
         /// Scan for devices that are not yet connected.
         /// </summary>

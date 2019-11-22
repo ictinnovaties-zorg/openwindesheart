@@ -13,6 +13,7 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TestPage : ContentPage
     {
+        public string key = "LastConnectedDeviceGuid";
         public bool is24hour = true;
 
         public TestPage()
@@ -61,13 +62,19 @@ namespace WindesHeartApp.Pages
         {
             try
             {
-                List<BLEDevice> devices = await Windesheart.ScanForDevices();
-                if (devices.Count > 0)
-                {
-                    Globals.device = devices[0];
-                    Globals.device.Connect();
-                    SaveDeviceInAppProperties(Globals.device.Device.Uuid);
-                }
+                //if (App.Current.Properties.ContainsKey(key))
+                //{
+                //    App.Current.Properties.TryGetValue(key, out object result);
+                //    await BluetoothService.ConnectKnownDevice((Guid)result);
+                //} else
+                //{
+                    List<BLEDevice> bleDevices = await Windesheart.ScanForDevices();
+                    if (bleDevices.Count > 0)
+                    {
+                        bleDevices[0].Connect();
+                        SaveDeviceInAppProperties(bleDevices[0].Device.Uuid);
+                    }
+                //}
             }
             catch (Exception r)
             {
@@ -77,12 +84,12 @@ namespace WindesHeartApp.Pages
 
         private async void Disconnect(object sender, EventArgs e)
         {
-            Globals.device.Disconnect();
+            Windesheart.ConnectedDevice.Disconnect();
         }
 
         private async void ReadCurrentBattery(object sender, EventArgs e)
         {
-            var battery = await Globals.device.GetBattery();
+            var battery = await Windesheart.ConnectedDevice.GetBattery();
             Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
             Globals.batteryPercentage = battery.BatteryPercentage;
             Globals.homepageviewModel.Battery = battery.BatteryPercentage;
@@ -111,19 +118,19 @@ namespace WindesHeartApp.Pages
 
         private async void SetTime(object sender, EventArgs e)
         {
-            bool timeset = await Globals.device.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
+            bool timeset = await Windesheart.ConnectedDevice.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
             Console.WriteLine("Time set " + timeset);
         }
 
         private async void SetCurrentTime(object sender, EventArgs e)
         {
-            bool timeset = await Globals.device.SetTime(DateTime.Now);
+            bool timeset = await Windesheart.ConnectedDevice.SetTime(DateTime.Now);
             Console.WriteLine("Time set " + timeset);
         }
 
         private async void ReadBatteryContinuous(object sender, EventArgs e)
         {
-            Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
+            Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
         }
         private void GetBatteryStatus(Battery battery)
         {
@@ -132,25 +139,25 @@ namespace WindesHeartApp.Pages
 
         public void GetHeartRate_Clicked(object sender, EventArgs e)
         {
-            Globals.device.SetHeartrateMeasurementInterval(1);
-            Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
+            Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
+            Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
         }
 
         public async void GetSteps(object sender, EventArgs e)
         {
-            StepInfo steps = await Globals.device.GetSteps();
+            StepInfo steps = await Windesheart.ConnectedDevice.GetSteps();
             Console.WriteLine("Steps: " + steps.GetStepCount());
         }
 
         public void EnableRealTimeSteps(object sender, EventArgs e)
         {
-            Globals.device.EnableRealTimeSteps(OnStepsChanged);
+            Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsChanged);
             Console.WriteLine("Enabled realtime steps");
         }
 
         public void DisableRealTimeSteps(object sender, EventArgs e)
         {
-            Globals.device.DisableRealTimeSteps();
+            Windesheart.ConnectedDevice.DisableRealTimeSteps();
             Console.WriteLine("Disabled realtime steps");
         }
 
@@ -168,37 +175,30 @@ namespace WindesHeartApp.Pages
 
         private void Setln_Clicked(object sender, EventArgs e)
         {
-            Globals.device.SetDateDisplayFormat(is24hour);
-            Globals.device.SetTimeDisplayUnit(is24hour);
-            Globals.device.SetActivateOnLiftWrist(is24hour);
+            Windesheart.ConnectedDevice.SetDateDisplayFormat(is24hour);
+            Windesheart.ConnectedDevice.SetTimeDisplayUnit(is24hour);
+            Windesheart.ConnectedDevice.SetActivateOnLiftWrist(is24hour);
             if (is24hour)
             {
-                Globals.device.SetLanguage("nl-NL");
+                Windesheart.ConnectedDevice.SetLanguage("nl-NL");
             }
             else
             {
-                Globals.device.SetLanguage("en-EN");
+                Windesheart.ConnectedDevice.SetLanguage("en-EN");
             }
             is24hour = !is24hour;
         }
-        private static bool SaveDeviceInAppProperties(Guid guid)
+        private void SaveDeviceInAppProperties(Guid guid)
         {
             if (guid != Guid.Empty)
             {
-                if (!App.Current.Properties.ContainsKey("LastConnectedDeviceGuid"))
+                if (App.Current.Properties.ContainsKey(key))
                 {
-                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
-                }
-                else
-                {
-                    App.Current.Properties.Remove("LastConnectedDeviceGuid");
-                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
+                    App.Current.Properties.Remove(key);
                 }
 
-                return true;
+                App.Current.Properties.Add(key, guid);
             }
-
-            return false;
         }
     }
 }

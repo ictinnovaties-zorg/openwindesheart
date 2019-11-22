@@ -15,11 +15,31 @@ namespace WindesHeartSDK
         private IDevice IDevice => BLEDevice.Device;
 
         private static ConnectionStatus ConnectionStatus;
+        private static AdapterStatus AdapterStatus;
 
+        private static IDisposable AdapterDisposable;
+        private static bool BluetoothOff = false;
 
         public BluetoothService(BLEDevice device)
         {
             BLEDevice = device;
+        }
+
+        /// <summary>
+        /// Scan when Bluetooth-adapter is ready to scan.
+        /// </summary>
+        /// <param name="scanTimeInSeconds"></param>
+        /// <returns>List<BLEDevice></returns>
+        public static async Task<List<BLEDevice>> ScanWhenAdapterReady(int scanTimeInSeconds = 10) 
+        {
+            var scanResults = new List<BLEDevice>();
+            AdapterDisposable?.Dispose();
+            AdapterDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(async adapter =>
+            {
+                scanResults = await ScanForUniqueDevicesAsync(scanTimeInSeconds);
+            });
+            await Task.Delay(scanTimeInSeconds * 1000);
+            return scanResults;
         }
 
         /// <summary>
@@ -74,20 +94,31 @@ namespace WindesHeartSDK
         }
 
         public void Connect()
-        {
+        {            
             Console.WriteLine("Connecting started...");
 
             //Check for status changes
-            StartListeningForConnectionChanges();
+            //StartListeningForConnectionChanges();
 
             //Connect
             IDevice.Connect(new ConnectionConfig
             {
-                AutoConnect = false,
+                AutoConnect = true,
                 AndroidConnectionPriority = ConnectionPriority.High
             });
         }
 
+        public static async Task ConnectKnownDevice(Guid uuid)
+        {
+            if(uuid != Guid.Empty)
+            {
+                var knownDevice = await CrossBleAdapter.Current.GetKnownDevice(uuid);
+                //var rssi = await knownDevice.ReadRssi();
+                var bleDevice = new MiBand3(0, knownDevice);
+                //bleDevice.NeedsAuthentication = false;
+                bleDevice.Connect();
+            }
+        }
 
         /// <summary>
         /// Disconnect current device.
@@ -114,6 +145,34 @@ namespace WindesHeartSDK
                 }
             });
         }
+
+        /// <summary>
+        /// Enables logging of device status on change.
+        /// </summary>
+        public void StartListeningForAdapterChanges()
+        {
+            AdapterDisposable?.Dispose();
+            AdapterDisposable = CrossBleAdapter.Current.WhenStatusChanged().Subscribe(async status =>
+            {
+                if (status == AdapterStatus.PoweredOff)
+                {
+                    BluetoothOff = true;
+                }
+
+                if (status == AdapterStatus.PoweredOn && BluetoothOff)
+                {
+                    BluetoothOff = false;
+                    await ConnectKnownDevice(BLEDevice.Device.Uuid);
+                }
+
+                if (AdapterStatus != status)
+                {
+                    Console.WriteLine("Adapterstatus changed from: " + AdapterStatus + " to: " + status);
+                    AdapterStatus = status;
+                }
+            });
+        }
+
 
         /// <summary>
         /// Returns the right WDevice based on the ScanResult
