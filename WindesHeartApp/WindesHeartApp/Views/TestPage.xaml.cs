@@ -28,10 +28,10 @@ namespace WindesHeartApp.Pages
         private void BuildPage()
         {
             PageBuilder.BuildPageBasics(Layout, this);
-            PageBuilder.BuildAndAddHeaderImages(Layout);
-            PageBuilder.BuildAndAddLabel(Layout, "TEST", 0.05, 0.10);
-            PageBuilder.BuildAndAddReturnButton(Layout, this);
-            PageBuilder.BuildAndAddReturnButton(Layout, this);
+            PageBuilder.AddHeaderImages(Layout);
+            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.lighttextColor);
+            PageBuilder.AddReturnButton(Layout, this);
+            PageBuilder.AddReturnButton(Layout, this);
 
             AbsoluteLayout.SetLayoutBounds(scanButton, new Rectangle(0.05, 0.2, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(scanButton, AbsoluteLayoutFlags.All);
@@ -66,12 +66,12 @@ namespace WindesHeartApp.Pages
                 {
                     Globals.device = devices[0];
                     Globals.device.Connect();
+                    SaveDeviceInAppProperties(Globals.device.Device.Uuid);
                 }
             }
             catch (Exception r)
             {
                 Console.WriteLine(r.Message);
-                Debug.WriteLine(" RAMONS - DEBUG.CW FEESTJE");
             }
         }
 
@@ -138,7 +138,7 @@ namespace WindesHeartApp.Pages
         public async void GetSteps(object sender, EventArgs e)
         {
             StepInfo steps = await Globals.device.GetSteps();
-            Console.WriteLine("Steps: " + steps.GetStepCount());
+            Console.WriteLine("Steps: " + steps.StepCount);
         }
 
         public void EnableRealTimeSteps(object sender, EventArgs e)
@@ -155,10 +155,8 @@ namespace WindesHeartApp.Pages
 
         public void OnStepsChanged(StepInfo steps)
         {
-            Console.WriteLine("Steps updated: " + steps.GetStepCount());
+            Console.WriteLine("Steps updated: " + steps.StepCount);
         }
-
-
 
         private void GoBack_Clicked(object sender, EventArgs e)
         {
@@ -179,6 +177,25 @@ namespace WindesHeartApp.Pages
                 Globals.device.SetLanguage("en-EN");
             }
             is24hour = !is24hour;
+        }
+        private static bool SaveDeviceInAppProperties(Guid guid)
+        {
+            if (guid != Guid.Empty)
+            {
+                if (!App.Current.Properties.ContainsKey("LastConnectedDeviceGuid"))
+                {
+                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
+                }
+                else
+                {
+                    App.Current.Properties.Remove("LastConnectedDeviceGuid");
+                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

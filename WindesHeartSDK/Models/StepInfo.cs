@@ -4,17 +4,14 @@ namespace WindesHeartSDK.Models
 {
     public class StepInfo
     {
-        private readonly byte[] Data;
+        public readonly byte[] RawData;
+        public readonly int StepCount;
 
         public StepInfo(byte[] data)
         {
-            Data = data;
-        }
-
-        public int GetStepCount()
-        {
-            byte[] stepsValue = new byte[] { Data[1], Data[2] };
-            return ConversionHelper.ToUint16(stepsValue);
+            RawData = data;
+            byte[] stepsValue = new byte[] { RawData[1], RawData[2] };
+            StepCount = ConversionHelper.ToUint16(stepsValue);
         }
     }
 }

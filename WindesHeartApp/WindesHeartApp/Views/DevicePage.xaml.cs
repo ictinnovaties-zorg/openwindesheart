@@ -45,6 +45,9 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(devicelist, AbsoluteLayoutFlags.All);
             absoluteLayout.Children.Add(devicelist);
             #endregion
+            PageBuilder.AddHeaderImages(absoluteLayout);
+            PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.lighttextColor);
+            PageBuilder.AddReturnButton(absoluteLayout, this);
         }
     }
 }

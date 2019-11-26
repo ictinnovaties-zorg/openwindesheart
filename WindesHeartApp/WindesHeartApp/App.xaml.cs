@@ -1,6 +1,7 @@
 ﻿using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using WindesHeartApp.Data.Interfaces;
+using System;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
@@ -38,6 +39,6 @@ namespace WindesHeartApp
             {
                 await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
             }
-        }
+        }        
     }
 }

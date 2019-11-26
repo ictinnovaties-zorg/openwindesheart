@@ -26,9 +26,15 @@ namespace WindesHeartApp.Pages
             PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
             var heartrateLabel = PageBuilder.BuildAndAddLabel(absoluteLayout, "", 0.1, 0.5);
 
+            PageBuilder.AddHeaderImages(absoluteLayout);
+            PageBuilder.AddLabel(absoluteLayout, "Heartrate", 0.05, 0.10, Globals.lighttextColor);
+            PageBuilder.AddReturnButton(absoluteLayout, this);
+            AbsoluteLayout.SetLayoutBounds(heartrateLabel, new Rectangle(0.1, 0.5, 300, 50));
+            AbsoluteLayout.SetLayoutFlags(heartrateLabel, AbsoluteLayoutFlags.PositionProportional);
             heartrateLabel.FontSize = 15;
             heartrateLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartrateMessage"));
 
+            PageBuilder.AddButton(absoluteLayout, "Click me, watch the HR change!", "buttonClickedCommand", 0.1, 0.7, 300, 50, AbsoluteLayoutFlags.PositionProportional);
         }
     }
 }

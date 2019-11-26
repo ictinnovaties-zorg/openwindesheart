@@ -25,7 +25,7 @@ namespace WindesHeartApp.Pages
         {
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
-            PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
+            PageBuilder.AddHeaderImages(absoluteLayout);
 
             #region define battery and hr Label
             Image batteryImage = new Image();
