@@ -33,27 +33,27 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddReturnButton(Layout, this);
             PageBuilder.AddReturnButton(Layout, this);
 
-            AbsoluteLayout.SetLayoutBounds(scanButton, new Rectangle(0.05, 0.2, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(scanButton, new Rectangle(0.05, 0.2, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(scanButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(disconnButton, new Rectangle(0.05, 0.25, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(disconnButton, new Rectangle(0.05, 0.25, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(disconnButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(getHeartrateButton, new Rectangle(0.05, 0.30, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(getHeartrateButton, new Rectangle(0.05, 0.30, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(getHeartrateButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(setcurrenttimeButton, new Rectangle(0.05, 0.35, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(setcurrenttimeButton, new Rectangle(0.05, 0.35, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(setcurrenttimeButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(settimeButton, new Rectangle(0.05, 0.40, 0.50, 0.05));
+            AbsoluteLayout.SetLayoutBounds(settimeButton, new Rectangle(0.05, 0.40, 0.50, 0.07));
             AbsoluteLayout.SetLayoutFlags(settimeButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(readBattContin, new Rectangle(0.05, 0.45, 0.50, 0.05));
+            AbsoluteLayout.SetLayoutBounds(readBattContin, new Rectangle(0.05, 0.45, 0.50, 0.07));
             AbsoluteLayout.SetLayoutFlags(readBattContin, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(readBattCurrent, new Rectangle(0.05, 0.50, 0.50, 0.05));
+            AbsoluteLayout.SetLayoutBounds(readBattCurrent, new Rectangle(0.05, 0.50, 0.50, 0.07));
             AbsoluteLayout.SetLayoutFlags(readBattCurrent, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(stepsButton, new Rectangle(0.05, 0.55, 0.50, 0.05));
+            AbsoluteLayout.SetLayoutBounds(stepsButton, new Rectangle(0.05, 0.55, 0.50, 0.07));
             AbsoluteLayout.SetLayoutFlags(stepsButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(realtimestepsButton, new Rectangle(0.05, 0.60, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(realtimestepsButton, new Rectangle(0.05, 0.60, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(realtimestepsButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(disablerealtimestepsButton, new Rectangle(0.05, 0.65, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(disablerealtimestepsButton, new Rectangle(0.05, 0.65, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(disablerealtimestepsButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.05));
+            AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
         }
 
@@ -84,7 +84,6 @@ namespace WindesHeartApp.Pages
         {
             var battery = await Globals.device.GetBattery();
             Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-            Globals.batteryPercentage = battery.BatteryPercentage;
             Globals.homepageviewModel.Battery = battery.BatteryPercentage;
             if (battery.Status == StatusEnum.Charging)
             {

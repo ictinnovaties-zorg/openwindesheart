@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using WindesHeartApp.Resources;
 
 namespace WindesHeartApp.ViewModels
 {
@@ -14,13 +13,6 @@ namespace WindesHeartApp.ViewModels
         void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
-        public HomePageViewModel()
-        {
-            HeartRate = Globals.heartRate;
-            Battery = Globals.batteryPercentage;
-            BatteryImage = "";
         }
 
         public string BatteryImage
@@ -55,11 +47,28 @@ namespace WindesHeartApp.ViewModels
         }
         public string DisplayHeartRate
         {
-            get { return $"Your Last heartbeat was: {HeartRate.ToString()}"; }
+            get
+            {
+                if (HeartRate != 0)
+                    return $"Your Last heartbeat was: {HeartRate.ToString()}";
+                else
+                {
+                    return "";
+                }
+            }
         }
         public string DisplayBattery
         {
-            get { return $"{Battery.ToString()}%"; }
+
+            get
+            {
+                if (Battery != 0)
+                    return $"{Battery.ToString()}%";
+                else
+                {
+                    return "";
+                }
+            }
         }
     }
 }
