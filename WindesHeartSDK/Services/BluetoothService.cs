@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK
 {
@@ -110,13 +111,19 @@ namespace WindesHeartSDK
 
         public static async Task ConnectKnownDevice(Guid uuid)
         {
-            if(uuid != Guid.Empty)
+            if (uuid != Guid.Empty)
             {
                 var knownDevice = await CrossBleAdapter.Current.GetKnownDevice(uuid);
                 //var rssi = await knownDevice.ReadRssi();
-                var bleDevice = new MiBand3(0, knownDevice);
-                //bleDevice.NeedsAuthentication = false;
-                bleDevice.Connect();
+                if (knownDevice != null) { 
+                    var bleDevice = new MiBand3(0, knownDevice);
+                    //bleDevice.NeedsAuthentication = false;
+                    bleDevice.Connect();
+                }
+                else
+                {
+                    throw new ConnectionException();
+                }
             }
         }
 
@@ -149,26 +156,25 @@ namespace WindesHeartSDK
         /// <summary>
         /// Enables logging of device status on change.
         /// </summary>
-        public void StartListeningForAdapterChanges()
+        public static void StartListeningForAdapterChanges()
         {
+            bool startListening = false;
             AdapterDisposable?.Dispose();
             AdapterDisposable = CrossBleAdapter.Current.WhenStatusChanged().Subscribe(async status =>
             {
-                if (status == AdapterStatus.PoweredOff)
+                if (status != AdapterStatus)
                 {
-                    BluetoothOff = true;
-                }
+                    if (status == AdapterStatus.PoweredOff && Windesheart.ConnectedDevice != null && startListening)
+                    {
+                        Windesheart.ConnectedDevice?.DisposeDisposables();
+                        Windesheart.ConnectedDevice?.Device.CancelConnection();
+                    }
 
-                if (status == AdapterStatus.PoweredOn && BluetoothOff)
-                {
-                    BluetoothOff = false;
-                    await ConnectKnownDevice(BLEDevice.Device.Uuid);
-                }
-
-                if (AdapterStatus != status)
-                {
-                    Console.WriteLine("Adapterstatus changed from: " + AdapterStatus + " to: " + status);
-                    AdapterStatus = status;
+                    if (status == AdapterStatus.PoweredOn && Windesheart.ConnectedDevice != null && startListening)
+                    {
+                        await ConnectKnownDevice(Windesheart.ConnectedDevice.Device.Uuid);
+                    }
+                    startListening = true;
                 }
             });
         }

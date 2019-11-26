@@ -105,15 +105,13 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public override void OnConnect()
         {
             Console.WriteLine("Device Connected!");
-            Windesheart.ConnectedDevice?.DisposeDisposables();
-            Windesheart.ConnectedDevice?.Device.CancelConnection();
             Windesheart.ConnectedDevice = this;
-            Characteristics?.Clear();
+            BluetoothService.StartListeningForAdapterChanges();
 
             //Find unique characteristics
             CharacteristicDisposable = Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
             {
-                if (!Characteristics.Contains(characteristic))
+                if (characteristic != null && !Characteristics.Contains(characteristic))
                 {
                     Characteristics.Add(characteristic);
 
