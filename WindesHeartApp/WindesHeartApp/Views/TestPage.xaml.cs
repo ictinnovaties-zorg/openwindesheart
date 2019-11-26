@@ -66,12 +66,12 @@ namespace WindesHeartApp.Pages
                 {
                     Globals.device = devices[0];
                     Globals.device.Connect();
+                    SaveDeviceInAppProperties(Globals.device.Device.Uuid);
                 }
             }
             catch (Exception r)
             {
                 Console.WriteLine(r.Message);
-                Debug.WriteLine(" RAMONS - DEBUG.CW FEESTJE");
             }
         }
 
@@ -178,6 +178,25 @@ namespace WindesHeartApp.Pages
                 Globals.device.SetLanguage("en-EN");
             }
             is24hour = !is24hour;
+        }
+        private static bool SaveDeviceInAppProperties(Guid guid)
+        {
+            if (guid != Guid.Empty)
+            {
+                if (!App.Current.Properties.ContainsKey("LastConnectedDeviceGuid"))
+                {
+                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
+                }
+                else
+                {
+                    App.Current.Properties.Remove("LastConnectedDeviceGuid");
+                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 }
