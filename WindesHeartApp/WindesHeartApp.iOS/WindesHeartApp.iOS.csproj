@@ -182,4 +182,10 @@
   <ItemGroup>
     <BundleResource Include="Resources\BatteryQuart.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\arrow_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\arrow_right.png" />
+  </ItemGroup>
 </Project>
