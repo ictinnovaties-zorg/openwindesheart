@@ -30,7 +30,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             #region scanbutton
-            Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", "scanbuttonCommand", 0.5, 0.25, 0.4, 0.7, AbsoluteLayoutFlags.All);
+            Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", "scanButtonCommand", 0.5, 0.25, 0.4, 0.07, AbsoluteLayoutFlags.All);
             scanButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
             scanButton.FontSize = Globals.screenHeight / 100 * 2;
             #endregion
