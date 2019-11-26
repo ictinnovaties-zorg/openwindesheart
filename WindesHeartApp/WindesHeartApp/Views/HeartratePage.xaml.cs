@@ -21,10 +21,10 @@ namespace WindesHeartApp.Pages
         private void BuildPage()
         {
             PageBuilder.BuildPageBasics(absoluteLayout, this);
-            PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
-            PageBuilder.BuildAndAddLabel(absoluteLayout, "Heartrate", 0.05, 0.10);
-            PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
-            var heartrateLabel = PageBuilder.BuildAndAddLabel(absoluteLayout, "", 0.1, 0.5);
+            PageBuilder.AddHeaderImages(absoluteLayout);
+            PageBuilder.AddLabel(absoluteLayout, "Heartrate", 0.05, 0.10, Color.Black);
+            PageBuilder.AddReturnButton(absoluteLayout, this);
+            var heartrateLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.1, 0.5, Color.Black);
 
             PageBuilder.AddHeaderImages(absoluteLayout);
             PageBuilder.AddLabel(absoluteLayout, "Heartrate", 0.05, 0.10, Globals.lighttextColor);

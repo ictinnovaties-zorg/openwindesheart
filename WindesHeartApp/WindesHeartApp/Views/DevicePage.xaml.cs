@@ -25,13 +25,12 @@ namespace WindesHeartApp.Pages
         {
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
-            PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
-            PageBuilder.BuildAndAddLabel(absoluteLayout, "Device", 0.05, 0.10);
-            PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
+            PageBuilder.AddHeaderImages(absoluteLayout);
+            PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Color.Black);
+            PageBuilder.AddReturnButton(absoluteLayout, this);
 
             #region scanbutton
-            Button scanButton = PageBuilder.BuildAddButton(absoluteLayout, "Scan for devices", "scanbuttonCommand", 0.5, 0.25,
-                Globals.screenHeight / 100 * 40, Globals.screenHeight / 100 * 7);
+            Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", "scanbuttonCommand", 0.5, 0.25, 0.4, 0.7, AbsoluteLayoutFlags.All);
             scanButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
             scanButton.FontSize = Globals.screenHeight / 100 * 2;
             #endregion

@@ -23,7 +23,6 @@ namespace WindesHeartApp.Resources
         public static Dictionary<string, Color> colorDictionary;
         public static int batteryPercentage { get; set; }
         public static int heartRate { get; set; }
-        public static BLEDevice device = null;
         public static StepsViewModel StepsViewModel;
 
         //buttonSize : 10 being biggest, 100 being smallest. 
