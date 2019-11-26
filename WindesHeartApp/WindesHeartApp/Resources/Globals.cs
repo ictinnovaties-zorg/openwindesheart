@@ -8,7 +8,7 @@ namespace WindesHeartApp.Resources
     public static class Globals
     {
         public static BLEDevice device;
-        public static HeartrateViewModel heartrateviewModel;
+        public static HeartRatePageViewModel heartrateviewModel;
         public static HomePageViewModel homepageviewModel;
         public static double screenHeight { get; set; }
         public static double screenWidth { get; set; }
@@ -31,7 +31,7 @@ namespace WindesHeartApp.Resources
             buttonfontSize = 4;
             cornerRadius = ((screenHeight / 10 * 1) - buttonSize);
             screenratioFactor = screenHeight / screenWidth;
-            heartrateviewModel = new HeartrateViewModel();
+            heartrateviewModel = new HeartRatePageViewModel();
             homepageviewModel = new HomePageViewModel();
 
             colorDictionary = new Dictionary<string, Color>

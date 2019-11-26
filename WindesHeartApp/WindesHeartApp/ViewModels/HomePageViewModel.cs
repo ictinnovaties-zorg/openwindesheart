@@ -15,10 +15,6 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public HomePageViewModel()
-        {
-        }
-
         public string BatteryImage
         {
             get { return batteryImage; }

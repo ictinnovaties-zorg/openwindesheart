@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WindesHeartSDK.Helpers;
+﻿using WindesHeartSDK.Helpers;
 
 namespace WindesHeartSDK.Models
 {

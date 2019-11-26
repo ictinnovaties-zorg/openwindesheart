@@ -1,21 +1,15 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class HeartrateViewModel : INotifyPropertyChanged
+    public class HeartRatePageViewModel : INotifyPropertyChanged
     {
         private int heartRate;
         public event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-        public Command buttonClickedCommand { get; }
-
-        public HeartrateViewModel()
-        {
         }
         public int HeartRate
         {

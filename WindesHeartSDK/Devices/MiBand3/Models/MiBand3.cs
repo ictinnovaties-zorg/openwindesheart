@@ -27,6 +27,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             ConfigurationService = new MiBand3ConfigurationService(this);
         }
 
+        public MiBand3() : base()
+        {
+
+        }
+
         public override void Connect()
         {
             BluetoothService.Connect();

@@ -6,6 +6,5 @@
              mc:Ignorable="d"
              x:Class="WindesHeartApp.Pages.HeartratePage">
 <AbsoluteLayout x:Name="absoluteLayout">
-        <Label x:Name="heartrateLabel" Text ="{Binding DisplayHeartrateMessage, Mode=OneWay} "></Label>
 </AbsoluteLayout>
 </ContentPage>

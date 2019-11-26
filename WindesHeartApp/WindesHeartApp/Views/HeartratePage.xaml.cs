@@ -10,11 +10,11 @@ namespace WindesHeartApp.Pages
         public HeartratePage()
         {
             InitializeComponent();
-            BindingContext = Globals.heartrateviewModel;
         }
 
         protected override void OnAppearing()
         {
+            BindingContext = Globals.heartrateviewModel;
             BuildPage();
         }
 
@@ -24,9 +24,10 @@ namespace WindesHeartApp.Pages
             PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
             PageBuilder.BuildAndAddLabel(absoluteLayout, "Heartrate", 0.05, 0.10);
             PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
-            AbsoluteLayout.SetLayoutBounds(heartrateLabel, new Rectangle(0.1, 0.5, 300, 50));
-            AbsoluteLayout.SetLayoutFlags(heartrateLabel, AbsoluteLayoutFlags.PositionProportional);
+            var heartrateLabel = PageBuilder.BuildAndAddLabel(absoluteLayout, "", 0.1, 0.5);
+
             heartrateLabel.FontSize = 15;
+            heartrateLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartrateMessage"));
 
         }
     }
