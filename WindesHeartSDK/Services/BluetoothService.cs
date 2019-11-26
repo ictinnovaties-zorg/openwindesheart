@@ -164,6 +164,7 @@ namespace WindesHeartSDK
             {
                 if (status != AdapterStatus)
                 {
+                    AdapterStatus = status;
                     if (status == AdapterStatus.PoweredOff && Windesheart.ConnectedDevice != null && startListening)
                     {
                         Windesheart.ConnectedDevice?.DisposeDisposables();

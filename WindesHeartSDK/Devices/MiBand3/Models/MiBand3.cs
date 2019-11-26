@@ -105,7 +105,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public override void OnConnect()
         {
             Console.WriteLine("Device Connected!");
+
             Windesheart.ConnectedDevice = this;
+
             BluetoothService.StartListeningForAdapterChanges();
 
             //Find unique characteristics
