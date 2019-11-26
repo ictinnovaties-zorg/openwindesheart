@@ -60,12 +60,12 @@ namespace WindesHeartApp.Pages
             Application.Current.MainPage.Navigation.PopAsync();
         }
 
-        public static Label AddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y)
+        public static Label AddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y, Color color)
         {
             Label label = new Label
             {
                 Text = text,
-                TextColor = Globals.lighttextColor,
+                TextColor = color,
                 FontSize = Globals.screenHeight / 100 * 3,
             };
             AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
@@ -74,14 +74,15 @@ namespace WindesHeartApp.Pages
             return label;
         }
 
-        public static Button AddButton(AbsoluteLayout absoluteLayout, string text, string bindingPath, double x, double y, double width, double height)
+        public static Button AddButton(AbsoluteLayout absoluteLayout, string text, string bindingPath, double x, double y, double width, double height, AbsoluteLayoutFlags flags)
         {
             Button button = new Button
             {
                 Text = text
             };
             button.SetBinding(Button.CommandProperty, new Binding() { Path = bindingPath });
-            AbsoluteLayout.SetLayoutFlags(button, AbsoluteLayoutFlags.PositionProportional);
+            button.BackgroundColor = Globals.secondaryColor;
+            AbsoluteLayout.SetLayoutFlags(button, flags);
             AbsoluteLayout.SetLayoutBounds(button, new Rectangle(x, y, width, height));
             absoluteLayout.Children.Add(button);
             return button;

@@ -42,7 +42,7 @@ namespace WindesHeartApp.Pages
 
             #endregion
 
-            PageBuilder.AddLabel(absoluteLayout, "About", 0.05, 0.27);
+            PageBuilder.AddLabel(absoluteLayout, "About", 0.05, 0.27, Globals.lighttextColor);
 
             #region define Text
             Grid grid1 = new Grid();
