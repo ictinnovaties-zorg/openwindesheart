@@ -110,6 +110,8 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
             BluetoothService.StartListeningForAdapterChanges();
 
+            Characteristics?.Clear();
+
             //Find unique characteristics
             CharacteristicDisposable = Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
             {
