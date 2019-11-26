@@ -134,7 +134,6 @@ namespace WindesHeartSDK
         {
             //Cancel the connection
             Console.WriteLine("Trying to disconnect device...");
-            BLEDevice.Authenticated = false;
             IDevice.CancelConnection();
         }
 
