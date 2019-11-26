@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
@@ -61,7 +60,7 @@ namespace WindesHeartApp.Pages
         {
             try
             {
-                List<BLEDevice> devices = await Windesheart.ScanForDevices();
+                ObservableCollection<BLEDevice> devices = await Windesheart.ScanForDevices();
                 if (devices.Count > 0)
                 {
                     Globals.device = devices[0];
@@ -75,7 +74,7 @@ namespace WindesHeartApp.Pages
             }
         }
 
-        private async void Disconnect(object sender, EventArgs e)
+        private void Disconnect(object sender, EventArgs e)
         {
             Globals.device.Disconnect();
         }
