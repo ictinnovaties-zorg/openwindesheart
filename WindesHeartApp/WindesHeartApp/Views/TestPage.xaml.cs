@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reactive.Linq;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
@@ -62,19 +63,21 @@ namespace WindesHeartApp.Pages
         {
             try
             {
-                //if (App.Current.Properties.ContainsKey(key))
-                //{
-                //    App.Current.Properties.TryGetValue(key, out object result);
-                //    await BluetoothService.ConnectKnownDevice((Guid)result);
-                //} else
-                //{
+                if (App.Current.Properties.ContainsKey(key))
+                {
+                    App.Current.Properties.TryGetValue(key, out object result);
+                    var device = await BluetoothService.GetKnownDevice((Guid)result);
+                    device?.Connect();
+                }
+                else
+                {
                     List<BLEDevice> bleDevices = await Windesheart.ScanForDevices();
                     if (bleDevices.Count > 0)
                     {
                         bleDevices[0].Connect();
                         SaveDeviceInAppProperties(bleDevices[0].Device.Uuid);
                     }
-                //}
+                }
             }
             catch (Exception r)
             {
@@ -82,7 +85,7 @@ namespace WindesHeartApp.Pages
             }
         }
 
-        private async void Disconnect(object sender, EventArgs e)
+        private void Disconnect(object sender, EventArgs e)
         {
             Windesheart.ConnectedDevice.Disconnect();
         }
@@ -116,25 +119,21 @@ namespace WindesHeartApp.Pages
             }
         }
 
-        private async void SetTime(object sender, EventArgs e)
+        private void SetTime(object sender, EventArgs e)
         {
-            bool timeset = await Windesheart.ConnectedDevice.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
+            bool timeset = Windesheart.ConnectedDevice.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
             Console.WriteLine("Time set " + timeset);
         }
 
-        private async void SetCurrentTime(object sender, EventArgs e)
+        private void SetCurrentTime(object sender, EventArgs e)
         {
-            bool timeset = await Windesheart.ConnectedDevice.SetTime(DateTime.Now);
+            bool timeset = Windesheart.ConnectedDevice.SetTime(DateTime.Now);
             Console.WriteLine("Time set " + timeset);
         }
 
-        private async void ReadBatteryContinuous(object sender, EventArgs e)
+        private void ReadBatteryContinuous(object sender, EventArgs e)
         {
             Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-        }
-        private void GetBatteryStatus(Battery battery)
-        {
-
         }
 
         public void GetHeartRate_Clicked(object sender, EventArgs e)

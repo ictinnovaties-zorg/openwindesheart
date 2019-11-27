@@ -19,7 +19,6 @@ namespace WindesHeartSDK
         private static AdapterStatus AdapterStatus;
 
         private static IDisposable AdapterDisposable;
-        private static bool BluetoothOff = false;
 
         public BluetoothService(BLEDevice device)
         {
@@ -59,12 +58,14 @@ namespace WindesHeartSDK
             {
                 //Trigger event and add to devices list
                 Console.WriteLine("Started scanning");
-                var scanner = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                var scanner = CrossBleAdapter.Current.Scan().Subscribe(async scanResult =>
                 {
                     if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && !uniqueGuids.Contains(scanResult.Device.Uuid))
                     {
                         //Set device
-                        BLEDevice device = GetDevice(scanResult);
+                        BLEDevice device = await GetDevice(scanResult.Device);
+                        device.NeedsAuthentication = true;
+
                         if (device != null)
                         {
                             scanResults.Add(device);
@@ -109,22 +110,19 @@ namespace WindesHeartSDK
             });
         }
 
-        public static async Task ConnectKnownDevice(Guid uuid)
+        public static async Task<BLEDevice> GetKnownDevice(Guid uuid)
         {
             if (uuid != Guid.Empty)
             {
                 var knownDevice = await CrossBleAdapter.Current.GetKnownDevice(uuid);
-                //var rssi = await knownDevice.ReadRssi();
+                
                 if (knownDevice != null) { 
-                    var bleDevice = new MiBand3(0, knownDevice);
-                    //bleDevice.NeedsAuthentication = false;
-                    bleDevice.Connect();
-                }
-                else
-                {
-                    throw new ConnectionException();
+                    var bleDevice = await GetDevice(knownDevice);
+                    bleDevice.NeedsAuthentication = false;
+                    return bleDevice;
                 }
             }
+            return null;
         }
 
         /// <summary>
@@ -167,12 +165,13 @@ namespace WindesHeartSDK
                     if (status == AdapterStatus.PoweredOff && Windesheart.ConnectedDevice != null && startListening)
                     {
                         Windesheart.ConnectedDevice?.DisposeDisposables();
-                        Windesheart.ConnectedDevice?.Device.CancelConnection();
+                        Windesheart.ConnectedDevice?.Disconnect();
                     }
 
                     if (status == AdapterStatus.PoweredOn && Windesheart.ConnectedDevice != null && startListening)
                     {
-                        await ConnectKnownDevice(Windesheart.ConnectedDevice.Device.Uuid);
+                        var device = await GetKnownDevice(Windesheart.ConnectedDevice.Device.Uuid);
+                        device?.Connect();
                     }
                     startListening = true;
                 }
@@ -183,14 +182,16 @@ namespace WindesHeartSDK
         /// <summary>
         /// Returns the right WDevice based on the ScanResult
         /// </summary>
-        private static BLEDevice GetDevice(IScanResult result)
+        private static async Task<BLEDevice> GetDevice(IDevice device)
         {
-            Console.WriteLine(result.Device.Name);
-            var name = result.Device.Name;
+            Console.WriteLine(device.Name);
+            var name = device.Name;
+            var rssi = await Windesheart.ConnectedDevice.Device.ReadRssi();
+
 
             if (name.Equals("Mi Band 3") || name.Equals("Xiaomi Mi Band 3"))
             {
-                return new MiBand3(result.Rssi, result.Device);
+                return new MiBand3(rssi, device);
             }
             return null;
         }

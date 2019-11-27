@@ -97,9 +97,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             StepsService.EnableRealTimeSteps(onStepsChanged);
         }
 
-        public async override Task<bool> SetTime(DateTime dateTime)
+        public override bool SetTime(DateTime dateTime)
         {
-            return await DateTimeService.SetTime(dateTime);
+            return DateTimeService.SetTime(dateTime);
         }
 
         public override void OnConnect()
