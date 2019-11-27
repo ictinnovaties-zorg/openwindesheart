@@ -30,9 +30,9 @@ namespace WindesHeartSDK
         /// </summary>
         /// <param name="scanTimeInSeconds"></param>
         /// <returns>List<BLEDevice></returns>
-        public static async Task<List<BLEDevice>> ScanWhenAdapterReady(int scanTimeInSeconds = 10) 
+        public static async Task<ObservableCollection<BLEDevice>> ScanWhenAdapterReady(int scanTimeInSeconds = 10) 
         {
-            var scanResults = new List<BLEDevice>();
+            var scanResults = new ObservableCollection<BLEDevice>();
             AdapterDisposable?.Dispose();
             AdapterDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(async adapter =>
             {

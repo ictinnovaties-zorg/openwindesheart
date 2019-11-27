@@ -72,7 +72,7 @@ namespace WindesHeartApp.Pages
                 }
                 else
                 {
-                    List<BLEDevice> bleDevices = await Windesheart.ScanForDevices();
+                    ObservableCollection<BLEDevice> bleDevices = await Windesheart.ScanForDevices();
                     if (bleDevices.Count > 0)
                     {
                         bleDevices[0].Connect();
@@ -145,7 +145,7 @@ namespace WindesHeartApp.Pages
         public async void GetSteps(object sender, EventArgs e)
         {
             StepInfo steps = await Windesheart.ConnectedDevice.GetSteps();
-            Console.WriteLine("Steps: " + steps.GetStepCount());
+            Console.WriteLine("Steps: " + steps.StepCount);
         }
 
         public void EnableRealTimeSteps(object sender, EventArgs e)

@@ -9,7 +9,6 @@ namespace WindesHeartSDK
     public abstract class BLEDevice
     {
         public int Rssi { get; set; }
-        public string swag { get; set; }
         public readonly IDevice Device;
         public bool NeedsAuthentication = false;
         public string Name { get; set; }

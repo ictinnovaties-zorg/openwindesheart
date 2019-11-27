@@ -24,8 +24,7 @@ namespace WindesHeartApp.Resources
         public static Dictionary<string, Color> colorDictionary;
         public static int batteryPercentage { get; set; }
         public static int heartRate { get; set; }
-        public static HeartrateViewModel hrviewModel;
-        public static HomePageViewModel homepageviewModel;
+
         public static StepsViewModel StepsViewModel;
         public static int heartrateInterval;
 
