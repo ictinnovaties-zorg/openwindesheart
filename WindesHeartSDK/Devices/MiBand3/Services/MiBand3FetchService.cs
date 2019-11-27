@@ -32,7 +32,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
         public void InitiateFetching(DateTime date)
         {
-
+            CharActivitySub?.Dispose();
+            CharUnknownSub?.Dispose();
             CharUnknownSub = MiBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(handleUnknownChar);
             CharActivitySub  = MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(handleActivityChar);
             WriteDateBytes(date);
@@ -79,6 +80,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             else if(responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
             {
                 Console.WriteLine("Done Fetching: " + Samples.Count + " Samples");
+                CharActivitySub?.Dispose();
+                CharUnknownSub?.Dispose();
                 foreach(ActivitySample sample in Samples)
                 {
                     Console.WriteLine(sample.ToString());
@@ -88,6 +91,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             {
                 Console.WriteLine("Error while Fetching");
                 // Error while fetching
+                CharActivitySub?.Dispose();
+                CharUnknownSub?.Dispose();
             }
         }
 
@@ -123,7 +128,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         Console.WriteLine(b);
                     }
 
-                    var category = result.Data[i] - 1; //ToUint16(new byte[] { result.Data[i], result.Data[i + 1] });
+                    var category = result.Data[i]; //ToUint16(new byte[] { result.Data[i], result.Data[i + 1] });
                     var intensity = result.Data[i + 1]; //ToUint16(new byte[] { result.Data[i], result.Data[i + 1] });
                     var steps = result.Data[i + 2] & 0xff;
                     var heartrate = result.Data[i + 3];
