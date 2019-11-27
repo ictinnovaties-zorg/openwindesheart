@@ -13,11 +13,11 @@ namespace WindesHeartApp.Pages
         public DevicePage()
         {
             InitializeComponent();
+            BindingContext = Globals.DevicePageViewModel;
         }
 
         protected override void OnAppearing()
         {
-            BindingContext = Globals.DevicePageViewModel;
             BuildPage();
         }
 
@@ -86,7 +86,7 @@ namespace WindesHeartApp.Pages
             devicelist.SetBinding(ListView.SelectedItemProperty, new Binding("SelectedDevice", BindingMode.TwoWay));
             devicelist.SetBinding(ListView.ItemsSourceProperty, new Binding("DeviceList"));
             devicelist.ItemTemplate = DeviceTemplate;
-            AbsoluteLayout.SetLayoutBounds(devicelist, new Rectangle(0, 0.55, 1, 0.4));
+            AbsoluteLayout.SetLayoutBounds(devicelist, new Rectangle(0.5, 0.55, 0.90, 0.4));
             AbsoluteLayout.SetLayoutFlags(devicelist, AbsoluteLayoutFlags.All);
             absoluteLayout.Children.Add(devicelist);
             #endregion
@@ -100,3 +100,4 @@ namespace WindesHeartApp.Pages
         }
     }
 }
+

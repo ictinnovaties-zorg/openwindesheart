@@ -30,11 +30,17 @@ namespace WindesHeartApp.ViewModels
             if (DeviceList == null)
                 DeviceList = new ObservableCollection<BLEDevice>();
             _heartrateInterval = Globals.heartrateInterval;
+            if (Globals.device == null)
+                StatusText = "Disconnected";
         }
 
-        private void disconnectButtonClicked()
+        private async void disconnectButtonClicked()
         {
+            IsLoading = true;
             Globals.device.Disconnect();
+            await Task.Delay(1000);
+            IsLoading = false;
+            StatusText = "Disconnected";
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")
@@ -88,32 +94,6 @@ namespace WindesHeartApp.ViewModels
 
             }
         }
-
-        private async void deviceSelected(BLEDevice device)
-        {
-
-            try
-            {
-                StatusText = $"Connecting to {device.Name}";
-                IsLoading = true;
-                device.Connect();
-                Globals.device = device;
-                await ReadCurrentBattery();
-                await Globals.device.SetTime(DateTime.Now);
-                Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-                Globals.device.SetHeartrateMeasurementInterval(_heartrateInterval);
-                Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
-                Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-                Globals.device.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
-                StatusText = "Connected";
-                IsLoading = false;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
         private async void scanButtonClicked()
         {
             try
@@ -137,6 +117,38 @@ namespace WindesHeartApp.ViewModels
                 Console.WriteLine(e.Message);
             }
         }
+        private async void deviceSelected(BLEDevice device)
+        {
+
+            try
+            {
+                StatusText = $"Connecting to {device.Name}";
+                IsLoading = true;
+                device.Connect();
+                Globals.device = device;
+
+                // NEED TO FIX THIS
+                await Task.Delay(5000);
+
+                await ReadCurrentBattery();
+                await Globals.device.SetTime(DateTime.Now);
+
+                Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
+                Globals.device.SetHeartrateMeasurementInterval(_heartrateInterval);
+                Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
+                Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
+                Globals.device.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
+                DeviceList = new ObservableCollection<BLEDevice>();
+                StatusText = "Connected";
+                IsLoading = false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+
 
         private async Task ReadCurrentBattery()
         {
