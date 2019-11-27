@@ -5,7 +5,7 @@
               
     <ContentPage.Content>
         <ScrollView>
-        <AbsoluteLayout  x:Name="Layout">
+        <AbsoluteLayout x:Name="Layout">
             <Button FontSize ="15" x:Name="scanButton" Clicked="Button_Clicked" Text="Scannen en Connecten"/>
                 <Button FontSize ="15" x:Name="readBattContin" Clicked="ReadBatteryContinuous" Text="Read battery Continuous" />
                 <Button FontSize ="15" x:Name="readBattCurrent" Clicked="ReadCurrentBattery" Text="Read current battery" />

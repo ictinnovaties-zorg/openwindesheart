@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
-using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
 
@@ -65,7 +65,7 @@ namespace WindesHeartApp.ViewModels
 
         private void deviceSelected(BLEDevice device)
         {
-            Console.WriteLine(device.Name);
+            Console.WriteLine(device.Device.Name);
             //try
             //{
             //    device.Connect();
@@ -86,10 +86,7 @@ namespace WindesHeartApp.ViewModels
 
         private /*async*/ void scanButtonClicked()
         {
-            var band = new MiBand3();
-            band.Name = "DANIEL";
-            band.Rssi = 420;
-            DeviceList.Add(band);
+            
 
             //try
             //{

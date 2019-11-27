@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK
@@ -83,7 +83,7 @@ namespace WindesHeartSDK
             {
                 Console.WriteLine("Bluetooth-Adapter state is: " + CrossBleAdapter.Current.Status + ". Trying again!");
                 await Task.Delay(2000);
-                return await ScanForDevices(scanTimeInSeconds);
+                return await ScanForUniqueDevicesAsync(scanTimeInSeconds);
             }
 
             //Order scanresults by descending signal strength
