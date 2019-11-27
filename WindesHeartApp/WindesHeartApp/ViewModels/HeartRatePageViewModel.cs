@@ -21,6 +21,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(DisplayHeartrateMessage));
             }
         }
+
         public string DisplayHeartrateMessage
         {
             get { return $"Your new heartbeat is: {HeartRate.ToString()} and this databinding shit is awesome."; }

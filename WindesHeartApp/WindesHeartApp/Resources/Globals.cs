@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WindesHeartApp.ViewModels;
 using WindesHeartSDK;
 using Xamarin.Forms;
@@ -21,9 +22,8 @@ namespace WindesHeartApp.Resources
         public static double cornerRadius { get; set; }
 
         public static Dictionary<string, Color> colorDictionary;
-        public static int batteryPercentage { get; set; }
-        public static int heartRate { get; set; }
         public static StepsViewModel StepsViewModel;
+        public static int heartrateInterval;
 
         //buttonSize : 10 being biggest, 100 being smallest. 
         //buttonfontSize : 2-10, 10 being smallest, 2 being largest.
@@ -35,8 +35,8 @@ namespace WindesHeartApp.Resources
             screenratioFactor = screenHeight / screenWidth;
             heartrateviewModel = new HeartRatePageViewModel();
             StepsViewModel = new StepsViewModel();
+            heartrateInterval = 1;
             homepageviewModel = new HomePageViewModel();
-
             colorDictionary = new Dictionary<string, Color>
             {
                 { "Aqua", Color.Aqua},
@@ -49,6 +49,26 @@ namespace WindesHeartApp.Resources
                 { "Silver", Color.Silver }, { "Teal", Color.Teal },
                 { "White", Color.White }, { "Yellow", Color.Yellow }
             };
+        }
+
+        public static bool SaveDeviceInAppProperties(Guid guid)
+        {
+            if (guid != Guid.Empty)
+            {
+                if (!App.Current.Properties.ContainsKey("LastConnectedDeviceGuid"))
+                {
+                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
+                }
+                else
+                {
+                    App.Current.Properties.Remove("LastConnectedDeviceGuid");
+                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
+                }
+
+                return true;
+            }
+
+            return false;
         }
     };
 }

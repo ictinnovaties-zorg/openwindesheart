@@ -19,15 +19,14 @@ namespace WindesHeartApp.Pages
             Image heartonlyImage = new Image();
             heartonlyImage.Source = "HeartOnlyTransparent.png";
             AbsoluteLayout.SetLayoutFlags(heartonlyImage, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(heartonlyImage,
-                new Rectangle(0.05, 0, Globals.screenWidth / 100 * 20, Globals.screenHeight / 100 * 10));
-            layout.Children.Add(heartonlyImage);
+            AbsoluteLayout.SetLayoutBounds(heartonlyImage, new Rectangle(0.05, 0, Globals.screenWidth / 100 * 20, Globals.screenHeight / 100 * 10));
 
             Image textonlyImage = new Image();
             textonlyImage.Source = "TextOnlyTransparent.png";
             AbsoluteLayout.SetLayoutFlags(textonlyImage, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(textonlyImage,
-                new Rectangle(0.95, 0, Globals.screenWidth / 100 * 60, Globals.screenHeight / 100 * 10));
+            AbsoluteLayout.SetLayoutBounds(textonlyImage, new Rectangle(0.95, 0, Globals.screenWidth / 100 * 60, Globals.screenHeight / 100 * 10));
+
+            layout.Children.Add(heartonlyImage);
             layout.Children.Add(textonlyImage);
 
         }
@@ -36,28 +35,28 @@ namespace WindesHeartApp.Pages
         {
             //added extra grid behind imagebutton to make it clickable easier.
             Grid returnGrid = new Grid();
-            AbsoluteLayout.SetLayoutBounds(returnGrid,
-                new Rectangle(0.95, 0.95, Globals.screenHeight / 100 * 8, Globals.screenHeight / 100 * 8));
-            AbsoluteLayout.SetLayoutFlags(returnGrid, AbsoluteLayoutFlags.PositionProportional);
             returnGrid.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 NumberOfTapsRequired = 1,
                 Command = new Command(execute: () => { returnButton_Clicked(sender, EventArgs.Empty); })
             });
+            AbsoluteLayout.SetLayoutBounds(returnGrid, new Rectangle(0.95, 0.95, Globals.screenHeight / 100 * 8, Globals.screenHeight / 100 * 8));
+            AbsoluteLayout.SetLayoutFlags(returnGrid, AbsoluteLayoutFlags.PositionProportional);
+
             ImageButton returnButton = new ImageButton();
             returnButton.Source = "GoBack.png";
             returnButton.BackgroundColor = Color.Transparent;
-            AbsoluteLayout.SetLayoutBounds(returnButton,
-                new Rectangle(0.95, 0.95, Globals.screenHeight / 100 * 6, Globals.screenHeight / 100 * 6));
-            AbsoluteLayout.SetLayoutFlags(returnButton, AbsoluteLayoutFlags.PositionProportional);
             returnButton.Clicked += returnButton_Clicked;
+            AbsoluteLayout.SetLayoutBounds(returnButton, new Rectangle(0.95, 0.95, Globals.screenHeight / 100 * 6, Globals.screenHeight / 100 * 6));
+            AbsoluteLayout.SetLayoutFlags(returnButton, AbsoluteLayoutFlags.PositionProportional);
+
             layout.Children.Add(returnGrid);
             layout.Children.Add(returnButton);
         }
 
         private static void returnButton_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage.Navigation.PopAsync();
+            Application.Current.MainPage.Navigation.PopToRootAsync();
         }
 
         public static Label AddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y, Color color)

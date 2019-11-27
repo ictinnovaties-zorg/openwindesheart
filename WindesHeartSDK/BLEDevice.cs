@@ -8,7 +8,8 @@ namespace WindesHeartSDK
 {
     public abstract class BLEDevice
     {
-        public int Rssi;
+        public int Rssi { get; set; }
+        public string swag { get; set; }
         public readonly IDevice Device;
         public string Name { get; set; }
         public bool Authenticated;

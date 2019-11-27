@@ -9,6 +9,7 @@ namespace WindesHeartApp.Pages
     public partial class DevicePage : ContentPage
     {
         private DevicePageViewModel dpvm;
+        public ListView devicelist;
         public DevicePage()
         {
             InitializeComponent();
@@ -16,7 +17,7 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            dpvm = new DevicePageViewModel(this);
+            dpvm = new DevicePageViewModel();
             BindingContext = dpvm;
             BuildPage();
         }
@@ -26,7 +27,7 @@ namespace WindesHeartApp.Pages
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
-            PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Color.Black);
+            PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.lighttextColor);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             #region scanbutton
@@ -35,18 +36,33 @@ namespace WindesHeartApp.Pages
             scanButton.FontSize = Globals.screenHeight / 100 * 2;
             #endregion
 
+            DataTemplate DeviceTemplate = new DataTemplate(() =>
+            {
+                ImageCell cell = new ImageCell();
+                cell.SetBinding(ImageCell.TextProperty, "Name");
+                cell.SetBinding(ImageCell.DetailProperty, "Rssi");
+                cell.TextColor = Color.Black;
+
+                cell.DetailColor = Color.Black;
+                return cell;
+            });
             #region device ListView
-            ListView devicelist = new ListView();
             devicelist = new ListView();
-            devicelist.ItemsSource = dpvm.DeviceList;
+            devicelist.BackgroundColor = Color.Transparent;
+            devicelist.SetBinding(ListView.SelectedItemProperty, new Binding("SelectedDevice", BindingMode.TwoWay));
+            devicelist.ItemTemplate = DeviceTemplate;
             devicelist.SetBinding(ListView.ItemsSourceProperty, new Binding("DeviceList"));
-            AbsoluteLayout.SetLayoutBounds(devicelist, new Rectangle(0, 0.8, 1, 0.3));
+            AbsoluteLayout.SetLayoutBounds(devicelist, new Rectangle(0, 0.8, 0.95, 0.3));
             AbsoluteLayout.SetLayoutFlags(devicelist, AbsoluteLayoutFlags.All);
             absoluteLayout.Children.Add(devicelist);
             #endregion
-            PageBuilder.AddHeaderImages(absoluteLayout);
-            PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.lighttextColor);
-            PageBuilder.AddReturnButton(absoluteLayout, this);
+
+            #region disconnectButton
+            Button disconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", "disconnectButtonCommand", 0.5, 0.85, 0.5, 0.07, AbsoluteLayoutFlags.All);
+            disconnectButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
+            disconnectButton.FontSize = Globals.screenHeight / 100 * 2;
+            #endregion
+
         }
     }
 }
