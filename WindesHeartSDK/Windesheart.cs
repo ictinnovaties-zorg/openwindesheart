@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace WindesHeartSDK
@@ -8,7 +9,7 @@ namespace WindesHeartSDK
         public static BLEDevice ConnectedDevice;
 
         /// <summary>
-        /// Scan for devices that are not yet connected.
+        /// Scan for BLEDevices that are not yet connected.
         /// </summary>
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="scanTimeInSeconds"></param>
@@ -16,6 +17,16 @@ namespace WindesHeartSDK
         public static async Task<List<BLEDevice>> ScanForDevices(int scanTimeInSeconds = 10)
         {
             return await BluetoothService.ScanForUniqueDevicesAsync(scanTimeInSeconds);
+        }
+
+        /// <summary>
+        /// Get a BLEDevice based on the UUID
+        /// </summary>
+        /// <param name="uuid"></param>
+        /// <returns></returns>
+        public static async Task<BLEDevice> GetKnownDevice(Guid uuid)
+        {
+            return await BluetoothService.GetKnownDevice(uuid);
         }
     }
 }

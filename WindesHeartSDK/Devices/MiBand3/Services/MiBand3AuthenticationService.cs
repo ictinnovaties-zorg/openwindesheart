@@ -66,13 +66,14 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                     throw new ConnectionException(exception.Message);
                 });
 
-                //Triggers vibration on Mi Band 3
                 if (BLEDevice.NeedsAuthentication)
                 {
+                    //Triggers vibration on device
                     await TriggerAuthentication();
                 }
                 else
                 {
+                    //Continues session with authorization-number
                     await RequestAuthorizationNumber();
                 }
             }

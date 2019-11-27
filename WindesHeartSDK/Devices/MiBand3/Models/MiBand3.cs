@@ -108,6 +108,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
             Windesheart.ConnectedDevice = this;
 
+            //Check if bluetooth-state changes to off and then on, to enable reconnection management
             BluetoothService.StartListeningForAdapterChanges();
 
             Characteristics?.Clear();

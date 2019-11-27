@@ -15,7 +15,6 @@ namespace WindesHeartSDK
         private readonly BLEDevice BLEDevice;
         private IDevice IDevice => BLEDevice.Device;
 
-        private static ConnectionStatus ConnectionStatus;
         private static AdapterStatus AdapterStatus;
 
         private static IDisposable AdapterDisposable;
@@ -58,16 +57,16 @@ namespace WindesHeartSDK
             {
                 //Trigger event and add to devices list
                 Console.WriteLine("Started scanning");
-                var scanner = CrossBleAdapter.Current.Scan().Subscribe(async scanResult =>
+                var scanner = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
                 {
                     if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && !uniqueGuids.Contains(scanResult.Device.Uuid))
                     {
                         //Set device
-                        BLEDevice device = await GetDevice(scanResult.Device);
-                        device.NeedsAuthentication = true;
+                        BLEDevice device = GetDevice(scanResult.Device, scanResult.Rssi);
 
                         if (device != null)
                         {
+                            device.NeedsAuthentication = true;
                             scanResults.Add(device);
                         }
                         uniqueGuids.Add(scanResult.Device.Uuid);
@@ -99,9 +98,6 @@ namespace WindesHeartSDK
         {            
             Console.WriteLine("Connecting started...");
 
-            //Check for status changes
-            //StartListeningForConnectionChanges();
-
             //Connect
             IDevice.Connect(new ConnectionConfig
             {
@@ -117,7 +113,7 @@ namespace WindesHeartSDK
                 var knownDevice = await CrossBleAdapter.Current.GetKnownDevice(uuid);
                 
                 if (knownDevice != null) { 
-                    var bleDevice = await GetDevice(knownDevice);
+                    var bleDevice = GetDevice(knownDevice);
                     bleDevice.NeedsAuthentication = false;
                     return bleDevice;
                 }
@@ -131,24 +127,9 @@ namespace WindesHeartSDK
         public void Disconnect()
         {
             //Cancel the connection
-            Console.WriteLine("Trying to disconnect device...");
+            Console.WriteLine("Disconnecting device..");
             IDevice.CancelConnection();
-        }
-
-        /// <summary>
-        /// Enables logging of device status on change.
-        /// </summary>
-        private void StartListeningForConnectionChanges()
-        {
-            IDevice.WhenStatusChanged().Subscribe(status =>
-            {
-                if (ConnectionStatus != status)
-                {
-                    Console.WriteLine("Connectionstatus changed from: " + ConnectionStatus + " to: " + status);
-                    ConnectionStatus = status;
-                }
-            });
-        }
+        }      
 
         /// <summary>
         /// Enables logging of device status on change.
@@ -182,17 +163,16 @@ namespace WindesHeartSDK
         /// <summary>
         /// Returns the right WDevice based on the ScanResult
         /// </summary>
-        private static async Task<BLEDevice> GetDevice(IDevice device)
+        private static BLEDevice GetDevice(IDevice device, int rssi = 0)
         {
-            Console.WriteLine(device.Name);
             var name = device.Name;
-            var rssi = await Windesheart.ConnectedDevice.Device.ReadRssi();
-
-
+            
             if (name.Equals("Mi Band 3") || name.Equals("Xiaomi Mi Band 3"))
             {
                 return new MiBand3(rssi, device);
             }
+
+            //Create additional if-statements for devices other than Mi Band 3/Xiami Band 3.
             return null;
         }
     }

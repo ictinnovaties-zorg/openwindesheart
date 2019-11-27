@@ -66,7 +66,7 @@ namespace WindesHeartApp.Pages
                 if (App.Current.Properties.ContainsKey(key))
                 {
                     App.Current.Properties.TryGetValue(key, out object result);
-                    var device = await BluetoothService.GetKnownDevice((Guid)result);
+                    var device = await Windesheart.GetKnownDevice((Guid)result);
                     device?.Connect();
                 }
                 else
