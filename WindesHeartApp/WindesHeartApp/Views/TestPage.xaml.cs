@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reactive.Linq;
+using System.Collections.ObjectModel;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
@@ -14,6 +16,7 @@ namespace WindesHeartApp.Pages
     public partial class TestPage : ContentPage
     {
         public DateTime temptime = new DateTime(2019, 10, 10, 10, 1, 1);
+        public string key = "LastConnectedDeviceGuid";
         public bool is24hour = true;
 
         public TestPage()
@@ -29,65 +32,72 @@ namespace WindesHeartApp.Pages
         private void BuildPage()
         {
             PageBuilder.BuildPageBasics(Layout, this);
-            PageBuilder.BuildAndAddHeaderImages(Layout);
-            PageBuilder.BuildAndAddLabel(Layout, "TEST", 0.05, 0.7);
-            PageBuilder.BuildAndAddReturnButton(Layout, this);
-            PageBuilder.BuildAndAddReturnButton(Layout, this);
+            PageBuilder.AddHeaderImages(Layout);
+            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.lighttextColor);
+            PageBuilder.AddReturnButton(Layout, this);
+            PageBuilder.AddReturnButton(Layout, this);
 
-            AbsoluteLayout.SetLayoutBounds(scanButton, new Rectangle(0.05, 0.2, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(scanButton, new Rectangle(0.05, 0.2, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(scanButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(disconnButton, new Rectangle(0.05, 0.27, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(disconnButton, new Rectangle(0.05, 0.25, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(disconnButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(getHeartrateButton, new Rectangle(0.05, 0.34, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(getHeartrateButton, new Rectangle(0.05, 0.30, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(getHeartrateButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(setcurrenttimeButton, new Rectangle(0.05, 0.41, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(setcurrenttimeButton, new Rectangle(0.05, 0.35, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(setcurrenttimeButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(settimeButton, new Rectangle(0.05, 0.48, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(settimeButton, new Rectangle(0.05, 0.40, 0.50, 0.07));
             AbsoluteLayout.SetLayoutFlags(settimeButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(readBattContin, new Rectangle(0.05, 0.55, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(readBattContin, new Rectangle(0.05, 0.45, 0.50, 0.07));
             AbsoluteLayout.SetLayoutFlags(readBattContin, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(readBattCurrent, new Rectangle(0.05, 0.62, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(readBattCurrent, new Rectangle(0.05, 0.50, 0.50, 0.07));
             AbsoluteLayout.SetLayoutFlags(readBattCurrent, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(stepsButton, new Rectangle(0.05, 0.69, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(stepsButton, new Rectangle(0.05, 0.55, 0.50, 0.07));
             AbsoluteLayout.SetLayoutFlags(stepsButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(realtimestepsButton, new Rectangle(0.05, 0.76, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(realtimestepsButton, new Rectangle(0.05, 0.60, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(realtimestepsButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(disablerealtimestepsButton, new Rectangle(0.05, 0.83, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutBounds(disablerealtimestepsButton, new Rectangle(0.05, 0.65, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(disablerealtimestepsButton, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.07));
+            AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(fetchButton, new Rectangle(0.05, 0.9, 0.7, 0.07));
             AbsoluteLayout.SetLayoutFlags(fetchButton, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.97, 0.7, 0.07));
-            AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
         }
-        
+
         private async void Button_Clicked(object sender, EventArgs e)
         {
             try
             {
-                List<BLEDevice> devices = await Windesheart.ScanForDevices();
-                if (devices.Count > 0)
+                if (App.Current.Properties.ContainsKey(key))
                 {
-                    Globals.device = devices[0];
-                    Globals.device.Connect();
+                    App.Current.Properties.TryGetValue(key, out object result);
+                    var device = await Windesheart.GetKnownDevice((Guid)result);
+                    device?.Connect();
+                }
+                else
+                {
+                    ObservableCollection<BLEDevice> bleDevices = await Windesheart.ScanForDevices();
+                    if (bleDevices.Count > 0)
+                    {
+                        bleDevices[0].Connect();
+                        SaveDeviceInAppProperties(bleDevices[0].Device.Uuid);
+                    }
                 }
             }
             catch (Exception r)
             {
                 Console.WriteLine(r.Message);
-                Debug.WriteLine(" RAMONS - DEBUG.CW FEESTJE");
             }
         }
 
-        private async void Disconnect(object sender, EventArgs e)
+        private void Disconnect(object sender, EventArgs e)
         {
-            Globals.device.Disconnect();
+            Windesheart.ConnectedDevice.Disconnect();
         }
 
         private async void ReadCurrentBattery(object sender, EventArgs e)
         {
-            var battery = await Globals.device.GetBattery();
+            var battery = await Windesheart.ConnectedDevice.GetBattery();
             Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-            Globals.batteryPercentage = battery.BatteryPercentage;
             Globals.homepageviewModel.Battery = battery.BatteryPercentage;
             if (battery.Status == StatusEnum.Charging)
             {
@@ -112,55 +122,50 @@ namespace WindesHeartApp.Pages
             }
         }
 
-        private async void SetTime(object sender, EventArgs e)
+        private void SetTime(object sender, EventArgs e)
         {
-            temptime = temptime.AddHours(2);
-            bool timeset = await Globals.device.SetTime(temptime);
+            bool timeset = Windesheart.ConnectedDevice.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
             Console.WriteLine("Time set " + timeset);
         }
 
-        private async void SetCurrentTime(object sender, EventArgs e)
+        private void SetCurrentTime(object sender, EventArgs e)
         {
-            bool timeset = await Globals.device.SetTime(DateTime.Now);
+            bool timeset = Windesheart.ConnectedDevice.SetTime(DateTime.Now);
             Console.WriteLine("Time set " + timeset);
         }
 
-        private async void ReadBatteryContinuous(object sender, EventArgs e)
+        private void ReadBatteryContinuous(object sender, EventArgs e)
         {
-            Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-        }
-        private void GetBatteryStatus(Battery battery)
-        {
-
+            Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
         }
 
         public void GetHeartRate_Clicked(object sender, EventArgs e)
         {
-            Globals.device.SetHeartrateMeasurementInterval(1);
-            Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
+            Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
+            Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
         }
 
         public async void GetSteps(object sender, EventArgs e)
         {
-            StepInfo steps = await Globals.device.GetSteps();
-            Console.WriteLine("Steps: " + steps.GetStepCount());
+            StepInfo steps = await Windesheart.ConnectedDevice.GetSteps();
+            Console.WriteLine("Steps: " + steps.StepCount);
         }
 
         public void EnableRealTimeSteps(object sender, EventArgs e)
         {
-            Globals.device.EnableRealTimeSteps(OnStepsChanged);
+            Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsChanged);
             Console.WriteLine("Enabled realtime steps");
         }
 
         public void DisableRealTimeSteps(object sender, EventArgs e)
         {
-            Globals.device.DisableRealTimeSteps();
+            Windesheart.ConnectedDevice.DisableRealTimeSteps();
             Console.WriteLine("Disabled realtime steps");
         }
 
         public void OnStepsChanged(StepInfo steps)
         {
-            Console.WriteLine("Steps updated: " + steps.GetStepCount());
+            Console.WriteLine("Steps updated: " + steps.StepCount);
         }
 
         public void FetchData(object sender, EventArgs e)
@@ -181,13 +186,25 @@ namespace WindesHeartApp.Pages
             Globals.device.SetActivateOnLiftWrist(is24hour);
             if (is24hour)
             {
-                Globals.device.SetLanguage("nl-NL");
+                Windesheart.ConnectedDevice.SetLanguage("nl-NL");
             }
             else
             {
-                Globals.device.SetLanguage("en-EN");
+                Windesheart.ConnectedDevice.SetLanguage("en-EN");
             }
             is24hour = !is24hour;
+        }
+        private void SaveDeviceInAppProperties(Guid guid)
+        {
+            if (guid != Guid.Empty)
+            {
+                if (App.Current.Properties.ContainsKey(key))
+                {
+                    App.Current.Properties.Remove(key);
+                }
+
+                App.Current.Properties.Add(key, guid);
+            }
         }
     }
 }

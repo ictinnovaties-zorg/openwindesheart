@@ -16,7 +16,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             MiBand3 = device;
         }
 
-        public async Task<bool> SetTime(DateTime time)
+        public bool SetTime(DateTime time)
         {
             //Convert time to bytes
             byte[] timeToSet = ConversionHelper.GetTimeBytes(time, ConversionHelper.TimeUnit.Seconds);

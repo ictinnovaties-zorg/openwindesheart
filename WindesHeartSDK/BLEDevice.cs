@@ -8,20 +8,33 @@ namespace WindesHeartSDK
 {
     public abstract class BLEDevice
     {
-        public int Rssi;
+        public int Rssi { get; set; }
         public readonly IDevice Device;
-        public bool Authenticated;
+        public bool NeedsAuthentication = false;
+        public string Name { get; set; }
         public List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
-
+        public IDisposable ConnectionDisposable;
+        public IDisposable CharacteristicDisposable;
         //Services
         public readonly BluetoothService BluetoothService;
 
+        public BLEDevice()
+        {
+        }
+
         public BLEDevice(int rssi, IDevice device)
         {
-            Rssi = rssi;
-            Device = device;
+            this.Rssi = rssi;
+            this.Device = device;
+            this.Name = device.Name;
             BluetoothService = new BluetoothService(this);
-            Device.WhenConnected().Subscribe(x => OnConnect());
+            ConnectionDisposable = Device.WhenConnected().Subscribe(x => OnConnect());
+        }
+
+        public void DisposeDisposables()
+        {
+            ConnectionDisposable?.Dispose();
+            CharacteristicDisposable?.Dispose();
         }
 
         public abstract void OnConnect();
@@ -30,7 +43,7 @@ namespace WindesHeartSDK
         public abstract void SetTimeDisplayUnit(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
         public abstract void SetLanguage(string localeString);
-        public abstract Task<bool> SetTime(DateTime dateTime);
+        public abstract bool SetTime(System.DateTime dateTime);
         public abstract Task<StepInfo> GetSteps();
         public abstract void SetActivateOnLiftWrist(bool activate);
         public abstract void SetActivateOnLiftWrist(DateTime from, DateTime to);

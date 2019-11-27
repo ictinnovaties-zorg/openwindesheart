@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Foundation;
+using System;
+using System.IO;
 using UIKit;
+using WindesHeartApp.Data.Repository;
 using WindesHeartApp.Resources;
 
 namespace WindesHeartApp.iOS
@@ -23,8 +23,15 @@ namespace WindesHeartApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            SQLitePCL.Batteries.Init();
+
+            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library",
+                "Heartrates.db");
+
+            var heartrateRepository = new HeartrateRepository(dbPath);
+
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+            LoadApplication(new App(heartrateRepository));
 
             Globals.screenHeight = (int)UIScreen.MainScreen.Bounds.Height;
             Globals.screenWidth = (int)UIScreen.MainScreen.Bounds.Width;

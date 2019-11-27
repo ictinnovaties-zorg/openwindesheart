@@ -11,11 +11,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3AuthenticationService
     {
-        private readonly MiBand3 MiBand;
-        private IGattCharacteristic AuthCharacteristic;
-
-
-        public MiBand3AuthenticationService(MiBand3 device)
+        private static IGattCharacteristic authCharacteristic;
+        private readonly BLEDevice BLEDevice;
+        private IDisposable AuthenticationDisposable;
+        public MiBand3AuthenticationService(BLEDevice device)
         {
             MiBand = device;
         }
@@ -30,8 +29,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             AuthCharacteristic = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
             if (AuthCharacteristic != null)
             {
-               //Fired when Mi Band 3 is tapped
-                AuthCharacteristic.RegisterAndNotify().Subscribe(async result =>
+                //Fired when Mi Band 3 is tapped
+                AuthenticationDisposable?.Dispose();
+                AuthenticationDisposable = authCharacteristic.RegisterAndNotify().Subscribe(async result =>
                 {
                     var data = result.Data;
                     if (data == null)
@@ -53,6 +53,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         else if (data[1] == MiBand3Resource.AuthSendEncryptedAuthNumber)
                         {
                             Console.WriteLine("Authenticated & Connected!");
+                            AuthenticationDisposable.Dispose();
                             return;
                         }
                     }
@@ -66,10 +67,16 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     throw new ConnectionException(exception.Message);
                 });
 
-                //Triggers vibration on Mi Band 3
-                //await TriggerAuthentication();
-
-                await RequestAuthorizationNumber();
+                if (BLEDevice.NeedsAuthentication)
+                {
+                    //Triggers vibration on device
+                    await TriggerAuthentication();
+                }
+                else
+                {
+                    //Continues session with authorization-number
+                    await RequestAuthorizationNumber();
+                }
             }
             else
             {

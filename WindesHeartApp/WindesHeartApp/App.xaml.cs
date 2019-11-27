@@ -1,5 +1,7 @@
 ﻿using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
+using WindesHeartApp.Data.Interfaces;
+using System;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
@@ -8,10 +10,10 @@ namespace WindesHeartApp
 {
     public partial class App : Application
     {
-
-        public App()
+        public App(IHeartrateRepository heartrateRepository)
         {
             InitializeComponent();
+
             MainPage = new NavigationPage(new HomePage());
         }
 
@@ -37,6 +39,6 @@ namespace WindesHeartApp
             {
                 await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
             }
-        }
+        }        
     }
 }
