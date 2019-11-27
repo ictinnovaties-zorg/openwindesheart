@@ -170,7 +170,7 @@ namespace WindesHeartApp.Pages
 
         public void FetchData(object sender, EventArgs e)
         {
-            Globals.device.FetchData();
+            Windesheart.ConnectedDevice.FetchData();
         }
 
         private void GoBack_Clicked(object sender, EventArgs e)
@@ -180,10 +180,10 @@ namespace WindesHeartApp.Pages
 
         private void Setln_Clicked(object sender, EventArgs e)
         {
-            Globals.device.EnableSleepTracking(true);
-            Globals.device.SetDateDisplayFormat(is24hour);
-            Globals.device.SetTimeDisplayUnit(is24hour);
-            Globals.device.SetActivateOnLiftWrist(is24hour);
+            Windesheart.ConnectedDevice.EnableSleepTracking(true);
+            Windesheart.ConnectedDevice.SetDateDisplayFormat(is24hour);
+            Windesheart.ConnectedDevice.SetTimeDisplayUnit(is24hour);
+            Windesheart.ConnectedDevice.SetActivateOnLiftWrist(is24hour);
             if (is24hour)
             {
                 Windesheart.ConnectedDevice.SetLanguage("nl-NL");

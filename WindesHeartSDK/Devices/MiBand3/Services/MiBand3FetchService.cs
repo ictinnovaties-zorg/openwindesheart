@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using WindesHeartSdk.Model;
 using WindesHeartSDK.Devices.MiBand3Device.Helpers;
 using WindesHeartSDK.Devices.MiBand3Device.Models;
@@ -30,7 +31,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             MiBand3 = device;
         }
 
-        public void InitiateFetching(DateTime date)
+        public async void InitiateFetching(DateTime date)
         {
             //Dispose all DIsposables to prevent double data
             CharActivitySub?.Dispose();
@@ -41,10 +42,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             CharActivitySub  = MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(handleActivityChar);
 
             // Write the date and time from which to receive samples to the Mi Band
-            WriteDateBytes(date);
+            await WriteDateBytes(date);
         }
 
-        private async void WriteDateBytes(DateTime date)
+        private async Task WriteDateBytes(DateTime date)
         {
             // Convert date to bytes
             byte[] Timebytes = GetTimeBytes(date, TimeUnit.Minutes);
@@ -87,9 +88,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 firstTimeStamp = RawBytesToCalendar(DateTimeBytes);
 
                 Console.WriteLine("Fetching data from: " + firstTimeStamp.ToString());
-
-                // Subscribe (again) just incase
-                CharActivitySub = MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(handleActivityChar);
 
                 // Write 0x02 to tell the band to start the fetching process
                 await MiBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
@@ -154,8 +152,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     }
 
                     // Create a sample from the recieved bytes
-                    var category = result.Data[i]; //ToUint16(new byte[] { result.Data[i], result.Data[i + 1] });
-                    var intensity = result.Data[i + 1]; //ToUint16(new byte[] { result.Data[i], result.Data[i + 1] });
+                    var category = result.Data[i] & 0xff; //ToUint16(new byte[] { result.Data[i], result.Data[i + 1] });
+                    var intensity = result.Data[i + 1] & 0xff; //ToUint16(new byte[] { result.Data[i], result.Data[i + 1] });
                     var steps = result.Data[i + 2] & 0xff;
                     var heartrate = result.Data[i + 3];
 

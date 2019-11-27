@@ -38,10 +38,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// Set the interval for automatic heartrate measurements
         /// </summary>
         /// <param name="minutes"></param>
-        public void SetMeasurementInterval(int minutes)
+        public async void SetMeasurementInterval(int minutes)
         {
             var Char = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrateControl);
-            Char.Write(new byte[] { 0x14, (byte)minutes });
+            await Char.Write(new byte[] { 0x14, (byte)minutes });
         }
     }
 }
