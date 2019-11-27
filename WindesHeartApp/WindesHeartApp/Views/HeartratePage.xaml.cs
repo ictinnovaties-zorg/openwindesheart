@@ -10,30 +10,26 @@ namespace WindesHeartApp.Pages
         public HeartratePage()
         {
             InitializeComponent();
-            BindingContext = Globals.hrviewModel;
         }
 
         protected override void OnAppearing()
         {
+            BindingContext = Globals.heartrateviewModel;
             BuildPage();
         }
 
         private void BuildPage()
         {
             PageBuilder.BuildPageBasics(absoluteLayout, this);
-            PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
-            PageBuilder.BuildAndAddLabel(absoluteLayout, "Heartrate", 0.05, 0.10);
-            PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
+            PageBuilder.AddHeaderImages(absoluteLayout);
+            PageBuilder.AddLabel(absoluteLayout, "Heartrate", 0.05, 0.10, Globals.lighttextColor);
+            PageBuilder.AddReturnButton(absoluteLayout, this);
+
+            var heartrateLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.1, 0.5, Color.Black);
             AbsoluteLayout.SetLayoutBounds(heartrateLabel, new Rectangle(0.1, 0.5, 300, 50));
             AbsoluteLayout.SetLayoutFlags(heartrateLabel, AbsoluteLayoutFlags.PositionProportional);
+            heartrateLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartrateMessage"));
             heartrateLabel.FontSize = 15;
-
-            Button button = new Button();
-            button.SetBinding(Button.CommandProperty, new Binding() { Path = "buttonClickedCommand" });
-            button.Text = "Click me, watch the HR change!";
-            AbsoluteLayout.SetLayoutBounds(button, new Rectangle(0.1, 0.7, 300, 50));
-            AbsoluteLayout.SetLayoutFlags(button, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(button);
         }
     }
 }

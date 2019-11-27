@@ -1,6 +1,7 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -47,9 +48,9 @@ namespace WindesHeartSDK
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="scanTimeInSeconds"></param>
         /// <returns>List of IScanResult</returns>
-        public static async Task<List<BLEDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
+        public static async Task<ObservableCollection<BLEDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
         {
-            var scanResults = new List<BLEDevice>();
+            var scanResults = new ObservableCollection<BLEDevice>();
             var uniqueGuids = new List<Guid>();
 
             //Start scanning when adapter is powered on.
@@ -88,7 +89,7 @@ namespace WindesHeartSDK
             //Order scanresults by descending signal strength
             if (scanResults.Count > 1)
             {
-                scanResults = scanResults.OrderByDescending(x => x.Rssi).ToList();
+                scanResults = new ObservableCollection<BLEDevice>(scanResults.OrderByDescending(x => x.Rssi).ToList());
             }
 
             return scanResults;

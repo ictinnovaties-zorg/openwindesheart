@@ -6,6 +6,7 @@ namespace WindesHeartApp.Services
 {
     public static class CallbackHandler
     {
+
         //OnHeartrateChange/Measurement
         public static void ChangeHeartRate(Heartrate heartrate)
         {
@@ -13,8 +14,7 @@ namespace WindesHeartApp.Services
                 return;
 
             Console.WriteLine($"HEARTRATE VALUE = {heartrate.HeartrateValue}");
-            Globals.heartRate = heartrate.HeartrateValue;
-            Globals.hrviewModel.HeartRate = heartrate.HeartrateValue;
+            Globals.heartrateviewModel.HeartRate = heartrate.HeartrateValue;
             Globals.homepageviewModel.HeartRate = heartrate.HeartrateValue;
         }
 
@@ -22,7 +22,6 @@ namespace WindesHeartApp.Services
         public static void ChangeBattery(Battery battery)
         {
             Console.WriteLine($"Batterypercentage is now: {battery.Status}");
-            Globals.batteryPercentage = battery.BatteryPercentage;
             Globals.homepageviewModel.Battery = battery.BatteryPercentage;
             if (battery.Status == StatusEnum.Charging)
             {
@@ -47,6 +46,13 @@ namespace WindesHeartApp.Services
                 Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
             }
 
+        }
+
+        public static void OnStepsUpdated(StepInfo stepsInfo)
+        {
+            var count = stepsInfo.StepCount;
+            Console.WriteLine($"Stepcount updated: {count}");
+            Globals.StepsViewModel.Steps = count;
         }
     }
 }

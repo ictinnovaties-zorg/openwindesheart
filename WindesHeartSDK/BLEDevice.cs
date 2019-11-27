@@ -8,19 +8,26 @@ namespace WindesHeartSDK
 {
     public abstract class BLEDevice
     {
-        public int Rssi;
+        public int Rssi { get; set; }
+        public string swag { get; set; }
         public readonly IDevice Device;
         public bool NeedsAuthentication = false;
+        public string Name { get; set; }
         public List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
         public IDisposable ConnectionDisposable;
         public IDisposable CharacteristicDisposable;
         //Services
         public readonly BluetoothService BluetoothService;
 
+        public BLEDevice()
+        {
+        }
+
         public BLEDevice(int rssi, IDevice device)
         {
             this.Rssi = rssi;
             this.Device = device;
+            this.Name = device.Name;
             BluetoothService = new BluetoothService(this);
             ConnectionDisposable = Device.WhenConnected().Subscribe(x => OnConnect());
         }

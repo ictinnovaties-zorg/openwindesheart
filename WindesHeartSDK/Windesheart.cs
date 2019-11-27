@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace WindesHeartSDK
@@ -14,7 +15,7 @@ namespace WindesHeartSDK
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="scanTimeInSeconds"></param>
         /// <returns>List of IScanResult</returns>
-        public static async Task<List<BLEDevice>> ScanForDevices(int scanTimeInSeconds = 10)
+        public static async Task<ObservableCollection<BLEDevice>> ScanForDevices(int scanTimeInSeconds = 10)
         {
             return await BluetoothService.ScanForUniqueDevicesAsync(scanTimeInSeconds);
         }

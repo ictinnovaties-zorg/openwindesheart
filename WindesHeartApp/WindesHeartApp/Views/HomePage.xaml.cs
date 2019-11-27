@@ -25,9 +25,9 @@ namespace WindesHeartApp.Pages
         {
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
-            PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
+            PageBuilder.AddHeaderImages(absoluteLayout);
 
-            #region define battery Label and ProgressBar TEST TEST
+            #region define battery and hr Label
             Image batteryImage = new Image();
             batteryImage.SetBinding(Image.SourceProperty, new Binding("BatteryImage"));
             batteryImage.HeightRequest = Globals.screenHeight / 100 * 2.5;
@@ -44,12 +44,19 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(batteryImage);
             absoluteLayout.Children.Add(batteryLabel);
 
+            Image heartrateImage = new Image();
+            heartrateImage.SetBinding(Image.SourceProperty, new Binding("HeartImage"));
+            heartrateImage.HeightRequest = Globals.screenHeight / 100 * 2.5;
+
+            AbsoluteLayout.SetLayoutBounds(heartrateImage, new Rectangle(0.85, 0.18, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(heartrateImage, AbsoluteLayoutFlags.PositionProportional);
             Label HRLabel = new Label
             { FontSize = Globals.screenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold };
             HRLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartRate"));
             AbsoluteLayout.SetLayoutBounds(HRLabel, new Rectangle(0.05, 0.18, -1, -1));
             AbsoluteLayout.SetLayoutFlags(HRLabel, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(HRLabel);
+            absoluteLayout.Children.Add(heartrateImage);
             #endregion
 
             #region define and add Buttons

@@ -25,9 +25,9 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout absoluteLayout = new AbsoluteLayout();
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
-            PageBuilder.BuildAndAddHeaderImages(absoluteLayout);
-            PageBuilder.BuildAndAddLabel(absoluteLayout, "Settings", 0.05, 0.10);
-            PageBuilder.BuildAndAddReturnButton(absoluteLayout, this);
+            PageBuilder.AddHeaderImages(absoluteLayout);
+            PageBuilder.AddLabel(absoluteLayout, "Settings", 0.05, 0.10, Globals.lighttextColor);
+            PageBuilder.AddReturnButton(absoluteLayout, this);
 
             #region save changes Button
             Button savechangesButton = new Button();
@@ -41,27 +41,7 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(savechangesButton);
             #endregion
 
-            #region color Pickers with Labels
-            Label primarycolorpickerLabel = new Label { Text = "Select Primary Color", TextColor = Globals.lighttextColor, FontSize = Globals.screenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
-            AbsoluteLayout.SetLayoutBounds(primarycolorpickerLabel, new Rectangle(0.5, 0.35, -1, -1));
-            AbsoluteLayout.SetLayoutFlags(primarycolorpickerLabel, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(primarycolorpickerLabel);
-
-            Picker primaryPicker = new Picker { Title = "Select..", FontSize = Globals.screenHeight / 100 * 2.5 };
-            foreach (string colorName in Globals.colorDictionary.Keys)
-            {
-                primaryPicker.Items.Add(colorName);
-            }
-            primaryPicker.SelectedIndexChanged += (sender, args) =>
-            {
-                _tempprimaryColor = primaryPicker.Items[primaryPicker.SelectedIndex];
-                primaryPicker.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
-                primaryPicker.BackgroundColor = Globals.colorDictionary[_tempprimaryColor];
-            };
-            AbsoluteLayout.SetLayoutBounds(primaryPicker, new Rectangle(0.5, 0.4, Globals.screenWidth - Globals.screenWidth / 100 * 4, -1));
-            AbsoluteLayout.SetLayoutFlags(primaryPicker, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(primaryPicker);
-
+            #region button-color picker with Label
 
             Label secondarycolorpickerlabel = new Label { Text = "Select Secondary Color", TextColor = Globals.lighttextColor, FontSize = Globals.screenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
             AbsoluteLayout.SetLayoutBounds(secondarycolorpickerlabel, new Rectangle(0.5, 0.45, -1, -1));

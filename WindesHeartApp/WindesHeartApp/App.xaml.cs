@@ -1,5 +1,6 @@
 ﻿using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
+using WindesHeartApp.Data.Interfaces;
 using System;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
@@ -9,10 +10,10 @@ namespace WindesHeartApp
 {
     public partial class App : Application
     {
-
-        public App()
+        public App(IHeartrateRepository heartrateRepository)
         {
             InitializeComponent();
+
             MainPage = new NavigationPage(new HomePage());
         }
 
