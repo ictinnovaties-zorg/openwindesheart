@@ -148,8 +148,6 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-
-
         private async Task ReadCurrentBattery()
         {
             var battery = await Globals.device.GetBattery();

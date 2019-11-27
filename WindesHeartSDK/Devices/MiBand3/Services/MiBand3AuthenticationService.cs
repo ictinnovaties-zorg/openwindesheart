@@ -12,7 +12,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
     {
         private static IGattCharacteristic authCharacteristic;
         private readonly BLEDevice BLEDevice;
-
+        private IDisposable AuthenticationDisposable;
         public MiBand3AuthenticationService(BLEDevice device)
         {
             BLEDevice = device;
@@ -28,11 +28,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             authCharacteristic = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
             if (authCharacteristic != null)
             {
-                //Triggers vibration on Mi Band 3
-                await TriggerAuthentication();
-
                 //Fired when Mi Band 3 is tapped
-                authCharacteristic.RegisterAndNotify().Subscribe(async result =>
+                AuthenticationDisposable?.Dispose();
+                AuthenticationDisposable = authCharacteristic.RegisterAndNotify().Subscribe(async result =>
                 {
                     var data = result.Data;
                     if (data == null)
@@ -54,6 +52,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                         else if (data[1] == MiBand3Resource.AuthSendEncryptedAuthNumber)
                         {
                             Console.WriteLine("Authenticated & Connected!");
+                            AuthenticationDisposable.Dispose();
                             return;
                         }
                     }
@@ -66,6 +65,17 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                 {
                     throw new ConnectionException(exception.Message);
                 });
+
+                if (BLEDevice.NeedsAuthentication)
+                {
+                    //Triggers vibration on device
+                    await TriggerAuthentication();
+                }
+                else
+                {
+                    //Continues session with authorization-number
+                    await RequestAuthorizationNumber();
+                }
             }
             else
             {
