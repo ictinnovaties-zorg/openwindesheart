@@ -8,7 +8,6 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
-        private DevicePage _devicePage;
         public HomePage()
         {
             InitializeComponent();
@@ -19,7 +18,6 @@ namespace WindesHeartApp.Pages
             BindingContext = Globals.homepageviewModel;
             BuildPage();
             App.RequestLocationPermission();
-            _devicePage = new DevicePage();
         }
 
 
@@ -171,7 +169,7 @@ namespace WindesHeartApp.Pages
 
         private void deviceButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(_devicePage);
+            Navigation.PushAsync(new DevicePage());
 
         }
 
