@@ -28,7 +28,7 @@ namespace WindesHeartApp.Pages
         {
             PageBuilder.BuildPageBasics(Layout, this);
             PageBuilder.AddHeaderImages(Layout);
-            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.lighttextColor);
+            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.lighttextColor, "", 0);
             PageBuilder.AddReturnButton(Layout, this);
             PageBuilder.AddReturnButton(Layout, this);
 

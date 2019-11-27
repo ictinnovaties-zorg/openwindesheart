@@ -59,16 +59,32 @@ namespace WindesHeartApp.Pages
             Application.Current.MainPage.Navigation.PopToRootAsync();
         }
 
-        public static Label AddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y, Color color)
+        public static ActivityIndicator AddActivityIndicator(AbsoluteLayout layout, string bindingPath, double x, double y, double width, double height, AbsoluteLayoutFlags flags, Color color)
+        {
+            ActivityIndicator indicator = new ActivityIndicator();
+            indicator.Color = color;
+            indicator.SetBinding(ActivityIndicator.IsRunningProperty, new Binding() { Path = bindingPath });
+            AbsoluteLayout.SetLayoutBounds(indicator, new Rectangle(x, y, width, height));
+            AbsoluteLayout.SetLayoutFlags(indicator, flags);
+            layout.Children.Add(indicator);
+            return indicator;
+        }
+        public static Label AddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y, Color color, string bindingPath, int fontSize)
         {
             Label label = new Label
             {
                 Text = text,
                 TextColor = color,
-                FontSize = Globals.screenHeight / 100 * 3,
+                FontSize = Globals.screenHeight / 100 * 3
+
             };
+
             AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
+            label.SetBinding(Label.TextProperty, new Binding() { Path = bindingPath });
             AbsoluteLayout.SetLayoutBounds(label, new Rectangle(x, y, -1, -1));
+            if (fontSize != null)
+                label.FontSize = fontSize;
+
             absoluteLayout.Children.Add(label);
             return label;
         }

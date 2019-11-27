@@ -2,20 +2,24 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Services;
 using WindesHeartSDK;
-using WindesHeartSDK.Devices.MiBand3.Models;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class DevicePageViewModel
+    public class DevicePageViewModel : INotifyPropertyChanged
     {
         private BLEDevice _selectedDevice;
         private int _heartrateInterval;
         public event PropertyChangedEventHandler PropertyChanged;
         private ObservableCollection<BLEDevice> deviceList;
+        private bool _isLoading;
+        private string _statusText;
         public Command scanButtonCommand { get; }
         public Command disconnectButtonCommand { get; }
 
@@ -48,6 +52,26 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
+        public string StatusText
+        {
+            get { return _statusText; }
+            set
+            {
+                _statusText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+            }
+        }
+
         public BLEDevice SelectedDevice
         {
             get { return _selectedDevice; }
@@ -57,57 +81,64 @@ namespace WindesHeartApp.ViewModels
 
                 if (_selectedDevice == null)
                     return;
-
+                OnPropertyChanged();
                 deviceSelected(_selectedDevice);
+                DevicePage.devicelist.SelectedItem = null;
                 _selectedDevice = null;
+
             }
         }
 
-        private void deviceSelected(BLEDevice device)
+        private async void deviceSelected(BLEDevice device)
         {
-            Console.WriteLine(device.Name);
-            //try
-            //{
-            //    device.Connect();
-            // Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-            // Globals.device = device;
-            //ReadCurrentBattery();
-            //SetCurrentTime();
-            //Globals.device.SetHeartrateMeasurementInterval(_heartrateInterval);
-            //Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
-            //Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-            //Globals.device.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+
+            try
+            {
+                StatusText = $"Connecting to {device.Name}";
+                IsLoading = true;
+                device.Connect();
+                Globals.device = device;
+                await ReadCurrentBattery();
+                await Globals.device.SetTime(DateTime.Now);
+                Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
+                Globals.device.SetHeartrateMeasurementInterval(_heartrateInterval);
+                Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
+                Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
+                Globals.device.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
+                StatusText = "Connected";
+                IsLoading = false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
-        private /*async*/ void scanButtonClicked()
+        private async void scanButtonClicked()
         {
-            var band = new MiBand3();
-            band.Name = "DANIEL";
-            band.Rssi = 420;
-            DeviceList.Add(band);
+            try
+            {
+                StatusText = "Scanning for devices";
+                IsLoading = true;
+                var devices = await Windesheart.ScanForDevices();
+                if (devices != null)
+                {
+                    foreach (var device in devices)
+                    {
+                        DeviceList.Add(device);
+                    }
+                }
 
-            //try
-            //{
-            //    var devices = await Windesheart.ScanForDevices();
-            //    if (devices != null)
-            //        Globals.device = devices[0];
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+                StatusText = $"Results found: {devices.Count}";
+                IsLoading = false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
-        private async void SetCurrentTime()
-        {
-            bool timeset = await Globals.device.SetTime(DateTime.Now);
-        }
-        private async void ReadCurrentBattery()
+        private async Task ReadCurrentBattery()
         {
             var battery = await Globals.device.GetBattery();
             Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
@@ -117,7 +148,6 @@ namespace WindesHeartApp.ViewModels
                 Globals.homepageviewModel.BatteryImage = "BatteryCharging.png";
                 return;
             }
-
             if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
             {
                 Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";

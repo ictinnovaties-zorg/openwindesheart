@@ -10,6 +10,7 @@ namespace WindesHeartApp.Resources
     {
         public static BLEDevice device;
         public static HeartRatePageViewModel heartrateviewModel;
+        public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel homepageviewModel;
         public static double screenHeight { get; set; }
         public static double screenWidth { get; set; }
@@ -35,6 +36,7 @@ namespace WindesHeartApp.Resources
             screenratioFactor = screenHeight / screenWidth;
             heartrateviewModel = new HeartRatePageViewModel();
             StepsViewModel = new StepsViewModel();
+            DevicePageViewModel = new DevicePageViewModel();
             heartrateInterval = 1;
             homepageviewModel = new HomePageViewModel();
             colorDictionary = new Dictionary<string, Color>

@@ -81,7 +81,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
 
-            PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.lighttextColor);
+            PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.lighttextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             var previousBtn = PageBuilder.AddButton(absoluteLayout, "Previous", "PreviousDayBinding", 0.1, 0.15, 0.25, 0.07, AbsoluteLayoutFlags.All);
@@ -90,14 +90,14 @@ namespace WindesHeartApp.Pages
             var nextBtn = PageBuilder.AddButton(absoluteLayout, "Next", "NextDayBinding", 0.9, 0.15, 0.25, 0.07, AbsoluteLayoutFlags.All);
             nextBtn.FontSize = 12;
 
-            CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black);
+            CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black, "", 0);
             CurrentDayLabel.FontSize = 15;
 
-            CurrentStepsLabel = PageBuilder.AddLabel(absoluteLayout, "0", 0.5, 0.37, Color.Black);
+            CurrentStepsLabel = PageBuilder.AddLabel(absoluteLayout, "0", 0.5, 0.37, Color.Black, "", 0);
             CurrentStepsLabel.SetBinding(Label.TextProperty, new Binding("StepsLabelText"));
             CurrentStepsLabel.FontSize = 40;
 
-            var label = PageBuilder.AddLabel(absoluteLayout, "STEPS", 0.5, 0.45, Color.Black);
+            var label = PageBuilder.AddLabel(absoluteLayout, "STEPS", 0.5, 0.45, Color.Black, "", 0);
             label.FontSize = 20;
 
             //PageBuilder.AddButton(absoluteLayout, "Get steps", "GetStepsBinding", 0.2, 0.28, 300, 50);
@@ -107,10 +107,10 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutBounds(chartView, new Rectangle(0.5, 0.20, 0.65, 0.65));
             absoluteLayout.Children.Add(chartView);
 
-            var label2 = PageBuilder.AddLabel(absoluteLayout, "0 Kcal", 0.5, 0.65, Color.Black);
+            var label2 = PageBuilder.AddLabel(absoluteLayout, "0 Kcal", 0.5, 0.65, Color.Black, "", 0);
             label2.FontSize = 20;
 
-            var label3 = PageBuilder.AddLabel(absoluteLayout, "0 Kilometers", 0.5, 0.73, Color.Black);
+            var label3 = PageBuilder.AddLabel(absoluteLayout, "0 Kilometers", 0.5, 0.73, Color.Black, "", 0);
             label3.FontSize = 20;
 
             AddDayButtons(absoluteLayout);

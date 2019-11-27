@@ -26,7 +26,7 @@ namespace WindesHeartApp.Pages
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
-            PageBuilder.AddLabel(absoluteLayout, "Settings", 0.05, 0.10, Globals.lighttextColor);
+            PageBuilder.AddLabel(absoluteLayout, "Settings", 0.05, 0.10, Globals.lighttextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             #region save changes Button
