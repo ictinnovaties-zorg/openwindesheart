@@ -70,7 +70,7 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
                 Globals.DevicePageViewModel.StatusText = "Connected";
                 Globals.DevicePageViewModel.IsLoading = false; Windesheart.ConnectedDevice.SetTime(DateTime.Now);
-                Console.WriteLine("SucmySeks");
+                Console.WriteLine("succes");
             }
             else
             {
