@@ -15,6 +15,9 @@ namespace WindesHeartSDK
         public List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
         public IDisposable ConnectionDisposable;
         public IDisposable CharacteristicDisposable;
+
+        public Action<ConnectionResult> ConnectionCallback;
+
         //Services
         public readonly BluetoothService BluetoothService;
 
@@ -38,7 +41,7 @@ namespace WindesHeartSDK
         }
 
         public abstract void OnConnect();
-        public abstract void Connect();
+        public abstract void Connect(Action<ConnectionResult> callback);
         public abstract void Disconnect();
         public abstract void SetTimeDisplayUnit(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
@@ -65,5 +68,9 @@ namespace WindesHeartSDK
         public abstract void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate);
 
         public abstract void SetHeartrateMeasurementInterval(int minutes);
+
+
     }
+
+    public enum ConnectionResult { Failed, Succeeded }
 }
