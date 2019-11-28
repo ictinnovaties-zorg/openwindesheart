@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using WindesHeartApp.Resources;
+using WindesHeartSDK;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartApp.Services
@@ -53,6 +55,28 @@ namespace WindesHeartApp.Services
             var count = stepsInfo.StepCount;
             Console.WriteLine($"Stepcount updated: {count}");
             Globals.StepsViewModel.Steps = count;
+        }
+
+        public void ConnetionCallBack(ConnectionResult result)
+        {
+            if (result = ConnectionResult.Succes)
+            {
+
+                Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
+                Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(Globals.heartrateInterval);
+                Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
+                Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
+                Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
+                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
+                Globals.DevicePageViewModel.StatusText = "Connected";
+                Globals.DevicePageViewModel.IsLoading = false; Windesheart.ConnectedDevice.SetTime(DateTime.Now);
+                Console.WriteLine("SucmySeks");
+            }
+            else
+            {
+                Console.WriteLine("FAIL");
+            }
+
         }
     }
 }

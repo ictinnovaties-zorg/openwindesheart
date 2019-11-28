@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
+using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
 
@@ -246,11 +247,11 @@ namespace WindesHeartApp.ViewModels
         private async void HandleGetSteps()
         {
             Console.WriteLine("GetSteps Clicked!");
-            if (Globals.device != null)
+            if (Windesheart.ConnectedDevice != null)
             {
                 try
                 {
-                    StepInfo info = await Globals.device.GetSteps();
+                    StepInfo info = await Windesheart.ConnectedDevice.GetSteps();
                     StepsPage.CurrentStepsLabel.Text = "Steps: " + info.StepCount;
                 }
                 catch (Exception e)
@@ -262,13 +263,13 @@ namespace WindesHeartApp.ViewModels
 
         private void ToggleRealTimeSteps()
         {
-            if (Globals.device != null)
+            if (Windesheart.ConnectedDevice != null)
             {
                 if (realTimeStepsEnabled)
                 {
                     try
                     {
-                        Globals.device.DisableRealTimeSteps();
+                        Windesheart.ConnectedDevice.DisableRealTimeSteps();
                         StepsPage.ToggleRealTimeStepsButton.Text = "Enable Realtime Steps";
                     }
                     catch (Exception e)
@@ -281,7 +282,7 @@ namespace WindesHeartApp.ViewModels
                 {
                     try
                     {
-                        Globals.device.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
+                        Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
                         StepsPage.ToggleRealTimeStepsButton.Text = "Disable Realtime Steps";
                     }
                     catch (Exception e)

@@ -5,17 +5,17 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
-using WindesHeartApp.Services;
 using WindesHeartSDK;
-using WindesHeartSDK.Models;
 using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
     public class DevicePageViewModel : INotifyPropertyChanged
     {
+        private string key = "LastConnectedDeviceGuid";
         private BLEDevice _selectedDevice;
         private int _heartrateInterval;
+        private BLEDevice _device;
         public event PropertyChangedEventHandler PropertyChanged;
         private ObservableCollection<BLEDevice> deviceList;
         private bool _isLoading;
@@ -30,14 +30,14 @@ namespace WindesHeartApp.ViewModels
             if (DeviceList == null)
                 DeviceList = new ObservableCollection<BLEDevice>();
             _heartrateInterval = Globals.heartrateInterval;
-            if (Globals.device == null)
+            if (Windesheart.ConnectedDevice == null)
                 StatusText = "Disconnected";
         }
 
         private async void disconnectButtonClicked()
         {
             IsLoading = true;
-            Globals.device.Disconnect();
+            Windesheart.ConnectedDevice.Disconnect();
             await Task.Delay(500);
             IsLoading = false;
             StatusText = "Disconnected";
@@ -103,10 +103,7 @@ namespace WindesHeartApp.ViewModels
                 var devices = await Windesheart.ScanForDevices();
                 if (devices != null)
                 {
-                    foreach (var device in devices)
-                    {
-                        DeviceList.Add(device);
-                    }
+                    DeviceList = devices;
                 }
 
                 StatusText = $"Results found: {devices.Count}";
@@ -119,28 +116,11 @@ namespace WindesHeartApp.ViewModels
         }
         private async void deviceSelected(BLEDevice device)
         {
-
             try
             {
                 StatusText = $"Connecting to {device.Name}";
                 IsLoading = true;
                 device.Connect();
-                Globals.device = device;
-
-                // NEED TO FIX THIS
-                await Task.Delay(5000);
-
-                await ReadCurrentBattery();
-                await Globals.device.SetTime(DateTime.Now);
-
-                Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-                Globals.device.SetHeartrateMeasurementInterval(_heartrateInterval);
-                Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
-                Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-                Globals.device.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
-                DeviceList = new ObservableCollection<BLEDevice>();
-                StatusText = "Connected";
-                IsLoading = false;
             }
             catch (Exception e)
             {
@@ -148,33 +128,17 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        private async Task ReadCurrentBattery()
+        private void SaveDeviceInAppProperties(Guid guid)
         {
-            var battery = await Globals.device.GetBattery();
-            Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-            Globals.homepageviewModel.Battery = battery.BatteryPercentage;
-            if (battery.Status == StatusEnum.Charging)
+            if (guid != Guid.Empty)
             {
-                Globals.homepageviewModel.BatteryImage = "BatteryCharging.png";
-                return;
-            }
-            if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";
-            }
-            else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryHalf.png";
-            }
-            else if (battery.BatteryPercentage >= 51 && battery.BatteryPercentage < 76)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
-            }
-            else if (battery.BatteryPercentage >= 76)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
+                if (App.Current.Properties.ContainsKey(key))
+                {
+                    App.Current.Properties.Remove(key);
+                }
+
+                App.Current.Properties.Add(key, guid);
             }
         }
-
     }
 }

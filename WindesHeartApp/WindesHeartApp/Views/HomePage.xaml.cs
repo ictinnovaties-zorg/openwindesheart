@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using WindesHeartApp.Resources;
+using WindesHeartSDK;
+using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -8,6 +11,7 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
+        private string _key = "LastConnectedDeviceGuid";
         public HomePage()
         {
             InitializeComponent();
@@ -18,6 +22,9 @@ namespace WindesHeartApp.Pages
             BindingContext = Globals.homepageviewModel;
             BuildPage();
             App.RequestLocationPermission();
+            if (Windesheart.ConnectedDevice != null)
+                ReadCurrentBattery();
+
         }
 
 
@@ -58,6 +65,12 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(HRLabel);
             absoluteLayout.Children.Add(heartrateImage);
             #endregion
+
+            if (App.Current.Properties.ContainsKey(_key))
+            {
+                App.Current.Properties.TryGetValue(_key, out object result);
+                ConnectKnowDevice(result);
+            }
 
             #region define and add Buttons
             var buttonStyle = new Style(typeof(Button))
@@ -146,6 +159,12 @@ namespace WindesHeartApp.Pages
             #endregion
         }
 
+        private async void ConnectKnowDevice(object result)
+        {
+            var device = await Windesheart.GetKnownDevice((Guid)result);
+            device?.Connect();
+        }
+
         #region button eventhandlers
         private void testButton_Clicked(object sender, EventArgs e)
         {
@@ -178,5 +197,32 @@ namespace WindesHeartApp.Pages
             Navigation.PushAsync(new AboutPage());
         }
         #endregion
+        private async Task ReadCurrentBattery()
+        {
+            var battery = await Windesheart.ConnectedDevice.GetBattery();
+            Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+            Globals.homepageviewModel.Battery = battery.BatteryPercentage;
+            if (battery.Status == StatusEnum.Charging)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryCharging.png";
+                return;
+            }
+            if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";
+            }
+            else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryHalf.png";
+            }
+            else if (battery.BatteryPercentage >= 51 && battery.BatteryPercentage < 76)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
+            }
+            else if (battery.BatteryPercentage >= 76)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
+            }
+        }
     }
 }
