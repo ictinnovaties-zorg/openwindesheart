@@ -1,6 +1,8 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3.Models;
@@ -23,7 +25,7 @@ namespace WindesHeartSDK
             BLEDevice = device;
         }
 
-        internal static void StopScanning()
+        public static void StopScanning()
         {
             CurrentScan?.Dispose();
         }
@@ -68,6 +70,59 @@ namespace WindesHeartSDK
         {
             AdapterDisposable?.Dispose();
             AdapterDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(adapter => { callback(); });
+        }
+
+        /// <summary>
+        /// Scan for devices, Mi Band 3 or Xiaomi Band 3, that are not yet connected.
+        /// </summary>
+        /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
+        /// <param name="scanTimeInSeconds"></param>
+        /// <returns>List of IScanResult</returns>
+        public static async Task<ObservableCollection<BLEDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
+        {
+            var scanResults = new ObservableCollection<BLEDevice>();
+            var uniqueGuids = new List<Guid>();
+
+            //Start scanning when adapter is powered on.
+            if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOn)
+            {
+                //Trigger event and add to devices list
+                Console.WriteLine("Started scanning");
+                var scanner = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                {
+                    if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && !uniqueGuids.Contains(scanResult.Device.Uuid))
+                    {
+                        //Set device
+                        BLEDevice device = GetDevice(scanResult.Device, scanResult.Rssi);
+
+                        if (device != null)
+                        {
+                            device.NeedsAuthentication = true;
+                            scanResults.Add(device);
+                        }
+                        uniqueGuids.Add(scanResult.Device.Uuid);
+                    }
+                });
+
+                //Stop scanning after delayed time.
+                await Task.Delay(scanTimeInSeconds * 1000);
+                Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + scanResults.Count);
+                scanner.Dispose();
+            }
+            else
+            {
+                Console.WriteLine("Bluetooth-Adapter state is: " + CrossBleAdapter.Current.Status + ". Trying again!");
+                await Task.Delay(2000);
+                return await ScanForUniqueDevicesAsync(scanTimeInSeconds);
+            }
+
+            //Order scanresults by descending signal strength
+            if (scanResults.Count > 1)
+            {
+                scanResults = new ObservableCollection<BLEDevice>(scanResults.OrderByDescending(x => x.Rssi).ToList());
+            }
+
+            return scanResults;
         }
 
         public void Connect()
