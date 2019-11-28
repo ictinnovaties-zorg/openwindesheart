@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WindesHeartSDK.Models;
 
 namespace WindesHeartApp.Data
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<WindesHeartSDK.Models.Heartrate> Heartrates { get; set; }
+        public DbSet<Heartrate> Heartrates { get; set; }
+        public DbSet<StepInfo> Stepinfo { get; set; }
 
         private readonly string _databasePath;
 
@@ -12,7 +14,9 @@ namespace WindesHeartApp.Data
         {
             _databasePath = databasePath;
             //Database.EnsureDeleted();
+
             Database.EnsureCreated();
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

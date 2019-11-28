@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using WindesHeartApp.Resources;
+using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Entry = Microcharts.Entry;
@@ -25,13 +26,12 @@ namespace WindesHeartApp.Pages
         public static Button Day6Button;
         public static Button TodayButton;
 
-        List<Entry> Entries = new List<Entry>();
+        public static List<Entry> Entries = new List<Entry>();
+        public static IEnumerable<StepInfo> StepInfo = new List<StepInfo>();
 
         public StepsPage()
         {
             InitializeComponent();
-
-            FillChart(80, 100);
             chartView.Chart = new DonutChart
             {
                 Entries = Entries,
@@ -41,62 +41,11 @@ namespace WindesHeartApp.Pages
             chartView.Rotation = 180;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             BindingContext = Globals.StepsViewModel;
             BuildPage();
-        }
-
-        public void FillChart(int stepCount, int goal)
-        {
-            float percentageDone = (float)stepCount / (float)goal;
-            Entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
-
-            //If goal not reached, fill other part transparent
-            if (percentageDone < 1)
-            {
-                float percentageLeft = 1 - percentageDone;
-                Entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
-            }
-        }
-
-        private void AddDayButtons(AbsoluteLayout absoluteLayout)
-        {
-            DateTime today = DateTime.Now;
-            DayOfWeek day = today.DayOfWeek;
-            DateTimeFormatInfo dtfi = new CultureInfo("en-US").DateTimeFormat;
-            float y = 0.85f;
-            int fontSize = 12;
-            int cornerRadius = 100;
-
-            Day1Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), "Day1Binding", 0.05, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
-            Day1Button.CornerRadius = cornerRadius;
-            Day1Button.FontSize = fontSize;
-
-            Day2Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-5).DayOfWeek), "Day2Binding", 0.20, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
-            Day2Button.CornerRadius = cornerRadius;
-            Day2Button.FontSize = fontSize;
-
-            Day3Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-4).DayOfWeek), "Day3Binding", 0.35, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
-            Day3Button.CornerRadius = cornerRadius;
-            Day3Button.FontSize = fontSize;
-
-            Day4Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-3).DayOfWeek), "Day4Binding", 0.50, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
-            Day4Button.CornerRadius = cornerRadius;
-            Day4Button.FontSize = fontSize;
-
-            Day5Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-2).DayOfWeek), "Day5Binding", 0.65, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
-            Day5Button.CornerRadius = cornerRadius;
-            Day5Button.FontSize = fontSize;
-
-            Day6Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-1).DayOfWeek), "Day6Binding", 0.80, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
-            Day6Button.CornerRadius = cornerRadius;
-            Day6Button.FontSize = fontSize;
-
-            TodayButton = PageBuilder.AddButton(absoluteLayout, "Today", "TodayBinding", 0.95, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
-            TodayButton.CornerRadius = cornerRadius;
-            TodayButton.FontSize = fontSize;
-            TodayButton.IsEnabled = false;
+            StepInfo = await Globals.StepsRepository.GetStepInfoAsync();
         }
 
         private void BuildPage()
@@ -139,9 +88,6 @@ namespace WindesHeartApp.Pages
             var label = PageBuilder.AddLabel(absoluteLayout, "STEPS", 0.5, 0.45, Color.Black);
             label.FontSize = 20;
 
-            //PageBuilder.AddButton(absoluteLayout, "Get steps", "GetStepsBinding", 0.2, 0.28, 300, 50);
-            //ToggleRealTimeStepsButton = PageBuilder.AddButton(absoluteLayout, "Enable realtime steps", "ToggleRealTimeStepsBinding", 0.2, 0.38, 300, 50);
-
             AbsoluteLayout.SetLayoutFlags(chartView, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(chartView, new Rectangle(0.5, 0.25, 0.60, 0.60));
             absoluteLayout.Children.Add(chartView);
@@ -153,6 +99,45 @@ namespace WindesHeartApp.Pages
             label3.FontSize = 20;
 
             AddDayButtons(absoluteLayout);
+        }
+
+        private void AddDayButtons(AbsoluteLayout absoluteLayout)
+        {
+            DateTime today = DateTime.Now;
+            DayOfWeek day = today.DayOfWeek;
+            DateTimeFormatInfo dtfi = new CultureInfo("en-US").DateTimeFormat;
+            float y = 0.85f;
+            int fontSize = 12;
+            int cornerRadius = 100;
+
+            Day1Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), "Day1Binding", 0.05, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
+            Day1Button.CornerRadius = cornerRadius;
+            Day1Button.FontSize = fontSize;
+
+            Day2Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-5).DayOfWeek), "Day2Binding", 0.20, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
+            Day2Button.CornerRadius = cornerRadius;
+            Day2Button.FontSize = fontSize;
+
+            Day3Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-4).DayOfWeek), "Day3Binding", 0.35, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
+            Day3Button.CornerRadius = cornerRadius;
+            Day3Button.FontSize = fontSize;
+
+            Day4Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-3).DayOfWeek), "Day4Binding", 0.50, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
+            Day4Button.CornerRadius = cornerRadius;
+            Day4Button.FontSize = fontSize;
+
+            Day5Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-2).DayOfWeek), "Day5Binding", 0.65, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
+            Day5Button.CornerRadius = cornerRadius;
+            Day5Button.FontSize = fontSize;
+
+            Day6Button = PageBuilder.AddButton(absoluteLayout, dtfi.GetAbbreviatedDayName(today.AddDays(-1).DayOfWeek), "Day6Binding", 0.80, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
+            Day6Button.CornerRadius = cornerRadius;
+            Day6Button.FontSize = fontSize;
+
+            TodayButton = PageBuilder.AddButton(absoluteLayout, "Today", "TodayBinding", 0.95, y, 0.1, 0.05, AbsoluteLayoutFlags.All);
+            TodayButton.CornerRadius = cornerRadius;
+            TodayButton.FontSize = fontSize;
+            TodayButton.IsEnabled = false;
         }
     }
 }

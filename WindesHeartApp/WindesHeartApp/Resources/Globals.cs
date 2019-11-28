@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WindesHeartApp.Data.Repository;
 using WindesHeartApp.ViewModels;
 using WindesHeartSDK;
 using Xamarin.Forms;
@@ -20,6 +21,9 @@ namespace WindesHeartApp.Resources
         public static double screenratioFactor { get; set; }
         public static double buttonfontSize { get; set; }
         public static double cornerRadius { get; set; }
+        public static StepsRepository StepsRepository { get; set; }
+        public static HeartrateRepository HeartrateRepository { get; set; }
+        public static float DailyStepsGoal { get; internal set; }
 
         public static Dictionary<string, Color> colorDictionary;
         public static StepsViewModel StepsViewModel;
@@ -29,6 +33,7 @@ namespace WindesHeartApp.Resources
         //buttonfontSize : 2-10, 10 being smallest, 2 being largest.
         public static void BuildGlobals()
         {
+            DailyStepsGoal = 1000;
             buttonSize = 20;
             buttonfontSize = 4;
             cornerRadius = ((screenHeight / 10 * 1) - buttonSize);

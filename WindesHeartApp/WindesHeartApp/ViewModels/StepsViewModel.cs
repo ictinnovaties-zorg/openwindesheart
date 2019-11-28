@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Pages;
@@ -6,6 +7,7 @@ using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
+using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
@@ -96,10 +98,10 @@ namespace WindesHeartApp.ViewModels
                 StepsPage.Day6Button.IsEnabled = false;
                 StepsPage.TodayButton.IsEnabled = true;
             }
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
-        private void UpdateCurrentDayLabel()
+        private void UpdateDay()
         {
             if (SelectedDate == StartDate)
             {
@@ -112,6 +114,43 @@ namespace WindesHeartApp.ViewModels
             else
             {
                 StepsPage.CurrentDayLabel.Text = SelectedDate.ToString("dd/MM/yyyy");
+            }
+
+            //Get all stepinfo from the Database
+            StepInfo StepInfo = null;
+
+            foreach (StepInfo info in StepsPage.StepInfo)
+            {
+                //If the same day
+                if (info.DateTime.Year == SelectedDate.Year && info.DateTime.Month == SelectedDate.Month && info.DateTime.Day == SelectedDate.Day)
+                {
+                    //we found our info!
+                    StepInfo = info;
+                    break;
+                }
+            }
+
+            if (StepInfo != null)
+            {
+                //Set correct chart
+                FillChart(StepInfo.StepCount);
+            }
+            else
+            {
+                FillChart(0);
+            }
+        }
+
+        public void FillChart(int stepCount)
+        {
+            float percentageDone = stepCount / Globals.DailyStepsGoal;
+            StepsPage.Entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
+
+            //If goal not reached, fill other part transparent
+            if (percentageDone < 1)
+            {
+                float percentageLeft = 1 - percentageDone;
+                StepsPage.Entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
             }
         }
 
@@ -169,7 +208,7 @@ namespace WindesHeartApp.ViewModels
                     StepsPage.Day1Button.IsEnabled = false;
                 }
             }
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void TodayBtnClick(object obj)
@@ -177,7 +216,7 @@ namespace WindesHeartApp.ViewModels
             Console.WriteLine("Today clicked!");
             SelectedDate = StartDate;
             SetDayEnabled(StepsPage.TodayButton);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day6BtnClick(object obj)
@@ -185,7 +224,7 @@ namespace WindesHeartApp.ViewModels
             Console.WriteLine("6 clicked!");
             SelectedDate = StartDate.AddDays(-1);
             SetDayEnabled(StepsPage.Day6Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day5BtnClick(object obj)
@@ -193,7 +232,7 @@ namespace WindesHeartApp.ViewModels
             Console.WriteLine("5 clicked!");
             SelectedDate = StartDate.AddDays(-2);
             SetDayEnabled(StepsPage.Day5Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day4BtnClick(object obj)
@@ -201,7 +240,7 @@ namespace WindesHeartApp.ViewModels
             Console.WriteLine("4 clicked!");
             SelectedDate = StartDate.AddDays(-3);
             SetDayEnabled(StepsPage.Day4Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day3BtnClick(object obj)
@@ -209,7 +248,7 @@ namespace WindesHeartApp.ViewModels
             Console.WriteLine("3 clicked!");
             SelectedDate = StartDate.AddDays(-4);
             SetDayEnabled(StepsPage.Day3Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void SetDayEnabled(Button button)
@@ -232,7 +271,7 @@ namespace WindesHeartApp.ViewModels
             Console.WriteLine("2 clicked!");
             SelectedDate = StartDate.AddDays(-5);
             SetDayEnabled(StepsPage.Day2Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day1BtnClick(object obj)
@@ -240,7 +279,7 @@ namespace WindesHeartApp.ViewModels
             Console.WriteLine("1 clicked!");
             SelectedDate = StartDate.AddDays(-6);
             SetDayEnabled(StepsPage.Day1Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private async void HandleGetSteps()

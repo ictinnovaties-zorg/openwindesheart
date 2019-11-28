@@ -24,7 +24,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         {
             heartrateDisposable?.Dispose();
             heartrateDisposable = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrate).RegisterAndNotify().Subscribe(
-                x => callback(new Heartrate(x.Characteristic.Value))
+                x => callback(new Heartrate(DateTime.Now, x.Characteristic.Value))
             );
         }
 
