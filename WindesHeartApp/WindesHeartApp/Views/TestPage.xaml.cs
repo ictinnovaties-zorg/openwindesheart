@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive.Linq;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
@@ -68,14 +66,14 @@ namespace WindesHeartApp.Pages
                 {
                     App.Current.Properties.TryGetValue(key, out object result);
                     var device = await Windesheart.GetKnownDevice((Guid)result);
-                    device?.Connect();
+                    device?.Connect(ConnectionCallBack);
                 }
                 else
                 {
                     ObservableCollection<BLEDevice> bleDevices = await Windesheart.ScanForDevices();
                     if (bleDevices.Count > 0)
                     {
-                        bleDevices[0].Connect();
+                        bleDevices[0].Connect(ConnectionCallBack);
                         SaveDeviceInAppProperties(bleDevices[0].Device.Uuid);
                     }
                 }
@@ -83,6 +81,19 @@ namespace WindesHeartApp.Pages
             catch (Exception r)
             {
                 Console.WriteLine(r.Message);
+            }
+        }
+
+        public void ConnectionCallBack(ConnectionResult result)
+        {
+            switch (result)
+            {
+                case ConnectionResult.Succeeded:
+                    Console.WriteLine("WORKS!");
+                    break;
+                case ConnectionResult.Failed:
+                    Console.WriteLine("FAILED!");
+                    break;
             }
         }
 

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3.Models;
-using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK
 {
@@ -30,7 +29,7 @@ namespace WindesHeartSDK
         /// </summary>
         /// <param name="scanTimeInSeconds"></param>
         /// <returns>List<BLEDevice></returns>
-        public static async Task<ObservableCollection<BLEDevice>> ScanWhenAdapterReady(int scanTimeInSeconds = 10) 
+        public static async Task<ObservableCollection<BLEDevice>> ScanWhenAdapterReady(int scanTimeInSeconds = 10)
         {
             var scanResults = new ObservableCollection<BLEDevice>();
             AdapterDisposable?.Dispose();
@@ -96,7 +95,7 @@ namespace WindesHeartSDK
         }
 
         public void Connect()
-        {            
+        {
             Console.WriteLine("Connecting started...");
 
             //Connect
@@ -112,8 +111,9 @@ namespace WindesHeartSDK
             if (uuid != Guid.Empty)
             {
                 var knownDevice = await CrossBleAdapter.Current.GetKnownDevice(uuid);
-                
-                if (knownDevice != null) { 
+
+                if (knownDevice != null)
+                {
                     var bleDevice = GetDevice(knownDevice);
                     bleDevice.NeedsAuthentication = false;
                     return bleDevice;
@@ -130,7 +130,7 @@ namespace WindesHeartSDK
             //Cancel the connection
             Console.WriteLine("Disconnecting device..");
             IDevice.CancelConnection();
-        }      
+        }
 
         /// <summary>
         /// Enables logging of device status on change.
@@ -153,7 +153,7 @@ namespace WindesHeartSDK
                     if (status == AdapterStatus.PoweredOn && Windesheart.ConnectedDevice != null && startListening)
                     {
                         var device = await GetKnownDevice(Windesheart.ConnectedDevice.Device.Uuid);
-                        device?.Connect();
+                        device?.Connect(Windesheart.ConnectedDevice?.ConnectionCallback);
                     }
                     startListening = true;
                 }
@@ -167,7 +167,7 @@ namespace WindesHeartSDK
         private static BLEDevice GetDevice(IDevice device, int rssi = 0)
         {
             var name = device.Name;
-            
+
             if (name.Equals("Mi Band 3") || name.Equals("Xiaomi Mi Band 3"))
             {
                 return new MiBand3(rssi, device);
