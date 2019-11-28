@@ -1,8 +1,6 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3.Models;
@@ -18,38 +16,26 @@ namespace WindesHeartSDK
         private static AdapterStatus AdapterStatus;
 
         private static IDisposable AdapterDisposable;
+        private static IDisposable CurrentScan;
 
         public BluetoothService(BLEDevice device)
         {
             BLEDevice = device;
         }
 
-        /// <summary>
-        /// Scan when Bluetooth-adapter is ready to scan.
-        /// </summary>
-        /// <param name="scanTimeInSeconds"></param>
-        /// <returns>List<BLEDevice></returns>
-        public static async Task<ObservableCollection<BLEDevice>> ScanWhenAdapterReady(int scanTimeInSeconds = 10)
+        internal static void StopScanning()
         {
-            var scanResults = new ObservableCollection<BLEDevice>();
-            AdapterDisposable?.Dispose();
-            AdapterDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(async adapter =>
-            {
-                scanResults = await ScanForUniqueDevicesAsync(scanTimeInSeconds);
-            });
-            await Task.Delay(scanTimeInSeconds * 1000);
-            return scanResults;
+            CurrentScan?.Dispose();
         }
 
         /// <summary>
         /// Scan for devices, Mi Band 3 or Xiaomi Band 3, that are not yet connected.
         /// </summary>
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
-        /// <param name="scanTimeInSeconds"></param>
+        /// <param name="callback"></param>
         /// <returns>List of IScanResult</returns>
-        public static async Task<ObservableCollection<BLEDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
+        public static bool StartScanning(Action<BLEDevice> callback)
         {
-            var scanResults = new ObservableCollection<BLEDevice>();
             var uniqueGuids = new List<Guid>();
 
             //Start scanning when adapter is powered on.
@@ -57,7 +43,7 @@ namespace WindesHeartSDK
             {
                 //Trigger event and add to devices list
                 Console.WriteLine("Started scanning");
-                var scanner = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                CurrentScan = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
                 {
                     if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && !uniqueGuids.Contains(scanResult.Device.Uuid))
                     {
@@ -67,31 +53,21 @@ namespace WindesHeartSDK
                         if (device != null)
                         {
                             device.NeedsAuthentication = true;
-                            scanResults.Add(device);
+                            callback(device);
                         }
                         uniqueGuids.Add(scanResult.Device.Uuid);
                     }
                 });
+                return true;
 
-                //Stop scanning after delayed time.
-                await Task.Delay(scanTimeInSeconds * 1000);
-                Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + scanResults.Count);
-                scanner.Dispose();
             }
-            else
-            {
-                Console.WriteLine("Bluetooth-Adapter state is: " + CrossBleAdapter.Current.Status + ". Trying again!");
-                await Task.Delay(2000);
-                return await ScanForUniqueDevicesAsync(scanTimeInSeconds);
-            }
+            else return false;
+        }
 
-            //Order scanresults by descending signal strength
-            if (scanResults.Count > 1)
-            {
-                scanResults = new ObservableCollection<BLEDevice>(scanResults.OrderByDescending(x => x.Rssi).ToList());
-            }
-
-            return scanResults;
+        public static void WhenAdapterReady(Action callback)
+        {
+            AdapterDisposable?.Dispose();
+            AdapterDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(adapter => { callback(); });
         }
 
         public void Connect()

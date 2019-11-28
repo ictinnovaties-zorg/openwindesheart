@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace WindesHeartSDK
@@ -13,11 +11,16 @@ namespace WindesHeartSDK
         /// Scan for BLEDevices that are not yet connected.
         /// </summary>
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
-        /// <param name="scanTimeInSeconds"></param>
+        /// <param name="callback">Called when a device is found</param>
         /// <returns>List of IScanResult</returns>
-        public static async Task<ObservableCollection<BLEDevice>> ScanForDevices(int scanTimeInSeconds = 10)
+        public static bool StartScanning(Action<BLEDevice> callback)
         {
-            return await BluetoothService.ScanForUniqueDevicesAsync(scanTimeInSeconds);
+            return BluetoothService.StartScanning(callback);
+        }
+
+        public static void StopScanning()
+        {
+            BluetoothService.StopScanning();
         }
 
         /// <summary>
@@ -28,6 +31,12 @@ namespace WindesHeartSDK
         public static async Task<BLEDevice> GetKnownDevice(Guid uuid)
         {
             return await BluetoothService.GetKnownDevice(uuid);
+        }
+
+
+        public static void WhenAdapterReady(Action callback)
+        {
+            BluetoothService.WhenAdapterReady(callback);
         }
     }
 }
