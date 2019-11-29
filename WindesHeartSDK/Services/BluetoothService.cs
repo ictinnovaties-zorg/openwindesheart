@@ -18,6 +18,7 @@ namespace WindesHeartSDK
         private static AdapterStatus AdapterStatus;
 
         private static IDisposable AdapterDisposable;
+        private static IDisposable CurrentScan;
 
         public BluetoothService(BLEDevice device)
         {
@@ -25,28 +26,65 @@ namespace WindesHeartSDK
         }
 
         /// <summary>
-        /// Scan when Bluetooth-adapter is ready to scan.
+        /// Stops scanning for devices
         /// </summary>
-        /// <param name="scanTimeInSeconds"></param>
-        /// <returns>List<BLEDevice></returns>
-        public static async Task<ObservableCollection<BLEDevice>> ScanWhenAdapterReady(int scanTimeInSeconds = 10)
+        public static void StopScanning()
         {
-            var scanResults = new ObservableCollection<BLEDevice>();
-            AdapterDisposable?.Dispose();
-            AdapterDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(async adapter =>
-            {
-                scanResults = await ScanForUniqueDevicesAsync(scanTimeInSeconds);
-            });
-            await Task.Delay(scanTimeInSeconds * 1000);
-            return scanResults;
+            CurrentScan?.Dispose();
         }
 
         /// <summary>
-        /// Scan for devices, Mi Band 3 or Xiaomi Band 3, that are not yet connected.
+        /// Scan for devices that are not yet connected.
+        /// </summary>
+        /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
+        /// <param name="callback"></param>
+        /// <returns>Bool wheter scanning has started</returns>
+        public static bool StartScanning(Action<BLEDevice> callback)
+        {
+            var uniqueGuids = new List<Guid>();
+
+            //Start scanning when adapter is powered on.
+            if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOn)
+            {
+                //Trigger event and add to devices list
+                Console.WriteLine("Started scanning");
+                CurrentScan = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                {
+                    if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && !uniqueGuids.Contains(scanResult.Device.Uuid))
+                    {
+                        //Set device
+                        BLEDevice device = GetDevice(scanResult.Device, scanResult.Rssi);
+
+                        if (device != null)
+                        {
+                            device.NeedsAuthentication = true;
+                            callback(device);
+                        }
+                        uniqueGuids.Add(scanResult.Device.Uuid);
+                    }
+                });
+                return true;
+
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Calls the callback method when bluetooth adapter state changes to ready
+        /// </summary>
+        /// <param name="callback">Calls when adapter is ready</param>
+        public static void WhenAdapterReady(Action callback)
+        {
+            AdapterDisposable?.Dispose();
+            AdapterDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(adapter => { callback(); });
+        }
+
+        /// <summary>
+        /// Scan for devices that are not yet connected.
         /// </summary>
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="scanTimeInSeconds"></param>
-        /// <returns>List of IScanResult</returns>
+        /// <returns>List of devices found</returns>
         public static async Task<ObservableCollection<BLEDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
         {
             var scanResults = new ObservableCollection<BLEDevice>();
@@ -94,6 +132,9 @@ namespace WindesHeartSDK
             return scanResults;
         }
 
+        /// <summary>
+        /// Connect current device
+        /// </summary>
         public void Connect()
         {
             Console.WriteLine("Connecting started...");
@@ -106,6 +147,11 @@ namespace WindesHeartSDK
             });
         }
 
+        /// <summary>
+        /// Gets a device based on its uuid
+        /// </summary>
+        /// <param name="uuid">Uuid of device to find</param>
+        /// <returns>The device of the uuid</returns>
         public static async Task<BLEDevice> GetKnownDevice(Guid uuid)
         {
             if (uuid != Guid.Empty)
@@ -162,7 +208,7 @@ namespace WindesHeartSDK
 
 
         /// <summary>
-        /// Returns the right WDevice based on the ScanResult
+        /// Returns the right BLEDevice based on the ScanResult
         /// </summary>
         private static BLEDevice GetDevice(IDevice device, int rssi = 0)
         {

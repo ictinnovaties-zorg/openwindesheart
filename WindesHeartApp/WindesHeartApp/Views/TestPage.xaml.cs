@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
@@ -70,11 +69,10 @@ namespace WindesHeartApp.Pages
                 }
                 else
                 {
-                    ObservableCollection<BLEDevice> bleDevices = await Windesheart.ScanForDevices();
-                    if (bleDevices.Count > 0)
+                    bool isScanning = Windesheart.StartScanning(WhenDeviceFound);
+                    if (!isScanning)
                     {
-                        bleDevices[0].Connect(ConnectionCallBack);
-                        SaveDeviceInAppProperties(bleDevices[0].Device.Uuid);
+                        Console.WriteLine("Can't start scanning... Bluetooth adapter not ready?");
                     }
                 }
             }
@@ -82,6 +80,14 @@ namespace WindesHeartApp.Pages
             {
                 Console.WriteLine(r.Message);
             }
+        }
+
+
+        private void WhenDeviceFound(BLEDevice device)
+        {
+            Console.WriteLine("Device found! Connecting...");
+            Windesheart.StopScanning();
+            device.Connect(ConnectionCallBack);
         }
 
         public void ConnectionCallBack(ConnectionResult result)
