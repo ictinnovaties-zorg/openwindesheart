@@ -13,12 +13,13 @@ namespace WindesHeartApp.Views
         public SleepPage()
         {
             InitializeComponent();
+            BuildPage();
         }
 
-        protected override void OnAppearing()
+        protected void BuildPage()
         {
 
-            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+            absoluteLayout = new AbsoluteLayout();
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);

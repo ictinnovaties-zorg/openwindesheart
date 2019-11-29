@@ -30,7 +30,7 @@ namespace WindesHeartApp.Pages
         public StepsPage()
         {
             InitializeComponent();
-
+            BuildPage();
             FillChart(80, 100);
             chartView.Chart = new DonutChart
             {
@@ -39,11 +39,6 @@ namespace WindesHeartApp.Pages
                 HoleRadius = 0.7f
             };
             chartView.Rotation = 180;
-        }
-
-        protected override void OnAppearing()
-        {
-            BuildPage();
         }
 
         public void FillChart(int stepCount, int goal)
@@ -59,24 +54,9 @@ namespace WindesHeartApp.Pages
             }
         }
 
-        private void AddDayButtons(AbsoluteLayout absoluteLayout)
-        {
-            DateTime today = DateTime.Now;
-            DayOfWeek day = today.DayOfWeek;
-            float y = 0.85f;
-            Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(), "Day1Binding", 0.05, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(), "Day2Binding", 0.20, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day3Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-4).DayOfWeek.ToString(), "Day3Binding", 0.35, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(), "Day4Binding", 0.50, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day5Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-2).DayOfWeek.ToString(), "Day5Binding", 0.65, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day6Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-1).DayOfWeek.ToString(), "Day6Binding", 0.80, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            TodayButton.IsEnabled = false;
-        }
-
         private void BuildPage()
         {
-            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+            absoluteLayout = new AbsoluteLayout();
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
@@ -114,6 +94,21 @@ namespace WindesHeartApp.Pages
             label3.FontSize = 20;
 
             AddDayButtons(absoluteLayout);
+        }
+
+        private void AddDayButtons(AbsoluteLayout absoluteLayout)
+        {
+            DateTime today = DateTime.Now;
+            DayOfWeek day = today.DayOfWeek;
+            float y = 0.85f;
+            Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(), "Day1Binding", 0.05, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
+            Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(), "Day2Binding", 0.20, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
+            Day3Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-4).DayOfWeek.ToString(), "Day3Binding", 0.35, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
+            Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(), "Day4Binding", 0.50, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
+            Day5Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-2).DayOfWeek.ToString(), "Day5Binding", 0.65, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
+            Day6Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-1).DayOfWeek.ToString(), "Day6Binding", 0.80, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
+            TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
+            TodayButton.IsEnabled = false;
         }
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
 

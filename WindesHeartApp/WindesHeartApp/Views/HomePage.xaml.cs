@@ -22,8 +22,8 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            BindingContext = Globals.homepageviewModel;
             BuildPage();
+            BindingContext = Globals.homepageviewModel;
             App.RequestLocationPermission();
             if (Windesheart.ConnectedDevice != null)
                 ReadCurrentBattery();

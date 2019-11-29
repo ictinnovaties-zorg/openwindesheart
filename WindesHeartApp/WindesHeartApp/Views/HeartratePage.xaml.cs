@@ -11,15 +11,12 @@ namespace WindesHeartApp.Pages
         public HeartratePage()
         {
             InitializeComponent();
-        }
-
-        protected override void OnAppearing()
-        {
             BuildPage();
         }
 
         private void BuildPage()
         {
+            absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
             PageBuilder.AddLabel(absoluteLayout, "Heartrate", 0.05, 0.10, Globals.lighttextColor, "", 0);

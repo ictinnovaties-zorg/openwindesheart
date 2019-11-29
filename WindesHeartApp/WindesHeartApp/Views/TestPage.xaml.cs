@@ -1,6 +1,6 @@
-﻿using System;
+﻿using FormsControls.Base;
+using System;
 using System.Reactive.Linq;
-using FormsControls.Base;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
@@ -19,10 +19,6 @@ namespace WindesHeartApp.Pages
         public TestPage()
         {
             InitializeComponent();
-        }
-
-        protected override void OnAppearing()
-        {
             BuildPage();
         }
 

@@ -1,5 +1,5 @@
-﻿using System;
-using FormsControls.Base;
+﻿using FormsControls.Base;
+using System;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -14,10 +14,6 @@ namespace WindesHeartApp.Pages
         public SettingsPage()
         {
             InitializeComponent();
-        }
-
-        protected override void OnAppearing()
-        {
             BuildPage();
         }
 

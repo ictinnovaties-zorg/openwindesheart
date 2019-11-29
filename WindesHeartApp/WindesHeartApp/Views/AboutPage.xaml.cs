@@ -1,5 +1,5 @@
-﻿using System;
-using FormsControls.Base;
+﻿using FormsControls.Base;
+using System;
 using WindesHeartApp.Resources;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -147,14 +147,14 @@ namespace WindesHeartApp.Pages
         }
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
 
-public void OnAnimationStarted(bool isPopAnimation)
-{
-	// Put your code here but leaving empty works just fine
-}
+        public void OnAnimationStarted(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
 
-public void OnAnimationFinished(bool isPopAnimation)
-{
-	// Put your code here but leaving empty works just fine
-}
+        public void OnAnimationFinished(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
     }
 }
