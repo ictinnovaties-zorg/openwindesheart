@@ -75,12 +75,14 @@ namespace WindesHeartApp.Pages
             {
                 Text = text,
                 TextColor = color,
-                FontSize = Globals.screenHeight / 100 * 3
+                FontSize = Globals.screenHeight / 100 * 5
 
             };
 
             AbsoluteLayout.SetLayoutFlags(label, AbsoluteLayoutFlags.PositionProportional);
-            label.SetBinding(Label.TextProperty, new Binding() { Path = bindingPath });
+            if (!string.IsNullOrEmpty(bindingPath))
+                label.SetBinding(Label.TextProperty, new Binding() { Path = bindingPath });
+
             AbsoluteLayout.SetLayoutBounds(label, new Rectangle(x, y, -1, -1));
             if (fontSize != null)
                 label.FontSize = fontSize;

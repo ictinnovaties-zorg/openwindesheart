@@ -15,7 +15,7 @@ namespace WindesHeartApp.Pages
 
         private void BuildPage()
         {
-            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+            absoluteLayout = new AbsoluteLayout();
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
 
