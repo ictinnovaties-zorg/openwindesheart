@@ -10,10 +10,10 @@ namespace WindesHeartApp
 {
     public partial class App : Application
     {
-        public App(IHeartrateRepository heartrateRepository, ISampleRepository sampleRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
+        public App(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
             InitializeComponent();
-            Globals.BuildGlobals(heartrateRepository, sampleRepository, sleepRepository, stepsRepository, settingsRepository);
+            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, settingsRepository);
             MainPage = new AnimationNavigationPage(new HomePage());
         }
 

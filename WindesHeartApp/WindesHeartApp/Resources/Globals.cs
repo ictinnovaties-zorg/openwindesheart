@@ -32,7 +32,7 @@ namespace WindesHeartApp.Resources
 
         //buttonSize : 10 being biggest, 100 being smallest. 
         //buttonfontSize : 2-10, 10 being smallest, 2 being largest.
-        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISampleRepository sampleRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
+        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
             buttonSize = 20;
             buttonSize = 20;

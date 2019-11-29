@@ -29,7 +29,7 @@ namespace WindesHeartApp.iOS
             var heartrateRepository = new HeartrateRepository(dbPath);
             FormsControls.Touch.Main.Init();
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App(new HeartrateRepository(dbPath), new SampleRepository(dbPath), new SleepRepository(dbPath), new StepsRepository(dbPath), new SettingsRepository(dbPath)));
+            LoadApplication(new App(new HeartrateRepository(dbPath), new SleepRepository(dbPath), new StepsRepository(dbPath), new SettingsRepository(dbPath)));
 
             Globals.screenHeight = (int)UIScreen.MainScreen.Bounds.Height;
             Globals.screenWidth = (int)UIScreen.MainScreen.Bounds.Width;
