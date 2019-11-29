@@ -157,7 +157,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             }
             else
             {
-                Console.WriteLine("ElseStatement");
                 var LocalPkg = _pkg; // ??
                 _pkg++;
                 var i = 1;
@@ -174,8 +173,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     }
 
                     // Create a sample from the recieved bytes
-                    var category = result.Data[i] & 0xff; //ToUint16(new byte[] { result.Data[i], result.Data[i + 1] });
-                    var intensity = result.Data[i + 1] & 0xff; //ToUint16(new byte[] { result.Data[i], result.Data[i + 1] });
+                    var category = result.Data[i] & 0xff; 
+                    var intensity = result.Data[i + 1] & 0xff; 
                     var steps = result.Data[i + 2] & 0xff;
                     var heartrate = result.Data[i + 3];
 
