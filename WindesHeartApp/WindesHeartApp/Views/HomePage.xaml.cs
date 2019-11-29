@@ -1,6 +1,6 @@
-﻿using System;
+﻿using FormsControls.Base;
+using System;
 using System.Threading.Tasks;
-using FormsControls.Base;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartApp.Views;
@@ -35,7 +35,7 @@ namespace WindesHeartApp.Pages
         {
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
-            PageBuilder.AddLabel(absoluteLayout, "Home", 0.05, 0.10, Globals.lighttextColor, "", 25);
+            PageBuilder.AddLabel(absoluteLayout, "Home", 0.05, 0.10, Globals.lighttextColor, "", 30);
             PageBuilder.AddHeaderImages(absoluteLayout);
 
             #region define battery and hr Label
