@@ -6,5 +6,6 @@
              mc:Ignorable="d"
              x:Class="WindesHeartApp.Pages.HeartratePage">
 <AbsoluteLayout x:Name="absoluteLayout">
+
 </AbsoluteLayout>
 </ContentPage>

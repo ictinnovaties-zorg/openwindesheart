@@ -23,18 +23,18 @@ namespace WindesHeartApp.Pages
 
         private void BuildPage()
         {
-            absoluteLayout = new AbsoluteLayout();
+            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
             PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.lighttextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             #region scanbutton
-            Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", "scanButtonCommand", 0.15, 0.25, 0.3, 0.08, AbsoluteLayoutFlags.All);
+            Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", "ScanButtonCommand", 0.15, 0.25, 0.3, 0.08, AbsoluteLayoutFlags.All);
             scanButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
             scanButton.FontSize = Globals.screenHeight / 100 * 2;
             #endregion
-            PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.lighttextColor, "StatusText", 12);
+            PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.lighttextColor, "StatusText", 14);
 
             var indicator = PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.80, 0.28, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.secondaryColor);
 
@@ -92,7 +92,7 @@ namespace WindesHeartApp.Pages
             #endregion
 
             #region disconnectButton
-            Button disconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", "disconnectButtonCommand", 0.15, 0.85, 0.3, 0.05, AbsoluteLayoutFlags.All);
+            Button disconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", "DisconnectButtonCommand", 0.15, 0.85, 0.3, 0.05, AbsoluteLayoutFlags.All);
             disconnectButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
             disconnectButton.FontSize = Globals.screenHeight / 100 * 2;
             #endregion

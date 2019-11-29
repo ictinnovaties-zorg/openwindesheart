@@ -14,7 +14,6 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            BindingContext = Globals.heartrateviewModel;
             BuildPage();
         }
 
@@ -25,13 +24,14 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddLabel(absoluteLayout, "Heartrate", 0.05, 0.10, Globals.lighttextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
-            var heartrateLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.1, 0.5, Color.Black, "", 0);
-            AbsoluteLayout.SetLayoutBounds(heartrateLabel, new Rectangle(0.1, 0.5, 300, 50));
-            AbsoluteLayout.SetLayoutFlags(heartrateLabel, AbsoluteLayoutFlags.PositionProportional);
-            heartrateLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartrateMessage"));
-            heartrateLabel.FontSize = 15;
+            PageBuilder.AddButton(absoluteLayout, "add", "addButtonCommand", 0.5, 0.5, 0.2, 0.05,
+                AbsoluteLayoutFlags.All);
+            PageBuilder.AddButton(absoluteLayout, "get", "getButtonCommand", 0.5, 0.8, 0.2, 0.05,
+                AbsoluteLayoutFlags.All);
+            PageBuilder.AddLabel(absoluteLayout, "LOL", 0.5, 0.3, Color.Black, "swagLabel", 15);
 
-            var indicator = PageBuilder.AddActivityIndicator(absoluteLayout, "IsBusy", 0.5, 0.5, 100, 100, AbsoluteLayoutFlags.PositionProportional, Color.Black);
+
+
         }
     }
 }

@@ -8,16 +8,13 @@ namespace WindesHeartApp.Services
 {
     public static class CallbackHandler
     {
-
         //OnHeartrateChange/Measurement
         public static void ChangeHeartRate(Heartrate heartrate)
         {
             if (heartrate.HeartrateValue == 0)
                 return;
-
-            Console.WriteLine($"HEARTRATE VALUE = {heartrate.HeartrateValue}");
             Globals.heartrateviewModel.HeartRate = heartrate.HeartrateValue;
-            Globals.homepageviewModel.HeartRate = heartrate.HeartrateValue;
+            Globals.homepageviewModel.Heartrate = heartrate.HeartrateValue;
         }
 
         //OnHeartrateChange/Measurement
@@ -49,19 +46,16 @@ namespace WindesHeartApp.Services
             }
 
         }
-
         public static void OnStepsUpdated(StepInfo stepsInfo)
         {
             var count = stepsInfo.StepCount;
             Console.WriteLine($"Stepcount updated: {count}");
             Globals.StepsViewModel.Steps = count;
         }
-
-        public void ConnetionCallBack(ConnectionResult result)
+        public static void OnConnetionCallBack(ConnectionResult result)
         {
-            if (result = ConnectionResult.Succes)
+            if (result == ConnectionResult.Succeeded)
             {
-
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(Globals.heartrateInterval);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
@@ -72,7 +66,7 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.IsLoading = false; Windesheart.ConnectedDevice.SetTime(DateTime.Now);
                 Console.WriteLine("succes");
             }
-            else
+            else if (result == ConnectionResult.Failed)
             {
                 Console.WriteLine("FAIL");
             }

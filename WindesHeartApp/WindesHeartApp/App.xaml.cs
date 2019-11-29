@@ -9,16 +9,16 @@ namespace WindesHeartApp
 {
     public partial class App : Application
     {
-        public App(IHeartrateRepository heartrateRepository)
+        public App(IHeartrateRepository heartrateRepository, ISampleRepository sampleRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
             InitializeComponent();
-
+            Globals.BuildGlobals(heartrateRepository, sampleRepository, sleepRepository, stepsRepository, settingsRepository);
             MainPage = new NavigationPage(new HomePage());
         }
 
         protected override void OnStart()
         {
-            Globals.BuildGlobals();
+
         }
 
         protected override void OnSleep()

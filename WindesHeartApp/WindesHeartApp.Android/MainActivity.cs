@@ -24,12 +24,11 @@ namespace WindesHeartApp.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             var dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),
-                "HeartratesDB.db");
-            var heartrateRepository = new HeartrateRepository(dbPath);
+                "Heartrates.db");
 
             Globals.screenHeight = (int)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
             Globals.screenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
-            LoadApplication(new App(heartrateRepository));
+            LoadApplication(new App(new HeartrateRepository(dbPath), new SampleRepository(dbPath), new SleepRepository(dbPath), new StepsRepository(dbPath), new SettingsRepository(dbPath)));
 
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

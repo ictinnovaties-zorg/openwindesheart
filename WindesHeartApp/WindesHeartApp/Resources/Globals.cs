@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.ViewModels;
 using WindesHeartSDK;
 using Xamarin.Forms;
@@ -12,6 +13,7 @@ namespace WindesHeartApp.Resources
         public static HeartRatePageViewModel heartrateviewModel;
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel homepageviewModel;
+        public static SettingsPageViewmodel settingspageviewModel;
         public static double screenHeight { get; set; }
         public static double screenWidth { get; set; }
         public static Color primaryColor { get; set; } = Color.FromHex("#96d1ff");
@@ -26,17 +28,20 @@ namespace WindesHeartApp.Resources
 
         public static StepsViewModel StepsViewModel;
         public static int heartrateInterval;
+        public static string dbPath;
 
         //buttonSize : 10 being biggest, 100 being smallest. 
         //buttonfontSize : 2-10, 10 being smallest, 2 being largest.
-        public static void BuildGlobals()
+        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISampleRepository sampleRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
+            buttonSize = 20;
             buttonSize = 20;
             buttonfontSize = 4;
             cornerRadius = ((screenHeight / 10 * 1) - buttonSize);
             screenratioFactor = screenHeight / screenWidth;
-            heartrateviewModel = new HeartRatePageViewModel();
-            StepsViewModel = new StepsViewModel();
+            heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
+            StepsViewModel = new StepsViewModel(stepsRepository);
+            settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
             DevicePageViewModel = new DevicePageViewModel();
             heartrateInterval = 1;
             homepageviewModel = new HomePageViewModel();
