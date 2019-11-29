@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using FormsControls.Base;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
+using WindesHeartApp.Views;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -10,7 +12,7 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HomePage : ContentPage
+    public partial class HomePage : ContentPage, IAnimationPage
     {
         private string _key = "LastConnectedDeviceGuid";
         public HomePage()
@@ -33,6 +35,7 @@ namespace WindesHeartApp.Pages
         {
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
+            PageBuilder.AddLabel(absoluteLayout, "Home", 0.05, 0.10, Globals.lighttextColor, "", 25);
             PageBuilder.AddHeaderImages(absoluteLayout);
 
             #region define battery and hr Label
@@ -219,6 +222,7 @@ namespace WindesHeartApp.Pages
             Navigation.PushAsync(new AboutPage());
         }
         #endregion
+
         private async Task ReadCurrentBattery()
         {
             var battery = await Windesheart.ConnectedDevice.GetBattery();
@@ -245,6 +249,17 @@ namespace WindesHeartApp.Pages
             {
                 Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
             }
+        }
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+
+        public void OnAnimationStarted(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
+
+        public void OnAnimationFinished(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
         }
     }
 }

@@ -45,7 +45,7 @@ namespace WindesHeartApp.ViewModels
             get
             {
                 return
-                    $"Your heartrate coming from the database is : {HeartRate.ToString()}, and this DBshit is pretty swaglife.";
+                    $"Your heartrate coming from the database is : {HeartRate.ToString()}, and this DB binding is pretty cool.";
             }
 
         }

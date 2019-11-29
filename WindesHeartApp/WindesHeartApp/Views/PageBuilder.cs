@@ -75,7 +75,7 @@ namespace WindesHeartApp.Pages
             {
                 Text = text,
                 TextColor = color,
-                FontSize = Globals.screenHeight / 100 * 5
+                FontSize = Globals.screenHeight / 100 * 3
 
             };
 
@@ -84,7 +84,7 @@ namespace WindesHeartApp.Pages
                 label.SetBinding(Label.TextProperty, new Binding() { Path = bindingPath });
 
             AbsoluteLayout.SetLayoutBounds(label, new Rectangle(x, y, -1, -1));
-            if (fontSize != null)
+            if (fontSize != 0)
                 label.FontSize = fontSize;
 
             absoluteLayout.Children.Add(label);

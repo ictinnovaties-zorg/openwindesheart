@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using FormsControls.Base;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
@@ -11,7 +12,7 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TestPage : ContentPage
+    public partial class TestPage : ContentPage, IAnimationPage
     {
         public string key = "LastConnectedDeviceGuid";
         public bool is24hour = true;
@@ -207,6 +208,17 @@ namespace WindesHeartApp.Pages
 
                 App.Current.Properties.Add(key, guid);
             }
+        }
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+
+        public void OnAnimationStarted(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
+
+        public void OnAnimationFinished(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
         }
     }
 }

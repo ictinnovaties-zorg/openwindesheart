@@ -27,7 +27,7 @@ namespace WindesHeartApp.iOS
                 "WindesHeart.db");
 
             var heartrateRepository = new HeartrateRepository(dbPath);
-
+            FormsControls.Touch.Main.Init();
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App(new HeartrateRepository(dbPath), new SampleRepository(dbPath), new SleepRepository(dbPath), new StepsRepository(dbPath), new SettingsRepository(dbPath)));
 

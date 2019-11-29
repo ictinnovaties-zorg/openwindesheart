@@ -1,4 +1,5 @@
-﻿using Microcharts;
+﻿using FormsControls.Base;
+using Microcharts;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using Entry = Microcharts.Entry;
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class StepsPage : ContentPage
+    public partial class StepsPage : ContentPage, IAnimationPage
     {
         public static Label CurrentStepsLabel;
         public static Label CurrentDayLabel;
@@ -42,7 +43,6 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            BindingContext = Globals.StepsViewModel;
             BuildPage();
         }
 
@@ -114,6 +114,17 @@ namespace WindesHeartApp.Pages
             label3.FontSize = 20;
 
             AddDayButtons(absoluteLayout);
+        }
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+
+        public void OnAnimationStarted(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
+
+        public void OnAnimationFinished(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
         }
     }
 }

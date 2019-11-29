@@ -1,4 +1,5 @@
-﻿using Plugin.Permissions;
+﻿using FormsControls.Base;
+using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Pages;
@@ -13,7 +14,7 @@ namespace WindesHeartApp
         {
             InitializeComponent();
             Globals.BuildGlobals(heartrateRepository, sampleRepository, sleepRepository, stepsRepository, settingsRepository);
-            MainPage = new NavigationPage(new HomePage());
+            MainPage = new AnimationNavigationPage(new HomePage());
         }
 
         protected override void OnStart()

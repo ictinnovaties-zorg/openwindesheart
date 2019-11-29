@@ -1,4 +1,5 @@
 ﻿
+using FormsControls.Base;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -7,13 +8,12 @@ namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     [System.Runtime.InteropServices.Guid("A63B9823-FB43-4942-BAAA-5F02EAF86AC8")]
-    public partial class DevicePage : ContentPage
+    public partial class DevicePage : ContentPage, IAnimationPage
     {
         public static ListView devicelist;
         public DevicePage()
         {
             InitializeComponent();
-            BindingContext = Globals.DevicePageViewModel;
         }
 
         protected override void OnAppearing()
@@ -97,6 +97,17 @@ namespace WindesHeartApp.Pages
             disconnectButton.FontSize = Globals.screenHeight / 100 * 2;
             #endregion
 
+        }
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+
+        public void OnAnimationStarted(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
+
+        public void OnAnimationFinished(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
         }
     }
 }

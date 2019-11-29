@@ -1,11 +1,12 @@
 ﻿using System;
+using FormsControls.Base;
 using WindesHeartApp.Resources;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace WindesHeartApp.Pages
 {
-    public partial class AboutPage : ContentPage
+    public partial class AboutPage : ContentPage, IAnimationPage
     {
         public AboutPage()
         {
@@ -144,5 +145,16 @@ namespace WindesHeartApp.Pages
             Console.WriteLine("Learn More - Clicked.");
             Vibration.Vibrate(4200);
         }
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+
+public void OnAnimationStarted(bool isPopAnimation)
+{
+	// Put your code here but leaving empty works just fine
+}
+
+public void OnAnimationFinished(bool isPopAnimation)
+{
+	// Put your code here but leaving empty works just fine
+}
     }
 }

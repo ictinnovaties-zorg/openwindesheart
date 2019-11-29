@@ -16,7 +16,7 @@ namespace WindesHeartApp.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
+            FormsControls.Droid.Main.Init(this);
             base.OnCreate(savedInstanceState);
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
