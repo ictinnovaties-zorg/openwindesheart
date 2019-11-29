@@ -86,13 +86,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <param name="result"></param>
         public async void handleUnknownChar(CharacteristicGattResult result)
         {
-            Console.WriteLine("handleUnknownChar");
-
             // Create an empty byte array and copy the response type to it
             byte[] responseByte = new byte[3];
             Buffer.BlockCopy(result.Data, 0, responseByte, 0, 3);
-
-            Console.WriteLine("responseByte: " + responseByte[0].ToString() + " - " + responseByte[1].ToString() + " - " + responseByte[2].ToString());
 
             // Check if our request was accepted
             if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x01, 0x01 }))
@@ -143,17 +139,17 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <param name="result"></param>
         private void handleActivityChar(CharacteristicGattResult result)
         {
-            Console.WriteLine("HandleActivityChar");
-
-
             if (result.Data.Length % 4 != 1)
             {
                 if (_lastTimestamp > DateTime.Now.AddMinutes(-1))
                 {
                     Console.WriteLine("Done Fetching: " + _samples.Count + " Samples");
                 }
-                Console.WriteLine("Need More fetching");
-                InitiateFetching(_lastTimestamp.AddMinutes(1));
+                else
+                {
+                    Console.WriteLine("Need More fetching");
+                    InitiateFetching(_lastTimestamp.AddMinutes(1));
+                }
             }
             else
             {
@@ -164,13 +160,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 {
                     int timeIndex = (LocalPkg) * 4 + (i - 1) / 4;
                     var timeStamp = _firstTimestamp.AddMinutes(timeIndex);
-                    _lastTimestamp = timeStamp; //This doesn't seem right
-
-
-                    foreach (byte b in result.Data)
-                    {
-                        Console.WriteLine(b);
-                    }
+                    _lastTimestamp = timeStamp;
 
                     // Create a sample from the recieved bytes
                     var category = result.Data[i] & 0xff; 
