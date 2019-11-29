@@ -1,4 +1,5 @@
-﻿using Microcharts;
+﻿using FormsControls.Base;
+using Microcharts;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using Entry = Microcharts.Entry;
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class StepsPage : ContentPage
+    public partial class StepsPage : ContentPage, IAnimationPage
     {
         public static Label CurrentStepsLabel;
         public static Label CurrentDayLabel;
@@ -43,9 +44,8 @@ namespace WindesHeartApp.Pages
 
         protected override async void OnAppearing()
         {
-            BindingContext = Globals.StepsViewModel;
             BuildPage();
-            StepInfo = await Globals.StepsRepository.GetStepInfoAsync();
+            StepInfo = await Globals.StepsRepository.GetStepsAsync();
         }
 
         private void BuildPage()
@@ -55,7 +55,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
 
-            PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.lighttextColor);
+            PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.lighttextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             ImageButton previousBtn = new ImageButton
@@ -78,24 +78,24 @@ namespace WindesHeartApp.Pages
             nextBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "NextDayBinding" });
             absoluteLayout.Children.Add(nextBtn);
 
-            CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black);
+            CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black, "", 0);
             CurrentDayLabel.FontSize = 15;
 
-            CurrentStepsLabel = PageBuilder.AddLabel(absoluteLayout, "0", 0.5, 0.37, Color.Black);
+            CurrentStepsLabel = PageBuilder.AddLabel(absoluteLayout, "0", 0.5, 0.37, Color.Black, "", 0);
             CurrentStepsLabel.SetBinding(Label.TextProperty, new Binding("StepsLabelText"));
             CurrentStepsLabel.FontSize = 40;
 
-            var label = PageBuilder.AddLabel(absoluteLayout, "STEPS", 0.5, 0.45, Color.Black);
+            var label = PageBuilder.AddLabel(absoluteLayout, "STEPS", 0.5, 0.45, Color.Black, "", 0);
             label.FontSize = 20;
 
             AbsoluteLayout.SetLayoutFlags(chartView, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(chartView, new Rectangle(0.5, 0.25, 0.60, 0.60));
             absoluteLayout.Children.Add(chartView);
 
-            var label2 = PageBuilder.AddLabel(absoluteLayout, "0 Kcal", 0.5, 0.65, Color.Black);
+            var label2 = PageBuilder.AddLabel(absoluteLayout, "0 Kcal", 0.5, 0.65, Color.Black, "", 0);
             label2.FontSize = 20;
 
-            var label3 = PageBuilder.AddLabel(absoluteLayout, "0 Kilometers", 0.5, 0.73, Color.Black);
+            var label3 = PageBuilder.AddLabel(absoluteLayout, "0 Kilometers", 0.5, 0.73, Color.Black, "", 0);
             label3.FontSize = 20;
 
             AddDayButtons(absoluteLayout);
@@ -138,6 +138,18 @@ namespace WindesHeartApp.Pages
             TodayButton.CornerRadius = cornerRadius;
             TodayButton.FontSize = fontSize;
             TodayButton.IsEnabled = false;
+        }
+
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+
+        public void OnAnimationStarted(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
+
+        public void OnAnimationFinished(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
         }
     }
 }

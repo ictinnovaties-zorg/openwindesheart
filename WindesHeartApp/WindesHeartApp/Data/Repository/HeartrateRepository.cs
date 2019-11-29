@@ -11,7 +11,6 @@ namespace WindesHeartApp.Data.Repository
     public class HeartrateRepository : IHeartrateRepository
     {
         private readonly DatabaseContext _databaseContext;
-
         public HeartrateRepository(string dbPath)
         {
             _databaseContext = new DatabaseContext(dbPath);
@@ -42,6 +41,7 @@ namespace WindesHeartApp.Data.Repository
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return false;
             }
         }
@@ -53,7 +53,7 @@ namespace WindesHeartApp.Data.Repository
             _databaseContext.SaveChanges();
         }
 
-        public async Task<IEnumerable<Heartrate>> QueryProductsAsync(Func<Heartrate, bool> predicate)
+        public async Task<IEnumerable<Heartrate>> HeartratesByQueryAsync(Func<Heartrate, bool> predicate)
         {
             try
             {

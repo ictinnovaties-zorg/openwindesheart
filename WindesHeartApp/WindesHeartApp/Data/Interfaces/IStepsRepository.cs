@@ -7,10 +7,9 @@ namespace WindesHeartApp.Data.Interfaces
 {
     public interface IStepsRepository
     {
-        Task<IEnumerable<StepInfo>> GetStepInfoAsync();
-
-        Task<bool> AddStepInfoAsync(StepInfo steps);
-        void RemoveStepInfo();
-        Task<IEnumerable<StepInfo>> QueryProductsAsync(Func<StepInfo, bool> predicate);
+        Task<IEnumerable<StepInfo>> GetStepsAsync();
+        Task<bool> AddStepsAsync(StepInfo steps);
+        void RemoveSteps();
+        Task<IEnumerable<StepInfo>> StepsByQueryAsync(Func<StepInfo, bool> predicate);
     }
 }

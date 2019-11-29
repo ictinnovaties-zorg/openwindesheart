@@ -1,6 +1,8 @@
-﻿using Plugin.Permissions;
+﻿using FormsControls.Base;
+using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using System;
+using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartSDK.Models;
@@ -10,25 +12,24 @@ namespace WindesHeartApp
 {
     public partial class App : Application
     {
-        public App()
+        public App(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
             InitializeComponent();
-
-            MainPage = new NavigationPage(new HomePage());
+            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, settingsRepository);
+            MainPage = new AnimationNavigationPage(new HomePage());
         }
 
         protected override void OnStart()
         {
-            Globals.BuildGlobals();
             FillDatabase();
         }
 
         private async void FillDatabase()
         {
             await Globals.HeartrateRepository.AddHeartrateAsync(new Heartrate(new DateTime(2019, 11, 25), new byte[] { 1, 2, 3, 4 }));
-            await Globals.StepsRepository.AddStepInfoAsync(new StepInfo(new DateTime(2019, 11, 25), new byte[] { 1, 2, 3, 4 }));
-            await Globals.StepsRepository.AddStepInfoAsync(new StepInfo(new DateTime(2019, 11, 26), new byte[] { 1, 2, 3, 4 }));
-            await Globals.StepsRepository.AddStepInfoAsync(new StepInfo(new DateTime(2019, 11, 27), new byte[] { 2, 1, 3, 4 }));
+            await Globals.StepsRepository.AddStepsAsync(new StepInfo(new DateTime(2019, 11, 25), new byte[] { 1, 2, 3, 4 }));
+            await Globals.StepsRepository.AddStepsAsync(new StepInfo(new DateTime(2019, 11, 26), new byte[] { 1, 2, 3, 4 }));
+            await Globals.StepsRepository.AddStepsAsync(new StepInfo(new DateTime(2019, 11, 27), new byte[] { 2, 1, 3, 4 }));
         }
 
         protected override void OnSleep()

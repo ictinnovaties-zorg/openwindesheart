@@ -16,7 +16,7 @@ namespace WindesHeartApp.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
+            FormsControls.Droid.Main.Init(this);
             base.OnCreate(savedInstanceState);
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
@@ -24,14 +24,11 @@ namespace WindesHeartApp.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             var dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),
-                "WindesheartApp.db");
-            Globals.HeartrateRepository = new HeartrateRepository(dbPath);
-            Globals.StepsRepository = new StepsRepository(dbPath);
-
+                "Heartrates.db");
 
             Globals.screenHeight = (int)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
             Globals.screenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
-            LoadApplication(new App());
+            LoadApplication(new App(new HeartrateRepository(dbPath), new SleepRepository(dbPath), new StepsRepository(dbPath), new SettingsRepository(dbPath)));
 
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
