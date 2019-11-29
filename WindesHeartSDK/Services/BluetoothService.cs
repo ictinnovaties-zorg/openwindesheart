@@ -25,17 +25,20 @@ namespace WindesHeartSDK
             BLEDevice = device;
         }
 
+        /// <summary>
+        /// Stops scanning for devices
+        /// </summary>
         public static void StopScanning()
         {
             CurrentScan?.Dispose();
         }
 
         /// <summary>
-        /// Scan for devices, Mi Band 3 or Xiaomi Band 3, that are not yet connected.
+        /// Scan for devices that are not yet connected.
         /// </summary>
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="callback"></param>
-        /// <returns>List of IScanResult</returns>
+        /// <returns>Bool wheter scanning has started</returns>
         public static bool StartScanning(Action<BLEDevice> callback)
         {
             var uniqueGuids = new List<Guid>();
@@ -66,6 +69,10 @@ namespace WindesHeartSDK
             else return false;
         }
 
+        /// <summary>
+        /// Calls the callback method when bluetooth adapter state changes to ready
+        /// </summary>
+        /// <param name="callback">Calls when adapter is ready</param>
         public static void WhenAdapterReady(Action callback)
         {
             AdapterDisposable?.Dispose();
@@ -73,11 +80,11 @@ namespace WindesHeartSDK
         }
 
         /// <summary>
-        /// Scan for devices, Mi Band 3 or Xiaomi Band 3, that are not yet connected.
+        /// Scan for devices that are not yet connected.
         /// </summary>
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="scanTimeInSeconds"></param>
-        /// <returns>List of IScanResult</returns>
+        /// <returns>List of devices found</returns>
         public static async Task<ObservableCollection<BLEDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
         {
             var scanResults = new ObservableCollection<BLEDevice>();
@@ -125,6 +132,9 @@ namespace WindesHeartSDK
             return scanResults;
         }
 
+        /// <summary>
+        /// Connect current device
+        /// </summary>
         public void Connect()
         {
             Console.WriteLine("Connecting started...");
@@ -137,6 +147,11 @@ namespace WindesHeartSDK
             });
         }
 
+        /// <summary>
+        /// Gets a device based on its uuid
+        /// </summary>
+        /// <param name="uuid">Uuid of device to find</param>
+        /// <returns>The device of the uuid</returns>
         public static async Task<BLEDevice> GetKnownDevice(Guid uuid)
         {
             if (uuid != Guid.Empty)
