@@ -52,10 +52,10 @@ namespace WindesHeartApp.ViewModels
 
         public async void addButtonClicked()
         {
-            Heartrate heartrate = new Heartrate();
-            heartrate.HeartrateValue = counter;
-            var lol = await _heartrateRepository.AddHeartrateAsync(heartrate);
-            counter++;
+            //Heartrate heartrate = new Heartrate();
+            //heartrate.HeartrateValue = counter;
+            //var lol = await _heartrateRepository.AddHeartrateAsync(heartrate);
+            //counter++;
 
         }
         public async void getButtonClicked()
