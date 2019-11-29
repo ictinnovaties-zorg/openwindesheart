@@ -13,19 +13,19 @@ namespace WindesHeartApp.ViewModels
         private int _heartrate;
         private int counter;
         private readonly IHeartrateRepository _heartrateRepository;
-        public Command getButtonCommand { get; }
-        public Command addButtonCommand { get; }
+        public Command GetButtonCommand { get; }
+        public Command AddButtonCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
         {
             _heartrateRepository = heartrateRepository;
-            getButtonCommand = new Command(getButtonClicked);
-            addButtonCommand = new Command(addButtonClicked);
+            GetButtonCommand = new Command(GetButtonClicked);
+            AddButtonCommand = new Command(AddButtonClicked);
             counter = 44;
         }
 
-        void OnPropertyChanged([CallerMemberName] string name = "")
+        public void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
@@ -36,11 +36,11 @@ namespace WindesHeartApp.ViewModels
             {
                 _heartrate = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(swagLabel));
+                OnPropertyChanged(nameof(SwagLabel));
             }
         }
 
-        public string swagLabel
+        public string SwagLabel
         {
             get
             {
@@ -50,15 +50,14 @@ namespace WindesHeartApp.ViewModels
 
         }
 
-        public async void addButtonClicked()
+        public async void AddButtonClicked()
         {
-            //Heartrate heartrate = new Heartrate();
-            //heartrate.HeartrateValue = counter;
-            //var lol = await _heartrateRepository.AddHeartrateAsync(heartrate);
-            //counter++;
+            Heartrate heartrate = new Heartrate() { HeartrateValue = counter };
+            var lol = await _heartrateRepository.AddHeartrateAsync(heartrate);
+            counter++;
 
         }
-        public async void getButtonClicked()
+        public async void GetButtonClicked()
         {
             IEnumerable<Heartrate> heartrates = await _heartrateRepository.GetHeartRatesAsync();
             var lastadded = heartrates.Last();

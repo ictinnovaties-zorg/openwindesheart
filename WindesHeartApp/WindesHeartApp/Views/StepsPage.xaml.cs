@@ -25,7 +25,7 @@ namespace WindesHeartApp.Pages
         public static Button Day6Button;
         public static Button TodayButton;
 
-        List<Entry> Entries = new List<Entry>();
+        private readonly List<Entry> Entries = new List<Entry>();
 
         public StepsPage()
         {
@@ -61,7 +61,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
 
-            PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.lighttextColor, "", 0);
+            PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             var previousBtn = PageBuilder.AddButton(absoluteLayout, "Previous", "PreviousDayBinding", 0.1, 0.15, 0.25, 0.07, AbsoluteLayoutFlags.All);
@@ -99,7 +99,6 @@ namespace WindesHeartApp.Pages
         private void AddDayButtons(AbsoluteLayout absoluteLayout)
         {
             DateTime today = DateTime.Now;
-            DayOfWeek day = today.DayOfWeek;
             float y = 0.85f;
             Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(), "Day1Binding", 0.05, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
             Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(), "Day2Binding", 0.20, y, 0.15, 0.1, AbsoluteLayoutFlags.All);

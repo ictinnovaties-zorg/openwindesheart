@@ -14,38 +14,38 @@ namespace WindesHeartApp.Resources
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel homepageviewModel;
         public static SettingsPageViewmodel settingspageviewModel;
-        public static double screenHeight { get; set; }
-        public static double screenWidth { get; set; }
-        public static Color primaryColor { get; set; } = Color.FromHex("#96d1ff");
-        public static Color secondaryColor { get; set; } = Color.FromHex("#53b1ff");
-        public static Color lighttextColor { get; set; } = Color.FromHex("#999999");
-        public static double buttonSize { get; set; }
-        public static double screenratioFactor { get; set; }
-        public static double buttonfontSize { get; set; }
-        public static double cornerRadius { get; set; }
+        public static double ScreenHeight { get; set; }
+        public static double ScreenWidth { get; set; }
+        public static Color PrimaryColor { get; set; } = Color.FromHex("#96d1ff");
+        public static Color SecondaryColor { get; set; } = Color.FromHex("#53b1ff");
+        public static Color LightTextColor { get; set; } = Color.FromHex("#999999");
+        public static double ButtonSize { get; set; }
+        public static double ScreenRatioFactor { get; set; }
+        public static double ButtonFontSize { get; set; }
+        public static double CornerRadius { get; set; }
 
-        public static Dictionary<string, Color> colorDictionary;
+        public static Dictionary<string, Color> ColorDictionary;
 
         public static StepsViewModel StepsViewModel;
         public static int heartrateInterval;
-        public static string dbPath;
+        public static string DBPath;
 
-        //buttonSize : 10 being biggest, 100 being smallest. 
-        //buttonfontSize : 2-10, 10 being smallest, 2 being largest.
+        //ButtonSize : 10 being biggest, 100 being smallest. 
+        //ButtonFontSize : 2-10, 10 being smallest, 2 being largest.
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
-            buttonSize = 20;
-            buttonSize = 20;
-            buttonfontSize = 4;
-            cornerRadius = ((screenHeight / 10 * 1) - buttonSize);
-            screenratioFactor = screenHeight / screenWidth;
+            ButtonSize = 20;
+            ButtonSize = 20;
+            ButtonFontSize = 4;
+            CornerRadius = ((ScreenHeight / 10 * 1) - ButtonSize);
+            ScreenRatioFactor = ScreenHeight / ScreenWidth;
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
             StepsViewModel = new StepsViewModel(stepsRepository);
             settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
             DevicePageViewModel = new DevicePageViewModel();
             heartrateInterval = 1;
             homepageviewModel = new HomePageViewModel();
-            colorDictionary = new Dictionary<string, Color>
+            ColorDictionary = new Dictionary<string, Color>
             {
                 { "Aqua", Color.Aqua},
                 { "Black", Color.Black},

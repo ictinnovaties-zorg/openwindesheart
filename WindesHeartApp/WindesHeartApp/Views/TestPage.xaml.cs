@@ -1,7 +1,6 @@
 ﻿using FormsControls.Base;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
@@ -30,7 +29,7 @@ namespace WindesHeartApp.Pages
         {
             PageBuilder.BuildPageBasics(Layout, this);
             PageBuilder.AddHeaderImages(Layout);
-            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.lighttextColor, "", 0);
+            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(Layout, this);
             PageBuilder.AddReturnButton(Layout, this);
 
@@ -220,18 +219,6 @@ namespace WindesHeartApp.Pages
                 Windesheart.ConnectedDevice.SetLanguage("en-EN");
             }
             is24hour = !is24hour;
-        }
-        private void SaveDeviceInAppProperties(Guid guid)
-        {
-            if (guid != Guid.Empty)
-            {
-                if (App.Current.Properties.ContainsKey(key))
-                {
-                    App.Current.Properties.Remove(key);
-                }
-
-                App.Current.Properties.Add(key, guid);
-            }
         }
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 

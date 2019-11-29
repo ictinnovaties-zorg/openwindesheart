@@ -26,6 +26,7 @@ namespace WindesHeartApp.Data.Repository
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
@@ -57,11 +58,12 @@ namespace WindesHeartApp.Data.Repository
         {
             try
             {
-                var heartrates = _databaseContext.Heartrates.Where(predicate);
-                return heartrates.ToList();
+                var heartrates = await _databaseContext.Heartrates.ToListAsync();
+                return heartrates.Where(predicate);
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }

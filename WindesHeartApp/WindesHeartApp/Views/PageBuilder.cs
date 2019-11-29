@@ -10,21 +10,19 @@ namespace WindesHeartApp.Pages
         public static void BuildPageBasics(AbsoluteLayout layout, object sender)
         {
             NavigationPage.SetHasNavigationBar((ContentPage)sender, false);
-            layout.BackgroundColor = Globals.primaryColor;
+            layout.BackgroundColor = Globals.PrimaryColor;
             ((ContentPage)sender).Content = layout;
         }
 
         public static void AddHeaderImages(AbsoluteLayout layout)
         {
-            Image heartonlyImage = new Image();
-            heartonlyImage.Source = "HeartOnlyTransparent.png";
+            Image heartonlyImage = new Image { Source = "HeartOnlyTransparent.png" };
             AbsoluteLayout.SetLayoutFlags(heartonlyImage, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(heartonlyImage, new Rectangle(0.05, 0, Globals.screenWidth / 100 * 20, Globals.screenHeight / 100 * 10));
+            AbsoluteLayout.SetLayoutBounds(heartonlyImage, new Rectangle(0.05, 0, Globals.ScreenWidth / 100 * 20, Globals.ScreenHeight / 100 * 10));
 
-            Image textonlyImage = new Image();
-            textonlyImage.Source = "TextOnlyTransparent.png";
+            Image textonlyImage = new Image { Source = "TextOnlyTransparent.png" };
             AbsoluteLayout.SetLayoutFlags(textonlyImage, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(textonlyImage, new Rectangle(0.95, 0, Globals.screenWidth / 100 * 60, Globals.screenHeight / 100 * 10));
+            AbsoluteLayout.SetLayoutBounds(textonlyImage, new Rectangle(0.95, 0, Globals.ScreenWidth / 100 * 60, Globals.ScreenHeight / 100 * 10));
 
             layout.Children.Add(heartonlyImage);
             layout.Children.Add(textonlyImage);
@@ -38,31 +36,28 @@ namespace WindesHeartApp.Pages
             returnGrid.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 NumberOfTapsRequired = 1,
-                Command = new Command(execute: () => { returnButton_Clicked(sender, EventArgs.Empty); })
+                Command = new Command(execute: () => { ReturnButton_Clicked(sender, EventArgs.Empty); })
             });
-            AbsoluteLayout.SetLayoutBounds(returnGrid, new Rectangle(0.95, 0.95, Globals.screenHeight / 100 * 8, Globals.screenHeight / 100 * 8));
+            AbsoluteLayout.SetLayoutBounds(returnGrid, new Rectangle(0.95, 0.95, Globals.ScreenHeight / 100 * 8, Globals.ScreenHeight / 100 * 8));
             AbsoluteLayout.SetLayoutFlags(returnGrid, AbsoluteLayoutFlags.PositionProportional);
 
-            ImageButton returnButton = new ImageButton();
-            returnButton.Source = "GoBack.png";
-            returnButton.BackgroundColor = Color.Transparent;
-            returnButton.Clicked += returnButton_Clicked;
-            AbsoluteLayout.SetLayoutBounds(returnButton, new Rectangle(0.95, 0.95, Globals.screenHeight / 100 * 6, Globals.screenHeight / 100 * 6));
+            ImageButton returnButton = new ImageButton { Source = "GoBack.png", BackgroundColor = Color.Transparent };
+            returnButton.Clicked += ReturnButton_Clicked;
+            AbsoluteLayout.SetLayoutBounds(returnButton, new Rectangle(0.95, 0.95, Globals.ScreenHeight / 100 * 6, Globals.ScreenHeight / 100 * 6));
             AbsoluteLayout.SetLayoutFlags(returnButton, AbsoluteLayoutFlags.PositionProportional);
 
             layout.Children.Add(returnGrid);
             layout.Children.Add(returnButton);
         }
 
-        private static void returnButton_Clicked(object sender, EventArgs e)
+        private static void ReturnButton_Clicked(object sender, EventArgs e)
         {
             Application.Current.MainPage.Navigation.PopAsync();
         }
 
         public static ActivityIndicator AddActivityIndicator(AbsoluteLayout layout, string bindingPath, double x, double y, double width, double height, AbsoluteLayoutFlags flags, Color color)
         {
-            ActivityIndicator indicator = new ActivityIndicator();
-            indicator.Color = color;
+            ActivityIndicator indicator = new ActivityIndicator { Color = color };
             indicator.SetBinding(ActivityIndicator.IsRunningProperty, new Binding() { Path = bindingPath });
             AbsoluteLayout.SetLayoutBounds(indicator, new Rectangle(x, y, width, height));
             AbsoluteLayout.SetLayoutFlags(indicator, flags);
@@ -75,7 +70,7 @@ namespace WindesHeartApp.Pages
             {
                 Text = text,
                 TextColor = color,
-                FontSize = Globals.screenHeight / 100 * 3
+                FontSize = Globals.ScreenHeight / 100 * 3
 
             };
 
@@ -93,12 +88,8 @@ namespace WindesHeartApp.Pages
 
         public static Button AddButton(AbsoluteLayout absoluteLayout, string text, string bindingPath, double x, double y, double width, double height, AbsoluteLayoutFlags flags)
         {
-            Button button = new Button
-            {
-                Text = text
-            };
+            Button button = new Button() { Text = text, BackgroundColor = Globals.SecondaryColor };
             button.SetBinding(Button.CommandProperty, new Binding() { Path = bindingPath });
-            button.BackgroundColor = Globals.secondaryColor;
             AbsoluteLayout.SetLayoutFlags(button, flags);
             AbsoluteLayout.SetLayoutBounds(button, new Rectangle(x, y, width, height));
             absoluteLayout.Children.Add(button);

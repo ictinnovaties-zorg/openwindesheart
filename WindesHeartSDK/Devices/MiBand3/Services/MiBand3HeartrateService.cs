@@ -25,7 +25,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             RealtimeDisposible?.Dispose();
             RealtimeDisposible = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrate).RegisterAndNotify().Subscribe(
-                x => callback(new Heartrate(x.Characteristic.Value))
+                x => callback(new Heartrate(/*x.Characteristic.Value*/))
             );
         }
 
