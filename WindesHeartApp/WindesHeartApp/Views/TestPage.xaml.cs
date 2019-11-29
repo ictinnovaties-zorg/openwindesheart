@@ -1,8 +1,11 @@
 ﻿using FormsControls.Base;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
+using WindesHeartSdk.Model;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -13,6 +16,7 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TestPage : ContentPage, IAnimationPage
     {
+        public DateTime temptime = new DateTime(2019, 10, 10, 10, 1, 1);
         public string key = "LastConnectedDeviceGuid";
         public bool is24hour = true;
 
@@ -52,6 +56,8 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(disablerealtimestepsButton, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(fetchButton, new Rectangle(0.05, 0.9, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutFlags(fetchButton, AbsoluteLayoutFlags.All);
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
@@ -179,6 +185,21 @@ namespace WindesHeartApp.Pages
             Console.WriteLine("Steps updated: " + steps.StepCount);
         }
 
+        public void FetchData(object sender, EventArgs e)
+        {
+            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-10), HandleActivityData);
+        }
+
+        private void HandleActivityData(List<ActivitySample> samples)
+        {
+            Console.WriteLine("Samples found! Here they come:");
+
+            foreach (ActivitySample sample in samples)
+            {
+                Console.WriteLine(sample.ToString());
+            }
+        }
+
         private void GoBack_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
@@ -186,6 +207,7 @@ namespace WindesHeartApp.Pages
 
         private void Setln_Clicked(object sender, EventArgs e)
         {
+            Windesheart.ConnectedDevice.EnableSleepTracking(true);
             Windesheart.ConnectedDevice.SetDateDisplayFormat(is24hour);
             Windesheart.ConnectedDevice.SetTimeDisplayUnit(is24hour);
             Windesheart.ConnectedDevice.SetActivateOnLiftWrist(is24hour);

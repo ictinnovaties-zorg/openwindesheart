@@ -1,11 +1,13 @@
 ﻿using Plugin.BluetoothLE;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Resources;
-using WindesHeartSDK.Devices.MiBand3.Services;
+using WindesHeartSdk.Model;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
+using WindesHeartSDK.Devices.MiBand3Device.Services;
 using WindesHeartSDK.Models;
 
-namespace WindesHeartSDK.Devices.MiBand3.Models
+namespace WindesHeartSDK.Devices.MiBand3Device.Models
 {
     public class MiBand3 : BLEDevice
     {
@@ -15,6 +17,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         private readonly MiBand3DateTimeService DateTimeService;
         private readonly MiBand3StepsService StepsService;
         private readonly MiBand3AuthenticationService AuthenticationService;
+        private readonly MiBand3FetchService FetchService;
         private readonly MiBand3ConfigurationService ConfigurationService;
 
         public MiBand3(int rssi, IDevice device) : base(rssi, device)
@@ -23,6 +26,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             HeartrateService = new MiBand3HeartrateService(this);
             DateTimeService = new MiBand3DateTimeService(this);
             AuthenticationService = new MiBand3AuthenticationService(this);
+            FetchService = new MiBand3FetchService(this);
             StepsService = new MiBand3StepsService(this);
             ConfigurationService = new MiBand3ConfigurationService(this);
         }
@@ -70,7 +74,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
         public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)
         {
-            BatteryService.EnableBatteryStatusUpdates(getBatteryStatus);
+            BatteryService.EnableRealTimeBattery(getBatteryStatus);
         }
 
         public override Task<Battery> GetBattery()
@@ -80,7 +84,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
         public override void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate)
         {
-            HeartrateService.EnableHeartrateUpdates(getHeartrate);
+            HeartrateService.EnableRealTimeHeartrate(getHeartrate);
         }
 
         public override void SetHeartrateMeasurementInterval(int minutes)
@@ -106,6 +110,16 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public override bool SetTime(DateTime dateTime)
         {
             return DateTimeService.SetTime(dateTime);
+        }
+
+        public override void FetchData(DateTime startDate, Action<List<ActivitySample>> callback)
+        {
+            FetchService.StartFetching(startDate, callback);
+        }
+
+        public override void EnableSleepTracking(bool enable)
+        {
+            ConfigurationService.EnableSleepTracking(enable);
         }
 
         public override void OnConnect()
@@ -134,6 +148,16 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
                     }
                 }
             });
+        }
+
+        public override void DisableRealTimeBattery()
+        {
+            BatteryService.DisableRealTimeBattery();
+        }
+
+        public override void DisableRealTimeHeartrate()
+        {
+            HeartrateService.DisableRealTimeHeartrate();
         }
     }
 }

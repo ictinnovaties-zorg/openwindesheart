@@ -5,7 +5,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK
 {
@@ -14,7 +15,7 @@ namespace WindesHeartSDK
         //Globals
         private readonly BLEDevice BLEDevice;
         private IDevice IDevice => BLEDevice.Device;
-
+        
         private static AdapterStatus AdapterStatus;
 
         private static IDisposable AdapterDisposable;

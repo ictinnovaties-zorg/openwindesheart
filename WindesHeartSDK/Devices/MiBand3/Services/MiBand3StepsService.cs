@@ -2,19 +2,20 @@
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Resources;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Models;
 
-namespace WindesHeartSDK.Devices.MiBand3.Services
+namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3StepsService
     {
-        private readonly BLEDevice BLEDevice;
+        private readonly MiBand3 MiBand3;
         private IDisposable realtimeDisposable;
 
-        public MiBand3StepsService(BLEDevice device)
+        public MiBand3StepsService(MiBand3 device)
         {
-            BLEDevice = device;
+            MiBand3 = device;
         }
 
         /// <summary>
@@ -24,7 +25,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         public void EnableRealTimeSteps(Action<StepInfo> callback)
         {
             realtimeDisposable?.Dispose();
-            realtimeDisposable = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).RegisterAndNotify().Subscribe(
+            realtimeDisposable = MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).RegisterAndNotify().Subscribe(
                 x => callback(new StepInfo(x.Characteristic.Value)));
         }
 
@@ -38,7 +39,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
 
         public async Task<StepInfo> GetSteps()
         {
-            var steps = await BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).Read();
+            var steps = await MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).Read();
             return new StepInfo(steps.Characteristic.Value);
         }
     }
