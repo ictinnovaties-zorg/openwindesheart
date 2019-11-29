@@ -76,7 +76,7 @@ namespace WindesHeartApp.Pages
                 Globals.secondaryColor = Globals.colorDictionary[_tempsecondaryColor];
             Navigation.PopAsync();
         }
-        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
         {

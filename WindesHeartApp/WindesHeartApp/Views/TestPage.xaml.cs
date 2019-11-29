@@ -211,7 +211,7 @@ namespace WindesHeartApp.Pages
                 App.Current.Properties.Add(key, guid);
             }
         }
-        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
         {

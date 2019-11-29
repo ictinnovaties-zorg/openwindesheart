@@ -110,7 +110,7 @@ namespace WindesHeartApp.Pages
             TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
             TodayButton.IsEnabled = false;
         }
-        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
         {

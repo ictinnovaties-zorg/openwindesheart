@@ -56,7 +56,7 @@ namespace WindesHeartApp.Pages
 
         private static void returnButton_Clicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage.Navigation.PopToRootAsync();
+            Application.Current.MainPage.Navigation.PopAsync();
         }
 
         public static ActivityIndicator AddActivityIndicator(AbsoluteLayout layout, string bindingPath, double x, double y, double width, double height, AbsoluteLayoutFlags flags, Color color)

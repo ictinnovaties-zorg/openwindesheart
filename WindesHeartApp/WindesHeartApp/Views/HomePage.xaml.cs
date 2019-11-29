@@ -18,12 +18,13 @@ namespace WindesHeartApp.Pages
         public HomePage()
         {
             InitializeComponent();
+            BindingContext = Globals.homepageviewModel;
+            BuildPage();
         }
 
         protected override void OnAppearing()
         {
-            BuildPage();
-            BindingContext = Globals.homepageviewModel;
+
             App.RequestLocationPermission();
             if (Windesheart.ConnectedDevice != null)
                 ReadCurrentBattery();
@@ -250,7 +251,7 @@ namespace WindesHeartApp.Pages
                 Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
             }
         }
-        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
         {
