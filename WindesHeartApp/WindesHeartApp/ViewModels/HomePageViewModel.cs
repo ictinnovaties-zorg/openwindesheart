@@ -5,70 +5,48 @@ namespace WindesHeartApp.ViewModels
 {
     public class HomePageViewModel : INotifyPropertyChanged
     {
-        private int battery;
-        private int heartRate;
-        private string batteryImage = "";
+        private int _battery;
+        private int _heartrate;
+        private string _batteryImage = "";
         public event PropertyChangedEventHandler PropertyChanged;
 
-        void OnPropertyChanged([CallerMemberName] string name = "")
+        private void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public string BatteryImage
         {
-            get { return batteryImage; }
+            get => _batteryImage;
             set
             {
-                batteryImage = value;
+                _batteryImage = value;
                 OnPropertyChanged();
             }
         }
 
         public int Battery
         {
-            get { return battery; }
+            get => _battery;
             set
             {
-                battery = value;
+                _battery = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DisplayBattery));
             }
         }
-        public int HeartRate
+        public int Heartrate
         {
-            get { return heartRate; }
+            get => _heartrate;
             set
             {
-                heartRate = value;
+                _heartrate = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DisplayHeartRate));
             }
         }
-        public string DisplayHeartRate
-        {
-            get
-            {
-                if (HeartRate != 0)
-                    return $"Your Last heartbeat was: {HeartRate.ToString()}";
-                else
-                {
-                    return "";
-                }
-            }
-        }
-        public string DisplayBattery
-        {
+        public string DisplayHeartRate => Heartrate != 0 ? $"Your Last heartbeat was: {Heartrate.ToString()}" : "";
 
-            get
-            {
-                if (Battery != 0)
-                    return $"{Battery.ToString()}%";
-                else
-                {
-                    return "";
-                }
-            }
-        }
+        public string DisplayBattery => Battery != 0 ? $"{Battery.ToString()}%" : "";
     }
 }

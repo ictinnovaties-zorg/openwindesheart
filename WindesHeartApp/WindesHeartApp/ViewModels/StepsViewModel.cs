@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Pages;
-using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
+using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
 
@@ -11,12 +12,13 @@ namespace WindesHeartApp.ViewModels
 {
     public class StepsViewModel : INotifyPropertyChanged
     {
-        private int steps;
-        private bool realTimeStepsEnabled = false;
+        private int _steps;
+        private bool _realtimeStepsEnabled = false;
 
         public DateTime StartDate { get; }
 
         public DateTime SelectedDate;
+        private IStepsRepository _stepsRepository;
 
         public Command NextDayBinding { get; }
         public Command PreviousDayBinding { get; }
@@ -27,7 +29,6 @@ namespace WindesHeartApp.ViewModels
         public Command Day5Binding { get; }
         public Command Day6Binding { get; }
         public Command TodayBinding { get; }
-
         public Command GetStepsBinding { get; }
         public Command ToggleRealTimeStepsBinding { get; }
 
@@ -38,8 +39,9 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public StepsViewModel()
+        public StepsViewModel(IStepsRepository stepsRepository)
         {
+            _stepsRepository = stepsRepository;
             StartDate = DateTime.Now;
             SelectedDate = StartDate;
             GetStepsBinding = new Command(HandleGetSteps);
@@ -246,11 +248,11 @@ namespace WindesHeartApp.ViewModels
         private async void HandleGetSteps()
         {
             Console.WriteLine("GetSteps Clicked!");
-            if (Globals.device != null)
+            if (Windesheart.ConnectedDevice != null)
             {
                 try
                 {
-                    StepInfo info = await Globals.device.GetSteps();
+                    StepInfo info = await Windesheart.ConnectedDevice.GetSteps();
                     StepsPage.CurrentStepsLabel.Text = "Steps: " + info.StepCount;
                 }
                 catch (Exception e)
@@ -262,13 +264,13 @@ namespace WindesHeartApp.ViewModels
 
         private void ToggleRealTimeSteps()
         {
-            if (Globals.device != null)
+            if (Windesheart.ConnectedDevice != null)
             {
-                if (realTimeStepsEnabled)
+                if (_realtimeStepsEnabled)
                 {
                     try
                     {
-                        Globals.device.DisableRealTimeSteps();
+                        Windesheart.ConnectedDevice.DisableRealTimeSteps();
                         StepsPage.ToggleRealTimeStepsButton.Text = "Enable Realtime Steps";
                     }
                     catch (Exception e)
@@ -281,7 +283,7 @@ namespace WindesHeartApp.ViewModels
                 {
                     try
                     {
-                        Globals.device.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
+                        Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
                         StepsPage.ToggleRealTimeStepsButton.Text = "Disable Realtime Steps";
                     }
                     catch (Exception e)
@@ -290,15 +292,15 @@ namespace WindesHeartApp.ViewModels
                         return;
                     }
                 }
-                realTimeStepsEnabled = !realTimeStepsEnabled;
+                _realtimeStepsEnabled = !_realtimeStepsEnabled;
             }
         }
         public int Steps
         {
-            get { return steps; }
+            get { return _steps; }
             set
             {
-                steps = value;
+                _steps = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(StepsLabelText));
             }

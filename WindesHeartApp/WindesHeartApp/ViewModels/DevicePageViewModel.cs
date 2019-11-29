@@ -2,52 +2,72 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using WindesHeartApp.Resources;
+using WindesHeartApp.Pages;
+using WindesHeartApp.Services;
 using WindesHeartSDK;
-using WindesHeartSDK.Devices.MiBand3.Models;
-using WindesHeartSDK.Models;
 using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class DevicePageViewModel
+    public class DevicePageViewModel : INotifyPropertyChanged
     {
+        private string _key = "LastConnectedDeviceGuid";
+        private bool _isLoading;
+        private string _statusText;
         private BLEDevice _selectedDevice;
-        private int _heartrateInterval;
+        private ObservableCollection<BLEDevice> _deviceList;
         public event PropertyChangedEventHandler PropertyChanged;
-        private ObservableCollection<BLEDevice> deviceList;
-        public Command scanButtonCommand { get; }
-        public Command disconnectButtonCommand { get; }
+
+        public Command ScanButtonCommand { get; }
+        public Command DisconnectButtonCommand { get; }
 
         public DevicePageViewModel()
         {
-            scanButtonCommand = new Command(scanButtonClicked);
-            disconnectButtonCommand = new Command(disconnectButtonClicked);
+            ScanButtonCommand = new Command(scanButtonClicked);
+            DisconnectButtonCommand = new Command(disconnectButtonClicked);
             if (DeviceList == null)
                 DeviceList = new ObservableCollection<BLEDevice>();
-            _heartrateInterval = Globals.heartrateInterval;
+            if (Windesheart.ConnectedDevice == null)
+                StatusText = "Disconnected";
         }
-
         private void disconnectButtonClicked()
         {
-            Globals.device.Disconnect();
+            IsLoading = true;
+            Windesheart.ConnectedDevice.Disconnect();
+            IsLoading = false;
+            StatusText = "Disconnected";
         }
-
-        void OnPropertyChanged([CallerMemberName] string name = "")
+        private void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
         public ObservableCollection<BLEDevice> DeviceList
         {
-            get { return deviceList; }
+            get { return _deviceList; }
             set
             {
-                deviceList = value;
+                _deviceList = value;
                 OnPropertyChanged();
             }
         }
-
+        public string StatusText
+        {
+            get { return _statusText; }
+            set
+            {
+                _statusText = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+            }
+        }
         public BLEDevice SelectedDevice
         {
             get { return _selectedDevice; }
@@ -57,84 +77,57 @@ namespace WindesHeartApp.ViewModels
 
                 if (_selectedDevice == null)
                     return;
-
+                OnPropertyChanged();
                 deviceSelected(_selectedDevice);
+                DevicePage.devicelist.SelectedItem = null;
                 _selectedDevice = null;
+
             }
         }
-
-        private void deviceSelected(BLEDevice device)
+        private async void scanButtonClicked()
         {
-            Console.WriteLine(device.Name);
-            //try
-            //{
-            //    device.Connect();
-            // Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-            // Globals.device = device;
-            //ReadCurrentBattery();
-            //SetCurrentTime();
-            //Globals.device.SetHeartrateMeasurementInterval(_heartrateInterval);
-            //Globals.device.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
-            //Globals.device.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-            //Globals.device.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
-        }
+            try
+            {
+                StatusText = "Scanning for devices";
+                IsLoading = true;
+                var devices = await Windesheart.ScanForDevices();
+                if (devices != null)
+                {
+                    DeviceList = devices;
+                }
 
-        private /*async*/ void scanButtonClicked()
+                StatusText = $"Results found: {devices.Count}";
+                IsLoading = false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        private async void deviceSelected(BLEDevice device)
         {
-            var band = new MiBand3();
-            band.Name = "DANIEL";
-            band.Rssi = 420;
-            DeviceList.Add(band);
-
-            //try
-            //{
-            //    var devices = await Windesheart.ScanForDevices();
-            //    if (devices != null)
-            //        Globals.device = devices[0];
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+            try
+            {
+                StatusText = $"Connecting to {device.Name}";
+                IsLoading = true;
+                device.Connect(CallbackHandler.OnConnetionCallBack);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
-
-        private void SetCurrentTime()
+        private void SaveDeviceInAppProperties(Guid guid)
         {
-            bool timeset = Windesheart.ConnectedDevice.SetTime(DateTime.Now);
-        }
-        private async void ReadCurrentBattery()
-        {
-            var battery = await Globals.device.GetBattery();
-            Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-            Globals.homepageviewModel.Battery = battery.BatteryPercentage;
-            if (battery.Status == StatusEnum.Charging)
+            if (guid != Guid.Empty)
             {
-                Globals.homepageviewModel.BatteryImage = "BatteryCharging.png";
-                return;
-            }
+                if (App.Current.Properties.ContainsKey(_key))
+                {
+                    App.Current.Properties.Remove(_key);
+                }
 
-            if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";
-            }
-            else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryHalf.png";
-            }
-            else if (battery.BatteryPercentage >= 51 && battery.BatteryPercentage < 76)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
-            }
-            else if (battery.BatteryPercentage >= 76)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
+                App.Current.Properties.Add(_key, guid);
             }
         }
-
     }
 }
