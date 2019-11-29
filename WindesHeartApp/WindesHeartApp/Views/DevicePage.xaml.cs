@@ -1,5 +1,4 @@
-﻿
-using FormsControls.Base;
+﻿using FormsControls.Base;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
