@@ -147,9 +147,9 @@ namespace WindesHeartApp.ViewModels
             StepsPage.Entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
 
             //If goal not reached, fill other part transparent
-            if (percentageDone < 1)
+            if (percentageDone < 100)
             {
-                float percentageLeft = 1 - percentageDone;
+                float percentageLeft = 100 - percentageDone;
                 StepsPage.Entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
             }
         }
