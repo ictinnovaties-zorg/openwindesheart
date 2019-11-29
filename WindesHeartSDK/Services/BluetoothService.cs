@@ -208,7 +208,7 @@ namespace WindesHeartSDK
 
 
         /// <summary>
-        /// Returns the right WDevice based on the ScanResult
+        /// Returns the right BLEDevice based on the ScanResult
         /// </summary>
         private static BLEDevice GetDevice(IDevice device, int rssi = 0)
         {
