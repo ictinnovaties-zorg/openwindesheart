@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -52,7 +53,7 @@ namespace WindesHeartApp.ViewModels
 
         public async void addButtonClicked()
         {
-            Heartrate heartrate = new Heartrate();
+            Heartrate heartrate = new Heartrate(DateTime.Now, new byte[] { 1, 2, 3 });
             heartrate.HeartrateValue = counter;
             var lol = await _heartrateRepository.AddHeartrateAsync(heartrate);
             counter++;

@@ -145,7 +145,7 @@ namespace WindesHeartApp.ViewModels
 
         public void FillChart(int stepCount)
         {
-            float percentageDone = stepCount / Globals.DailyStepsGoal;
+            float percentageDone = stepCount / 2000;
             StepsPage.Entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
 
             //If goal not reached, fill other part transparent
