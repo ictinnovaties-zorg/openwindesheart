@@ -36,6 +36,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     var data = result.Data;
                     if (data == null)
                     {
+                        BLEDevice.ConnectionCallback(ConnectionResult.Failed);
                         throw new NullReferenceException("No data found in authentication-result.");
                     }
 
@@ -53,17 +54,20 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         else if (data[1] == MiBand3Resource.AuthSendEncryptedAuthNumber)
                         {
                             Console.WriteLine("Authenticated & Connected!");
+                            BLEDevice.ConnectionCallback(ConnectionResult.Succeeded);
                             AuthenticationDisposable.Dispose();
                             return;
                         }
                     }
                     else
                     {
+                        BLEDevice.ConnectionCallback(ConnectionResult.Failed);
                         throw new ConnectionException("Authentication failed!");
                     }
                 },
                 exception =>
                 {
+                    BLEDevice.ConnectionCallback(ConnectionResult.Failed);
                     throw new ConnectionException(exception.Message);
                 });
 
@@ -80,6 +84,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             }
             else
             {
+                BLEDevice.ConnectionCallback(ConnectionResult.Failed);
                 throw new NullReferenceException("AuthCharacteristic is null!");
             }
         }

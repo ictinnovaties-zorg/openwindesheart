@@ -1,13 +1,12 @@
 ﻿using System;
+using FormsControls.Base;
 using WindesHeartApp.Resources;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace WindesHeartApp.Pages
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AboutPage : ContentPage
+    public partial class AboutPage : ContentPage, IAnimationPage
     {
         public AboutPage()
         {
@@ -17,7 +16,7 @@ namespace WindesHeartApp.Pages
 
         private void BuildPage()
         {
-            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+            absoluteLayout = new AbsoluteLayout();
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
 
@@ -42,7 +41,7 @@ namespace WindesHeartApp.Pages
 
             #endregion
 
-            PageBuilder.AddLabel(absoluteLayout, "About", 0.05, 0.27, Globals.lighttextColor);
+            PageBuilder.AddLabel(absoluteLayout, "About", 0.05, 0.27, Globals.lighttextColor, "", 0);
 
             #region define Text
             Grid grid1 = new Grid();
@@ -146,5 +145,16 @@ namespace WindesHeartApp.Pages
             Console.WriteLine("Learn More - Clicked.");
             Vibration.Vibrate(4200);
         }
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+
+public void OnAnimationStarted(bool isPopAnimation)
+{
+	// Put your code here but leaving empty works just fine
+}
+
+public void OnAnimationFinished(bool isPopAnimation)
+{
+	// Put your code here but leaving empty works just fine
+}
     }
 }

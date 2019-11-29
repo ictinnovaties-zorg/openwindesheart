@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using FormsControls.Base;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSdk.Model;
@@ -13,7 +14,7 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TestPage : ContentPage
+    public partial class TestPage : ContentPage, IAnimationPage
     {
         public DateTime temptime = new DateTime(2019, 10, 10, 10, 1, 1);
         public string key = "LastConnectedDeviceGuid";
@@ -33,7 +34,7 @@ namespace WindesHeartApp.Pages
         {
             PageBuilder.BuildPageBasics(Layout, this);
             PageBuilder.AddHeaderImages(Layout);
-            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.lighttextColor);
+            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.lighttextColor, "", 0);
             PageBuilder.AddReturnButton(Layout, this);
             PageBuilder.AddReturnButton(Layout, this);
 
@@ -71,21 +72,41 @@ namespace WindesHeartApp.Pages
                 {
                     App.Current.Properties.TryGetValue(key, out object result);
                     var device = await Windesheart.GetKnownDevice((Guid)result);
-                    device?.Connect();
+                    device?.Connect(ConnectionCallBack);
                 }
                 else
                 {
-                    ObservableCollection<BLEDevice> bleDevices = await Windesheart.ScanForDevices();
-                    if (bleDevices.Count > 0)
+                    bool isScanning = Windesheart.StartScanning(WhenDeviceFound);
+                    if (!isScanning)
                     {
-                        bleDevices[0].Connect();
-                        SaveDeviceInAppProperties(bleDevices[0].Device.Uuid);
+                        Console.WriteLine("Can't start scanning... Bluetooth adapter not ready?");
                     }
                 }
             }
             catch (Exception r)
             {
                 Console.WriteLine(r.Message);
+            }
+        }
+
+
+        private void WhenDeviceFound(BLEDevice device)
+        {
+            Console.WriteLine("Device found! Connecting...");
+            Windesheart.StopScanning();
+            device.Connect(ConnectionCallBack);
+        }
+
+        public void ConnectionCallBack(ConnectionResult result)
+        {
+            switch (result)
+            {
+                case ConnectionResult.Succeeded:
+                    Console.WriteLine("WORKS!");
+                    break;
+                case ConnectionResult.Failed:
+                    Console.WriteLine("FAILED!");
+                    break;
             }
         }
 
@@ -215,6 +236,17 @@ namespace WindesHeartApp.Pages
 
                 App.Current.Properties.Add(key, guid);
             }
+        }
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+
+        public void OnAnimationStarted(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
+
+        public void OnAnimationFinished(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
         }
     }
 }

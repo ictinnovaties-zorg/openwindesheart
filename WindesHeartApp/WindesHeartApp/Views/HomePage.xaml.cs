@@ -1,13 +1,20 @@
-﻿using System;
+﻿using FormsControls.Base;
+using System;
+using System.Threading.Tasks;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Services;
+using WindesHeartApp.Views;
+using WindesHeartSDK;
+using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HomePage : ContentPage
+    public partial class HomePage : ContentPage, IAnimationPage
     {
+        private string _key = "LastConnectedDeviceGuid";
         public HomePage()
         {
             InitializeComponent();
@@ -18,6 +25,9 @@ namespace WindesHeartApp.Pages
             BindingContext = Globals.homepageviewModel;
             BuildPage();
             App.RequestLocationPermission();
+            if (Windesheart.ConnectedDevice != null)
+                ReadCurrentBattery();
+
         }
 
 
@@ -25,6 +35,7 @@ namespace WindesHeartApp.Pages
         {
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
+            PageBuilder.AddLabel(absoluteLayout, "Home", 0.05, 0.10, Globals.lighttextColor, "", 30);
             PageBuilder.AddHeaderImages(absoluteLayout);
 
             #region define battery and hr Label
@@ -57,7 +68,13 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(HRLabel, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(HRLabel);
             absoluteLayout.Children.Add(heartrateImage);
-            #endregion
+            #endregion 
+
+            if (App.Current.Properties.ContainsKey(_key))
+            {
+                App.Current.Properties.TryGetValue(_key, out object result);
+                ConnectKnowDevice(result);
+            }
 
             #region define and add Buttons
             var buttonStyle = new Style(typeof(Button))
@@ -136,14 +153,24 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutBounds(settingsButton, new Rectangle(0.20, 0.90, -1, -1));
             absoluteLayout.Children.Add(settingsButton);
 
-            Button testButton = new Button();
-            testButton.Text = "Test";
-            testButton.Clicked += testButton_Clicked;
-            testButton.Style = buttonStyle;
-            AbsoluteLayout.SetLayoutFlags(testButton, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(testButton, new Rectangle(0.20, 0.40, -1, -1));
-            absoluteLayout.Children.Add(testButton);
+            Button sleepButton = new Button();
+            sleepButton.Text = "Sleep";
+            sleepButton.Clicked += sleepButton_Clicked;
+            sleepButton.Style = buttonStyle;
+            AbsoluteLayout.SetLayoutFlags(sleepButton, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(sleepButton, new Rectangle(0.20, 0.40, -1, -1));
+            absoluteLayout.Children.Add(sleepButton);
             #endregion
+
+            var button =
+                PageBuilder.AddButton(absoluteLayout, "TEST", "", 0.5, 0.5, 0.4, 0.05, AbsoluteLayoutFlags.All);
+            button.Clicked += testButton_Clicked;
+        }
+
+        private async void ConnectKnowDevice(object result)
+        {
+            var device = await Windesheart.GetKnownDevice((Guid)result);
+            device?.Connect(CallbackHandler.OnConnetionCallBack);
         }
 
         #region button eventhandlers
@@ -154,17 +181,34 @@ namespace WindesHeartApp.Pages
 
         private void settingsButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new SettingsPage());
+            Navigation.PushAsync(new SettingsPage()
+            {
+                BindingContext = Globals.settingspageviewModel
+            });
         }
 
         private void stepsButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new StepsPage());
+            Navigation.PushAsync(new StepsPage()
+            {
+                BindingContext = Globals.StepsViewModel
+            });
         }
 
         private void heartrateButton_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new HeartratePage());
+            Navigation.PushAsync(new HeartratePage()
+            {
+                BindingContext = Globals.heartrateviewModel
+            });
+        }
+
+        private void sleepButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new SleepPage()
+            {
+                BindingContext = Globals.heartrateviewModel
+            });
         }
 
         private void deviceButton_Clicked(object sender, EventArgs e)
@@ -178,5 +222,44 @@ namespace WindesHeartApp.Pages
             Navigation.PushAsync(new AboutPage());
         }
         #endregion
+
+        private async Task ReadCurrentBattery()
+        {
+            var battery = await Windesheart.ConnectedDevice.GetBattery();
+            Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+            Globals.homepageviewModel.Battery = battery.BatteryPercentage;
+            if (battery.Status == StatusEnum.Charging)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryCharging.png";
+                return;
+            }
+            if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";
+            }
+            else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryHalf.png";
+            }
+            else if (battery.BatteryPercentage >= 51 && battery.BatteryPercentage < 76)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
+            }
+            else if (battery.BatteryPercentage >= 76)
+            {
+                Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
+            }
+        }
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+
+        public void OnAnimationStarted(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
+
+        public void OnAnimationFinished(bool isPopAnimation)
+        {
+            // Put your code here but leaving empty works just fine
+        }
     }
 }

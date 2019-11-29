@@ -1,6 +1,4 @@
-﻿using WindesHeartSDK.Exceptions;
-
-namespace WindesHeartSDK.Models
+﻿namespace WindesHeartSDK.Models
 {
     public class Heartrate
     {
@@ -9,15 +7,15 @@ namespace WindesHeartSDK.Models
 
         public int HeartrateValue { get; set; }
 
-        public Heartrate(byte[] rawdata)
+        public Heartrate(/*byte[] rawdata*/)
         {
-            if (rawdata != null && rawdata[0] != 0)
-            {
-                throw new ReadException("Error while reading raw heartrate data");
-            }
+            //if (rawdata != null && rawdata[0] != 0)
+            //{
+            //    throw new ReadException("Error while reading raw heartrate data");
+            //}
 
-            Rawdata = rawdata;
-            HeartrateValue = rawdata[1];
+            //Rawdata = rawdata;
+            //HeartrateValue = rawdata[1];
         }
     }
 }

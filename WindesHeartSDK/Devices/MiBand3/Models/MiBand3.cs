@@ -36,8 +36,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
 
         }
 
-        public override void Connect()
+        public override void Connect(Action<ConnectionResult> callback)
         {
+            ConnectionCallback = callback;
             BluetoothService.Connect();
         }
 
