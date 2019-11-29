@@ -103,9 +103,9 @@ namespace WindesHeartApp.ViewModels
             //}
         }
 
-        private async void SetCurrentTime()
+        private void SetCurrentTime()
         {
-            bool timeset = await Globals.device.SetTime(DateTime.Now);
+            bool timeset = Windesheart.ConnectedDevice.SetTime(DateTime.Now);
         }
         private async void ReadCurrentBattery()
         {

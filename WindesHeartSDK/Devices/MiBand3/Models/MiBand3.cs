@@ -32,8 +32,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
         }
 
-        public override void Connect()
+        public override void Connect(Action<ConnectionResult> callback)
         {
+            ConnectionCallback = callback;
             BluetoothService.Connect();
         }
 
@@ -102,19 +103,26 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             StepsService.EnableRealTimeSteps(onStepsChanged);
         }
 
-        public async override Task<bool> SetTime(DateTime dateTime)
+        public override bool SetTime(DateTime dateTime)
         {
-            return await DateTimeService.SetTime(dateTime);
+            return DateTimeService.SetTime(dateTime);
         }
 
         public override void OnConnect()
         {
             Console.WriteLine("Device Connected!");
 
+            Windesheart.ConnectedDevice = this;
+
+            //Check if bluetooth-state changes to off and then on, to enable reconnection management
+            BluetoothService.StartListeningForAdapterChanges();
+
+            Characteristics?.Clear();
+
             //Find unique characteristics
-            Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
+            CharacteristicDisposable = Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
             {
-                if (!Characteristics.Contains(characteristic))
+                if (characteristic != null && !Characteristics.Contains(characteristic))
                 {
                     Characteristics.Add(characteristic);
 
@@ -122,11 +130,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
                     if (characteristic.Uuid == MiBand3Resource.GuidCharacteristicAuth)
                     {
                         //Check if this is a new connection that needs authentication
-                        if (!Authenticated)
-                        {
-                            await AuthenticationService.Authenticate();
-                            Authenticated = true;
-                        }
+                        await AuthenticationService.Authenticate();
                     }
                 }
             });

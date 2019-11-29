@@ -12,7 +12,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
     {
         private static IGattCharacteristic authCharacteristic;
         private readonly BLEDevice BLEDevice;
-
+        private IDisposable AuthenticationDisposable;
         public MiBand3AuthenticationService(BLEDevice device)
         {
             BLEDevice = device;
@@ -28,15 +28,14 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             authCharacteristic = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
             if (authCharacteristic != null)
             {
-                //Triggers vibration on Mi Band 3
-                await TriggerAuthentication();
-
                 //Fired when Mi Band 3 is tapped
-                authCharacteristic.RegisterAndNotify().Subscribe(async result =>
+                AuthenticationDisposable?.Dispose();
+                AuthenticationDisposable = authCharacteristic.RegisterAndNotify().Subscribe(async result =>
                 {
                     var data = result.Data;
                     if (data == null)
                     {
+                        BLEDevice.ConnectionCallback(ConnectionResult.Failed);
                         throw new NullReferenceException("No data found in authentication-result.");
                     }
 
@@ -54,21 +53,37 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                         else if (data[1] == MiBand3Resource.AuthSendEncryptedAuthNumber)
                         {
                             Console.WriteLine("Authenticated & Connected!");
+                            BLEDevice.ConnectionCallback(ConnectionResult.Succeeded);
+                            AuthenticationDisposable.Dispose();
                             return;
                         }
                     }
                     else
                     {
+                        BLEDevice.ConnectionCallback(ConnectionResult.Failed);
                         throw new ConnectionException("Authentication failed!");
                     }
                 },
                 exception =>
                 {
+                    BLEDevice.ConnectionCallback(ConnectionResult.Failed);
                     throw new ConnectionException(exception.Message);
                 });
+
+                if (BLEDevice.NeedsAuthentication)
+                {
+                    //Triggers vibration on device
+                    await TriggerAuthentication();
+                }
+                else
+                {
+                    //Continues session with authorization-number
+                    await RequestAuthorizationNumber();
+                }
             }
             else
             {
+                BLEDevice.ConnectionCallback(ConnectionResult.Failed);
                 throw new NullReferenceException("AuthCharacteristic is null!");
             }
         }

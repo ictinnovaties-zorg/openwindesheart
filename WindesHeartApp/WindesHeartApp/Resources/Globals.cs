@@ -26,6 +26,9 @@ namespace WindesHeartApp.Resources
         public static float DailyStepsGoal { get; internal set; }
 
         public static Dictionary<string, Color> colorDictionary;
+        public static int batteryPercentage { get; set; }
+        public static int heartRate { get; set; }
+
         public static StepsViewModel StepsViewModel;
         public static int heartrateInterval;
 
