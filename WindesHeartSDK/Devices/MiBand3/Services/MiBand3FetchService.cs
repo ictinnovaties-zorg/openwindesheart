@@ -25,6 +25,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
         private Action<List<ActivitySample>> _callback;
 
+        private int _expectedSamples;
+
 
         public MiBand3FetchService(MiBand3 device)
         {
@@ -37,6 +39,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         public void StartFetching(DateTime date, Action<List<ActivitySample>> callback)
         {
             _samples.Clear();
+            _expectedSamples = 0;
             InitiateFetching(date);
             _callback = callback;
         }
@@ -91,15 +94,15 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
             Console.WriteLine("responseByte: " + responseByte[0].ToString() + " - " + responseByte[1].ToString() + " - " + responseByte[2].ToString());
 
-            if (result.Data.Length > 3)
-            {
-                Console.WriteLine("Expected Samples: " + result.Data[3].ToString() + " - " + result.Data[4].ToString() + " - " + result.Data[5].ToString());
-            }
-
             // Check if our request was accepted
             if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x01, 0x01 }))
             {
-                Console.WriteLine("First If");
+                if (result.Data.Length > 3)
+                {
+                    _expectedSamples = result.Data[5] << 16 | result.Data[4] << 8 | result.Data[3];
+                    Console.WriteLine("Expected Samples: " + _expectedSamples);
+                }
+
 
                 // Get the timestamp of the first sample
                 byte[] DateTimeBytes = new byte[8];
@@ -118,9 +121,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             else if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
             {
                 Console.WriteLine("Done Fetching: " + _samples.Count + " Samples");
-                _callback(_samples);
-                _charActivitySub?.Dispose();
-                _charUnknownSub?.Dispose();
+                if (_samples.Count == _expectedSamples)
+                {
+                    _callback(_samples);
+                    _charActivitySub?.Dispose();
+                    _charUnknownSub?.Dispose();
+                }
             }
             else
             {
