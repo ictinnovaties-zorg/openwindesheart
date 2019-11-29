@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WindesHeartSdk.Model;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK
@@ -53,6 +54,8 @@ namespace WindesHeartSDK
         public abstract void EnableRealTimeSteps(Action<StepInfo> OnStepsChanged);
         public abstract void DisableRealTimeSteps();
         public abstract Task<Battery> GetBattery();
+        public abstract void EnableSleepTracking(bool enable);
+        public abstract void FetchData(DateTime startDate, Action<List<ActivitySample>> callback);
 
         /// <summary>
         /// Get a certain characteristic with its UUID.
@@ -65,8 +68,9 @@ namespace WindesHeartSDK
         }
 
         public abstract void EnableRealTimeBattery(Action<Battery> getBatteryStatus);
+        public abstract void DisableRealTimeBattery();
         public abstract void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate);
-
+        public abstract void DisableRealTimeHeartrate();
         public abstract void SetHeartrateMeasurementInterval(int minutes);
 
 
