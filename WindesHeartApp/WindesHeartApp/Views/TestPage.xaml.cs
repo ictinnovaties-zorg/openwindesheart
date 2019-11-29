@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive.Linq;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
+using WindesHeartSdk.Model;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -170,7 +170,17 @@ namespace WindesHeartApp.Pages
 
         public void FetchData(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.FetchData();
+            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-10), HandleActivityData);
+        }
+
+        private void HandleActivityData(List<ActivitySample> samples)
+        {
+            Console.WriteLine("Samples found! Here they come:");
+
+            foreach (ActivitySample sample in samples)
+            {
+                Console.WriteLine(sample.ToString());
+            }
         }
 
         private void GoBack_Clicked(object sender, EventArgs e)

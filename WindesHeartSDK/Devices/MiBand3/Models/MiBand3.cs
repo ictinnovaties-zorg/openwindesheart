@@ -1,6 +1,8 @@
 ﻿using Plugin.BluetoothLE;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using WindesHeartSdk.Model;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Devices.MiBand3Device.Services;
 using WindesHeartSDK.Models;
@@ -109,9 +111,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
             return DateTimeService.SetTime(dateTime);
         }
 
-        public override void FetchData()
+        public override void FetchData(DateTime startDate, Action<List<ActivitySample>> callback)
         {
-            FetchService.StartFetching(DateTime.Today.AddDays(-10));
+            FetchService.StartFetching(startDate, callback);
         }
 
         public override void EnableSleepTracking(bool enable)
