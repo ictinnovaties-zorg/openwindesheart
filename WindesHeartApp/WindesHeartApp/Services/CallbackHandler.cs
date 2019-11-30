@@ -63,8 +63,8 @@ namespace WindesHeartApp.Services
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
                 Globals.DevicePageViewModel.StatusText = "Connected";
-                Globals.DevicePageViewModel.IsLoading = false; Windesheart.ConnectedDevice.SetTime(DateTime.Now);
-                Console.WriteLine("succes");
+                Globals.DevicePageViewModel.IsLoading = false;
+                Windesheart.ConnectedDevice.SetTime(DateTime.Now);
             }
             else if (result == ConnectionResult.Failed)
             {

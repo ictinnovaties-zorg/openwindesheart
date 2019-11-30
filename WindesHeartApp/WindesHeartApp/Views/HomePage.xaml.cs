@@ -205,7 +205,10 @@ namespace WindesHeartApp.Pages
 
         private void DeviceButtonClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new DevicePage());
+            Navigation.PushAsync(new DevicePage()
+            {
+                BindingContext = Globals.DevicePageViewModel
+            });
 
         }
 

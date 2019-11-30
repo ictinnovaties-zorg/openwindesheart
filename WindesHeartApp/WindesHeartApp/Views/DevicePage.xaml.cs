@@ -29,12 +29,13 @@ namespace WindesHeartApp.Pages
             scanButton.CornerRadius = (int)Globals.ScreenHeight / 100 * 7;
             scanButton.FontSize = Globals.ScreenHeight / 100 * 2;
             #endregion
+
             PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
 
             var indicator = PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.80, 0.28, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
 
 
-            DataTemplate DeviceTemplate = new DataTemplate(() =>
+            var deviceTemplate = new DataTemplate(() =>
             {
                 Grid grid = new Grid
                 {
@@ -63,8 +64,7 @@ namespace WindesHeartApp.Pages
             });
 
             #region device ListView
-
-            devicelist = new ListView { BackgroundColor = Globals.SecondaryColor, ItemTemplate = DeviceTemplate };
+            devicelist = new ListView { BackgroundColor = Globals.SecondaryColor, ItemTemplate = deviceTemplate };
             devicelist.SetBinding(ListView.SelectedItemProperty, new Binding("SelectedDevice", BindingMode.TwoWay));
             devicelist.SetBinding(ListView.ItemsSourceProperty, new Binding("DeviceList"));
             AbsoluteLayout.SetLayoutBounds(devicelist, new Rectangle(0.5, 0.55, 0.90, 0.4));

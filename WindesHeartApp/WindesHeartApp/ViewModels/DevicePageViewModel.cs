@@ -23,14 +23,14 @@ namespace WindesHeartApp.ViewModels
 
         public DevicePageViewModel()
         {
-            ScanButtonCommand = new Command(scanButtonClicked);
-            DisconnectButtonCommand = new Command(disconnectButtonClicked);
+            ScanButtonCommand = new Command(ScanButtonClicked);
+            DisconnectButtonCommand = new Command(DisconnectButtonClicked);
             if (DeviceList == null)
                 DeviceList = new ObservableCollection<BLEDevice>();
             if (Windesheart.ConnectedDevice == null)
                 StatusText = "Disconnected";
         }
-        private void disconnectButtonClicked()
+        private void DisconnectButtonClicked()
         {
             IsLoading = true;
             Windesheart.ConnectedDevice.Disconnect();
@@ -84,7 +84,7 @@ namespace WindesHeartApp.ViewModels
 
             }
         }
-        private async void scanButtonClicked()
+        private async void ScanButtonClicked()
         {
             try
             {
