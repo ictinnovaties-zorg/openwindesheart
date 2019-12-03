@@ -1,5 +1,5 @@
-﻿using System;
-using FormsControls.Base;
+﻿using FormsControls.Base;
+using System;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -9,15 +9,10 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : ContentPage, IAnimationPage
     {
-        private string _tempprimaryColor;
         private string _tempsecondaryColor;
         public SettingsPage()
         {
             InitializeComponent();
-        }
-
-        protected override void OnAppearing()
-        {
             BuildPage();
         }
 
@@ -27,30 +22,33 @@ namespace WindesHeartApp.Pages
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
-            PageBuilder.AddLabel(absoluteLayout, "Settings", 0.05, 0.10, Globals.lighttextColor, "", 0);
+            PageBuilder.AddLabel(absoluteLayout, "Settings", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             #region save changes Button
-            Button savechangesButton = new Button();
-            savechangesButton.Text = "Save Changes";
-            savechangesButton.BackgroundColor = Globals.secondaryColor;
-            savechangesButton.FontSize = Globals.screenHeight / 100 * 2;
-            savechangesButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
-            AbsoluteLayout.SetLayoutBounds(savechangesButton, new Rectangle(0.5, 0.90, Globals.screenHeight / 100 * 30, Globals.screenHeight / 100 * 7));
+
+            Button savechangesButton = new Button
+            {
+                Text = "Save Changes",
+                BackgroundColor = Globals.SecondaryColor,
+                FontSize = Globals.ScreenHeight / 100 * 2,
+                CornerRadius = (int)Globals.ScreenHeight / 100 * 7
+            };
+            AbsoluteLayout.SetLayoutBounds(savechangesButton, new Rectangle(0.5, 0.90, Globals.ScreenHeight / 100 * 30, Globals.ScreenHeight / 100 * 7));
             AbsoluteLayout.SetLayoutFlags(savechangesButton, AbsoluteLayoutFlags.PositionProportional);
-            savechangesButton.Clicked += savechangesButton_Clicked;
+            savechangesButton.Clicked += SavechangesButtonClicked;
             absoluteLayout.Children.Add(savechangesButton);
             #endregion
 
             #region button-color picker with Label
 
-            Label secondarycolorpickerlabel = new Label { Text = "Select Secondary Color", TextColor = Globals.lighttextColor, FontSize = Globals.screenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
+            Label secondarycolorpickerlabel = new Label { Text = "Select Secondary Color", TextColor = Globals.LightTextColor, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
             AbsoluteLayout.SetLayoutBounds(secondarycolorpickerlabel, new Rectangle(0.5, 0.45, -1, -1));
             AbsoluteLayout.SetLayoutFlags(secondarycolorpickerlabel, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(secondarycolorpickerlabel);
 
-            Picker secondaryPicker = new Picker { Title = "Select..", FontSize = Globals.screenHeight / 100 * 2.5 };
-            foreach (string colorName in Globals.colorDictionary.Keys)
+            Picker secondaryPicker = new Picker { Title = "Select..", FontSize = Globals.ScreenHeight / 100 * 2.5 };
+            foreach (string colorName in Globals.ColorDictionary.Keys)
             {
                 secondaryPicker.Items.Add(colorName);
             }
@@ -58,29 +56,27 @@ namespace WindesHeartApp.Pages
                     {
                         if (secondaryPicker.SelectedIndex == -1)
                         {
-                            Globals.primaryColor = Color.FromHex("#96d1ff");
+                            Globals.PrimaryColor = Color.FromHex("#96d1ff");
                         }
                         else
                         {
                             _tempsecondaryColor = secondaryPicker.Items[secondaryPicker.SelectedIndex];
-                            secondaryPicker.BackgroundColor = Globals.colorDictionary[_tempsecondaryColor];
+                            secondaryPicker.BackgroundColor = Globals.ColorDictionary[_tempsecondaryColor];
                         }
                     };
-            AbsoluteLayout.SetLayoutBounds(secondaryPicker, new Rectangle(0.5, 0.5, Globals.screenWidth - Globals.screenWidth / 100 * 4, -1));
+            AbsoluteLayout.SetLayoutBounds(secondaryPicker, new Rectangle(0.5, 0.5, Globals.ScreenWidth - Globals.ScreenWidth / 100 * 4, -1));
             AbsoluteLayout.SetLayoutFlags(secondaryPicker, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(secondaryPicker);
             #endregion
         }
 
-        private void savechangesButton_Clicked(object sender, EventArgs e)
+        private void SavechangesButtonClicked(object sender, EventArgs e)
         {
-            if (_tempprimaryColor != null)
-                Globals.primaryColor = Globals.colorDictionary[_tempprimaryColor];
             if (_tempsecondaryColor != null)
-                Globals.secondaryColor = Globals.colorDictionary[_tempsecondaryColor];
+                Globals.SecondaryColor = Globals.ColorDictionary[_tempsecondaryColor];
             Navigation.PopAsync();
         }
-        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
         {

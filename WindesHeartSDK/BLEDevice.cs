@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WindesHeartSdk.Model;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK
@@ -34,15 +35,11 @@ namespace WindesHeartSDK
             ConnectionDisposable = Device.WhenConnected().Subscribe(x => OnConnect());
         }
 
-        public void DisposeDisposables()
-        {
-            ConnectionDisposable?.Dispose();
-            CharacteristicDisposable?.Dispose();
-        }
-
+        public abstract void DisposeDisposables();
+        
         public abstract void OnConnect();
         public abstract void Connect(Action<ConnectionResult> callback);
-        public abstract void Disconnect();
+        public abstract void Disconnect(bool rememberDevice = true);
         public abstract void SetTimeDisplayUnit(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
         public abstract void SetLanguage(string localeString);
@@ -53,6 +50,8 @@ namespace WindesHeartSDK
         public abstract void EnableRealTimeSteps(Action<StepInfo> OnStepsChanged);
         public abstract void DisableRealTimeSteps();
         public abstract Task<Battery> GetBattery();
+        public abstract void EnableSleepTracking(bool enable);
+        public abstract void FetchData(DateTime startDate, Action<List<ActivitySample>> callback);
 
         /// <summary>
         /// Get a certain characteristic with its UUID.
@@ -65,8 +64,9 @@ namespace WindesHeartSDK
         }
 
         public abstract void EnableRealTimeBattery(Action<Battery> getBatteryStatus);
+        public abstract void DisableRealTimeBattery();
         public abstract void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate);
-
+        public abstract void DisableRealTimeHeartrate();
         public abstract void SetHeartrateMeasurementInterval(int minutes);
 
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Text;
-using WindesHeartSDK.Devices.MiBand3.Resources;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
 
-namespace WindesHeartSDK.Devices.MiBand3.Services
+namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3ConfigurationService
     {
@@ -92,6 +92,23 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             CommandByte[7] = Convert.ToByte(to.Minute);
 
             await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(CommandByte);
+        }
+
+        /// <summary>
+        /// Enable or Disable the sleep measurement of the devices
+        /// </summary>
+        /// <param name="enable"></param>
+        public async void EnableSleepTracking(bool enable)
+        {
+            if (enable)
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableSleepMeasurement);
+            }
+            else
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableSleepMeasurement);
+
+            }
         }
     }
 }

@@ -5,7 +5,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK
 {
@@ -14,10 +15,10 @@ namespace WindesHeartSDK
         //Globals
         private readonly BLEDevice BLEDevice;
         private IDevice IDevice => BLEDevice.Device;
-
+        
         private static AdapterStatus AdapterStatus;
 
-        private static IDisposable AdapterDisposable;
+        public static IDisposable AdapterDisposable;
         private static IDisposable CurrentScan;
 
         public BluetoothService(BLEDevice device)
@@ -171,11 +172,16 @@ namespace WindesHeartSDK
         /// <summary>
         /// Disconnect current device.
         /// </summary>
-        public void Disconnect()
+        public void Disconnect(bool rememberDevice)
         {
             //Cancel the connection
             Console.WriteLine("Disconnecting device..");
+            Windesheart.ConnectedDevice?.DisposeDisposables();
             IDevice.CancelConnection();
+            if (!rememberDevice)
+            {
+                Windesheart.ConnectedDevice = null;
+            }
         }
 
         /// <summary>
@@ -190,9 +196,8 @@ namespace WindesHeartSDK
                 if (status != AdapterStatus)
                 {
                     AdapterStatus = status;
-                    if (status == AdapterStatus.PoweredOff && Windesheart.ConnectedDevice != null && startListening)
+                    if (status == AdapterStatus.PoweredOff && Windesheart.ConnectedDevice != null)
                     {
-                        Windesheart.ConnectedDevice?.DisposeDisposables();
                         Windesheart.ConnectedDevice?.Disconnect();
                     }
 

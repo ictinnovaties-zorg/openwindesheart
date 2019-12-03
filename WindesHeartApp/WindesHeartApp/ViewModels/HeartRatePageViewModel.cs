@@ -1,69 +1,72 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
-using WindesHeartSDK.Models;
-using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
     public class HeartRatePageViewModel : INotifyPropertyChanged
     {
         private int _heartrate;
-        private int counter;
         private readonly IHeartrateRepository _heartrateRepository;
-        public Command getButtonCommand { get; }
-        public Command addButtonCommand { get; }
+        private int _averageHeartrate;
+        private int _peakHeartrate;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
         {
             _heartrateRepository = heartrateRepository;
-            getButtonCommand = new Command(getButtonClicked);
-            addButtonCommand = new Command(addButtonClicked);
-            counter = 44;
         }
 
-        void OnPropertyChanged([CallerMemberName] string name = "")
+        public void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        public int HeartRate
+
+
+        public int Heartrate
         {
             get { return _heartrate; }
             set
             {
                 _heartrate = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(swagLabel));
             }
         }
 
-        public string swagLabel
+        public int AverageHeartrate
         {
-            get
+            get { return _averageHeartrate; }
+            set
             {
-                return
-                    $"Your heartrate coming from the database is : {HeartRate.ToString()}, and this DB binding is pretty cool.";
+                _averageHeartrate = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(AverageHeartrate));
             }
-
         }
 
-        public async void addButtonClicked()
+        public int PeakHeartrate
         {
-            Heartrate heartrate = new Heartrate(DateTime.Now, new byte[] { 1, 2, 3 });
-            heartrate.HeartrateValue = counter;
-            var lol = await _heartrateRepository.AddHeartrateAsync(heartrate);
-            counter++;
+            get { return _peakHeartrate; }
+            set
+            {
+                _peakHeartrate = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PeakHeartrateText));
+            }
+        }
 
-        }
-        public async void getButtonClicked()
+        public string AverageLabelText
         {
-            IEnumerable<Heartrate> heartrates = await _heartrateRepository.GetHeartRatesAsync();
-            var lastadded = heartrates.Last();
-            HeartRate = lastadded.HeartrateValue;
+            get { return $"Average heartrate of last 12 hours: {AverageHeartrate.ToString()}"; }
         }
+
+        public string PeakHeartrateText
+        {
+            get { return $"Your peak heartrate of the last 12 hours: {PeakHeartrate.ToString()}"; }
+        }
+
     }
 }

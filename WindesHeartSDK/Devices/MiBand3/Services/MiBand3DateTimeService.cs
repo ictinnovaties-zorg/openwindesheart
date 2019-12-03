@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Resources;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Helpers;
 
-namespace WindesHeartSDK.Devices.MiBand3.Services
+namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3DateTimeService
     {
-        private readonly BLEDevice BLEDevice;
+        private readonly MiBand3 MiBand3;
 
-        public MiBand3DateTimeService(BLEDevice device)
+        public MiBand3DateTimeService(MiBand3 device)
         {
-            BLEDevice = device;
+            MiBand3 = device;
         }
 
         public bool SetTime(DateTime time)
@@ -21,7 +22,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
             byte[] timeToSet = ConversionHelper.GetTimeBytes(time, ConversionHelper.TimeUnit.Seconds);
 
             //Send to MiBand
-            BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicCurrentTime).Write(timeToSet).Subscribe(result =>
+            MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristicCurrentTime).Write(timeToSet).Subscribe(result =>
             {
                 Console.WriteLine("Time set to " + time.ToString());
             });

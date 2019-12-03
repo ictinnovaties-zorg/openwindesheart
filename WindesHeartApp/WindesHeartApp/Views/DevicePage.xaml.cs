@@ -13,51 +13,38 @@ namespace WindesHeartApp.Pages
         public DevicePage()
         {
             InitializeComponent();
-        }
-
-        protected override void OnAppearing()
-        {
             BuildPage();
         }
 
         private void BuildPage()
         {
-            AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+            absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
-            PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.lighttextColor, "", 0);
+            PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             #region scanbutton
             Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", "ScanButtonCommand", 0.15, 0.25, 0.3, 0.08, AbsoluteLayoutFlags.All);
-            scanButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
-            scanButton.FontSize = Globals.screenHeight / 100 * 2;
+            scanButton.CornerRadius = (int)Globals.ScreenHeight / 100 * 7;
+            scanButton.FontSize = Globals.ScreenHeight / 100 * 2;
             #endregion
-            PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.lighttextColor, "StatusText", 14);
 
-            var indicator = PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.80, 0.28, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.secondaryColor);
+            PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
+
+            var indicator = PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.80, 0.28, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
 
 
-            DataTemplate DeviceTemplate = new DataTemplate(() =>
+            var deviceTemplate = new DataTemplate(() =>
             {
-                Grid grid = new Grid();
-                grid.ColumnDefinitions = new ColumnDefinitionCollection
+                Grid grid = new Grid
                 {
-                    new ColumnDefinition
+                    ColumnDefinitions = new ColumnDefinitionCollection
                     {
-                        Width = Globals.screenWidth / 100 * 25
-                    },
-                    new ColumnDefinition
-                    {
-                        Width = Globals.screenWidth / 100 * 25
-                    },
-                    new ColumnDefinition
-                    {
-                        Width = Globals.screenWidth / 100 * 25
-                    },
-                    new ColumnDefinition
-                    {
-                        Width = Globals.screenWidth / 100 * 25
+                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 25},
+                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 25},
+                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 25},
+                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 25}
                     }
                 };
 
@@ -66,25 +53,20 @@ namespace WindesHeartApp.Pages
                 grid.Children.Add(label, 0, 0);
 
 
-                Label label2 = new Label();
+                Label label2 = new Label { HorizontalOptions = LayoutOptions.End };
                 label2.SetBinding(Label.TextProperty, "Rssi");
-                label2.HorizontalOptions = LayoutOptions.End;
                 grid.Children.Add(label2, 2, 0);
 
-                Label label3 = new Label();
-                label3.Text = "Signal strength:";
-                label3.HorizontalOptions = LayoutOptions.Start;
+                Label label3 = new Label { Text = "Signal strength:", HorizontalOptions = LayoutOptions.Start };
                 grid.Children.Add(label3, 1, 0);
 
                 return new ViewCell { View = grid };
             });
 
             #region device ListView
-            devicelist = new ListView();
-            devicelist.BackgroundColor = Globals.secondaryColor;
+            devicelist = new ListView { BackgroundColor = Globals.SecondaryColor, ItemTemplate = deviceTemplate };
             devicelist.SetBinding(ListView.SelectedItemProperty, new Binding("SelectedDevice", BindingMode.TwoWay));
             devicelist.SetBinding(ListView.ItemsSourceProperty, new Binding("DeviceList"));
-            devicelist.ItemTemplate = DeviceTemplate;
             AbsoluteLayout.SetLayoutBounds(devicelist, new Rectangle(0.5, 0.55, 0.90, 0.4));
             AbsoluteLayout.SetLayoutFlags(devicelist, AbsoluteLayoutFlags.All);
             absoluteLayout.Children.Add(devicelist);
@@ -92,12 +74,12 @@ namespace WindesHeartApp.Pages
 
             #region disconnectButton
             Button disconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", "DisconnectButtonCommand", 0.15, 0.85, 0.3, 0.05, AbsoluteLayoutFlags.All);
-            disconnectButton.CornerRadius = (int)Globals.screenHeight / 100 * 7;
-            disconnectButton.FontSize = Globals.screenHeight / 100 * 2;
+            disconnectButton.CornerRadius = (int)Globals.ScreenHeight / 100 * 7;
+            disconnectButton.FontSize = Globals.ScreenHeight / 100 * 2;
             #endregion
 
         }
-        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
         {

@@ -5,6 +5,7 @@ namespace WindesHeartSDK.Models
     public class Heartrate
     {
         public int Id { get; set; }
+
         public byte[] Rawdata { get; set; }
         public DateTime DateTime { get; set; }
 

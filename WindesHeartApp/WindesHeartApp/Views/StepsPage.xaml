@@ -6,5 +6,4 @@
              xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              mc:Ignorable="d"
              x:Class="WindesHeartApp.Pages.StepsPage">
-
 </ContentPage>

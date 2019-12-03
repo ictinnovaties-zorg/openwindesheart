@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WindesHeartApp": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

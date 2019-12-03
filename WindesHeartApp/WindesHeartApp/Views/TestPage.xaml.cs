@@ -1,8 +1,10 @@
-﻿using System;
+﻿using FormsControls.Base;
+using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
-using FormsControls.Base;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
+using WindesHeartSdk.Model;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -13,16 +15,13 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TestPage : ContentPage, IAnimationPage
     {
+        public DateTime temptime = new DateTime(2019, 10, 10, 10, 1, 1);
         public string key = "LastConnectedDeviceGuid";
         public bool is24hour = true;
 
         public TestPage()
         {
             InitializeComponent();
-        }
-
-        protected override void OnAppearing()
-        {
             BuildPage();
         }
 
@@ -30,7 +29,7 @@ namespace WindesHeartApp.Pages
         {
             PageBuilder.BuildPageBasics(Layout, this);
             PageBuilder.AddHeaderImages(Layout);
-            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.lighttextColor, "", 0);
+            PageBuilder.AddLabel(Layout, "TEST", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(Layout, this);
             PageBuilder.AddReturnButton(Layout, this);
 
@@ -56,6 +55,8 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(disablerealtimestepsButton, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(Setln, new Rectangle(0.05, 0.70, 0.5, 0.07));
             AbsoluteLayout.SetLayoutFlags(Setln, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(fetchButton, new Rectangle(0.05, 0.9, 0.7, 0.07));
+            AbsoluteLayout.SetLayoutFlags(fetchButton, AbsoluteLayoutFlags.All);
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
@@ -106,7 +107,7 @@ namespace WindesHeartApp.Pages
 
         private void Disconnect(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.Disconnect();
+            Windesheart.ConnectedDevice.Disconnect(false);
         }
 
         private async void ReadCurrentBattery(object sender, EventArgs e)
@@ -183,6 +184,21 @@ namespace WindesHeartApp.Pages
             Console.WriteLine("Steps updated: " + steps.StepCount);
         }
 
+        public void FetchData(object sender, EventArgs e)
+        {
+            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-10), HandleActivityData);
+        }
+
+        private void HandleActivityData(List<ActivitySample> samples)
+        {
+            Console.WriteLine("Samples found! Here they come:");
+
+            foreach (ActivitySample sample in samples)
+            {
+                Console.WriteLine(sample.ToString());
+            }
+        }
+
         private void GoBack_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
@@ -190,6 +206,7 @@ namespace WindesHeartApp.Pages
 
         private void Setln_Clicked(object sender, EventArgs e)
         {
+            Windesheart.ConnectedDevice.EnableSleepTracking(true);
             Windesheart.ConnectedDevice.SetDateDisplayFormat(is24hour);
             Windesheart.ConnectedDevice.SetTimeDisplayUnit(is24hour);
             Windesheart.ConnectedDevice.SetActivateOnLiftWrist(is24hour);
@@ -203,19 +220,7 @@ namespace WindesHeartApp.Pages
             }
             is24hour = !is24hour;
         }
-        private void SaveDeviceInAppProperties(Guid guid)
-        {
-            if (guid != Guid.Empty)
-            {
-                if (App.Current.Properties.ContainsKey(key))
-                {
-                    App.Current.Properties.Remove(key);
-                }
-
-                App.Current.Properties.Add(key, guid);
-            }
-        }
-        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Long, Subtype = AnimationSubtype.FromTop };
+        public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
         {

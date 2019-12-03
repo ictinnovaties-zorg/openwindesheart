@@ -2,17 +2,18 @@
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Helpers;
-using WindesHeartSDK.Devices.MiBand3.Resources;
+using WindesHeartSDK.Devices.MiBand3Device.Helpers;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Exceptions;
 
-namespace WindesHeartSDK.Devices.MiBand3.Services
+namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3AuthenticationService
     {
         private static IGattCharacteristic authCharacteristic;
         private readonly BLEDevice BLEDevice;
-        private IDisposable AuthenticationDisposable;
+        public IDisposable AuthenticationDisposable;
         public MiBand3AuthenticationService(BLEDevice device)
         {
             BLEDevice = device;
@@ -70,7 +71,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
                     throw new ConnectionException(exception.Message);
                 });
 
-                if (BLEDevice.NeedsAuthentication)
+                if (/*BLEDevice.NeedsAuthentication*/ false)
                 {
                     //Triggers vibration on device
                     await TriggerAuthentication();
