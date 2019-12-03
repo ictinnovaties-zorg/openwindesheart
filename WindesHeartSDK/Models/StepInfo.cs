@@ -7,16 +7,14 @@ namespace WindesHeartSDK.Models
     {
         public byte[] RawData { get; set; }
         public int StepCount { get; set; }
-        public DateTime DateTime { get; set; }
 
         public StepInfo()
         {
 
         }
 
-        public StepInfo(DateTime dateTime, byte[] rawData)
+        public StepInfo(byte[] rawData)
         {
-            DateTime = dateTime;
             RawData = rawData;
             byte[] stepsValue = new byte[] { RawData[1], RawData[2] };
             StepCount = ConversionHelper.ToUint16(stepsValue);

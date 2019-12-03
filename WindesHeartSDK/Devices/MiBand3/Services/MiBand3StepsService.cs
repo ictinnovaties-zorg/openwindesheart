@@ -25,7 +25,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         {
             realtimeDisposable?.Dispose();
             realtimeDisposable = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).RegisterAndNotify().Subscribe(
-                x => callback(new StepInfo(DateTime.Now, x.Characteristic.Value)));
+                x => callback(new StepInfo(x.Characteristic.Value)));
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Services
         public async Task<StepInfo> GetSteps()
         {
             var steps = await BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).Read();
-            return new StepInfo(DateTime.Now, steps.Characteristic.Value);
+            return new StepInfo(steps.Characteristic.Value);
         }
     }
 }

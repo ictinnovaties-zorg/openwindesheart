@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WindesHeartApp.Data.Models;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartApp.Data.Interfaces
 {
     public interface IStepsRepository
     {
-        Task<IEnumerable<StepInfo>> GetStepsAsync();
-        Task<bool> AddStepsAsync(StepInfo steps);
+        Task<IEnumerable<StepsModel>> GetStepsAsync();
+        Task<bool> AddStepsAsync(StepsModel steps);
         void RemoveSteps();
-        Task<IEnumerable<StepInfo>> StepsByQueryAsync(Func<StepInfo, bool> predicate);
+        Task<IEnumerable<StepsModel>> StepsByQueryAsync(Func<StepsModel, bool> predicate);
     }
 }

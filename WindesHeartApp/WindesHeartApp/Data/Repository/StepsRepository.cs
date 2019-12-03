@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
+using WindesHeartApp.Data.Models;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartApp.Data.Repository
@@ -18,7 +19,7 @@ namespace WindesHeartApp.Data.Repository
             _databaseContext = new DatabaseContext(dbPath);
         }
 
-        public async Task<IEnumerable<StepInfo>> GetStepsAsync()
+        public async Task<IEnumerable<StepsModel>> GetStepsAsync()
         {
             try
             {
@@ -31,7 +32,7 @@ namespace WindesHeartApp.Data.Repository
             }
         }
 
-        public async Task<bool> AddStepsAsync(StepInfo steps)
+        public async Task<bool> AddStepsAsync(StepsModel steps)
         {
             try
             {
@@ -53,7 +54,7 @@ namespace WindesHeartApp.Data.Repository
             _databaseContext.SaveChanges();
         }
 
-        public async Task<IEnumerable<StepInfo>> StepsByQueryAsync(Func<StepInfo, bool> predicate)
+        public async Task<IEnumerable<StepsModel>> StepsByQueryAsync(Func<StepsModel, bool> predicate)
         {
             try
             {

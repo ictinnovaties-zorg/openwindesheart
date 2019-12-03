@@ -24,7 +24,7 @@ namespace WindesHeartApp.Resources
         public static double screenratioFactor { get; set; }
         public static double buttonfontSize { get; set; }
         public static double cornerRadius { get; set; }
-        public static StepsRepository StepsRepository { get; set; }
+        public static IStepsRepository StepsRepository { get; set; }
         public static HeartrateRepository HeartrateRepository { get; set; }
         public static float DailyStepsGoal { get; internal set; }
 
@@ -42,6 +42,9 @@ namespace WindesHeartApp.Resources
             buttonSize = 20;
             buttonSize = 20;
             buttonfontSize = 4;
+
+            StepsRepository = stepsRepository;
+
             cornerRadius = ((screenHeight / 10 * 1) - buttonSize);
             screenratioFactor = screenHeight / screenWidth;
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);

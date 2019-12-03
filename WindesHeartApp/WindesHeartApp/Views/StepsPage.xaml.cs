@@ -1,11 +1,13 @@
 ﻿using FormsControls.Base;
 using Microcharts;
+using Microcharts.Forms;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using WindesHeartApp.Data.Models;
 using WindesHeartApp.Resources;
-using WindesHeartSDK.Models;
+using WindesHeartApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Entry = Microcharts.Entry;
@@ -17,6 +19,8 @@ namespace WindesHeartApp.Pages
     {
         public static Label CurrentStepsLabel;
         public static Label CurrentDayLabel;
+        public static Label KilometersLabel;
+
         public static Button ToggleRealTimeStepsButton;
 
         public static Button Day1Button;
@@ -27,25 +31,16 @@ namespace WindesHeartApp.Pages
         public static Button Day6Button;
         public static Button TodayButton;
 
-        public static List<Entry> Entries = new List<Entry>();
-        public static IEnumerable<StepInfo> StepInfo = new List<StepInfo>();
-
         public StepsPage()
         {
             InitializeComponent();
-            chartView.Chart = new DonutChart
-            {
-                Entries = Entries,
-                BackgroundColor = SKColors.Transparent,
-                HoleRadius = 0.7f
-            };
-            chartView.Rotation = 180;
         }
 
         protected override async void OnAppearing()
         {
             BuildPage();
-            StepInfo = await Globals.StepsRepository.GetStepsAsync();
+
+            Globals.StepsViewModel.OnAppearing();
         }
 
         private void BuildPage()
@@ -88,15 +83,20 @@ namespace WindesHeartApp.Pages
             var label = PageBuilder.AddLabel(absoluteLayout, "STEPS", 0.5, 0.45, Color.Black, "", 0);
             label.FontSize = 20;
 
-            AbsoluteLayout.SetLayoutFlags(chartView, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(chartView, new Rectangle(0.5, 0.25, 0.60, 0.60));
-            absoluteLayout.Children.Add(chartView);
+            ChartView chart = new ChartView
+            {
+                Rotation = 180
+            };
+            chart.SetBinding(ChartView.ChartProperty, "Chart");
+            AbsoluteLayout.SetLayoutFlags(chart, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(chart, new Rectangle(0.5, 0.25, 0.60, 0.60));
+            absoluteLayout.Children.Add(chart);
 
             var label2 = PageBuilder.AddLabel(absoluteLayout, "0 Kcal", 0.5, 0.65, Color.Black, "", 0);
             label2.FontSize = 20;
 
-            var label3 = PageBuilder.AddLabel(absoluteLayout, "0 Kilometers", 0.5, 0.73, Color.Black, "", 0);
-            label3.FontSize = 20;
+            KilometersLabel = PageBuilder.AddLabel(absoluteLayout, "0 Kilometers", 0.5, 0.73, Color.Black, "", 0);
+            KilometersLabel.FontSize = 20;
 
             AddDayButtons(absoluteLayout);
         }
