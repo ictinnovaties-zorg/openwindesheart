@@ -22,13 +22,17 @@ namespace WindesHeartApp.Pages
             BuildPage();
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
-
             App.RequestLocationPermission();
-            if (Windesheart.ConnectedDevice != null)
-                await ReadCurrentBattery();
 
+            if (Windesheart.ConnectedDevice != null)
+                ReadBattery();
+        }
+
+        private async void ReadBattery()
+        {
+            await ReadCurrentBattery();
         }
 
 
