@@ -6,7 +6,7 @@ namespace WindesHeartApp.Data
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<Heartrate> Heartrates { get; set; }
+        public DbSet<HeartrateModel> Heartrates { get; set; }
         public DbSet<StepsModel> Steps { get; set; }
 
         private readonly string _databasePath;

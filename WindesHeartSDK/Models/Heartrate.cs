@@ -7,13 +7,11 @@ namespace WindesHeartSDK.Models
         public int Id { get; set; }
 
         public byte[] Rawdata { get; set; }
-        public DateTime DateTime { get; set; }
 
         public int HeartrateValue { get; set; }
 
-        public Heartrate(DateTime dateTime, byte[] rawdata)
+        public Heartrate(byte[] rawdata)
         {
-            DateTime = dateTime;
             Rawdata = rawdata;
             HeartrateValue = rawdata[1];
         }

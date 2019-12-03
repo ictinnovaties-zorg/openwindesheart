@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
+using WindesHeartApp.Data.Models;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartApp.Data.Repository
@@ -17,7 +18,7 @@ namespace WindesHeartApp.Data.Repository
         }
 
 
-        public async Task<IEnumerable<Heartrate>> GetHeartRatesAsync()
+        public async Task<IEnumerable<HeartrateModel>> GetHeartRatesAsync()
         {
             try
             {
@@ -31,7 +32,7 @@ namespace WindesHeartApp.Data.Repository
             }
         }
 
-        public async Task<bool> AddHeartrateAsync(Heartrate heartrate)
+        public async Task<bool> AddHeartrateAsync(HeartrateModel heartrate)
         {
             try
             {
@@ -54,7 +55,7 @@ namespace WindesHeartApp.Data.Repository
             _databaseContext.SaveChanges();
         }
 
-        public async Task<IEnumerable<Heartrate>> HeartratesByQueryAsync(Func<Heartrate, bool> predicate)
+        public async Task<IEnumerable<HeartrateModel>> HeartratesByQueryAsync(Func<HeartrateModel, bool> predicate)
         {
             try
             {

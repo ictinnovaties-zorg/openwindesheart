@@ -6,4 +6,8 @@
              xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              mc:Ignorable="d"
              x:Class="WindesHeartApp.Pages.StepsPage">
+
+    <AbsoluteLayout x:Name="absoluteLayout">
+
+    </AbsoluteLayout>
 </ContentPage>

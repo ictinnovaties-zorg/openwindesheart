@@ -40,14 +40,13 @@ namespace WindesHeartApp.Resources
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
             DailyStepsGoal = 1000;
-            buttonSize = 20;
-            buttonSize = 20;
+            ButtonSize = 20;
+            ButtonSize = 20;
             ButtonFontSize = 4;
 
             StepsRepository = stepsRepository;
 
             CornerRadius = ((ScreenHeight / 10 * 1) - ButtonSize);
-            ScreenratioFactor = ScreenHeight / ScreenWidth;
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
             StepsViewModel = new StepsViewModel(stepsRepository);
             settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
