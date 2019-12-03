@@ -11,7 +11,6 @@ namespace WindesHeartApp.ViewModels
 {
     public class DevicePageViewModel : INotifyPropertyChanged
     {
-        private string _key = "LastConnectedDeviceGuid";
         private bool _isLoading;
         private string _statusText;
         private BLEDevice _selectedDevice;
@@ -78,7 +77,7 @@ namespace WindesHeartApp.ViewModels
                 if (_selectedDevice == null)
                     return;
                 OnPropertyChanged();
-                deviceSelected(_selectedDevice);
+                DeviceSelected(_selectedDevice);
                 DevicePage.devicelist.SelectedItem = null;
                 _selectedDevice = null;
 
@@ -104,7 +103,7 @@ namespace WindesHeartApp.ViewModels
                 Console.WriteLine(e.Message);
             }
         }
-        private async void deviceSelected(BLEDevice device)
+        private void DeviceSelected(BLEDevice device)
         {
             try
             {
@@ -117,17 +116,6 @@ namespace WindesHeartApp.ViewModels
                 Console.WriteLine(e.Message);
             }
         }
-        private void SaveDeviceInAppProperties(Guid guid)
-        {
-            if (guid != Guid.Empty)
-            {
-                if (App.Current.Properties.ContainsKey(_key))
-                {
-                    App.Current.Properties.Remove(_key);
-                }
 
-                App.Current.Properties.Add(_key, guid);
-            }
-        }
     }
 }

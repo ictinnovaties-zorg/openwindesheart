@@ -8,6 +8,7 @@ namespace WindesHeartApp.Services
 {
     public static class CallbackHandler
     {
+        //private static readonly string _key = "LastConnectedDeviceGuid";
         //OnHeartrateChange/Measurement
         public static void ChangeHeartRate(Heartrate heartrate)
         {
@@ -65,6 +66,7 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.StatusText = "Connected";
                 Globals.DevicePageViewModel.IsLoading = false;
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
+
             }
             else if (result == ConnectionResult.Failed)
             {
@@ -72,5 +74,17 @@ namespace WindesHeartApp.Services
             }
 
         }
+        //GUID SHOULD STILL BE SAVED, IN PROPERTIES
+        //private void SaveDeviceInAppProperties(Guid guid)
+        //{
+        //    if (guid != Guid.Empty)
+        //    {
+        //        if (App.Current.Properties.ContainsKey(_key))
+        //        {
+        //            App.Current.Properties.Remove(_key);
+        //        }
+
+        //        App.Current.Properties.Add(_key, guid);
+        //    }
     }
 }

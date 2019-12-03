@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 using WindesHeartApp.Resources;
-using WindesHeartApp.Services;
 using WindesHeartApp.Views;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
@@ -16,7 +15,6 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage, IAnimationPage
     {
-        private readonly string _key = "LastConnectedDeviceGuid";
         public HomePage()
         {
             InitializeComponent();
@@ -24,12 +22,12 @@ namespace WindesHeartApp.Pages
             BuildPage();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
 
             App.RequestLocationPermission();
             if (Windesheart.ConnectedDevice != null)
-                ReadCurrentBattery();
+                await ReadCurrentBattery();
 
         }
 
@@ -72,12 +70,6 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(HRLabel);
             absoluteLayout.Children.Add(heartrateImage);
             #endregion 
-
-            if (App.Current.Properties.ContainsKey(_key))
-            {
-                App.Current.Properties.TryGetValue(_key, out object result);
-                ConnectKnowDevice(result);
-            }
 
             #region define and add Buttons
             var buttonStyle = new Style(typeof(Button))
@@ -159,11 +151,6 @@ namespace WindesHeartApp.Pages
             button.Clicked += TestButtonClicked;
         }
 
-        private async void ConnectKnowDevice(object result)
-        {
-            var device = await Windesheart.GetKnownDevice((Guid)result);
-            device?.Connect(CallbackHandler.OnConnetionCallBack);
-        }
 
         #region button eventhandlers
         private void TestButtonClicked(object sender, EventArgs e)
