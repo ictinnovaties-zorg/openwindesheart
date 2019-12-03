@@ -177,6 +177,9 @@ namespace WindesHeartSDK
             //Cancel the connection
             Console.WriteLine("Disconnecting device..");
             IDevice.CancelConnection();
+
+            //Reset the connected device
+            Windesheart.ConnectedDevice = null;
         }
 
         /// <summary>
