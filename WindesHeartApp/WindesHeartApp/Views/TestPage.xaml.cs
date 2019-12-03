@@ -108,7 +108,7 @@ namespace WindesHeartApp.Pages
 
         private void Disconnect(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.Disconnect();
+            Windesheart.ConnectedDevice.Disconnect(false);
         }
 
         private async void ReadCurrentBattery(object sender, EventArgs e)
