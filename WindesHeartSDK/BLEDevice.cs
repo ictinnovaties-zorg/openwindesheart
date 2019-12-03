@@ -44,6 +44,18 @@ namespace WindesHeartSDK
         public abstract void OnConnect();
         public abstract void Connect(Action<ConnectionResult> callback);
         public abstract void Disconnect();
+
+        public bool isConnected()
+        {
+            if(Device.Status == ConnectionStatus.Connected)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public abstract void SetTimeDisplayUnit(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
         public abstract void SetLanguage(string localeString);
