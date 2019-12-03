@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WindesHeartApp.Data.Interfaces;
+using WindesHeartApp.Services;
 using WindesHeartApp.ViewModels;
 using WindesHeartSDK;
 using Xamarin.Forms;
@@ -11,6 +12,10 @@ namespace WindesHeartApp.Resources
     {
         public static BLEDevice device;
         public static HeartRatePageViewModel heartrateviewModel;
+
+        public static SamplesService SamplesService { get; private set; }
+        public static IHeartrateRepository HeartrateRepository { get; private set; }
+
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel homepageviewModel;
         public static SettingsPageViewmodel settingspageviewModel;
@@ -28,7 +33,6 @@ namespace WindesHeartApp.Resources
 
         public static StepsViewModel StepsViewModel;
         public static int heartrateInterval;
-        public static string DBPath;
 
         //ButtonSize : 10 being biggest, 100 being smallest. 
         //ButtonFontSize : 2-10, 10 being smallest, 2 being largest.
@@ -40,6 +44,8 @@ namespace WindesHeartApp.Resources
             CornerRadius = ((ScreenHeight / 10 * 1) - ButtonSize);
             ScreenRatioFactor = ScreenHeight / ScreenWidth;
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
+            SamplesService = new SamplesService(heartrateRepository, stepsRepository, sleepRepository);
+            HeartrateRepository = heartrateRepository;
             StepsViewModel = new StepsViewModel(stepsRepository);
             settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
             DevicePageViewModel = new DevicePageViewModel();

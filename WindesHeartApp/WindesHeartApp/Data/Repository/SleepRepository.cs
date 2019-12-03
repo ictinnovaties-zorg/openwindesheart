@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
-using WindesHeartSDK.Models;
+using WindesHeartApp.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace WindesHeartApp.Data.Repository
 {
@@ -14,24 +16,45 @@ namespace WindesHeartApp.Data.Repository
             _databaseContext = new DatabaseContext(dbPath);
         }
 
-        public Task<IEnumerable<Heartrate>> GetSleepAsync()
+        public async Task<IEnumerable<Sleep>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var sleep = await _databaseContext.Sleep.ToListAsync();
+                return sleep;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
         }
 
-        public Task<bool> AddSleepAsync(Type sleep)
+        public async Task<bool> AddAsync(Sleep sleep)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tracking = await _databaseContext.Sleep.AddAsync(sleep);
+                await _databaseContext.SaveChangesAsync();
+                return tracking.State == EntityState.Added;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
 
-        public void RemoveSleep()
+        public void RemoveAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Heartrate>> SleepByQueryAsync(Func<Heartrate, bool> predicate)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                _databaseContext.Sleep.Clear<Sleep>();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not delete sleep entries: " + e);
+            }
         }
     }
 }

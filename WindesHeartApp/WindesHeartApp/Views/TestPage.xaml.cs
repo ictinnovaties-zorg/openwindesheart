@@ -1,6 +1,7 @@
 ﻿using FormsControls.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
