@@ -35,15 +35,11 @@ namespace WindesHeartSDK
             ConnectionDisposable = Device.WhenConnected().Subscribe(x => OnConnect());
         }
 
-        public void DisposeDisposables()
-        {
-            ConnectionDisposable?.Dispose();
-            CharacteristicDisposable?.Dispose();
-        }
-
+        public abstract void DisposeDisposables();
+        
         public abstract void OnConnect();
         public abstract void Connect(Action<ConnectionResult> callback);
-        public abstract void Disconnect();
+        public abstract void Disconnect(bool rememberDevice = true);
         public abstract void SetTimeDisplayUnit(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
         public abstract void SetLanguage(string localeString);

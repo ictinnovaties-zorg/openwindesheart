@@ -42,9 +42,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
             BluetoothService.Connect();
         }
 
-        public override void Disconnect()
+        public override void Disconnect(bool rememberDevice)
         {
-            BluetoothService.Disconnect();
+            BluetoothService.Disconnect(rememberDevice);
         }
 
         public override void SetTimeDisplayUnit(bool is24hours)
@@ -55,6 +55,13 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
         public override void SetDateDisplayFormat(bool isddMMYYYY)
         {
             ConfigurationService.SetDateDisplayUnit(isddMMYYYY);
+        }
+
+        public override void DisposeDisposables()
+        {
+            AuthenticationService.AuthenticationDisposable?.Dispose();
+            ConnectionDisposable?.Dispose();
+            CharacteristicDisposable?.Dispose();
         }
 
         public override void SetLanguage(string localeString)
