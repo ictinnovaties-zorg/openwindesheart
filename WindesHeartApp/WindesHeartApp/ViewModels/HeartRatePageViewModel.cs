@@ -22,6 +22,17 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+
+        public int Heartrate
+        {
+            get { return _heartrate; }
+            set
+            {
+                _heartrate = value;
+                OnPropertyChanged();
+            }
+        }
+
         public int AverageHeartrate
         {
             get { return _averageHeartrate; }

@@ -14,10 +14,12 @@ namespace WindesHeartApp.ViewModels
     {
         private int _steps;
         private bool _realtimeStepsEnabled = false;
-        private readonly IStepsRepository _stepsRepository;
+
         public DateTime StartDate { get; }
 
         public DateTime SelectedDate;
+        private IStepsRepository _stepsRepository;
+
         public Command NextDayBinding { get; }
         public Command PreviousDayBinding { get; }
         public Command Day1Binding { get; }
@@ -293,7 +295,21 @@ namespace WindesHeartApp.ViewModels
                 _realtimeStepsEnabled = !_realtimeStepsEnabled;
             }
         }
+        public int Steps
+        {
+            get { return _steps; }
+            set
+            {
+                _steps = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(StepsLabelText));
+            }
+        }
 
+        public string StepsLabelText
+        {
+            get { return Steps.ToString(); }
+        }
 
 
         public void OnStepsUpdated(StepInfo stepInfo)

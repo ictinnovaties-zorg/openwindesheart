@@ -14,7 +14,7 @@ namespace WindesHeartApp.Services
         {
             if (heartrate.HeartrateValue == 0)
                 return;
-            Globals.heartrateviewModel.HeartRate = heartrate.HeartrateValue;
+            Globals.heartrateviewModel.Heartrate = heartrate.HeartrateValue;
             Globals.homepageviewModel.Heartrate = heartrate.HeartrateValue;
         }
 
