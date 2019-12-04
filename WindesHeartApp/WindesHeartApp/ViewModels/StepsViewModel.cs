@@ -176,6 +176,8 @@ namespace WindesHeartApp.ViewModels
             double kilometers = (double)stepCount / 1000;
             StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
 
+            StepsPage.KcalLabel.Text = ((double)(stepCount/20)/1000) + " Kcal";
+
             //If goal not reached, fill other part transparent
             if (percentageDone < 1)
             {
