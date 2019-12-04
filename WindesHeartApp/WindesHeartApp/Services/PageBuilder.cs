@@ -86,9 +86,14 @@ namespace WindesHeartApp.Pages
             return label;
         }
 
-        public static Button AddButton(AbsoluteLayout absoluteLayout, string text, string bindingPath, double x, double y, double width, double height, AbsoluteLayoutFlags flags)
+        public static Button AddButton(AbsoluteLayout absoluteLayout, string text, string bindingPath, double x, double y, double width, double height, int cornerradius, int fontsize, AbsoluteLayoutFlags flags, Color backgroundColor)
         {
-            Button button = new Button() { Text = text, BackgroundColor = Globals.SecondaryColor };
+            Button button = new Button() { Text = text };
+            if (fontsize != 0)
+                button.FontSize = fontsize;
+            button.BackgroundColor = backgroundColor;
+            if (cornerradius != 0)
+                button.CornerRadius = cornerradius;
             button.SetBinding(Button.CommandProperty, new Binding() { Path = bindingPath });
             AbsoluteLayout.SetLayoutFlags(button, flags);
             AbsoluteLayout.SetLayoutBounds(button, new Rectangle(x, y, width, height));
