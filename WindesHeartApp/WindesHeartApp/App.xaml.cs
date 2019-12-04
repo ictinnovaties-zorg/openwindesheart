@@ -29,13 +29,14 @@ namespace WindesHeartApp
         private async void FillDatabase()
         {
             Globals.StepsRepository.RemoveAll();
-            await Globals.StepsRepository.AddAsync(new Step(new DateTime(2019, 12, 1), 4));
-            await Globals.StepsRepository.AddAsync(new Step(new DateTime(2019, 12, 2), 5));
-            await Globals.StepsRepository.AddAsync(new Step(new DateTime(2019, 12, 3), 6));
-            await Globals.StepsRepository.AddAsync(new Step(new DateTime(2019, 11, 30), 7));
-            await Globals.StepsRepository.AddAsync(new Step(new DateTime(2019, 11, 29), 8));
-            await Globals.StepsRepository.AddAsync(new Step(new DateTime(2019, 11, 28), 9));
-            await Globals.StepsRepository.AddAsync(new Step(new DateTime(2019, 11, 27), 10));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today, 700));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-1), 480));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-2), 1200));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-3), 3500));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-4), 1300));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-5), 2200));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-6), 1400));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-7), 8310));
         }
 
         protected override void OnSleep()

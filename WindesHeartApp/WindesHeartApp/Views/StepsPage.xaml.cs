@@ -47,9 +47,25 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
-            var previousBtn = PageBuilder.AddButton(absoluteLayout, "Previous", "PreviousDayBinding", 0.1, 0.15, 0.25, 0.07, 0, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            ImageButton previousBtn = new ImageButton
+            {
+                Source = "arrow_left.png",
+                BackgroundColor = Color.Transparent
+            };
+            AbsoluteLayout.SetLayoutFlags(previousBtn, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(previousBtn, new Rectangle(0.3, 0.135, 0.1, 0.1));
+            previousBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "PreviousDayBinding" });
+            absoluteLayout.Children.Add(previousBtn);
 
-            var nextBtn = PageBuilder.AddButton(absoluteLayout, "Next", "NextDayBinding", 0.9, 0.15, 0.25, 0.07, 0, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            ImageButton nextBtn = new ImageButton
+            {
+                Source = "arrow_right.png",
+                BackgroundColor = Color.Transparent
+            };
+            AbsoluteLayout.SetLayoutFlags(nextBtn, AbsoluteLayoutFlags.All);
+            AbsoluteLayout.SetLayoutBounds(nextBtn, new Rectangle(0.7, 0.135, 0.1, 0.1));
+            nextBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "NextDayBinding" });
+            absoluteLayout.Children.Add(nextBtn);
 
             CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black, "", 0);
             CurrentDayLabel.FontSize = 15;
