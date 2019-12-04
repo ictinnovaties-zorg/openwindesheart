@@ -75,7 +75,7 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(heartonlyImage2, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(heartonlyImage2, new Rectangle(0.20, 0.75, 40, 40));
             absoluteLayout.Children.Add(heartonlyImage2);
-            var itnervallabel = PageBuilder.AddLabel(absoluteLayout, "Interval", 0.23, 0.74, Color.Black, "", 15);
+            var itnervallabel = PageBuilder.AddLabel(absoluteLayout, "Interval", 0.35, 0.74, Color.Black, "", 15);
 
             intervaldefaultButton = PageBuilder.AddButton(absoluteLayout, "1", "", 0.10, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             intervaldefaultButton.BorderWidth = 1;
@@ -106,6 +106,7 @@ namespace WindesHeartApp.Pages
 
         private void OnIntervalLabelClicked(Button intervalLabel)
         {
+            intervaldefaultButton.BorderColor = Color.White;
             interval15Button.BorderColor = Color.White;
             interval30Button.BorderColor = Color.White;
             interval45Button.BorderColor = Color.White;

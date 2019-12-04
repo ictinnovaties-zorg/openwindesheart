@@ -23,7 +23,8 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddHeaderImages(absoluteLayout);
             PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
-            PageBuilder.AddButton(absoluteLayout, "Scan for devices", "ScanButtonCommand", 0.15, 0.25, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor); PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
+            PageBuilder.AddButton(absoluteLayout, "Scan for devices", "ScanButtonCommand", 0.15, 0.25, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
 
             #region device ListView
@@ -46,6 +47,7 @@ namespace WindesHeartApp.Pages
 
                 Label label2 = new Label { VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Start, FontAttributes = FontAttributes.Italic, FontSize = 12 };
                 label2.SetBinding(Label.TextProperty, "Rssi");
+
                 grid.Children.Add(label2, 2, 0);
 
                 Label label3 = new Label { Text = "Signal strength:", VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center, FontSize = 12 };

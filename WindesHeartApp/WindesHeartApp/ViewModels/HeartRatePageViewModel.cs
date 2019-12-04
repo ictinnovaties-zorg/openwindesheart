@@ -48,7 +48,7 @@ namespace WindesHeartApp.ViewModels
                 foreach (Heartrate heartrate in heartratesprevious24hours)
                 {
                     List<Entry> list = new List<Entry>();
-                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, Label = heartrate.DateTime.Hour.ToString(CultureInfo.InvariantCulture), TextColor = SKColors.Black };
+                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, Label = $"{heartrate.DateTime.Hour.ToString()}:{heartrate.DateTime.Minute.ToString()}, {heartrate.DateTime.Day.ToString(CultureInfo.InvariantCulture)} ", TextColor = SKColors.Black };
                     list.Add(entry);
 
                     Chart = new PointChart()
@@ -78,7 +78,7 @@ namespace WindesHeartApp.ViewModels
                 foreach (Heartrate heartrate in heartratesnext24hours)
                 {
                     List<Entry> list = new List<Entry>();
-                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, Label = heartrate.DateTime.Hour.ToString(CultureInfo.InvariantCulture), TextColor = SKColors.Black };
+                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, Label = $"{heartrate.DateTime.Hour.ToString()}:{heartrate.DateTime.Minute.ToString()}, {heartrate.DateTime.Day.ToString(CultureInfo.InvariantCulture)} ", TextColor = SKColors.Black };
                     ;
                     list.Add(entry);
 
@@ -119,7 +119,7 @@ namespace WindesHeartApp.ViewModels
                     {
                         ValueLabel = heartrate.HeartrateValue.ToString(),
                         Color = SKColors.Black,
-                        Label = heartrate.DateTime.Hour.ToString(CultureInfo.InvariantCulture),
+                        Label = $"{heartrate.DateTime.Hour.ToString()}:{heartrate.DateTime.Minute.ToString()}, {heartrate.DateTime.Day.ToString(CultureInfo.InvariantCulture)} ",
                         TextColor = SKColors.Black
                     };
                     list.Add(entry);
@@ -194,7 +194,7 @@ namespace WindesHeartApp.ViewModels
                         {
                             ValueLabel = heartrate.HeartrateValue.ToString(),
                             Color = SKColors.Black,
-                            Label = heartrate.DateTime.Hour.ToString(CultureInfo.InvariantCulture),
+                            Label = $"{heartrate.DateTime.Hour.ToString()}:{heartrate.DateTime.Minute.ToString()}, {heartrate.DateTime.Day.ToString(CultureInfo.InvariantCulture)} ",
                             TextColor = SKColors.Black
                         });
                     }
