@@ -37,13 +37,11 @@ namespace WindesHeartApp.ViewModels
 
         private async void PreviousDayBtnClick()
         {
-            _dateTime = _dateTime.AddHours(-24);
-            var heartrates = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime > _dateTime);
+            _dateTime = _dateTime.AddHours(-12);
+            var heartrates = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime >= _dateTime);
             if (heartrates != null)
             {
-                var heartratesprevious24hours = from a in heartrates
-                                                where a.DateTime < _dateTime.AddHours(24)
-                                                select a;
+                var heartratesprevious24hours = heartrates.Where(a => a.DateTime <= _dateTime.AddHours(12));
                 //checks for null data
 
                 foreach (Heartrate heartrate in heartratesprevious24hours)
@@ -52,13 +50,22 @@ namespace WindesHeartApp.ViewModels
                     var entry = new Entry(heartrate.HeartrateValue)
                     {
                         ValueLabel = heartrate.HeartrateValue.ToString(),
-                        Color = Globals.PrimaryColor.ToSKColor()
+                        Color = SKColors.Black,
+                        Label = heartrate.DateTime.ToString(),
+                        TextColor = SKColors.Black
                     };
                     list.Add(entry);
 
                     Chart = new PointChart()
                     {
-                        Entries = list
+                        Entries = list,
+                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
+                        LabelTextSize = 12,
+                        Margin = 10,
+                        MaxValue = 150,
+                        MinValue = 30,
+                        PointMode = PointMode.Square,
+                        PointSize = 2
                     };
 
                 }
@@ -68,24 +75,29 @@ namespace WindesHeartApp.ViewModels
         private async void NextDayBtnClick()
         {
             //checks for null data
-            _dateTime = _dateTime.AddHours(24);
-            var heartrates = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime > _dateTime);
+            _dateTime = _dateTime.AddHours(12);
+            var heartrates = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime >= _dateTime);
             if (heartrates != null)
             {
-                var heartratesprevious24hours = from a in heartrates
-                                                where a.DateTime < _dateTime.AddHours(24)
-                                                select a;
+                var heartratesnext24hours = heartrates.Where(a => a.DateTime <= _dateTime.AddHours(12));
 
-                foreach (Heartrate heartrate in heartratesprevious24hours)
+                foreach (Heartrate heartrate in heartratesnext24hours)
                 {
                     List<Entry> list = new List<Entry>();
-                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, TextColor = SKColors.Black };
+                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, TextColor = SKColors.Black, Label = heartrate.DateTime.ToString() };
                     ;
                     list.Add(entry);
 
                     Chart = new PointChart()
                     {
-                        Entries = list
+                        Entries = list,
+                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
+                        LabelTextSize = 12,
+                        Margin = 10,
+                        MaxValue = 150,
+                        MinValue = 30,
+                        PointMode = PointMode.Square,
+                        PointSize = 2
                     };
 
                 }
@@ -110,9 +122,9 @@ namespace WindesHeartApp.ViewModels
 
         public async Task InitChart()
         {
-
+            _dateTime = DateTime.Now.AddHours(-12);
             var heartrates =
-                await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime >= DateTime.Now.AddHours(-24));
+                await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime >= _dateTime);
             List<Entry> list = new List<Entry>();
 
             if (heartrates != null)
@@ -122,13 +134,22 @@ namespace WindesHeartApp.ViewModels
                     var entry = new Entry(heartrate.HeartrateValue)
                     {
                         ValueLabel = heartrate.HeartrateValue.ToString(),
-                        Color = Globals.PrimaryColor.ToSKColor()
+                        Color = SKColors.Black,
+                        Label = heartrate.DateTime.ToString(),
+                        TextColor = SKColors.Black
                     };
                     list.Add(entry);
 
                     Chart = new PointChart()
                     {
-                        Entries = list
+                        Entries = list,
+                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
+                        LabelTextSize = 12,
+                        Margin = 10,
+                        MaxValue = 150,
+                        MinValue = 30,
+                        PointMode = PointMode.Square,
+                        PointSize = 2
                     };
 
                 }
