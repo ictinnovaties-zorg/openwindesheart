@@ -8,11 +8,8 @@ using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
-using WindesHeartApp.Models;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
-using WindesHeartSDK.Models;
-using WindesHeartApp.Data.Models;
 
 namespace WindesHeartApp.ViewModels
 {
@@ -46,7 +43,7 @@ namespace WindesHeartApp.ViewModels
 
             //checks for null data
 
-            foreach (HeartrateModel heartrate in heartratesprevious24hours)
+            foreach (Heartrate heartrate in heartratesprevious24hours)
             {
                 List<Entry> list = new List<Entry>();
                 var entry = new Entry(heartrate.HeartrateValue);
@@ -71,7 +68,7 @@ namespace WindesHeartApp.ViewModels
                                             where a.DateTime < _dateTime.AddHours(24)
                                             select a;
 
-            foreach (HeartrateModel heartrate in heartratesprevious24hours)
+            foreach (Heartrate heartrate in heartratesprevious24hours)
             {
                 List<Entry> list = new List<Entry>();
                 var entry = new Entry(heartrate.HeartrateValue);
@@ -122,7 +119,7 @@ namespace WindesHeartApp.ViewModels
                     await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime == DateTime.Now.AddHours(-24));
             List<Entry> list = new List<Entry>();
 
-            foreach (HeartrateModel heartrate in heartrates)
+            foreach (Heartrate heartrate in heartrates)
             {
                 var entry = new Entry(heartrate.HeartrateValue);
                 entry.ValueLabel = heartrate.HeartrateValue.ToString();
