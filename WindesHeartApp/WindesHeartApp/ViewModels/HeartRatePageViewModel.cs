@@ -7,8 +7,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
+using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
-using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -180,8 +180,13 @@ namespace WindesHeartApp.ViewModels
         public async void UpdateInterval(int interval)
         {
             Interval = interval;
-            var heartrates = await _heartrateRepository.GetHeartRatesAsync();
-            if (heartrates != null)
+            _interval = interval;
+            var heartrates = await _heartrateRepository.GetAllAsync();
+            if(heartrates != null){
+            var list = heartrates.ToList();
+            var count = list.Count;
+            var result = new List<Entry>();
+            for (int i = 0; i < count; i++)
             {
                 var list = heartrates.ToList();
                 var count = list.Count;
@@ -203,6 +208,7 @@ namespace WindesHeartApp.ViewModels
                 {
                     Entries = result
                 };
+            }
             }
         }
 
