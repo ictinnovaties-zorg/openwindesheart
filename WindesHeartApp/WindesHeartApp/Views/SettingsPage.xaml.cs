@@ -36,7 +36,7 @@ namespace WindesHeartApp.Pages
             };
             AbsoluteLayout.SetLayoutBounds(savechangesButton, new Rectangle(0.5, 0.90, Globals.ScreenHeight / 100 * 30, Globals.ScreenHeight / 100 * 7));
             AbsoluteLayout.SetLayoutFlags(savechangesButton, AbsoluteLayoutFlags.PositionProportional);
-            savechangesButton.Clicked += SavechangesButtonClicked;
+            savechangesButton.Clicked += SaveChangesButtonClicked;
             absoluteLayout.Children.Add(savechangesButton);
             #endregion
 
@@ -70,7 +70,7 @@ namespace WindesHeartApp.Pages
             #endregion
         }
 
-        private void SavechangesButtonClicked(object sender, EventArgs e)
+        private void SaveChangesButtonClicked(object sender, EventArgs e)
         {
             if (_tempsecondaryColor != null)
                 Globals.SecondaryColor = Globals.ColorDictionary[_tempsecondaryColor];

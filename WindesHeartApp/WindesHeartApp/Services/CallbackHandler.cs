@@ -51,14 +51,13 @@ namespace WindesHeartApp.Services
         {
             var count = stepsInfo.StepCount;
             Console.WriteLine($"Stepcount updated: {count}");
-            Globals.StepsViewModel.Steps = count;
         }
         public static void OnConnetionCallBack(ConnectionResult result)
         {
             if (result == ConnectionResult.Succeeded)
             {
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-                Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(Globals.heartrateInterval);
+                Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);

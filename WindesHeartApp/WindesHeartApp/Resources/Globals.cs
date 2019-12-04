@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WindesHeartApp.Data.Repository;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Services;
 using WindesHeartApp.ViewModels;
@@ -19,6 +20,7 @@ namespace WindesHeartApp.Resources
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel homepageviewModel;
         public static SettingsPageViewmodel settingspageviewModel;
+
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
         public static Color PrimaryColor { get; set; } = Color.FromHex("#96d1ff");
@@ -28,28 +30,34 @@ namespace WindesHeartApp.Resources
         public static double ScreenRatioFactor { get; set; }
         public static double ButtonFontSize { get; set; }
         public static double CornerRadius { get; set; }
+        public static IStepsRepository StepsRepository { get; set; }
+        public static HeartrateRepository HeartrateRepository { get; set; }
+        public static float DailyStepsGoal { get; internal set; }
 
         public static Dictionary<string, Color> ColorDictionary;
 
         public static StepsViewModel StepsViewModel;
         public static int heartrateInterval;
+        public static string DBPath;
 
         //ButtonSize : 10 being biggest, 100 being smallest. 
         //ButtonFontSize : 2-10, 10 being smallest, 2 being largest.
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
+            DailyStepsGoal = 1000;
             ButtonSize = 20;
             ButtonSize = 20;
             ButtonFontSize = 4;
+
+            StepsRepository = stepsRepository;
+
             CornerRadius = ((ScreenHeight / 10 * 1) - ButtonSize);
-            ScreenRatioFactor = ScreenHeight / ScreenWidth;
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
             SamplesService = new SamplesService(heartrateRepository, stepsRepository, sleepRepository);
             HeartrateRepository = heartrateRepository;
             StepsViewModel = new StepsViewModel(stepsRepository);
             settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
             DevicePageViewModel = new DevicePageViewModel();
-            heartrateInterval = 1;
             homepageviewModel = new HomePageViewModel();
             ColorDictionary = new Dictionary<string, Color>
             {
@@ -84,5 +92,5 @@ namespace WindesHeartApp.Resources
 
             return false;
         }
-    };
+    }
 }

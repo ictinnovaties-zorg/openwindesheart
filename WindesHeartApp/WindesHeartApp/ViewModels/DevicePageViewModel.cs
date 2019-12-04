@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Pages;
+using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
 using Xamarin.Forms;
@@ -35,6 +36,9 @@ namespace WindesHeartApp.ViewModels
             Windesheart.ConnectedDevice.Disconnect();
             IsLoading = false;
             StatusText = "Disconnected";
+            Globals.heartrateviewModel.Heartrate = 0;
+            Globals.homepageviewModel.Heartrate = 0;
+            Globals.homepageviewModel.Battery = 0;
         }
         private void OnPropertyChanged([CallerMemberName] string name = "")
         {

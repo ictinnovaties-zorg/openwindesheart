@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Helpers;
 
@@ -9,9 +8,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3DateTimeService
     {
-        private readonly MiBand3 MiBand3;
+        private readonly MiBand3.Models.MiBand3 MiBand3;
 
-        public MiBand3DateTimeService(MiBand3 device)
+        public MiBand3DateTimeService(MiBand3.Models.MiBand3 device)
         {
             MiBand3 = device;
         }

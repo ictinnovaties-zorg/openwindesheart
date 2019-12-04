@@ -1,9 +1,6 @@
 ﻿using FormsControls.Base;
-using Microcharts;
 using Microcharts.Forms;
-using SkiaSharp;
 using System;
-using System.Collections.Generic;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -17,6 +14,9 @@ namespace WindesHeartApp.Pages
         {
             InitializeComponent();
             BuildPage();
+            Globals.heartrateviewModel.InitChart();
+            Globals.heartrateviewModel.InitLabels();
+            Globals.heartrateviewModel._dateTime = DateTime.Now.AddHours(-24);
         }
 
         private void BuildPage()
@@ -35,30 +35,12 @@ namespace WindesHeartApp.Pages
                 AbsoluteLayoutFlags.All);
             nextBtn.FontSize = 12;
 
-            var entries = new List<Microcharts.Entry>();
+            ChartView chart = new ChartView();
+            chart.SetBinding(ChartView.ChartProperty, "Chart");
+            AbsoluteLayout.SetLayoutBounds(chart, new Rectangle(0.5, 0.4, 0.95, 0.35));
+            AbsoluteLayout.SetLayoutFlags(chart, AbsoluteLayoutFlags.All);
 
-            Microcharts.Entry entry = new Microcharts.Entry(200)
-            { ValueLabel = "200", TextColor = SKColor.Parse("#266489") };
-            entries.Add(entry);
-            Microcharts.Entry entry2 = new Microcharts.Entry(400)
-            { ValueLabel = "400", TextColor = SKColor.Parse("#266489") };
-            entries.Add(entry2);
-            Microcharts.Entry entry3 = new Microcharts.Entry(10)
-            { ValueLabel = "-100", TextColor = SKColor.Parse("#266489") };
-            entries.Add(entry3);
-            Microcharts.Entry entry4 = new Microcharts.Entry(50)
-            { ValueLabel = "50", TextColor = SKColor.Parse("#266489") };
-            entries.Add(entry4);
-
-
-
-            var chart = new LineChart() { Entries = entries };
-
-            var view = new ChartView { Chart = chart };
-            AbsoluteLayout.SetLayoutBounds(view, new Rectangle(0.5, 0.5, 0.5, 0.3));
-            AbsoluteLayout.SetLayoutFlags(view, AbsoluteLayoutFlags.All);
-
-            absoluteLayout.Children.Add(view);
+            absoluteLayout.Children.Add(chart);
 
             var averageHeartrateLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.65, Color.Black, "AverageLabelText", 0);
             averageHeartrateLabel.FontSize = 20;
@@ -66,24 +48,33 @@ namespace WindesHeartApp.Pages
             var peakHeartrateLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.73, Color.Black, "PeakHeartrateText", 0);
             peakHeartrateLabel.FontSize = 20;
 
-            DateTime today = DateTime.Now;
-            float y = 0.85f;
-            var Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(),
-                "Day1Binding", 0.05, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(),
-                "Day2Binding", 0.20, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day3Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-4).DayOfWeek.ToString(),
-                "Day3Binding", 0.35, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(),
-                "Day4Binding", 0.50, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day5Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-2).DayOfWeek.ToString(),
-                "Day5Binding", 0.65, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day6Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-1).DayOfWeek.ToString(),
-                "Day6Binding", 0.80, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, y, 0.15, 0.1,
-                AbsoluteLayoutFlags.All);
-            TodayButton.IsEnabled = false;
+            #region heartrateinterval selector
+            BoxView circle = new BoxView();
+            circle.WidthRequest = 100;
+            circle.HeightRequest = 100;
+            circle.CornerRadius = 50;
+            circle.BackgroundColor = Color.Orange;
+            circle.Color = Color.Blue;
+            absoluteLayout.Children.Add(circle);
+            AbsoluteLayout.SetLayoutBounds(circle, new Rectangle(0.20, 0.85, 100, 100));
+            AbsoluteLayout.SetLayoutFlags(circle, AbsoluteLayoutFlags.PositionProportional);
 
+            var intervalLabel1 = PageBuilder.AddLabel(absoluteLayout, "15", 0.20, 0.85, Color.Black, "", 15);
+            intervalLabel1.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnIntervalLabelClicked(intervalLabel1)));
+            var intervalLabel2 = PageBuilder.AddLabel(absoluteLayout, "30", 0.40, 0.85, Color.Black, "", 15);
+            intervalLabel2.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnIntervalLabelClicked(intervalLabel2)));
+            var intervalLabel3 = PageBuilder.AddLabel(absoluteLayout, "45", 0.60, 0.85, Color.Black, "", 15);
+            intervalLabel3.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnIntervalLabelClicked(intervalLabel3)));
+            var intervalLabel4 = PageBuilder.AddLabel(absoluteLayout, "60", 0.80, 0.85, Color.Black, "", 15);
+            intervalLabel4.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnIntervalLabelClicked(intervalLabel4)));
+            #endregion
+        }
+
+        private async void OnIntervalLabelClicked(Label intervalLabel)
+        {
+            var interval = Convert.ToInt32(intervalLabel.Text);
+            await DisplayAlert("Heartrate", $"Changed heartrate measurement interval to {interval}", "OK");
+            Globals.heartrateviewModel.UpdateInterval(interval);
 
         }
 

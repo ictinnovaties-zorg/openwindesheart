@@ -1,4 +1,5 @@
-﻿using WindesHeartSDK.Exceptions;
+using System;
+using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK.Models
 {
@@ -13,7 +14,7 @@ namespace WindesHeartSDK.Models
             {
                 if (rawdata != null && rawdata[0] != 0)
                 {
-                    throw new ReadException("error while reading raw heartrate data");
+                    throw new ReadException("Error while reading raw heartrate data");
                 }
 
                 Rawdata = rawdata;
@@ -22,3 +23,4 @@ namespace WindesHeartSDK.Models
         }
     }
 }
+

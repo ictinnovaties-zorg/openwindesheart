@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSdk.Model;
-using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using static WindesHeartSDK.Helpers.ConversionHelper;
 
@@ -13,7 +12,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     class MiBand3FetchService
     {
-        private readonly MiBand3 _miBand3;
+        private readonly MiBand3.Models.MiBand3 _miBand3;
         private readonly List<ActivitySample> _samples = new List<ActivitySample>();
 
         private DateTime _firstTimestamp;
@@ -28,7 +27,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         private int _expectedSamples;
 
 
-        public MiBand3FetchService(MiBand3 device)
+        public MiBand3FetchService(MiBand3.Models.MiBand3 device)
         {
             _miBand3 = device;
         }

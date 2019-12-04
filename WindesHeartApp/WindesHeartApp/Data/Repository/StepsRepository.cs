@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
@@ -10,6 +12,7 @@ namespace WindesHeartApp.Data.Repository
     public class StepsRepository : IStepsRepository
     {
         private readonly DatabaseContext _databaseContext;
+
         public StepsRepository(string dbPath)
         {
             _databaseContext = new DatabaseContext(dbPath);
