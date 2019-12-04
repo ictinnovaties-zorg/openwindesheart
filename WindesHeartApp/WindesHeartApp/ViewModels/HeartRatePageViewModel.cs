@@ -4,6 +4,7 @@ using SkiaSharp.Views.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -47,25 +48,18 @@ namespace WindesHeartApp.ViewModels
                 foreach (Heartrate heartrate in heartratesprevious24hours)
                 {
                     List<Entry> list = new List<Entry>();
-                    var entry = new Entry(heartrate.HeartrateValue)
-                    {
-                        ValueLabel = heartrate.HeartrateValue.ToString(),
-                        Color = SKColors.Black,
-                        Label = heartrate.DateTime.ToString(),
-                        TextColor = SKColors.Black
-                    };
+                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, Label = heartrate.DateTime.Hour.ToString(CultureInfo.InvariantCulture), TextColor = SKColors.Black };
                     list.Add(entry);
 
                     Chart = new PointChart()
                     {
                         Entries = list,
                         BackgroundColor = Globals.PrimaryColor.ToSKColor(),
-                        LabelTextSize = 12,
-                        Margin = 10,
+                        LabelTextSize = 15,
                         MaxValue = 150,
                         MinValue = 30,
                         PointMode = PointMode.Square,
-                        PointSize = 2
+                        PointSize = 10
                     };
 
                 }
@@ -84,21 +78,11 @@ namespace WindesHeartApp.ViewModels
                 foreach (Heartrate heartrate in heartratesnext24hours)
                 {
                     List<Entry> list = new List<Entry>();
-                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, TextColor = SKColors.Black, Label = heartrate.DateTime.ToString() };
+                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, Label = heartrate.DateTime.Hour.ToString(CultureInfo.InvariantCulture), TextColor = SKColors.Black };
                     ;
                     list.Add(entry);
 
-                    Chart = new PointChart()
-                    {
-                        Entries = list,
-                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
-                        LabelTextSize = 12,
-                        Margin = 10,
-                        MaxValue = 150,
-                        MinValue = 30,
-                        PointMode = PointMode.Square,
-                        PointSize = 2
-                    };
+                    Chart = new PointChart() { Entries = list, BackgroundColor = Globals.PrimaryColor.ToSKColor(), LabelTextSize = 15, MaxValue = 150, MinValue = 30, PointMode = PointMode.Square, PointSize = 10 };
 
                 }
             }
@@ -135,22 +119,12 @@ namespace WindesHeartApp.ViewModels
                     {
                         ValueLabel = heartrate.HeartrateValue.ToString(),
                         Color = SKColors.Black,
-                        Label = heartrate.DateTime.ToString(),
+                        Label = heartrate.DateTime.Hour.ToString(CultureInfo.InvariantCulture),
                         TextColor = SKColors.Black
                     };
                     list.Add(entry);
 
-                    Chart = new PointChart()
-                    {
-                        Entries = list,
-                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
-                        LabelTextSize = 12,
-                        Margin = 10,
-                        MaxValue = 150,
-                        MinValue = 30,
-                        PointMode = PointMode.Square,
-                        PointSize = 2
-                    };
+                    Chart = new PointChart() { Entries = list, BackgroundColor = Globals.PrimaryColor.ToSKColor(), LabelTextSize = 15, MaxValue = 150, MinValue = 30, PointMode = PointMode.Square, PointSize = 10 };
 
                 }
             }
@@ -218,16 +192,15 @@ namespace WindesHeartApp.ViewModels
                         var heartrate = list[i];
                         result.Add(new Entry(heartrate.HeartrateValue)
                         {
-                            TextColor = Globals.PrimaryColor.ToSKColor(),
-                            ValueLabel = heartrate.HeartrateValue.ToString()
+                            ValueLabel = heartrate.HeartrateValue.ToString(),
+                            Color = SKColors.Black,
+                            Label = heartrate.DateTime.Hour.ToString(CultureInfo.InvariantCulture),
+                            TextColor = SKColors.Black
                         });
                     }
                 }
 
-                Chart = new PointChart()
-                {
-                    Entries = result
-                };
+                Chart = new PointChart() { Entries = result, BackgroundColor = Globals.PrimaryColor.ToSKColor(), LabelTextSize = 15, MaxValue = 150, MinValue = 30, PointMode = PointMode.Square, PointSize = 10 };
             }
         }
     }
