@@ -5,7 +5,6 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using WindesHeartApp.Data.Models;
 using WindesHeartApp.Resources;
 using WindesHeartApp.ViewModels;
 using Xamarin.Forms;

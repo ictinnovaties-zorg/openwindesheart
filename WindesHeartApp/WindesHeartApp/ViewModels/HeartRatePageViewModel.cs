@@ -6,12 +6,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
-using WindesHeartApp.Resources;
 using WindesHeartApp.Models;
+using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
-using WindesHeartSDK.Models;
-using WindesHeartApp.Data.Models;
 
 namespace WindesHeartApp.ViewModels
 {
@@ -45,7 +43,7 @@ namespace WindesHeartApp.ViewModels
 
             //checks for null data
 
-            foreach (HeartrateModel heartrate in heartratesprevious24hours)
+            foreach (Heartrate heartrate in heartratesprevious24hours)
             {
                 List<Entry> list = new List<Entry>();
                 var entry = new Entry(heartrate.HeartrateValue);
@@ -70,7 +68,7 @@ namespace WindesHeartApp.ViewModels
                                             where a.DateTime < _dateTime.AddHours(24)
                                             select a;
 
-            foreach (HeartrateModel heartrate in heartratesprevious24hours)
+            foreach (Heartrate heartrate in heartratesprevious24hours)
             {
                 List<Entry> list = new List<Entry>();
                 var entry = new Entry(heartrate.HeartrateValue);
@@ -106,7 +104,7 @@ namespace WindesHeartApp.ViewModels
         {
             for (int i = 0; i < 20; i++)
             {
-                Heartrate rate = new Heartrate(new byte[0xFF]);
+                Heartrate rate = new Heartrate(DateTime.Now, 1);
                 Random random2 = new Random();
                 var lol = random2.Next(24);
                 DateTime date = DateTime.Today.AddHours(lol);
@@ -121,7 +119,7 @@ namespace WindesHeartApp.ViewModels
                     await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime == DateTime.Now.AddHours(-24));
             List<Entry> list = new List<Entry>();
 
-            foreach (HeartrateModel heartrate in heartrates)
+            foreach (Heartrate heartrate in heartrates)
             {
                 var entry = new Entry(heartrate.HeartrateValue);
                 entry.ValueLabel = heartrate.HeartrateValue.ToString();
@@ -191,7 +189,7 @@ namespace WindesHeartApp.ViewModels
         public async void UpdateInterval(int interval)
         {
             _interval = interval;
-            var heartrates = await _heartrateRepository.GetHeartRatesAsync();
+            var heartrates = await _heartrateRepository.GetAllAsync();
             var list = heartrates.ToList();
             var count = list.Count;
             var result = new List<Entry>();

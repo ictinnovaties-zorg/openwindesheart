@@ -12,12 +12,12 @@ namespace WindesHeartApp.Data.Repository
         {
             _databaseContext = new DatabaseContext(dbPath);
         }
-        public Task<IEnumerable<string>> Settings()
+        public Task<IEnumerable<string>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddSetting(string setting)
+        public Task<bool> AddAsync(string setting)
         {
             throw new NotImplementedException();
         }

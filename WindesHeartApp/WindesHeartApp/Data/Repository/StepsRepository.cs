@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
-using WindesHeartApp.Data.Models;
-using WindesHeartSDK.Models;
+using WindesHeartApp.Models;
 
 namespace WindesHeartApp.Data.Repository
 {
@@ -19,51 +18,44 @@ namespace WindesHeartApp.Data.Repository
             _databaseContext = new DatabaseContext(dbPath);
         }
 
-        public async Task<IEnumerable<StepsModel>> GetStepsAsync()
+        public async Task<IEnumerable<Step>> GetAllAsync()
         {
             try
             {
-                var stepInfos = await _databaseContext.Steps.ToListAsync();
-                return stepInfos;
+                var steps = await _databaseContext.Steps.ToListAsync();
+                return steps;
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
 
-        public async Task<bool> AddStepsAsync(StepsModel steps)
+        public async Task<bool> AddAsync(Step step)
         {
             try
             {
-                var tracking = await _databaseContext.Steps.AddAsync(steps);
+                var tracking = await _databaseContext.Steps.AddAsync(step);
                 await _databaseContext.SaveChangesAsync();
-                var isAdded = tracking.State == EntityState.Added;
-                return isAdded;
+                return tracking.State == EntityState.Added;
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return false;
             }
         }
 
-        public void RemoveSteps()
-        {
-            foreach (var stepinfo in _databaseContext.Steps)
-                _databaseContext.Steps.Remove(stepinfo);
-            _databaseContext.SaveChanges();
-        }
-
-        public async Task<IEnumerable<StepsModel>> StepsByQueryAsync(Func<StepsModel, bool> predicate)
+        public void RemoveAll()
         {
             try
             {
-                var steps = _databaseContext.Steps.Where(predicate);
-                return steps.ToList();
+                _databaseContext.Steps.Clear<Step>();
             }
             catch (Exception e)
             {
-                return null;
+                Console.WriteLine("Could not delete step entries: " + e);
             }
         }
     }
