@@ -56,5 +56,19 @@ namespace WindesHeartApp.Data.Repository
                 Console.WriteLine("Could not delete heartrate entries: "+e);
             }
         }
+
+        public async Task<IEnumerable<Heartrate>> HeartratesByQueryAsync(Func<Heartrate, bool> predicate)
+        {
+            try
+            {
+                var heartrates = await _databaseContext.Heartrates.ToListAsync();
+                return heartrates.Where(predicate);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+        }
     }
 }

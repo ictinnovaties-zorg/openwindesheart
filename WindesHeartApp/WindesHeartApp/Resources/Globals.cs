@@ -31,7 +31,6 @@ namespace WindesHeartApp.Resources
         public static double ButtonFontSize { get; set; }
         public static double CornerRadius { get; set; }
         public static IStepsRepository StepsRepository { get; set; }
-        public static HeartrateRepository HeartrateRepository { get; set; }
         public static float DailyStepsGoal { get; internal set; }
 
         public static Dictionary<string, Color> ColorDictionary;

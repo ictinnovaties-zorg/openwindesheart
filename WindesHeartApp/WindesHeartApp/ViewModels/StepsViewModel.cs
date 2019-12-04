@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
-using WindesHeartApp.Data.Models;
+using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
@@ -37,7 +37,7 @@ namespace WindesHeartApp.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public static IEnumerable<StepsModel> StepInfo = new List<StepsModel>();
+        public static IEnumerable<Step> StepInfo = new List<Step>();
 
         private Chart _chart;
         public Chart Chart
@@ -52,10 +52,10 @@ namespace WindesHeartApp.ViewModels
         public async void OnAppearing()
         {
             //Get all steps from DB
-            StepInfo = await Globals.StepsRepository.GetStepsAsync();
+            StepInfo = await Globals.StepsRepository.GetAllAsync();
 
             //Update chart
-            StepsModel steps = GetCurrentSteps();
+            Step steps = GetCurrentSteps();
             if (steps != null) UpdateChart(steps.StepCount);
             else UpdateChart(0);
         }
@@ -142,14 +142,14 @@ namespace WindesHeartApp.ViewModels
 
 
             //Update chart
-            StepsModel steps = GetCurrentSteps();
+            Step steps = GetCurrentSteps();
             if (steps != null) UpdateChart(steps.StepCount);
             else UpdateChart(0);
         }
 
-        private StepsModel GetCurrentSteps()
+        private Step GetCurrentSteps()
         {
-            foreach (StepsModel info in StepInfo)
+            foreach (Step info in StepInfo)
             {
                 //If the same day
                 if (info.DateTime.Year == SelectedDate.Year && info.DateTime.Month == SelectedDate.Month && info.DateTime.Day == SelectedDate.Day)

@@ -11,5 +11,8 @@ namespace WindesHeartApp.Data.Interfaces
         Task<bool> AddAsync(Heartrate heartrate);
 
         void RemoveAll();
+
+        Task<IEnumerable<Heartrate>> HeartratesByQueryAsync(Func<Heartrate, bool> predicate);
+        
     }
 }

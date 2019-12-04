@@ -6,8 +6,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
+using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
-using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -104,7 +104,7 @@ namespace WindesHeartApp.ViewModels
         {
             for (int i = 0; i < 20; i++)
             {
-                Heartrate rate = new Heartrate(new byte[0xFF]);
+                Heartrate rate = new Heartrate(DateTime.Now, 1);
                 Random random2 = new Random();
                 var lol = random2.Next(24);
                 DateTime date = DateTime.Today.AddHours(lol);
@@ -189,7 +189,7 @@ namespace WindesHeartApp.ViewModels
         public async void UpdateInterval(int interval)
         {
             _interval = interval;
-            var heartrates = await _heartrateRepository.GetHeartRatesAsync();
+            var heartrates = await _heartrateRepository.GetAllAsync();
             var list = heartrates.ToList();
             var count = list.Count;
             var result = new List<Entry>();
