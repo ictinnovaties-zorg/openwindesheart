@@ -13,7 +13,7 @@ using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class SleepPageViewModel
+    public class SleepPageViewModel: INotifyPropertyChanged
     {
         public DateTime StartDate { get; }
 
@@ -51,8 +51,7 @@ namespace WindesHeartApp.ViewModels
             SleepInfo = await _sleepRepository.GetAllAsync();
 
             //Update chart
-            Sleep sleep = GetCurrentSleep();
-            UpdateChart(sleep);
+            UpdateChart();
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")
@@ -137,35 +136,62 @@ namespace WindesHeartApp.ViewModels
 
 
             //Update chart
-            Sleep sleep = GetCurrentSleep();
-            UpdateChart(sleep);
+            UpdateChart();
         }
 
-        private Sleep GetCurrentSleep()
+        private List<Sleep> GetCurrentSleep()
         {
+            List<Sleep> sleepData = new List<Sleep>();
             foreach (Sleep info in SleepInfo)
             {
                 //If the same day
                 if (info.DateTime.Year == SelectedDate.Year && info.DateTime.Month == SelectedDate.Month && info.DateTime.Day == SelectedDate.Day)
                 {
-                    //we found our info!
-                    return info;
+                    //add to result
+                    sleepData.Add(info);
                 }
             }
-            return null;
+            return sleepData;
         }
 
-        public void UpdateChart(Sleep sleep)
+        public void UpdateChart()
         {
+            List<Sleep> sleepData = GetCurrentSleep();
             List<Entry> entries = new List<Entry>();
 
-            //Update labels
-            SleepPage.CurrentSleepLabel.Text = "Hallo";
+            foreach(Sleep data in sleepData)
+            {
+                switch (data.SleepType)
+                {
+                    case SleepType.Awake:
+                        Entry entry1 = new Entry(1);
+                        entry1.Color = SKColor.Parse("#ffffff");
+                        entry1.Label = data.DateTime.Hour.ToString();
+                        entry1.ValueLabel = "Awake";
+                        entries.Add(entry1);
+                        break;
+                    case SleepType.Light:
+                        Entry entry2 = new Entry(2);
+                        entry2.Color = SKColor.Parse("#33daff");
+                        entry2.Label = data.DateTime.Hour.ToString();
+                        entry2.ValueLabel = "Light";
+                        entries.Add(entry2);
+                        break;
+                    case SleepType.Deep:
+                        Entry entry3 = new Entry(3);
+                        entry3.Color = SKColor.Parse("#3366ff");
+                        entry3.Label = data.DateTime.Hour.ToString();
+                        entry3.ValueLabel = "Deep";
+                        entries.Add(entry3);
+                        break;
+                }
+            }
 
             Chart = new BarChart
             {
                 Entries = entries,
-                BackgroundColor = SKColors.Transparent
+                BackgroundColor = SKColors.Transparent,
+                LabelTextSize = 45
             };
         }
 

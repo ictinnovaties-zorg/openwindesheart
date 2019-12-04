@@ -162,7 +162,7 @@ namespace WindesHeartApp.ViewModels
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SleepPage()
             {
-                BindingContext = Globals.heartrateviewModel
+                BindingContext = Globals.SleepViewModel
             });
             IsLoading = false;
         }

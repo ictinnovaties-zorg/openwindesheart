@@ -36,6 +36,16 @@ namespace WindesHeartApp
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-5), 2200));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-6), 1400));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-7), 8310));
+
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Now, SleepType.Awake));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Now.AddHours(-1), SleepType.Light));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Now.AddHours(-2), SleepType.Deep));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Now.AddHours(-3), SleepType.Deep));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Now.AddHours(-4), SleepType.Deep));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Now.AddHours(-5), SleepType.Light));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Now.AddHours(-6), SleepType.Awake));
+
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddDays(-1), SleepType.Awake));
         }
 
         protected override void OnSleep()
