@@ -1,15 +1,9 @@
 ﻿using FormsControls.Base;
-using Microcharts;
 using Microcharts.Forms;
-using SkiaSharp;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using WindesHeartApp.Resources;
-using WindesHeartApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.Pages
 {
@@ -34,13 +28,13 @@ namespace WindesHeartApp.Pages
         public StepsPage()
         {
             InitializeComponent();
-        }
-
-        protected override async void OnAppearing()
-        {
             BuildPage();
 
-            Globals.StepsViewModel.OnAppearing();
+        }
+
+        protected override void OnAppearing()
+        {
+            Globals.StepsViewModel.InitOnAppearing();
         }
 
         private void BuildPage()
@@ -53,25 +47,9 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
-            ImageButton previousBtn = new ImageButton
-            {
-                Source = "arrow_left.png",
-                BackgroundColor = Color.Transparent
-            };
-            AbsoluteLayout.SetLayoutFlags(previousBtn, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(previousBtn, new Rectangle(0.3, 0.135, 0.1, 0.1));
-            previousBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "PreviousDayBinding" });
-            absoluteLayout.Children.Add(previousBtn);
+            var previousBtn = PageBuilder.AddButton(absoluteLayout, "Previous", "PreviousDayBinding", 0.1, 0.15, 0.25, 0.07, 0, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
 
-            ImageButton nextBtn = new ImageButton
-            {
-                Source = "arrow_right.png",
-                BackgroundColor = Color.Transparent
-            };
-            AbsoluteLayout.SetLayoutFlags(nextBtn, AbsoluteLayoutFlags.All);
-            AbsoluteLayout.SetLayoutBounds(nextBtn, new Rectangle(0.7, 0.135, 0.1, 0.1));
-            nextBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "NextDayBinding" });
-            absoluteLayout.Children.Add(nextBtn);
+            var nextBtn = PageBuilder.AddButton(absoluteLayout, "Next", "NextDayBinding", 0.9, 0.15, 0.25, 0.07, 0, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
 
             CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black, "", 0);
             CurrentDayLabel.FontSize = 15;
@@ -105,35 +83,16 @@ namespace WindesHeartApp.Pages
         {
             DateTime today = DateTime.Now;
             float y = 0.85f;
-
-            int fontSize = 11;
-            int cornerRadius = 200;
-            double width = 0.13;
-
-            Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(), "Day1Binding", 0.05, y, width, 0.1, AbsoluteLayoutFlags.All);
-            Day1Button.CornerRadius = cornerRadius;
-            Day1Button.FontSize = fontSize;
-            Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(), "Day2Binding", 0.20, y, width, 0.1, AbsoluteLayoutFlags.All);
-            Day2Button.CornerRadius = cornerRadius;
-            Day2Button.FontSize = fontSize;
-            Day3Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-4).DayOfWeek.ToString(), "Day3Binding", 0.35, y, width, 0.1, AbsoluteLayoutFlags.All);
-            Day3Button.CornerRadius = cornerRadius;
-            Day3Button.FontSize = fontSize;
-            Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(), "Day4Binding", 0.50, y, width, 0.1, AbsoluteLayoutFlags.All);
-            Day4Button.CornerRadius = cornerRadius;
-            Day4Button.FontSize = fontSize;
-            Day5Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-2).DayOfWeek.ToString(), "Day5Binding", 0.65, y, width, 0.1, AbsoluteLayoutFlags.All);
-            Day5Button.CornerRadius = cornerRadius;
-            Day5Button.FontSize = fontSize;
-            Day6Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-1).DayOfWeek.ToString(), "Day6Binding", 0.80, y, width, 0.1, AbsoluteLayoutFlags.All);
-            Day6Button.CornerRadius = cornerRadius;
-            Day6Button.FontSize = fontSize;
-            TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, y, width, 0.1, AbsoluteLayoutFlags.All);
-            TodayButton.CornerRadius = cornerRadius;
-            TodayButton.FontSize = fontSize;
+            Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(), "Day1Binding", 0.05, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(), "Day2Binding", 0.20, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day3Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-4).DayOfWeek.ToString(), "Day3Binding", 0.35, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(), "Day4Binding", 0.50, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day5Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-2).DayOfWeek.ToString(), "Day5Binding", 0.65, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day6Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-1).DayOfWeek.ToString(), "Day6Binding", 0.80, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
             TodayButton.IsEnabled = false;
         }
-        
+
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)

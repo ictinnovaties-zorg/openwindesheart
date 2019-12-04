@@ -24,7 +24,7 @@ namespace WindesHeartApp.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             var dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),
-                "Heartrates.db");
+                "WindesHeart.db");
 
             Globals.ScreenHeight = (int)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
             Globals.ScreenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
