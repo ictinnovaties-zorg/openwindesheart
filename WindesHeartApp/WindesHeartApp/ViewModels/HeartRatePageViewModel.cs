@@ -1,4 +1,5 @@
 ﻿using Microcharts;
+using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace WindesHeartApp.ViewModels
             PreviousDayBinding = new Command(PreviousDayBtnClick);
         }
 
-        private async void PreviousDayBtnClick(object obj)
+        private async void PreviousDayBtnClick()
         {
             _dateTime = _dateTime.AddHours(-24);
             var heartrates = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime > _dateTime);
@@ -48,9 +49,11 @@ namespace WindesHeartApp.ViewModels
                 foreach (Heartrate heartrate in heartratesprevious24hours)
                 {
                     List<Entry> list = new List<Entry>();
-                    var entry = new Entry(heartrate.HeartrateValue);
-                    entry.ValueLabel = heartrate.HeartrateValue.ToString();
-                    entry.Color = Globals.PrimaryColor.ToSKColor();
+                    var entry = new Entry(heartrate.HeartrateValue)
+                    {
+                        ValueLabel = heartrate.HeartrateValue.ToString(),
+                        Color = Globals.PrimaryColor.ToSKColor()
+                    };
                     list.Add(entry);
 
                     Chart = new PointChart()
@@ -62,7 +65,7 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        private async void NextDayBtnClick(object obj)
+        private async void NextDayBtnClick()
         {
             //checks for null data
             _dateTime = _dateTime.AddHours(24);
@@ -76,9 +79,8 @@ namespace WindesHeartApp.ViewModels
                 foreach (Heartrate heartrate in heartratesprevious24hours)
                 {
                     List<Entry> list = new List<Entry>();
-                    var entry = new Entry(heartrate.HeartrateValue);
-                    entry.ValueLabel = heartrate.HeartrateValue.ToString();
-                    entry.Color = Globals.PrimaryColor.ToSKColor();
+                    var entry = new Entry(heartrate.HeartrateValue) { ValueLabel = heartrate.HeartrateValue.ToString(), Color = SKColors.Black, TextColor = SKColors.Black };
+                    ;
                     list.Add(entry);
 
                     Chart = new PointChart()
@@ -110,16 +112,18 @@ namespace WindesHeartApp.ViewModels
         {
 
             var heartrates =
-                await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime == DateTime.Now.AddHours(-24));
+                await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime >= DateTime.Now.AddHours(-24));
             List<Entry> list = new List<Entry>();
 
             if (heartrates != null)
             {
                 foreach (Heartrate heartrate in heartrates)
                 {
-                    var entry = new Entry(heartrate.HeartrateValue);
-                    entry.ValueLabel = heartrate.HeartrateValue.ToString();
-                    entry.Color = Globals.PrimaryColor.ToSKColor();
+                    var entry = new Entry(heartrate.HeartrateValue)
+                    {
+                        ValueLabel = heartrate.HeartrateValue.ToString(),
+                        Color = Globals.PrimaryColor.ToSKColor()
+                    };
                     list.Add(entry);
 
                     Chart = new PointChart()

@@ -10,12 +10,14 @@ namespace WindesHeartApp.Services
     {
         //private static readonly string _key = "LastConnectedDeviceGuid";
         //OnHeartrateChange/Measurement
-        public static void ChangeHeartRate(Heartrate heartrate)
+        public static async void ChangeHeartRate(Heartrate heartrate)
         {
             if (heartrate.HeartrateValue == 0)
                 return;
             Globals.heartrateviewModel.Heartrate = heartrate.HeartrateValue;
             Globals.homepageviewModel.Heartrate = heartrate.HeartrateValue;
+            var heartRate = new Models.Heartrate(DateTime.Now, heartrate.HeartrateValue);
+            await Globals.HeartrateRepository.AddAsync(heartRate);
         }
 
         //OnHeartrateChange/Measurement
@@ -27,14 +29,15 @@ namespace WindesHeartApp.Services
         {
             var count = stepsInfo.StepCount;
             Console.WriteLine($"Stepcount updated: {count}");
+
         }
         public static void OnConnetionCallBack(ConnectionResult result)
         {
             if (result == ConnectionResult.Succeeded)
             {
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-                Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
+                Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();

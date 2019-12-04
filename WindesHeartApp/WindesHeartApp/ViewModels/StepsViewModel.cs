@@ -7,7 +7,6 @@ using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
-using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -18,7 +17,7 @@ namespace WindesHeartApp.ViewModels
         public DateTime StartDate { get; }
 
         public DateTime SelectedDate;
-        private IStepsRepository _stepsRepository;
+        private readonly IStepsRepository _stepsRepository;
 
         public Command NextDayBinding { get; }
         public Command PreviousDayBinding { get; }
@@ -50,7 +49,7 @@ namespace WindesHeartApp.ViewModels
         public async void InitOnAppearing()
         {
             //Get all steps from DB
-            StepInfo = await Globals.StepsRepository.GetAllAsync();
+            StepInfo = await _stepsRepository.GetAllAsync();
 
             //Update chart
             Step steps = GetCurrentSteps();

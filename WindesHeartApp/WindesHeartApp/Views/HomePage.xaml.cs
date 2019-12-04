@@ -1,4 +1,5 @@
 ﻿using FormsControls.Base;
+using Plugin.BluetoothLE;
 using System;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
@@ -24,8 +25,7 @@ namespace WindesHeartApp.Pages
             App.RequestLocationPermission();
             if (Windesheart.ConnectedDevice != null)
                 Globals.homepageviewModel.ReadCurrentBattery();
-
-        }
+            }
 
         private void BuildPage()
         {
