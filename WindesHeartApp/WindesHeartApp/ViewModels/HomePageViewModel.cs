@@ -37,7 +37,7 @@ namespace WindesHeartApp.ViewModels
 
         }
 
-        private async Task ReadCurrentBattery()
+        public async Task ReadCurrentBattery()
         {
             var battery = await Windesheart.ConnectedDevice.GetBattery();
             UpdateBattery(battery);

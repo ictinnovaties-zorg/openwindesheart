@@ -6,7 +6,6 @@ using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
-using WindesHeartSDK.Models;
 using Xamarin.Forms;
 
 namespace WindesHeartApp
@@ -23,7 +22,7 @@ namespace WindesHeartApp
 
         protected override void OnStart()
         {
-           
+
         }
 
         private async void FillDatabase()
