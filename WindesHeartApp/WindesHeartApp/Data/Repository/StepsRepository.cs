@@ -1,7 +1,11 @@
-﻿using System;
+
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
+using WindesHeartApp.Data.Models;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartApp.Data.Repository
@@ -9,29 +13,58 @@ namespace WindesHeartApp.Data.Repository
     public class StepsRepository : IStepsRepository
     {
         private readonly DatabaseContext _databaseContext;
+
         public StepsRepository(string dbPath)
         {
             _databaseContext = new DatabaseContext(dbPath);
         }
 
-        public Task<IEnumerable<StepInfo>> GetStepsAsync()
+        public async Task<IEnumerable<StepsModel>> GetStepsAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var stepInfos = await _databaseContext.Steps.ToListAsync();
+                return stepInfos;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
-        public Task<bool> AddStepsAsync(StepInfo steps)
+        public async Task<bool> AddStepsAsync(StepsModel steps)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tracking = await _databaseContext.Steps.AddAsync(steps);
+                await _databaseContext.SaveChangesAsync();
+                var isAdded = tracking.State == EntityState.Added;
+                return isAdded;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public void RemoveSteps()
         {
-            throw new NotImplementedException();
+            foreach (var stepinfo in _databaseContext.Steps)
+                _databaseContext.Steps.Remove(stepinfo);
+            _databaseContext.SaveChanges();
         }
 
-        public Task<IEnumerable<Heartrate>> StepsByQueryAsync(Func<Heartrate, bool> predicate)
+        public async Task<IEnumerable<StepsModel>> StepsByQueryAsync(Func<StepsModel, bool> predicate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var steps = _databaseContext.Steps.Where(predicate);
+                return steps.ToList();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
     }
 }

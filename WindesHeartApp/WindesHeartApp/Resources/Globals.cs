@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WindesHeartApp.Data.Repository;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.ViewModels;
 using WindesHeartSDK;
@@ -14,6 +15,7 @@ namespace WindesHeartApp.Resources
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel homepageviewModel;
         public static SettingsPageViewmodel settingspageviewModel;
+
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
         public static Color PrimaryColor { get; set; } = Color.FromHex("#96d1ff");
@@ -23,6 +25,9 @@ namespace WindesHeartApp.Resources
         public static double ScreenRatioFactor { get; set; }
         public static double ButtonFontSize { get; set; }
         public static double CornerRadius { get; set; }
+        public static IStepsRepository StepsRepository { get; set; }
+        public static HeartrateRepository HeartrateRepository { get; set; }
+        public static float DailyStepsGoal { get; internal set; }
 
         public static Dictionary<string, Color> ColorDictionary;
 
@@ -33,11 +38,14 @@ namespace WindesHeartApp.Resources
         //ButtonFontSize : 2-10, 10 being smallest, 2 being largest.
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
+            DailyStepsGoal = 1000;
             ButtonSize = 20;
             ButtonSize = 20;
             ButtonFontSize = 4;
+
+            StepsRepository = stepsRepository;
+
             CornerRadius = ((ScreenHeight / 10 * 1) - ButtonSize);
-            ScreenRatioFactor = ScreenHeight / ScreenWidth;
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
             StepsViewModel = new StepsViewModel(stepsRepository);
             settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
@@ -76,5 +84,5 @@ namespace WindesHeartApp.Resources
 
             return false;
         }
-    };
+    }
 }

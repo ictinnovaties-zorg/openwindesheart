@@ -51,7 +51,6 @@ namespace WindesHeartApp.Services
         {
             var count = stepsInfo.StepCount;
             Console.WriteLine($"Stepcount updated: {count}");
-            Globals.StepsViewModel.Steps = count;
         }
         public static void OnConnetionCallBack(ConnectionResult result)
         {
