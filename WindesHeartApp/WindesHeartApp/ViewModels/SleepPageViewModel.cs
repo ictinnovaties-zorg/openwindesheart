@@ -4,20 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
-using WindesHeartApp.Pages;
+using WindesHeartApp.Views;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class StepsViewModel : INotifyPropertyChanged
+    public class SleepPageViewModel
     {
         public DateTime StartDate { get; }
 
         public DateTime SelectedDate;
-        private IStepsRepository _stepsRepository;
+        private ISleepRepository _sleepRepository;
 
         public Command NextDayBinding { get; }
         public Command PreviousDayBinding { get; }
@@ -28,12 +29,10 @@ namespace WindesHeartApp.ViewModels
         public Command Day5Binding { get; }
         public Command Day6Binding { get; }
         public Command TodayBinding { get; }
-        public Command GetStepsBinding { get; }
-        public Command ToggleRealTimeStepsBinding { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public static IEnumerable<Step> StepInfo = new List<Step>();
+        public static IEnumerable<Sleep> SleepInfo = new List<Sleep>();
 
         private Chart _chart;
         public Chart Chart
@@ -46,15 +45,14 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        public async void OnApearing()
+        public async void OnAppearing()
         {
-            //Get all steps from DB
-            StepInfo = await _stepsRepository.GetAllAsync();
+            //Get all sleep data from DB
+            SleepInfo = await _sleepRepository.GetAllAsync();
 
             //Update chart
-            Step steps = GetCurrentSteps();
-            if (steps != null) UpdateChart(steps.StepCount);
-            else UpdateChart(0);
+            Sleep sleep = GetCurrentSleep();
+            UpdateChart(sleep);
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")
@@ -62,9 +60,9 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public StepsViewModel(IStepsRepository stepsRepository)
+        public SleepPageViewModel(ISleepRepository sleepRepository)
         {
-            _stepsRepository = stepsRepository;
+            _sleepRepository = sleepRepository;
             StartDate = DateTime.Now;
             SelectedDate = StartDate;
 
@@ -85,39 +83,39 @@ namespace WindesHeartApp.ViewModels
             SelectedDate = SelectedDate.AddDays(-1);
             Console.WriteLine(SelectedDate);
 
-            if (!StepsPage.Day1Button.IsEnabled)
+            if (!SleepPage.Day1Button.IsEnabled)
             {
-                StepsPage.Day1Button.IsEnabled = true;
+                SleepPage.Day1Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day2Button.IsEnabled)
+            else if (!SleepPage.Day2Button.IsEnabled)
             {
-                StepsPage.Day1Button.IsEnabled = false;
-                StepsPage.Day2Button.IsEnabled = true;
+                SleepPage.Day1Button.IsEnabled = false;
+                SleepPage.Day2Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day3Button.IsEnabled)
+            else if (!SleepPage.Day3Button.IsEnabled)
             {
-                StepsPage.Day2Button.IsEnabled = false;
-                StepsPage.Day3Button.IsEnabled = true;
+                SleepPage.Day2Button.IsEnabled = false;
+                SleepPage.Day3Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day4Button.IsEnabled)
+            else if (!SleepPage.Day4Button.IsEnabled)
             {
-                StepsPage.Day3Button.IsEnabled = false;
-                StepsPage.Day4Button.IsEnabled = true;
+                SleepPage.Day3Button.IsEnabled = false;
+                SleepPage.Day4Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day5Button.IsEnabled)
+            else if (!SleepPage.Day5Button.IsEnabled)
             {
-                StepsPage.Day4Button.IsEnabled = false;
-                StepsPage.Day5Button.IsEnabled = true;
+                SleepPage.Day4Button.IsEnabled = false;
+                SleepPage.Day5Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day6Button.IsEnabled)
+            else if (!SleepPage.Day6Button.IsEnabled)
             {
-                StepsPage.Day5Button.IsEnabled = false;
-                StepsPage.Day6Button.IsEnabled = true;
+                SleepPage.Day5Button.IsEnabled = false;
+                SleepPage.Day6Button.IsEnabled = true;
             }
-            else if (!StepsPage.TodayButton.IsEnabled)
+            else if (!SleepPage.TodayButton.IsEnabled)
             {
-                StepsPage.Day6Button.IsEnabled = false;
-                StepsPage.TodayButton.IsEnabled = true;
+                SleepPage.Day6Button.IsEnabled = false;
+                SleepPage.TodayButton.IsEnabled = true;
             }
             UpdateDay();
         }
@@ -126,27 +124,26 @@ namespace WindesHeartApp.ViewModels
         {
             if (SelectedDate == StartDate)
             {
-                StepsPage.CurrentDayLabel.Text = "Today";
+                SleepPage.CurrentDayLabel.Text = "Today";
             }
             else if (SelectedDate >= StartDate.AddDays(-6))
             {
-                StepsPage.CurrentDayLabel.Text = SelectedDate.DayOfWeek.ToString();
+                SleepPage.CurrentDayLabel.Text = SelectedDate.DayOfWeek.ToString();
             }
             else
             {
-                StepsPage.CurrentDayLabel.Text = SelectedDate.ToString("dd/MM/yyyy");
+                SleepPage.CurrentDayLabel.Text = SelectedDate.ToString("dd/MM/yyyy");
             }
 
 
             //Update chart
-            Step steps = GetCurrentSteps();
-            if (steps != null) UpdateChart(steps.StepCount);
-            else UpdateChart(0);
+            Sleep sleep = GetCurrentSleep();
+            UpdateChart(sleep);
         }
 
-        private Step GetCurrentSteps()
+        private Sleep GetCurrentSleep()
         {
-            foreach (Step info in StepInfo)
+            foreach (Sleep info in SleepInfo)
             {
                 //If the same day
                 if (info.DateTime.Year == SelectedDate.Year && info.DateTime.Month == SelectedDate.Month && info.DateTime.Day == SelectedDate.Day)
@@ -158,35 +155,17 @@ namespace WindesHeartApp.ViewModels
             return null;
         }
 
-        public void UpdateChart(int stepCount)
+        public void UpdateChart(Sleep sleep)
         {
             List<Entry> entries = new List<Entry>();
 
-            float percentageDone = (float)stepCount / 2000;
-
-            //Add part done
-            entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
-
             //Update labels
-            StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
+            SleepPage.CurrentSleepLabel.Text = "Hallo";
 
-            double kilometers = (double)stepCount / 1000;
-            StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
-
-            StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
-
-            //If goal not reached, fill other part transparent
-            if (percentageDone < 1)
-            {
-                float percentageLeft = 1 - percentageDone;
-                entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
-            }
-
-            Chart = new DonutChart
+            Chart = new BarChart
             {
                 Entries = entries,
-                BackgroundColor = SKColors.Transparent,
-                HoleRadius = 0.7f
+                BackgroundColor = SKColors.Transparent
             };
         }
 
@@ -200,46 +179,46 @@ namespace WindesHeartApp.ViewModels
             Console.WriteLine(SelectedDate);
 
             //Set right day button selected
-            if (!StepsPage.Day1Button.IsEnabled)
+            if (!SleepPage.Day1Button.IsEnabled)
             {
-                StepsPage.Day2Button.IsEnabled = false;
-                StepsPage.Day1Button.IsEnabled = true;
+                SleepPage.Day2Button.IsEnabled = false;
+                SleepPage.Day1Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day2Button.IsEnabled)
+            else if (!SleepPage.Day2Button.IsEnabled)
             {
-                StepsPage.Day3Button.IsEnabled = false;
-                StepsPage.Day2Button.IsEnabled = true;
+                SleepPage.Day3Button.IsEnabled = false;
+                SleepPage.Day2Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day3Button.IsEnabled)
+            else if (!SleepPage.Day3Button.IsEnabled)
             {
-                StepsPage.Day4Button.IsEnabled = false;
-                StepsPage.Day3Button.IsEnabled = true;
+                SleepPage.Day4Button.IsEnabled = false;
+                SleepPage.Day3Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day4Button.IsEnabled)
+            else if (!SleepPage.Day4Button.IsEnabled)
             {
-                StepsPage.Day5Button.IsEnabled = false;
-                StepsPage.Day4Button.IsEnabled = true;
+                SleepPage.Day5Button.IsEnabled = false;
+                SleepPage.Day4Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day5Button.IsEnabled)
+            else if (!SleepPage.Day5Button.IsEnabled)
             {
-                StepsPage.Day6Button.IsEnabled = false;
-                StepsPage.Day5Button.IsEnabled = true;
+                SleepPage.Day6Button.IsEnabled = false;
+                SleepPage.Day5Button.IsEnabled = true;
             }
-            else if (!StepsPage.Day6Button.IsEnabled)
+            else if (!SleepPage.Day6Button.IsEnabled)
             {
-                StepsPage.TodayButton.IsEnabled = false;
-                StepsPage.Day6Button.IsEnabled = true;
+                SleepPage.TodayButton.IsEnabled = false;
+                SleepPage.Day6Button.IsEnabled = true;
             }
-            else if (!StepsPage.TodayButton.IsEnabled)
+            else if (!SleepPage.TodayButton.IsEnabled)
             {
-                StepsPage.TodayButton.IsEnabled = false;
+                SleepPage.TodayButton.IsEnabled = false;
             }
             else
             {
                 //If SelectedDate is at 6 days back again
                 if (SelectedDate == StartDate.AddDays(-6))
                 {
-                    StepsPage.Day1Button.IsEnabled = false;
+                    SleepPage.Day1Button.IsEnabled = false;
                 }
             }
             UpdateDay();
@@ -248,48 +227,48 @@ namespace WindesHeartApp.ViewModels
         private void TodayBtnClick(object obj)
         {
             SelectedDate = StartDate;
-            SetDayEnabled(StepsPage.TodayButton);
+            SetDayEnabled(SleepPage.TodayButton);
             UpdateDay();
         }
 
         private void Day6BtnClick(object obj)
         {
             SelectedDate = StartDate.AddDays(-1);
-            SetDayEnabled(StepsPage.Day6Button);
+            SetDayEnabled(SleepPage.Day6Button);
             UpdateDay();
         }
 
         private void Day5BtnClick(object obj)
         {
             SelectedDate = StartDate.AddDays(-2);
-            SetDayEnabled(StepsPage.Day5Button);
+            SetDayEnabled(SleepPage.Day5Button);
             UpdateDay();
         }
 
         private void Day4BtnClick(object obj)
         {
             SelectedDate = StartDate.AddDays(-3);
-            SetDayEnabled(StepsPage.Day4Button);
+            SetDayEnabled(SleepPage.Day4Button);
             UpdateDay();
         }
 
         private void Day3BtnClick(object obj)
         {
             SelectedDate = StartDate.AddDays(-4);
-            SetDayEnabled(StepsPage.Day3Button);
+            SetDayEnabled(SleepPage.Day3Button);
             UpdateDay();
         }
 
         private void SetDayEnabled(Button button)
         {
             //First, enable all buttons
-            StepsPage.Day1Button.IsEnabled = true;
-            StepsPage.Day2Button.IsEnabled = true;
-            StepsPage.Day3Button.IsEnabled = true;
-            StepsPage.Day4Button.IsEnabled = true;
-            StepsPage.Day5Button.IsEnabled = true;
-            StepsPage.Day6Button.IsEnabled = true;
-            StepsPage.TodayButton.IsEnabled = true;
+            SleepPage.Day1Button.IsEnabled = true;
+            SleepPage.Day2Button.IsEnabled = true;
+            SleepPage.Day3Button.IsEnabled = true;
+            SleepPage.Day4Button.IsEnabled = true;
+            SleepPage.Day5Button.IsEnabled = true;
+            SleepPage.Day6Button.IsEnabled = true;
+            SleepPage.TodayButton.IsEnabled = true;
 
             //Then disable the selected Day
             button.IsEnabled = false;
@@ -298,14 +277,14 @@ namespace WindesHeartApp.ViewModels
         private void Day2BtnClick(object obj)
         {
             SelectedDate = StartDate.AddDays(-5);
-            SetDayEnabled(StepsPage.Day2Button);
+            SetDayEnabled(SleepPage.Day2Button);
             UpdateDay();
         }
 
         private void Day1BtnClick(object obj)
         {
             SelectedDate = StartDate.AddDays(-6);
-            SetDayEnabled(StepsPage.Day1Button);
+            SetDayEnabled(SleepPage.Day1Button);
             UpdateDay();
         }
     }

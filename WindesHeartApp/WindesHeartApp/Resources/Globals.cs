@@ -26,6 +26,7 @@ namespace WindesHeartApp.Resources
         public static Dictionary<string, Color> ColorDictionary;
 
         public static StepsViewModel StepsViewModel;
+        public static SleepPageViewModel SleepViewModel;
 
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
@@ -36,6 +37,7 @@ namespace WindesHeartApp.Resources
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
             SamplesService = new SamplesService(heartrateRepository, stepsRepository, sleepRepository);
             StepsViewModel = new StepsViewModel(stepsRepository);
+            SleepViewModel = new SleepPageViewModel(sleepRepository);
             settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
             DevicePageViewModel = new DevicePageViewModel();
             homepageviewModel = new HomePageViewModel();

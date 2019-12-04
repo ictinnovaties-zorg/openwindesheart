@@ -29,12 +29,11 @@ namespace WindesHeartApp.Pages
         {
             InitializeComponent();
             BuildPage();
-
         }
 
         protected override void OnAppearing()
         {
-            Globals.StepsViewModel.InitOnAppearing();
+            Globals.StepsViewModel.OnApearing();
         }
 
         private void BuildPage()
