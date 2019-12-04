@@ -1,6 +1,7 @@
 ﻿using FormsControls.Base;
 using System;
 using WindesHeartApp.Resources;
+using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Image = Xamarin.Forms.Image;
@@ -21,6 +22,9 @@ namespace WindesHeartApp.Pages
         protected override void OnAppearing()
         {
             App.RequestLocationPermission();
+            if (Windesheart.ConnectedDevice != null)
+                Globals.homepageviewModel.ReadCurrentBattery();
+
         }
 
         private void BuildPage()
@@ -62,7 +66,7 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(heartrateImage);
             #endregion 
 
-            PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.7, 100, 100, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
+            PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.65, 100, 100, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
 
             PageBuilder.AddButton(absoluteLayout, "About", "AboutButtonCommand", 0.80, 0.90, 130, 130, 65, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             PageBuilder.AddButton(absoluteLayout, "Device", "DeviceButtonCommand", 0.80, 0.40, 130, 130, 65, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
