@@ -72,7 +72,6 @@ namespace WindesHeartApp.Pages
             interval60Button.BorderWidth = 1;
             interval60Button.BorderColor = Globals.heartrateviewModel.Interval == 60 ? Color.Black : Color.White;
             interval60Button.Clicked += async (s, e) => { OnIntervalLabelClicked(interval60Button); };
-
             #endregion
         }
 

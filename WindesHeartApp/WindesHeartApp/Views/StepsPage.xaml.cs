@@ -1,15 +1,9 @@
 ﻿using FormsControls.Base;
-using Microcharts;
 using Microcharts.Forms;
-using SkiaSharp;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using WindesHeartApp.Resources;
-using WindesHeartApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.Pages
 {
@@ -92,13 +86,13 @@ namespace WindesHeartApp.Pages
             Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(), "Day1Binding", 0.05, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
             Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(), "Day2Binding", 0.20, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
             Day3Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-4).DayOfWeek.ToString(), "Day3Binding", 0.35, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
-            Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(), "Day4Binding", 0.50, 0.85f 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(), "Day4Binding", 0.50, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
             Day5Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-2).DayOfWeek.ToString(), "Day5Binding", 0.65, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
             Day6Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-1).DayOfWeek.ToString(), "Day6Binding", 0.80, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
-            TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, 0,85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, 0.85f, 0.13, 0.1, 200, 11, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
             TodayButton.IsEnabled = false;
         }
-        
+
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
