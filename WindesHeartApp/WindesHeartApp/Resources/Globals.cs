@@ -32,7 +32,6 @@ namespace WindesHeartApp.Resources
         public static Dictionary<string, Color> ColorDictionary;
 
         public static StepsViewModel StepsViewModel;
-        public static int heartrateInterval;
         public static string DBPath;
 
         //ButtonSize : 10 being biggest, 100 being smallest. 
@@ -51,7 +50,6 @@ namespace WindesHeartApp.Resources
             StepsViewModel = new StepsViewModel(stepsRepository);
             settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
             DevicePageViewModel = new DevicePageViewModel();
-            heartrateInterval = 1;
             homepageviewModel = new HomePageViewModel();
             ColorDictionary = new Dictionary<string, Color>
             {

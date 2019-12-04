@@ -3,7 +3,6 @@ using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3Device.Helpers;
-using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Exceptions;
 
