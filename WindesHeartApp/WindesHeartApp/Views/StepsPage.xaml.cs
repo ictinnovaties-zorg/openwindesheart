@@ -64,11 +64,9 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
-            var previousBtn = PageBuilder.AddButton(absoluteLayout, "Previous", "PreviousDayBinding", 0.1, 0.15, 0.25, 0.07, AbsoluteLayoutFlags.All);
-            previousBtn.FontSize = 12;
+            var previousBtn = PageBuilder.AddButton(absoluteLayout, "Previous", "PreviousDayBinding", 0.1, 0.15, 0.25, 0.07, 0, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
 
-            var nextBtn = PageBuilder.AddButton(absoluteLayout, "Next", "NextDayBinding", 0.9, 0.15, 0.25, 0.07, AbsoluteLayoutFlags.All);
-            nextBtn.FontSize = 12;
+            var nextBtn = PageBuilder.AddButton(absoluteLayout, "Next", "NextDayBinding", 0.9, 0.15, 0.25, 0.07, 0, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
 
             CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black, "", 0);
             CurrentDayLabel.FontSize = 15;
@@ -100,13 +98,13 @@ namespace WindesHeartApp.Pages
         {
             DateTime today = DateTime.Now;
             float y = 0.85f;
-            Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(), "Day1Binding", 0.05, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(), "Day2Binding", 0.20, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day3Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-4).DayOfWeek.ToString(), "Day3Binding", 0.35, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(), "Day4Binding", 0.50, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day5Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-2).DayOfWeek.ToString(), "Day5Binding", 0.65, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            Day6Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-1).DayOfWeek.ToString(), "Day6Binding", 0.80, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
+            Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(), "Day1Binding", 0.05, y, 0.15, 0.1, 0, 0, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(), "Day2Binding", 0.20, y, 0.15, 0.1, 0, 0, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day3Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-4).DayOfWeek.ToString(), "Day3Binding", 0.35, y, 0.15, 0.1, 0, 0, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(), "Day4Binding", 0.50, y, 0.15, 0.1, 0, 0, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day5Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-2).DayOfWeek.ToString(), "Day5Binding", 0.65, y, 0.15, 0.1, 0, 0, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Day6Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-1).DayOfWeek.ToString(), "Day6Binding", 0.80, y, 0.15, 0.1, 0, 0, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, y, 0.15, 0.1, 0, 0, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
             TodayButton.IsEnabled = false;
         }
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };

@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
-using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -22,31 +21,7 @@ namespace WindesHeartApp.Services
         //OnHeartrateChange/Measurement
         public static void ChangeBattery(Battery battery)
         {
-            Console.WriteLine($"Batterypercentage is now: {battery.Status}");
-            Globals.homepageviewModel.Battery = battery.BatteryPercentage;
-            if (battery.Status == StatusEnum.Charging)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryCharging.png";
-                return;
-            }
-
-            if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";
-            }
-            else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryHalf.png";
-            }
-            else if (battery.BatteryPercentage >= 51 && battery.BatteryPercentage < 76)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
-            }
-            else if (battery.BatteryPercentage >= 76)
-            {
-                Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
-            }
-
+            Globals.homepageviewModel.UpdateBattery(battery);
         }
         public static void OnStepsUpdated(StepInfo stepsInfo)
         {
@@ -73,7 +48,6 @@ namespace WindesHeartApp.Services
                 Console.WriteLine("FAIL");
                 return;
             }
-            Application.Current.MainPage.Navigation.PopAsync();
         }
         //GUID SHOULD STILL BE SAVED, IN PROPERTIES
         //private void SaveDeviceInAppProperties(Guid guid)
