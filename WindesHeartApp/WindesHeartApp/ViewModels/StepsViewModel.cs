@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
+using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -49,7 +50,7 @@ namespace WindesHeartApp.ViewModels
         public async void InitOnAppearing()
         {
             //Get all steps from DB
-            StepInfo = await _stepsRepository.GetAllAsync();
+            StepInfo = await Globals.StepsRepository.GetAllAsync();
 
             //Update chart
             Step steps = GetCurrentSteps();
@@ -146,48 +147,58 @@ namespace WindesHeartApp.ViewModels
 
         private Step GetCurrentSteps()
         {
-            foreach (Step info in StepInfo)
+            if (StepInfo != null)
             {
-                //If the same day
-                if (info.DateTime.Year == SelectedDate.Year && info.DateTime.Month == SelectedDate.Month && info.DateTime.Day == SelectedDate.Day)
+                foreach (Step info in StepInfo)
                 {
-                    //we found our info!
-                    return info;
+                    //If the same day
+                    if (info.DateTime.Year == SelectedDate.Year && info.DateTime.Month == SelectedDate.Month &&
+                        info.DateTime.Day == SelectedDate.Day)
+                    {
+                        //we found our info!
+                        return info;
+                    }
                 }
+
+                return null;
             }
+
             return null;
         }
 
         public void UpdateChart(int stepCount)
         {
-            List<Entry> entries = new List<Entry>();
-
-            float percentageDone = (float)stepCount / 2000;
-
-            //Add part done
-            entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
-
-            //Update labels
-            StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
-
-            double kilometers = (double)stepCount / 1000;
-            StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
-
-            StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
-
-            //If goal not reached, fill other part transparent
-            if (percentageDone < 1)
+            if (stepCount != null)
             {
-                float percentageLeft = 1 - percentageDone;
-                entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
+                List<Entry> entries = new List<Entry>();
+
+                float percentageDone = (float)stepCount / 2000;
+
+                //Add part done
+                entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
+
+                //Update labels
+                StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
+
+                double kilometers = (double)stepCount / 1000;
+                StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
+
+                StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
+
+                //If goal not reached, fill other part transparent
+                if (percentageDone < 1)
+                {
+                    float percentageLeft = 1 - percentageDone;
+                    entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
+                }
+
+                Chart = new DonutChart
+                {
+                    Entries = entries,
+                    BackgroundColor = SKColors.Transparent,
+                    HoleRadius = 0.7f
+                };
             }
-
-            Chart = new DonutChart
-            {
-                Entries = entries,
-                BackgroundColor = SKColors.Transparent,
-                HoleRadius = 0.7f
-            };
         }
 
         private void NextDayBtnClick(object obj)

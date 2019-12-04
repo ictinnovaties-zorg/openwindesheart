@@ -181,7 +181,7 @@ namespace WindesHeartApp.ViewModels
         {
             Interval = interval;
             var heartrates = await _heartrateRepository.GetAllAsync();
-            if (heartrates != null)
+            if (heartrates.Count() != 0)
             {
                 var list = heartrates.ToList();
                 var count = list.Count;
