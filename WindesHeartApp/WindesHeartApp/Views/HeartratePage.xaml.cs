@@ -20,6 +20,12 @@ namespace WindesHeartApp.Pages
             BuildPage();
         }
 
+        protected override void OnAppearing()
+        {
+            Globals.heartrateviewModel.InitChart();
+            Globals.heartrateviewModel.InitLabels();
+        }
+
         private void BuildPage()
         {
             absoluteLayout = new AbsoluteLayout();

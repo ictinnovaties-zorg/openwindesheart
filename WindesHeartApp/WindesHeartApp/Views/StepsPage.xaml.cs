@@ -28,13 +28,13 @@ namespace WindesHeartApp.Pages
         public StepsPage()
         {
             InitializeComponent();
-        }
-
-        protected override async void OnAppearing()
-        {
             BuildPage();
 
-            Globals.StepsViewModel.OnAppearing();
+        }
+
+        protected override void OnAppearing()
+        {
+            Globals.StepsViewModel.InitOnAppearing();
         }
 
         private void BuildPage()

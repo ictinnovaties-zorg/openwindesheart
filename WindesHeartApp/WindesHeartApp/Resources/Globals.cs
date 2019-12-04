@@ -15,7 +15,6 @@ namespace WindesHeartApp.Resources
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel homepageviewModel;
         public static SettingsPageViewmodel settingspageviewModel;
-
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
         public static Color PrimaryColor { get; set; } = Color.FromHex("#96d1ff");

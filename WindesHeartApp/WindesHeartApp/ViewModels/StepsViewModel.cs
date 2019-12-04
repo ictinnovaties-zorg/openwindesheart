@@ -7,10 +7,6 @@ using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
-using WindesHeartApp.Resources;
-using WindesHeartApp.Services;
-using WindesHeartSDK;
-using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -43,16 +39,17 @@ namespace WindesHeartApp.ViewModels
         public Chart Chart
         {
             get => _chart;
-            set {
+            set
+            {
                 _chart = value;
                 OnPropertyChanged();
             }
         }
 
-        public async void OnAppearing()
+        public async void InitOnAppearing()
         {
             //Get all steps from DB
-            StepInfo = await Globals.StepsRepository.GetAllAsync();
+            StepInfo = await _stepsRepository.GetAllAsync();
 
             //Update chart
             Step steps = GetCurrentSteps();
@@ -176,7 +173,7 @@ namespace WindesHeartApp.ViewModels
             double kilometers = (double)stepCount / 1000;
             StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
 
-            StepsPage.KcalLabel.Text = ((double)(stepCount/20)/1000) + " Kcal";
+            StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
 
             //If goal not reached, fill other part transparent
             if (percentageDone < 1)
