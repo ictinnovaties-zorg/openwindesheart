@@ -60,6 +60,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             }
         }
 
+        public async void SetFitnessGoal(int goal)
+        {
+            var fitnessGoal = new byte[] { 0x5, 0, (byte)(goal & 0xff), (byte)(((uint) goal >> 8) & 0xff) };
+            await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(fitnessGoal);
+        }
+
         /// <summary>
         /// Set permanent activate on wrist lift. true for enable. false for disable
         /// </summary>

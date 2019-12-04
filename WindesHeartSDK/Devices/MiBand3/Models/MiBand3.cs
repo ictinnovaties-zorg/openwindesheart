@@ -52,6 +52,11 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             _configurationService.SetTimeDisplayUnit(is24Hours);
         }
 
+        public override void SetFitnessGoal(int goal)
+        {
+            _configurationService.SetFitnessGoal(goal);
+        }
+
         public override void SetDateDisplayFormat(bool isddMMYYYY)
         {
             _configurationService.SetDateDisplayUnit(isddMMYYYY);

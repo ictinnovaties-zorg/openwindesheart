@@ -39,6 +39,8 @@ namespace WindesHeartSDK
         
         public abstract void OnConnect();
         public abstract void Connect(Action<ConnectionResult> callback);
+
+        public abstract void SetFitnessGoal(int goal);
         public abstract void Disconnect(bool rememberDevice = true);
         public abstract void SetTimeDisplayUnit(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);

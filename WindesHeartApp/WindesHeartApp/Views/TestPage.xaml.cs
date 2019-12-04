@@ -211,6 +211,7 @@ namespace WindesHeartApp.Pages
             Windesheart.ConnectedDevice.SetDateDisplayFormat(is24hour);
             Windesheart.ConnectedDevice.SetTimeDisplayUnit(is24hour);
             Windesheart.ConnectedDevice.SetActivateOnLiftWrist(is24hour);
+            Windesheart.ConnectedDevice.SetFitnessGoal(1000);
             if (is24hour)
             {
                 Windesheart.ConnectedDevice.SetLanguage("nl-NL");
