@@ -18,7 +18,7 @@ namespace WindesHeartApp.ViewModels
         private int _heartrate;
         private readonly IHeartrateRepository _heartrateRepository;
         private int _averageHeartrate;
-        private int _interval;
+        public int Interval;
         private int _peakHeartrate;
         public DateTime _dateTime;
         private Chart _chart;
@@ -146,7 +146,7 @@ namespace WindesHeartApp.ViewModels
 
         public int Heartrate
         {
-            get { return _heartrate; }
+            get => _heartrate;
             set
             {
                 _heartrate = value;
@@ -156,7 +156,7 @@ namespace WindesHeartApp.ViewModels
 
         public int AverageHeartrate
         {
-            get { return _averageHeartrate; }
+            get => _averageHeartrate;
             set
             {
                 _averageHeartrate = value;
@@ -167,7 +167,7 @@ namespace WindesHeartApp.ViewModels
 
         public int PeakHeartrate
         {
-            get { return _peakHeartrate; }
+            get => _peakHeartrate;
             set
             {
                 _peakHeartrate = value;
@@ -176,26 +176,20 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        public string AverageLabelText
-        {
-            get { return $"Average heartrate of last 12 hours: {AverageHeartrate.ToString()}"; }
-        }
+        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate of last 12 hours: {AverageHeartrate.ToString()}" : "";
 
-        public string PeakHeartrateText
-        {
-            get { return $"Your peak heartrate of the last 12 hours: {PeakHeartrate.ToString()}"; }
-        }
+        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Your peak heartrate of the last 12 hours: {PeakHeartrate.ToString()}" : "";
 
         public async void UpdateInterval(int interval)
         {
-            _interval = interval;
+            Interval = interval;
             var heartrates = await _heartrateRepository.GetHeartRatesAsync();
             var list = heartrates.ToList();
             var count = list.Count;
             var result = new List<Entry>();
             for (int i = 0; i < count; i++)
             {
-                if ((i % _interval) == 0)
+                if ((i % Interval) == 0)
                 {
                     var heartrate = list[i];
                     result.Add(new Entry(heartrate.HeartrateValue)

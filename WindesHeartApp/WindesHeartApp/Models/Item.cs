@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WindesHeartApp.Models
+﻿namespace WindesHeartApp.Models
 {
     public class Item
     {

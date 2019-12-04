@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -66,13 +67,13 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.StatusText = "Connected";
                 Globals.DevicePageViewModel.IsLoading = false;
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
-
             }
             else if (result == ConnectionResult.Failed)
             {
                 Console.WriteLine("FAIL");
+                return;
             }
-
+            Application.Current.MainPage.Navigation.PopAsync();
         }
         //GUID SHOULD STILL BE SAVED, IN PROPERTIES
         //private void SaveDeviceInAppProperties(Guid guid)

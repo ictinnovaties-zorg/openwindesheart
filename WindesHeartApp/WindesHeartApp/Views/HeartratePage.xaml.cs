@@ -10,6 +10,10 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HeartratePage : ContentPage, IAnimationPage
     {
+        public Button interval15Button;
+        public Button interval30Button;
+        public Button interval45Button;
+        public Button interval60Button;
         public HeartratePage()
         {
             InitializeComponent();
@@ -42,40 +46,82 @@ namespace WindesHeartApp.Pages
 
             absoluteLayout.Children.Add(chart);
 
-            var averageHeartrateLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.65, Color.Black, "AverageLabelText", 0);
+            var averageHeartrateLabel =
+                PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.65, Color.Black, "AverageLabelText", 0);
             averageHeartrateLabel.FontSize = 20;
 
-            var peakHeartrateLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.73, Color.Black, "PeakHeartrateText", 0);
+            var peakHeartrateLabel =
+                PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.73, Color.Black, "PeakHeartrateText", 0);
             peakHeartrateLabel.FontSize = 20;
 
             #region heartrateinterval selector
-            BoxView circle = new BoxView();
-            circle.WidthRequest = 100;
-            circle.HeightRequest = 100;
-            circle.CornerRadius = 50;
-            circle.BackgroundColor = Color.Orange;
-            circle.Color = Color.Blue;
-            absoluteLayout.Children.Add(circle);
-            AbsoluteLayout.SetLayoutBounds(circle, new Rectangle(0.20, 0.85, 100, 100));
-            AbsoluteLayout.SetLayoutFlags(circle, AbsoluteLayoutFlags.PositionProportional);
+            Image heartonlyImage2 = new Image { Source = "HeartOnlyTransparent.png" };
+            AbsoluteLayout.SetLayoutFlags(heartonlyImage2, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(heartonlyImage2, new Rectangle(0.20, 0.80, 50, 50));
+            PageBuilder.AddLabel(absoluteLayout, "Interval", 0.40, 0.80, Color.Black, "", 12);
 
-            var intervalLabel1 = PageBuilder.AddLabel(absoluteLayout, "15", 0.20, 0.85, Color.Black, "", 15);
-            intervalLabel1.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnIntervalLabelClicked(intervalLabel1)));
-            var intervalLabel2 = PageBuilder.AddLabel(absoluteLayout, "30", 0.40, 0.85, Color.Black, "", 15);
-            intervalLabel2.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnIntervalLabelClicked(intervalLabel2)));
-            var intervalLabel3 = PageBuilder.AddLabel(absoluteLayout, "45", 0.60, 0.85, Color.Black, "", 15);
-            intervalLabel3.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnIntervalLabelClicked(intervalLabel3)));
-            var intervalLabel4 = PageBuilder.AddLabel(absoluteLayout, "60", 0.80, 0.85, Color.Black, "", 15);
-            intervalLabel4.GestureRecognizers.Add(new TapGestureRecognizer((view) => OnIntervalLabelClicked(intervalLabel4)));
+            interval15Button = PageBuilder.AddButton(absoluteLayout, "15", "", 0.20, 0.90, 50, 50,
+                AbsoluteLayoutFlags.PositionProportional);
+            interval15Button.GestureRecognizers.Add(new TapGestureRecognizer(view => { OnIntervalLabelClicked(interval15Button); }));
+            interval15Button.CornerRadius = 25;
+            interval15Button.BorderWidth = 1;
+            interval30Button = PageBuilder.AddButton(absoluteLayout, "30", "", 0.40, 0.90, 50, 50,
+                AbsoluteLayoutFlags.PositionProportional);
+            interval30Button.GestureRecognizers.Add(new TapGestureRecognizer(view => { OnIntervalLabelClicked(interval30Button); }));
+            interval30Button.CornerRadius = 25;
+            interval30Button.BorderWidth = 1;
+            interval45Button = PageBuilder.AddButton(absoluteLayout, "40", "", 0.60, 0.90, 50, 50,
+                AbsoluteLayoutFlags.PositionProportional);
+            interval45Button.GestureRecognizers.Add(new TapGestureRecognizer(view => { OnIntervalLabelClicked(interval45Button); }));
+            interval45Button.CornerRadius = 25;
+            interval45Button.BorderWidth = 1;
+            interval60Button = PageBuilder.AddButton(absoluteLayout, "60", "", 0.80, 0.90, 50, 50,
+               AbsoluteLayoutFlags.PositionProportional);
+            interval60Button.BorderWidth = 1;
+            interval60Button.GestureRecognizers.Add(new TapGestureRecognizer(view => { OnIntervalLabelClicked(interval60Button); }));
+            interval60Button.CornerRadius = 25;
+
+            switch (Globals.heartrateviewModel.Interval)
+            {
+                case 15:
+                    interval15Button.BorderColor = Color.Black;
+                    interval30Button.BorderColor = Color.White;
+                    interval45Button.BorderColor = Color.White;
+                    interval60Button.BorderColor = Color.White;
+                    break;
+                case 30:
+                    interval15Button.BorderColor = Color.White;
+                    interval30Button.BorderColor = Color.Black;
+                    interval45Button.BorderColor = Color.White;
+                    interval60Button.BorderColor = Color.White;
+                    break;
+                case 45:
+                    interval15Button.BorderColor = Color.White;
+                    interval30Button.BorderColor = Color.White;
+                    interval45Button.BorderColor = Color.Black;
+                    interval60Button.BorderColor = Color.White;
+                    break;
+                case 60:
+                    interval15Button.BorderColor = Color.White;
+                    interval30Button.BorderColor = Color.White;
+                    interval45Button.BorderColor = Color.White;
+                    interval60Button.BorderColor = Color.Black;
+                    break;
+            }
             #endregion
         }
 
-        private async void OnIntervalLabelClicked(Label intervalLabel)
+        private async void OnIntervalLabelClicked(Button intervalLabel)
         {
+            interval15Button.BorderColor = Color.White;
+            interval30Button.BorderColor = Color.White;
+            interval45Button.BorderColor = Color.White;
+            interval60Button.BorderColor = Color.White;
+            intervalLabel.BorderColor = Color.Black;
+
             var interval = Convert.ToInt32(intervalLabel.Text);
             await DisplayAlert("Heartrate", $"Changed heartrate measurement interval to {interval}", "OK");
             Globals.heartrateviewModel.UpdateInterval(interval);
-
         }
 
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation
