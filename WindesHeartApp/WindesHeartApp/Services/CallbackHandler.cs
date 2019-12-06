@@ -39,19 +39,13 @@ namespace WindesHeartApp.Services
         {
             if (result == ConnectionResult.Succeeded)
             {
-                Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(5);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
-<<<<<<< HEAD
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-
-=======
->>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
                 Windesheart.ConnectedDevice.EnableSleepTracking(true);
                 Windesheart.ConnectedDevice.SetActivateOnLiftWrist(true);
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
-                Windesheart.ConnectedDevice.SetActivateOnLiftWrist(true);
                 Globals.DevicePageViewModel.StatusText = "Connected";
                 Globals.DevicePageViewModel.IsLoading = false;
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
@@ -69,19 +63,6 @@ namespace WindesHeartApp.Services
             {
                 Debug.WriteLine("FAIL");
                 return;
-            }
-        }
-
-        private static void SaveDeviceInAppProperties(Guid guid)
-        {
-            if (guid != Guid.Empty)
-            {
-                if (App.Current.Properties.ContainsKey(_key))
-                {
-                    App.Current.Properties.Remove(_key);
-                }
-
-                App.Current.Properties.Add(_key, guid);
             }
         }
     }
