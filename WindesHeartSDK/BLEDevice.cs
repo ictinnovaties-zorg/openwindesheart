@@ -40,7 +40,7 @@ namespace WindesHeartSDK
         public abstract void OnConnect();
         public abstract void Connect(Action<ConnectionResult> callback);
         public abstract void Disconnect(bool rememberDevice = true);
-        public abstract void SetTimeDisplayUnit(bool is24hours);
+        public abstract void SetTimeDisplayFormat(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
         public abstract void SetLanguage(string localeString);
         public abstract bool SetTime(DateTime dateTime);

@@ -3,6 +3,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
@@ -28,8 +29,6 @@ namespace WindesHeartApp.ViewModels
         public Command Day5Binding { get; }
         public Command Day6Binding { get; }
         public Command TodayBinding { get; }
-        public Command GetStepsBinding { get; }
-        public Command ToggleRealTimeStepsBinding { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,7 +45,7 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        public async void InitOnAppearing()
+        public async void OnAppearing()
         {
             //Get all steps from DB
             StepInfo = await _stepsRepository.GetAllAsync();
@@ -81,9 +80,9 @@ namespace WindesHeartApp.ViewModels
 
         private void PreviousDayBtnClick(object obj)
         {
-            Console.WriteLine("Previous day clicked!");
+            Debug.WriteLine("Previous day clicked!");
             SelectedDate = SelectedDate.AddDays(-1);
-            Console.WriteLine(SelectedDate);
+            Debug.WriteLine(SelectedDate);
 
             if (!StepsPage.Day1Button.IsEnabled)
             {
@@ -207,7 +206,7 @@ namespace WindesHeartApp.ViewModels
             {
                 SelectedDate = SelectedDate.AddDays(1);
             }
-            Console.WriteLine(SelectedDate);
+            Debug.WriteLine(SelectedDate);
 
             //Set right day button selected
             if (!StepsPage.Day1Button.IsEnabled)

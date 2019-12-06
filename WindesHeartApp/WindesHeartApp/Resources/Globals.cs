@@ -25,6 +25,7 @@ namespace WindesHeartApp.Resources
         public static float DailyStepsGoal { get; internal set; }
 
         public static Dictionary<string, Color> ColorDictionary;
+        public static Dictionary<string, string> FormatDictionary;
 
         public static StepsViewModel StepsViewModel;
 
@@ -51,6 +52,12 @@ namespace WindesHeartApp.Resources
                 { "Purple", Color.Purple }, { "Red", Color.Red },
                 { "Silver", Color.Silver }, { "Teal", Color.Teal },
                 { "White", Color.White }, { "Yellow", Color.Yellow }
+            };
+            FormatDictionary = new Dictionary<string, string>
+            {
+                {"NL", "nl-NL"},
+                {"EN", "en-EN"},
+                {"DU", "du-DU"}
             };
         }
 

@@ -47,7 +47,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             BluetoothService.Disconnect(rememberDevice);
         }
 
-        public override void SetTimeDisplayUnit(bool is24Hours)
+        public override void SetTimeDisplayFormat(bool is24Hours)
         {
             _configurationService.SetTimeDisplayUnit(is24Hours);
         }

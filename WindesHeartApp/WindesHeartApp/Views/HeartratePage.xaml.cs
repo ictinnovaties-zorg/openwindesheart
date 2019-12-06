@@ -21,10 +21,9 @@ namespace WindesHeartApp.Pages
             BuildPage();
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
-            await Globals.heartrateviewModel.InitChart();
-            await Globals.heartrateviewModel.InitLabels();
+            Globals.heartrateviewModel.OnAppearing();
         }
 
 
