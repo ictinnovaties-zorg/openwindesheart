@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
-using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
@@ -24,17 +23,13 @@ namespace WindesHeartApp.ViewModels
         public DateTime _dateTime;
         private Chart _chart;
         public event PropertyChangedEventHandler PropertyChanged;
-        public Command NextDayBinding { get; set; }
-        public Command PreviousDayBinding { get; set; }
 
         public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
         {
             _heartrateRepository = heartrateRepository;
-            NextDayBinding = new Command(NextDayBtnClick);
-            PreviousDayBinding = new Command(PreviousDayBtnClick);
         }
 
-        private async void PreviousDayBtnClick(object obj)
+        public async void PreviousDayBtnClick(object sender, EventArgs args)
         {
             _dateTime = _dateTime.AddHours(-24);
             var heartrates = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime > _dateTime);
@@ -62,7 +57,7 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        private async void NextDayBtnClick(object obj)
+        public async void NextDayBtnClick(object sender, EventArgs args)
         {
             //checks for null data
             _dateTime = _dateTime.AddHours(24);

@@ -20,16 +20,6 @@ namespace WindesHeartApp.ViewModels
         public DateTime SelectedDate;
         private ISleepRepository _sleepRepository;
 
-        public Command NextDayBinding { get; }
-        public Command PreviousDayBinding { get; }
-        public Command Day1Binding { get; }
-        public Command Day2Binding { get; }
-        public Command Day3Binding { get; }
-        public Command Day4Binding { get; }
-        public Command Day5Binding { get; }
-        public Command Day6Binding { get; }
-        public Command TodayBinding { get; }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static IEnumerable<Sleep> SleepInfo = new List<Sleep>();
@@ -38,7 +28,10 @@ namespace WindesHeartApp.ViewModels
         public string LightColor = "#1281ff";
         public string DeepColor = "#002bba";
 
+        private ButtonRow _buttonRow;
+
         private Chart _chart;
+
         public Chart Chart
         {
             get => _chart;
@@ -56,6 +49,19 @@ namespace WindesHeartApp.ViewModels
 
             //Update chart
             UpdateChart();
+
+            //Init buttons on bottom
+            List<Button> dayButtons = new List<Button>
+            {
+                SleepPage.Day1Button,
+                SleepPage.Day2Button,
+                SleepPage.Day3Button,
+                SleepPage.Day4Button,
+                SleepPage.Day5Button,
+                SleepPage.Day6Button,
+                SleepPage.TodayButton
+            };
+            _buttonRow = new ButtonRow(dayButtons);
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")
@@ -68,62 +74,9 @@ namespace WindesHeartApp.ViewModels
             _sleepRepository = sleepRepository;
             StartDate = DateTime.Today;
             SelectedDate = StartDate;
-
-            NextDayBinding = new Command(NextDayBtnClick);
-            PreviousDayBinding = new Command(PreviousDayBtnClick);
-            Day1Binding = new Command(Day1BtnClick);
-            Day2Binding = new Command(Day2BtnClick);
-            Day3Binding = new Command(Day3BtnClick);
-            Day4Binding = new Command(Day4BtnClick);
-            Day5Binding = new Command(Day5BtnClick);
-            Day6Binding = new Command(Day6BtnClick);
-            TodayBinding = new Command(TodayBtnClick);
         }
 
-        private void PreviousDayBtnClick(object obj)
-        {
-            Console.WriteLine("Previous day clicked!");
-            SelectedDate = SelectedDate.AddDays(-1);
-            Console.WriteLine(SelectedDate);
-
-            if (!SleepPage.Day1Button.IsEnabled)
-            {
-                SleepPage.Day1Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day2Button.IsEnabled)
-            {
-                SleepPage.Day1Button.IsEnabled = false;
-                SleepPage.Day2Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day3Button.IsEnabled)
-            {
-                SleepPage.Day2Button.IsEnabled = false;
-                SleepPage.Day3Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day4Button.IsEnabled)
-            {
-                SleepPage.Day3Button.IsEnabled = false;
-                SleepPage.Day4Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day5Button.IsEnabled)
-            {
-                SleepPage.Day4Button.IsEnabled = false;
-                SleepPage.Day5Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day6Button.IsEnabled)
-            {
-                SleepPage.Day5Button.IsEnabled = false;
-                SleepPage.Day6Button.IsEnabled = true;
-            }
-            else if (!SleepPage.TodayButton.IsEnabled)
-            {
-                SleepPage.Day6Button.IsEnabled = false;
-                SleepPage.TodayButton.IsEnabled = true;
-            }
-            UpdateDay();
-        }
-
-        private void UpdateDay()
+        private void UpdateInfo()
         {
             if (SelectedDate == StartDate)
             {
@@ -210,123 +163,87 @@ namespace WindesHeartApp.ViewModels
             };
         }
 
-        private void NextDayBtnClick(object obj)
+        public void PreviousDayBtnClick(object sender, EventArgs args)
         {
-            //Dont go in the future
-            if (SelectedDate < StartDate)
+            Console.WriteLine("Previous day clicked!");
+
+            //You can always go back
+            _buttonRow.ToPrevious();
+            SelectedDate = SelectedDate.AddDays(-1);
+            UpdateInfo();
+        }
+
+        public void NextDayBtnClick(object sender, EventArgs args)
+        {
+            //If already today, you cant go next
+            if (_buttonRow.ToNext())
             {
                 SelectedDate = SelectedDate.AddDays(1);
+                UpdateInfo();
             }
-            Console.WriteLine(SelectedDate);
-
-            //Set right day button selected
-            if (!SleepPage.Day1Button.IsEnabled)
-            {
-                SleepPage.Day2Button.IsEnabled = false;
-                SleepPage.Day1Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day2Button.IsEnabled)
-            {
-                SleepPage.Day3Button.IsEnabled = false;
-                SleepPage.Day2Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day3Button.IsEnabled)
-            {
-                SleepPage.Day4Button.IsEnabled = false;
-                SleepPage.Day3Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day4Button.IsEnabled)
-            {
-                SleepPage.Day5Button.IsEnabled = false;
-                SleepPage.Day4Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day5Button.IsEnabled)
-            {
-                SleepPage.Day6Button.IsEnabled = false;
-                SleepPage.Day5Button.IsEnabled = true;
-            }
-            else if (!SleepPage.Day6Button.IsEnabled)
-            {
-                SleepPage.TodayButton.IsEnabled = false;
-                SleepPage.Day6Button.IsEnabled = true;
-            }
-            else if (!SleepPage.TodayButton.IsEnabled)
-            {
-                SleepPage.TodayButton.IsEnabled = false;
-            }
-            else
-            {
-                //If SelectedDate is at 6 days back again
-                if (SelectedDate == StartDate.AddDays(-6))
-                {
-                    SleepPage.Day1Button.IsEnabled = false;
-                }
-            }
-            UpdateDay();
         }
 
-        private void TodayBtnClick(object obj)
+        public void TodayBtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate;
-            SetDayEnabled(SleepPage.TodayButton);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
-        private void Day6BtnClick(object obj)
+        public void Day6BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-1);
-            SetDayEnabled(SleepPage.Day6Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
-        private void Day5BtnClick(object obj)
+        public void Day5BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-2);
-            SetDayEnabled(SleepPage.Day5Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
-        private void Day4BtnClick(object obj)
+        public void Day4BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-3);
-            SetDayEnabled(SleepPage.Day4Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
-        private void Day3BtnClick(object obj)
+        public void Day3BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-4);
-            SetDayEnabled(SleepPage.Day3Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
-        private void SetDayEnabled(Button button)
-        {
-            //First, enable all buttons
-            SleepPage.Day1Button.IsEnabled = true;
-            SleepPage.Day2Button.IsEnabled = true;
-            SleepPage.Day3Button.IsEnabled = true;
-            SleepPage.Day4Button.IsEnabled = true;
-            SleepPage.Day5Button.IsEnabled = true;
-            SleepPage.Day6Button.IsEnabled = true;
-            SleepPage.TodayButton.IsEnabled = true;
-
-            //Then disable the selected Day
-            button.IsEnabled = false;
-        }
-
-        private void Day2BtnClick(object obj)
+        public void Day2BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-5);
-            SetDayEnabled(SleepPage.Day2Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
-        private void Day1BtnClick(object obj)
+        public void Day1BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-6);
-            SetDayEnabled(SleepPage.Day1Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
     }
 }

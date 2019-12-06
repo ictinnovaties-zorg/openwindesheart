@@ -24,7 +24,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
-            Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", "ScanButtonCommand", 0.15, 0.25, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor); PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
+            Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", Globals.DevicePageViewModel.ScanButtonClicked, 0.15, 0.25, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor); PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
 
             PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
 
@@ -66,7 +66,7 @@ namespace WindesHeartApp.Pages
             #endregion
 
             #region disconnectButton
-            Button disconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", "DisconnectButtonCommand", 0.15, 0.85, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Button disconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", Globals.DevicePageViewModel.DisconnectButtonClicked, 0.15, 0.85, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             #endregion
 
         }
