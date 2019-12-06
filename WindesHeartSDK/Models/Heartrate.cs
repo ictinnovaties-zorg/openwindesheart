@@ -12,7 +12,7 @@ namespace WindesHeartSDK.Models
         public Heartrate(byte[] rawdata)
         {
             {
-                if (rawdata != null && rawdata[0] != 0)
+                if (rawdata == null && rawdata[0] == 0)
                 {
                     throw new ReadException("Error while reading raw heartrate data");
                 }

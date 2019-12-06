@@ -1,7 +1,7 @@
 ﻿using FormsControls.Base;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
@@ -68,53 +68,41 @@ namespace WindesHeartApp.Pages
                 {
                     App.Current.Properties.TryGetValue(key, out object result);
                     var device = await Windesheart.GetKnownDevice((Guid)result);
-                    device?.Connect(ConnectionCallBack);
+                    device?.Connect(CallbackHandler.OnConnetionCallBack);
                 }
                 else
                 {
                     bool isScanning = Windesheart.StartScanning(WhenDeviceFound);
                     if (!isScanning)
                     {
-                        Console.WriteLine("Can't start scanning... Bluetooth adapter not ready?");
+                        Trace.WriteLine("Can't start scanning... Bluetooth adapter not ready?");
                     }
                 }
             }
             catch (Exception r)
             {
-                Console.WriteLine(r.Message);
+                Trace.WriteLine(r.Message);
             }
         }
 
 
         private void WhenDeviceFound(BLEDevice device)
         {
-            Console.WriteLine("Device found! Connecting...");
+            Trace.WriteLine("Device found! Connecting...");
             Windesheart.StopScanning();
-            device.Connect(ConnectionCallBack);
-        }
-
-        public void ConnectionCallBack(ConnectionResult result)
-        {
-            switch (result)
-            {
-                case ConnectionResult.Succeeded:
-                    Console.WriteLine("WORKS!");
-                    break;
-                case ConnectionResult.Failed:
-                    Console.WriteLine("FAILED!");
-                    break;
-            }
+            device.Connect(CallbackHandler.OnConnetionCallBack);
         }
 
         private void Disconnect(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.Disconnect(false);
+            if (Windesheart.ConnectedDevice != null)
+                Windesheart.ConnectedDevice.Disconnect(false);
         }
 
         private async void ReadCurrentBattery(object sender, EventArgs e)
         {
             var battery = await Windesheart.ConnectedDevice.GetBattery();
-            Console.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+            Trace.WriteLine("Battery: " + battery.BatteryPercentage + "%");
             Globals.homepageviewModel.Battery = battery.BatteryPercentage;
             if (battery.Status == StatusEnum.Charging)
             {
@@ -142,13 +130,13 @@ namespace WindesHeartApp.Pages
         private void SetTime(object sender, EventArgs e)
         {
             bool timeset = Windesheart.ConnectedDevice.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
-            Console.WriteLine("Time set " + timeset);
+            Trace.WriteLine("Time set " + timeset);
         }
 
         private void SetCurrentTime(object sender, EventArgs e)
         {
             bool timeset = Windesheart.ConnectedDevice.SetTime(DateTime.Now);
-            Console.WriteLine("Time set " + timeset);
+            Trace.WriteLine("Time set " + timeset);
         }
 
         private void ReadBatteryContinuous(object sender, EventArgs e)
@@ -165,38 +153,38 @@ namespace WindesHeartApp.Pages
         public async void GetSteps(object sender, EventArgs e)
         {
             StepInfo steps = await Windesheart.ConnectedDevice.GetSteps();
-            Console.WriteLine("Steps: " + steps.StepCount);
+            Trace.WriteLine("Steps: " + steps.StepCount);
         }
 
         public void EnableRealTimeSteps(object sender, EventArgs e)
         {
             Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsChanged);
-            Console.WriteLine("Enabled realtime steps");
+            Trace.WriteLine("Enabled realtime steps");
         }
 
         public void DisableRealTimeSteps(object sender, EventArgs e)
         {
             Windesheart.ConnectedDevice.DisableRealTimeSteps();
-            Console.WriteLine("Disabled realtime steps");
+            Trace.WriteLine("Disabled realtime steps");
         }
 
         public void OnStepsChanged(StepInfo steps)
         {
-            Console.WriteLine("Steps updated: " + steps.StepCount);
+            Trace.WriteLine("Steps updated: " + steps.StepCount);
         }
 
         public void FetchData(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-10), HandleActivityData);
+            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-1), HandleActivityData);
         }
 
         private void HandleActivityData(List<ActivitySample> samples)
         {
-            Console.WriteLine("Samples found! Here they come:");
+            Trace.WriteLine("Samples found! Here they come:");
 
             foreach (ActivitySample sample in samples)
             {
-                Console.WriteLine(sample.ToString());
+                Debug.WriteLine(sample.ToString());
             }
         }
 

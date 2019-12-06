@@ -1,59 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using WindesHeartApp.Data.Repository;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Services;
 using WindesHeartApp.ViewModels;
-using WindesHeartSDK;
 using Xamarin.Forms;
 
 namespace WindesHeartApp.Resources
 {
     public static class Globals
     {
-        public static BLEDevice device;
         public static HeartRatePageViewModel heartrateviewModel;
-
         public static SamplesService SamplesService { get; private set; }
-        public static IHeartrateRepository HeartrateRepository { get; private set; }
 
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel homepageviewModel;
         public static SettingsPageViewmodel settingspageviewModel;
-
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
         public static Color PrimaryColor { get; set; } = Color.FromHex("#96d1ff");
         public static Color SecondaryColor { get; set; } = Color.FromHex("#53b1ff");
         public static Color LightTextColor { get; set; } = Color.FromHex("#999999");
-        public static double ButtonSize { get; set; }
-        public static double ScreenRatioFactor { get; set; }
-        public static double ButtonFontSize { get; set; }
-        public static double CornerRadius { get; set; }
         public static IStepsRepository StepsRepository { get; set; }
         public static float DailyStepsGoal { get; internal set; }
 
         public static Dictionary<string, Color> ColorDictionary;
 
         public static StepsViewModel StepsViewModel;
-        public static int heartrateInterval;
-        public static string DBPath;
 
-        //ButtonSize : 10 being biggest, 100 being smallest. 
-        //ButtonFontSize : 2-10, 10 being smallest, 2 being largest.
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
             DailyStepsGoal = 1000;
-            ButtonSize = 20;
-            ButtonSize = 20;
-            ButtonFontSize = 4;
 
             StepsRepository = stepsRepository;
 
-            CornerRadius = ((ScreenHeight / 10 * 1) - ButtonSize);
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
-            SamplesService = new SamplesService(heartrateRepository, stepsRepository, sleepRepository);
-            HeartrateRepository = heartrateRepository;
+            SamplesService = new SamplesService(heartrateRepository, StepsRepository, sleepRepository);
             StepsViewModel = new StepsViewModel(stepsRepository);
             settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
             DevicePageViewModel = new DevicePageViewModel();
