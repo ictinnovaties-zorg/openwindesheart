@@ -62,6 +62,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(handleActivityChar);
 
             _givenDate = date;
+
+
             // Write the date and time from which to receive samples to the Mi Band
             await WriteDateBytes(date);
         }
@@ -101,6 +103,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 if (result.Data.Length > 3)
                 {
                     _expectedSamples = result.Data[5] << 16 | result.Data[4] << 8 | result.Data[3];
+                    if(_expectedSamples == 0)
+                    {
+                        _callback(_samples);
+                        return;
+                    }
                     Trace.WriteLine("Expected Samples: " + _expectedSamples);
                 }
 
