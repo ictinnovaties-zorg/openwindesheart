@@ -33,7 +33,7 @@ namespace WindesHeartApp.Services
             if (result == ConnectionResult.Succeeded)
             {
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-                Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
+                Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(5);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
