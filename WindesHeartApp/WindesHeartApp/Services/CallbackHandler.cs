@@ -42,8 +42,11 @@ namespace WindesHeartApp.Services
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(5);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
+<<<<<<< HEAD
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
 
+=======
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
                 Windesheart.ConnectedDevice.EnableSleepTracking(true);
                 Windesheart.ConnectedDevice.SetActivateOnLiftWrist(true);

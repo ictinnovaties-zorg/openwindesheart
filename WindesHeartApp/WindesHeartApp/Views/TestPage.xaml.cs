@@ -75,20 +75,32 @@ namespace WindesHeartApp.Pages
                     bool isScanning = Windesheart.StartScanning(WhenDeviceFound);
                     if (!isScanning)
                     {
+<<<<<<< HEAD
                         Debug.WriteLine("Can't start scanning... Bluetooth adapter not ready?");
+=======
+                        Trace.WriteLine("Can't start scanning... Bluetooth adapter not ready?");
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
                     }
                 }
             }
             catch (Exception r)
             {
+<<<<<<< HEAD
                 Debug.WriteLine(r.Message);
+=======
+                Trace.WriteLine(r.Message);
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
             }
         }
 
 
         private void WhenDeviceFound(BLEDevice device)
         {
+<<<<<<< HEAD
             Debug.WriteLine("Device found! Connecting...");
+=======
+            Trace.WriteLine("Device found! Connecting...");
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
             Windesheart.StopScanning();
             device.Connect(CallbackHandler.OnConnetionCallBack);
         }
@@ -102,7 +114,11 @@ namespace WindesHeartApp.Pages
         private async void ReadCurrentBattery(object sender, EventArgs e)
         {
             var battery = await Windesheart.ConnectedDevice.GetBattery();
+<<<<<<< HEAD
             Debug.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+=======
+            Trace.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
             Globals.homepageviewModel.Battery = battery.BatteryPercentage;
             if (battery.Status == StatusEnum.Charging)
             {
@@ -130,13 +146,21 @@ namespace WindesHeartApp.Pages
         private void SetTime(object sender, EventArgs e)
         {
             bool timeset = Windesheart.ConnectedDevice.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
+<<<<<<< HEAD
             Debug.WriteLine("Time set " + timeset);
+=======
+            Trace.WriteLine("Time set " + timeset);
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
         }
 
         private void SetCurrentTime(object sender, EventArgs e)
         {
             bool timeset = Windesheart.ConnectedDevice.SetTime(DateTime.Now);
+<<<<<<< HEAD
             Debug.WriteLine("Time set " + timeset);
+=======
+            Trace.WriteLine("Time set " + timeset);
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
         }
 
         private void ReadBatteryContinuous(object sender, EventArgs e)
@@ -153,34 +177,54 @@ namespace WindesHeartApp.Pages
         public async void GetSteps(object sender, EventArgs e)
         {
             StepInfo steps = await Windesheart.ConnectedDevice.GetSteps();
+<<<<<<< HEAD
             Debug.WriteLine("Steps: " + steps.StepCount);
+=======
+            Trace.WriteLine("Steps: " + steps.StepCount);
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
         }
 
         public void EnableRealTimeSteps(object sender, EventArgs e)
         {
             Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsChanged);
+<<<<<<< HEAD
             Debug.WriteLine("Enabled realtime steps");
+=======
+            Trace.WriteLine("Enabled realtime steps");
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
         }
 
         public void DisableRealTimeSteps(object sender, EventArgs e)
         {
             Windesheart.ConnectedDevice.DisableRealTimeSteps();
+<<<<<<< HEAD
             Debug.WriteLine("Disabled realtime steps");
+=======
+            Trace.WriteLine("Disabled realtime steps");
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
         }
 
         public void OnStepsChanged(StepInfo steps)
         {
+<<<<<<< HEAD
             Debug.WriteLine("Steps updated: " + steps.StepCount);
+=======
+            Trace.WriteLine("Steps updated: " + steps.StepCount);
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
         }
 
         public void FetchData(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-10), HandleActivityData);
+            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-1), HandleActivityData);
         }
 
         private void HandleActivityData(List<ActivitySample> samples)
         {
+<<<<<<< HEAD
             Debug.WriteLine("Samples found! Here they come:");
+=======
+            Trace.WriteLine("Samples found! Here they come:");
+>>>>>>> 838a090fd24967b42d99178c3943d5e196458b0c
 
             foreach (ActivitySample sample in samples)
             {

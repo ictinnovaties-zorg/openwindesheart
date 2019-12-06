@@ -60,6 +60,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public override void DisposeDisposables()
         {
             _authenticationService.AuthenticationDisposable?.Dispose();
+            _stepsService.realtimeDisposable?.Dispose();
+            _heartrateService.RealtimeDisposible?.Dispose();
+            _batteryService.RealTimeDisposible?.Dispose();
             ConnectionDisposable?.Dispose();
             CharacteristicDisposable?.Dispose();
         }
