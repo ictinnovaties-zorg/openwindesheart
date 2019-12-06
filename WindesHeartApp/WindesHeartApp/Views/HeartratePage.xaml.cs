@@ -1,9 +1,6 @@
 ﻿using FormsControls.Base;
-using Microcharts;
 using Microcharts.Forms;
-using SkiaSharp;
 using System;
-using System.Collections.Generic;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,10 +10,20 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HeartratePage : ContentPage, IAnimationPage
     {
+        public Button interval15Button;
+        public Button interval30Button;
+        public Button interval45Button;
+        public Button interval60Button;
         public HeartratePage()
         {
             InitializeComponent();
             BuildPage();
+        }
+
+        protected override void OnAppearing()
+        {
+            Globals.heartrateviewModel.InitChart();
+            Globals.heartrateviewModel.InitLabels();
         }
 
         private void BuildPage()
@@ -27,64 +34,64 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddLabel(absoluteLayout, "Heartrate", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
-            var previousBtn = PageBuilder.AddButton(absoluteLayout, "Previous", "PreviousDayBinding", 0.1, 0.15, 0.25,
-                0.07, AbsoluteLayoutFlags.All);
-            previousBtn.FontSize = 12;
+            var previousBtn = PageBuilder.AddButton(absoluteLayout, "Previous", "PreviousDayBinding", 0.1, 0.15, 0.25, 0.07, 0, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
 
-            var nextBtn = PageBuilder.AddButton(absoluteLayout, "Next", "NextDayBinding", 0.9, 0.15, 0.25, 0.07,
-                AbsoluteLayoutFlags.All);
+            var nextBtn = PageBuilder.AddButton(absoluteLayout, "Next", "NextDayBinding", 0.9, 0.15, 0.25, 0.07, 0, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
             nextBtn.FontSize = 12;
 
-            var entries = new List<Microcharts.Entry>();
+            ChartView chart = new ChartView();
+            chart.SetBinding(ChartView.ChartProperty, "Chart");
+            AbsoluteLayout.SetLayoutBounds(chart, new Rectangle(0.5, 0.4, 0.95, 0.35));
+            AbsoluteLayout.SetLayoutFlags(chart, AbsoluteLayoutFlags.All);
 
-            Microcharts.Entry entry = new Microcharts.Entry(200)
-            { ValueLabel = "200", TextColor = SKColor.Parse("#266489") };
-            entries.Add(entry);
-            Microcharts.Entry entry2 = new Microcharts.Entry(400)
-            { ValueLabel = "400", TextColor = SKColor.Parse("#266489") };
-            entries.Add(entry2);
-            Microcharts.Entry entry3 = new Microcharts.Entry(10)
-            { ValueLabel = "-100", TextColor = SKColor.Parse("#266489") };
-            entries.Add(entry3);
-            Microcharts.Entry entry4 = new Microcharts.Entry(50)
-            { ValueLabel = "50", TextColor = SKColor.Parse("#266489") };
-            entries.Add(entry4);
+            absoluteLayout.Children.Add(chart);
 
+            var averageHeartrateLabel =
+                PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.65, Color.Black, "AverageLabelText", 20);
 
+            var peakHeartrateLabel =
+                PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.73, Color.Black, "PeakHeartrateText", 20);
 
-            var chart = new LineChart() { Entries = entries };
+            #region heartrateinterval selector
+            Image heartonlyImage2 = new Image { Source = "HeartOnlyTransparent.png" };
+            AbsoluteLayout.SetLayoutFlags(heartonlyImage2, AbsoluteLayoutFlags.PositionProportional);
+            AbsoluteLayout.SetLayoutBounds(heartonlyImage2, new Rectangle(0.20, 0.80, 40, 40));
+            absoluteLayout.Children.Add(heartonlyImage2);
+            PageBuilder.AddLabel(absoluteLayout, "Interval", 0.50, 0.80, Color.Black, "", 15);
 
-            var view = new ChartView { Chart = chart };
-            AbsoluteLayout.SetLayoutBounds(view, new Rectangle(0.5, 0.5, 0.5, 0.3));
-            AbsoluteLayout.SetLayoutFlags(view, AbsoluteLayoutFlags.All);
+            interval15Button = PageBuilder.AddButton(absoluteLayout, "15", "", 0.20, 0.90, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            interval15Button.BorderWidth = 1;
+            interval15Button.BorderColor = Globals.heartrateviewModel.Interval == 15 ? Color.Black : Color.White;
+            interval15Button.Clicked += async (s, e) => OnIntervalLabelClicked(interval15Button);
 
-            absoluteLayout.Children.Add(view);
+            interval30Button = PageBuilder.AddButton(absoluteLayout, "30", "", 0.40, 0.90, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            interval30Button.BorderWidth = 1;
+            interval30Button.BorderColor = Globals.heartrateviewModel.Interval == 30 ? Color.Black : Color.White;
+            interval30Button.Clicked += async (s, e) => OnIntervalLabelClicked(interval30Button);
 
-            var averageHeartrateLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.65, Color.Black, "AverageLabelText", 0);
-            averageHeartrateLabel.FontSize = 20;
+            interval45Button = PageBuilder.AddButton(absoluteLayout, "45", "", 0.60, 0.90, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            interval45Button.BorderWidth = 1;
+            interval45Button.BorderColor = Globals.heartrateviewModel.Interval == 45 ? Color.Black : Color.White;
+            interval45Button.Clicked += async (s, e) => OnIntervalLabelClicked(interval45Button);
 
-            var peakHeartrateLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.73, Color.Black, "PeakHeartrateText", 0);
-            peakHeartrateLabel.FontSize = 20;
+            interval60Button = PageBuilder.AddButton(absoluteLayout, "60", "", 0.80, 0.90, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            interval60Button.BorderWidth = 1;
+            interval60Button.BorderColor = Globals.heartrateviewModel.Interval == 60 ? Color.Black : Color.White;
+            interval60Button.Clicked += async (s, e) => { OnIntervalLabelClicked(interval60Button); };
+            #endregion
+        }
 
-            DateTime today = DateTime.Now;
-            float y = 0.85f;
-            var Day1Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-6).DayOfWeek.ToString(),
-                "Day1Binding", 0.05, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day2Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-5).DayOfWeek.ToString(),
-                "Day2Binding", 0.20, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day3Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-4).DayOfWeek.ToString(),
-                "Day3Binding", 0.35, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day4Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-3).DayOfWeek.ToString(),
-                "Day4Binding", 0.50, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day5Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-2).DayOfWeek.ToString(),
-                "Day5Binding", 0.65, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var Day6Button = PageBuilder.AddButton(absoluteLayout, today.AddDays(-1).DayOfWeek.ToString(),
-                "Day6Binding", 0.80, y, 0.15, 0.1, AbsoluteLayoutFlags.All);
-            var TodayButton = PageBuilder.AddButton(absoluteLayout, "TODAY", "TodayBinding", 0.95, y, 0.15, 0.1,
-                AbsoluteLayoutFlags.All);
-            TodayButton.IsEnabled = false;
+        private async void OnIntervalLabelClicked(Button intervalLabel)
+        {
+            interval15Button.BorderColor = Color.White;
+            interval30Button.BorderColor = Color.White;
+            interval45Button.BorderColor = Color.White;
+            interval60Button.BorderColor = Color.White;
+            intervalLabel.BorderColor = Color.Black;
 
-
+            var interval = Convert.ToInt32(intervalLabel.Text);
+            await DisplayAlert("Heartrate", $"Changed heartrate measurement interval to {interval}", "OK");
+            Globals.heartrateviewModel.UpdateInterval(interval);
         }
 
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation

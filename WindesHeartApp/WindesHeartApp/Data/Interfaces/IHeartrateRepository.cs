@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WindesHeartSDK.Models;
+using WindesHeartApp.Models;
 
 namespace WindesHeartApp.Data.Interfaces
 {
     public interface IHeartrateRepository
     {
-        Task<IEnumerable<Heartrate>> GetHeartRatesAsync();
-        Task<bool> AddHeartrateAsync(Heartrate heartrate);
-        void RemoveHeartrates();
+        Task<IEnumerable<Heartrate>> GetAllAsync();
+        Task<bool> AddAsync(Heartrate heartrate);
+
+        void RemoveAll();
+
         Task<IEnumerable<Heartrate>> HeartratesByQueryAsync(Func<Heartrate, bool> predicate);
+        
     }
 }

@@ -1,20 +1,20 @@
-﻿using System;
+﻿using Microcharts;
+using SkiaSharp;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
+using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
-using WindesHeartApp.Services;
-using WindesHeartSDK;
-using WindesHeartSDK.Models;
+using WindesHeartApp.Resources;
 using Xamarin.Forms;
+using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
     public class StepsViewModel : INotifyPropertyChanged
     {
-        private int _steps;
-        private bool _realtimeStepsEnabled = false;
-
         public DateTime StartDate { get; }
 
         public DateTime SelectedDate;
@@ -34,6 +34,30 @@ namespace WindesHeartApp.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public static IEnumerable<Step> StepInfo = new List<Step>();
+
+        private Chart _chart;
+        public Chart Chart
+        {
+            get => _chart;
+            set
+            {
+                _chart = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public async void InitOnAppearing()
+        {
+            //Get all steps from DB
+            StepInfo = await Globals.StepsRepository.GetAllAsync();
+
+            //Update chart
+            Step steps = GetCurrentSteps();
+            if (steps != null) UpdateChart(steps.StepCount);
+            else UpdateChart(0);
+        }
+
         void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -44,8 +68,6 @@ namespace WindesHeartApp.ViewModels
             _stepsRepository = stepsRepository;
             StartDate = DateTime.Now;
             SelectedDate = StartDate;
-            GetStepsBinding = new Command(HandleGetSteps);
-            ToggleRealTimeStepsBinding = new Command(ToggleRealTimeSteps);
 
             NextDayBinding = new Command(NextDayBtnClick);
             PreviousDayBinding = new Command(PreviousDayBtnClick);
@@ -98,10 +120,10 @@ namespace WindesHeartApp.ViewModels
                 StepsPage.Day6Button.IsEnabled = false;
                 StepsPage.TodayButton.IsEnabled = true;
             }
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
-        private void UpdateCurrentDayLabel()
+        private void UpdateDay()
         {
             if (SelectedDate == StartDate)
             {
@@ -115,12 +137,72 @@ namespace WindesHeartApp.ViewModels
             {
                 StepsPage.CurrentDayLabel.Text = SelectedDate.ToString("dd/MM/yyyy");
             }
+
+
+            //Update chart
+            Step steps = GetCurrentSteps();
+            if (steps != null) UpdateChart(steps.StepCount);
+            else UpdateChart(0);
+        }
+
+        private Step GetCurrentSteps()
+        {
+            if (StepInfo != null)
+            {
+                foreach (Step info in StepInfo)
+                {
+                    //If the same day
+                    if (info.DateTime.Year == SelectedDate.Year && info.DateTime.Month == SelectedDate.Month &&
+                        info.DateTime.Day == SelectedDate.Day)
+                    {
+                        //we found our info!
+                        return info;
+                    }
+                }
+
+                return null;
+            }
+
+            return null;
+        }
+
+        public void UpdateChart(int stepCount)
+        {
+            if (stepCount != null)
+            {
+                List<Entry> entries = new List<Entry>();
+
+                float percentageDone = (float)stepCount / 2000;
+
+                //Add part done
+                entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
+
+                //Update labels
+                StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
+
+                double kilometers = (double)stepCount / 1000;
+                StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
+
+                StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
+
+                //If goal not reached, fill other part transparent
+                if (percentageDone < 1)
+                {
+                    float percentageLeft = 1 - percentageDone;
+                    entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
+                }
+
+                Chart = new DonutChart
+                {
+                    Entries = entries,
+                    BackgroundColor = SKColors.Transparent,
+                    HoleRadius = 0.7f
+                };
+            }
         }
 
         private void NextDayBtnClick(object obj)
         {
-            Console.WriteLine("Next day clicked!");
-
             //Dont go in the future
             if (SelectedDate < StartDate)
             {
@@ -171,47 +253,42 @@ namespace WindesHeartApp.ViewModels
                     StepsPage.Day1Button.IsEnabled = false;
                 }
             }
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void TodayBtnClick(object obj)
         {
-            Console.WriteLine("Today clicked!");
             SelectedDate = StartDate;
             SetDayEnabled(StepsPage.TodayButton);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day6BtnClick(object obj)
         {
-            Console.WriteLine("6 clicked!");
             SelectedDate = StartDate.AddDays(-1);
             SetDayEnabled(StepsPage.Day6Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day5BtnClick(object obj)
         {
-            Console.WriteLine("5 clicked!");
             SelectedDate = StartDate.AddDays(-2);
             SetDayEnabled(StepsPage.Day5Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day4BtnClick(object obj)
         {
-            Console.WriteLine("4 clicked!");
             SelectedDate = StartDate.AddDays(-3);
             SetDayEnabled(StepsPage.Day4Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day3BtnClick(object obj)
         {
-            Console.WriteLine("3 clicked!");
             SelectedDate = StartDate.AddDays(-4);
             SetDayEnabled(StepsPage.Day3Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void SetDayEnabled(Button button)
@@ -231,90 +308,16 @@ namespace WindesHeartApp.ViewModels
 
         private void Day2BtnClick(object obj)
         {
-            Console.WriteLine("2 clicked!");
             SelectedDate = StartDate.AddDays(-5);
             SetDayEnabled(StepsPage.Day2Button);
-            UpdateCurrentDayLabel();
+            UpdateDay();
         }
 
         private void Day1BtnClick(object obj)
         {
-            Console.WriteLine("1 clicked!");
             SelectedDate = StartDate.AddDays(-6);
             SetDayEnabled(StepsPage.Day1Button);
-            UpdateCurrentDayLabel();
-        }
-
-        private async void HandleGetSteps()
-        {
-            Console.WriteLine("GetSteps Clicked!");
-            if (Windesheart.ConnectedDevice != null)
-            {
-                try
-                {
-                    StepInfo info = await Windesheart.ConnectedDevice.GetSteps();
-                    StepsPage.CurrentStepsLabel.Text = "Steps: " + info.StepCount;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("An error occured: " + e.Message);
-                }
-            }
-        }
-
-        private void ToggleRealTimeSteps()
-        {
-            if (Windesheart.ConnectedDevice != null)
-            {
-                if (_realtimeStepsEnabled)
-                {
-                    try
-                    {
-                        Windesheart.ConnectedDevice.DisableRealTimeSteps();
-                        StepsPage.ToggleRealTimeStepsButton.Text = "Enable Realtime Steps";
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("An error occured: " + e.Message);
-                        return;
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
-                        StepsPage.ToggleRealTimeStepsButton.Text = "Disable Realtime Steps";
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("An error occured: " + e.Message);
-                        return;
-                    }
-                }
-                _realtimeStepsEnabled = !_realtimeStepsEnabled;
-            }
-        }
-        public int Steps
-        {
-            get { return _steps; }
-            set
-            {
-                _steps = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(StepsLabelText));
-            }
-        }
-
-        public string StepsLabelText
-        {
-            get { return Steps.ToString(); }
-        }
-
-
-        public void OnStepsUpdated(StepInfo stepInfo)
-        {
-            StepsPage.CurrentStepsLabel.Text = stepInfo.StepCount.ToString();
+            UpdateDay();
         }
     }
 }

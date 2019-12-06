@@ -1,7 +1,6 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Reactive.Linq;
-using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Models;
 
@@ -9,10 +8,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3HeartrateService
     {
-        private readonly MiBand3 MiBand;
-        private IDisposable RealtimeDisposible;
+        private readonly MiBand3.Models.MiBand3 MiBand;
+        public IDisposable RealtimeDisposible;
 
-        public MiBand3HeartrateService(MiBand3 device)
+        public MiBand3HeartrateService(MiBand3.Models.MiBand3 device)
         {
             MiBand = device;
         }
@@ -25,7 +24,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             RealtimeDisposible?.Dispose();
             RealtimeDisposible = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristicHeartrate).RegisterAndNotify().Subscribe(
-                x => callback(new Heartrate(/*x.Characteristic.Value*/))
+                x => callback(new Heartrate(x.Characteristic.Value))
             );
         }
 

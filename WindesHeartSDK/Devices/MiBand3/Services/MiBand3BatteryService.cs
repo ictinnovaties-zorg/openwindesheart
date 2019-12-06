@@ -4,7 +4,6 @@ using Plugin.BluetoothLE;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Models;
 
@@ -12,10 +11,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3BatteryService
     {
-        private readonly MiBand3 MiBand;
-        private IDisposable RealTimeDisposible;
+        private readonly MiBand3.Models.MiBand3 MiBand;
+        public IDisposable RealTimeDisposible;
 
-        public MiBand3BatteryService(MiBand3 device)
+        public MiBand3BatteryService(MiBand3.Models.MiBand3 device)
         {
             MiBand = device;
         }

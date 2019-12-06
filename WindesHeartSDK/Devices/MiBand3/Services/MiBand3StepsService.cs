@@ -2,7 +2,6 @@
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Models;
 
@@ -10,10 +9,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3StepsService
     {
-        private readonly MiBand3 MiBand3;
-        private IDisposable realtimeDisposable;
+        private readonly MiBand3.Models.MiBand3 MiBand3;
+        public IDisposable realtimeDisposable;
 
-        public MiBand3StepsService(MiBand3 device)
+        public MiBand3StepsService(MiBand3.Models.MiBand3 device)
         {
             MiBand3 = device;
         }

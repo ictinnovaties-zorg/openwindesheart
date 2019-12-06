@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
-using WindesHeartSDK.Models;
+using WindesHeartApp.Models;
 
 namespace WindesHeartApp.Data.Repository
 {
@@ -16,8 +16,7 @@ namespace WindesHeartApp.Data.Repository
             _databaseContext = new DatabaseContext(dbPath);
         }
 
-
-        public async Task<IEnumerable<Heartrate>> GetHeartRatesAsync()
+        public async Task<IEnumerable<Heartrate>> GetAllAsync()
         {
             try
             {
@@ -31,14 +30,13 @@ namespace WindesHeartApp.Data.Repository
             }
         }
 
-        public async Task<bool> AddHeartrateAsync(Heartrate heartrate)
+        public async Task<bool> AddAsync(Heartrate heartrate)
         {
             try
             {
                 var tracking = await _databaseContext.Heartrates.AddAsync(heartrate);
                 await _databaseContext.SaveChangesAsync();
-                var isAdded = tracking.State == EntityState.Added;
-                return isAdded;
+                return tracking.State == EntityState.Added;
             }
             catch (Exception e)
             {
@@ -47,11 +45,16 @@ namespace WindesHeartApp.Data.Repository
             }
         }
 
-        public void RemoveHeartrates()
+        public void RemoveAll()
         {
-            foreach (var heartrate in _databaseContext.Heartrates)
-                _databaseContext.Heartrates.Remove(heartrate);
-            _databaseContext.SaveChanges();
+            try
+            {
+                _databaseContext.Heartrates.Clear<Heartrate>();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not delete heartrate entries: "+e);
+            }
         }
 
         public async Task<IEnumerable<Heartrate>> HeartratesByQueryAsync(Func<Heartrate, bool> predicate)

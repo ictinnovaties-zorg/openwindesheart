@@ -7,28 +7,28 @@ using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Devices.MiBand3Device.Services;
 using WindesHeartSDK.Models;
 
-namespace WindesHeartSDK.Devices.MiBand3Device.Models
+namespace WindesHeartSDK.Devices.MiBand3.Models
 {
     public class MiBand3 : BLEDevice
     {
         //MiBand 3 Services
-        private readonly MiBand3BatteryService BatteryService;
-        private readonly MiBand3HeartrateService HeartrateService;
-        private readonly MiBand3DateTimeService DateTimeService;
-        private readonly MiBand3StepsService StepsService;
-        private readonly MiBand3AuthenticationService AuthenticationService;
-        private readonly MiBand3FetchService FetchService;
-        private readonly MiBand3ConfigurationService ConfigurationService;
+        private readonly MiBand3BatteryService _batteryService;
+        private readonly MiBand3HeartrateService _heartrateService;
+        private readonly MiBand3DateTimeService _dateTimeService;
+        private readonly MiBand3StepsService _stepsService;
+        private readonly MiBand3AuthenticationService _authenticationService;
+        private readonly MiBand3FetchService _fetchService;
+        private readonly MiBand3ConfigurationService _configurationService;
 
         public MiBand3(int rssi, IDevice device) : base(rssi, device)
         {
-            BatteryService = new MiBand3BatteryService(this);
-            HeartrateService = new MiBand3HeartrateService(this);
-            DateTimeService = new MiBand3DateTimeService(this);
-            AuthenticationService = new MiBand3AuthenticationService(this);
-            FetchService = new MiBand3FetchService(this);
-            StepsService = new MiBand3StepsService(this);
-            ConfigurationService = new MiBand3ConfigurationService(this);
+            _batteryService = new MiBand3BatteryService(this);
+            _heartrateService = new MiBand3HeartrateService(this);
+            _dateTimeService = new MiBand3DateTimeService(this);
+            _authenticationService = new MiBand3AuthenticationService(this);
+            _fetchService = new MiBand3FetchService(this);
+            _stepsService = new MiBand3StepsService(this);
+            _configurationService = new MiBand3ConfigurationService(this);
         }
 
         public MiBand3() : base()
@@ -42,91 +42,94 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
             BluetoothService.Connect();
         }
 
-        public override void Disconnect(bool rememberDevice)
+        public override void Disconnect(bool rememberDevice = true)
         {
             BluetoothService.Disconnect(rememberDevice);
         }
 
-        public override void SetTimeDisplayUnit(bool is24hours)
+        public override void SetTimeDisplayUnit(bool is24Hours)
         {
-            ConfigurationService.SetTimeDisplayUnit(is24hours);
+            _configurationService.SetTimeDisplayUnit(is24Hours);
         }
 
         public override void SetDateDisplayFormat(bool isddMMYYYY)
         {
-            ConfigurationService.SetDateDisplayUnit(isddMMYYYY);
+            _configurationService.SetDateDisplayUnit(isddMMYYYY);
         }
 
         public override void DisposeDisposables()
         {
-            AuthenticationService.AuthenticationDisposable?.Dispose();
+            _authenticationService.AuthenticationDisposable?.Dispose();
+            _stepsService.realtimeDisposable?.Dispose();
+            _heartrateService.RealtimeDisposible?.Dispose();
+            _batteryService.RealTimeDisposible?.Dispose();
             ConnectionDisposable?.Dispose();
             CharacteristicDisposable?.Dispose();
         }
 
         public override void SetLanguage(string localeString)
         {
-            ConfigurationService.SetLanguage(localeString);
+            _configurationService.SetLanguage(localeString);
         }
 
         public override void SetActivateOnLiftWrist(bool activate)
         {
-            ConfigurationService.SetActivateOnWristLift(activate);
+            _configurationService.SetActivateOnWristLift(activate);
         }
 
         public override void SetActivateOnLiftWrist(DateTime from, DateTime to)
         {
-            ConfigurationService.SetActivateOnWristLift(from, to);
+            _configurationService.SetActivateOnWristLift(from, to);
         }
 
         public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)
         {
-            BatteryService.EnableRealTimeBattery(getBatteryStatus);
+            _batteryService.EnableRealTimeBattery(getBatteryStatus);
         }
 
         public override Task<Battery> GetBattery()
         {
-            return BatteryService.GetCurrentBatteryData();
+            return _batteryService.GetCurrentBatteryData();
         }
 
         public override void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate)
         {
-            HeartrateService.EnableRealTimeHeartrate(getHeartrate);
+            _heartrateService.EnableRealTimeHeartrate(getHeartrate);
         }
 
         public override void SetHeartrateMeasurementInterval(int minutes)
         {
-            HeartrateService.SetMeasurementInterval(minutes);
+            _heartrateService.SetMeasurementInterval(minutes);
         }
 
         public override Task<StepInfo> GetSteps()
         {
-            return StepsService.GetSteps();
+            return _stepsService.GetSteps();
         }
 
         public override void DisableRealTimeSteps()
         {
-            StepsService.DisableRealTimeSteps();
+            _stepsService.DisableRealTimeSteps();
         }
 
         public override void EnableRealTimeSteps(Action<StepInfo> onStepsChanged)
         {
-            StepsService.EnableRealTimeSteps(onStepsChanged);
+            _stepsService.EnableRealTimeSteps(onStepsChanged);
         }
 
         public override bool SetTime(DateTime dateTime)
         {
-            return DateTimeService.SetTime(dateTime);
+            return _dateTimeService.SetTime(dateTime);
         }
 
         public override void FetchData(DateTime startDate, Action<List<ActivitySample>> callback)
         {
-            FetchService.StartFetching(startDate, callback);
+            _fetchService.StartFetching(startDate, callback);
         }
 
         public override void EnableSleepTracking(bool enable)
         {
-            ConfigurationService.EnableSleepTracking(enable);
+            _configurationService.EnableSleepTracking(enable);
         }
 
         public override void OnConnect()
@@ -151,7 +154,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
                     if (characteristic.Uuid == MiBand3Resource.GuidCharacteristicAuth)
                     {
                         //Check if this is a new connection that needs authentication
-                        await AuthenticationService.Authenticate();
+                        await _authenticationService.Authenticate();
                     }
                 }
             });
@@ -159,12 +162,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
 
         public override void DisableRealTimeBattery()
         {
-            BatteryService.DisableRealTimeBattery();
+            _batteryService.DisableRealTimeBattery();
         }
 
         public override void DisableRealTimeHeartrate()
         {
-            HeartrateService.DisableRealTimeHeartrate();
+            _heartrateService.DisableRealTimeHeartrate();
         }
     }
 }

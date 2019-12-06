@@ -1,15 +1,21 @@
-﻿using WindesHeartSDK.Helpers;
+﻿using System;
+using WindesHeartSDK.Helpers;
 
 namespace WindesHeartSDK.Models
 {
     public class StepInfo
     {
-        public readonly byte[] RawData;
-        public readonly int StepCount;
+        public byte[] RawData { get; set; }
+        public int StepCount { get; set; }
 
-        public StepInfo(byte[] data)
+        public StepInfo()
         {
-            RawData = data;
+
+        }
+
+        public StepInfo(byte[] rawData)
+        {
+            RawData = rawData;
             byte[] stepsValue = new byte[] { RawData[1], RawData[2] };
             StepCount = ConversionHelper.ToUint16(stepsValue);
         }

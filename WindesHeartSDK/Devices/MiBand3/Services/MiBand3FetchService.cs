@@ -1,19 +1,20 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSdk.Model;
-using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
+using WindesHeartSDK.Helpers;
 using static WindesHeartSDK.Helpers.ConversionHelper;
 
 namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     class MiBand3FetchService
     {
-        private readonly MiBand3 _miBand3;
+        private readonly MiBand3.Models.MiBand3 _miBand3;
         private readonly List<ActivitySample> _samples = new List<ActivitySample>();
 
         private DateTime _firstTimestamp;
@@ -28,7 +29,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         private int _expectedSamples;
 
 
-        public MiBand3FetchService(MiBand3 device)
+        public MiBand3FetchService(MiBand3.Models.MiBand3 device)
         {
             _miBand3 = device;
         }
@@ -36,11 +37,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <summary>
         /// Clear the list of samples and start fetching
         /// </summary>
-        public void StartFetching(DateTime date, Action<List<ActivitySample>> callback)
+        public async void StartFetching(DateTime date, Action<List<ActivitySample>> callback)
         {
             _samples.Clear();
             _expectedSamples = 0;
-            InitiateFetching(date);
+            await InitiateFetching(date);
             _callback = callback;
         }
 
@@ -48,8 +49,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// Setup the disposables for the fetch operation
         /// </summary>
         /// <param name="date"></param>
-        public async void InitiateFetching(DateTime date)
+        public async Task InitiateFetching(DateTime date)
         {
+            _pkg = 0;
             //Dispose all DIsposables to prevent double data
             _charActivitySub?.Dispose();
             _charUnknownSub?.Dispose();
@@ -57,6 +59,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             // Subscribe to the unknown and activity characteristics
             _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(handleUnknownChar);
             _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(handleActivityChar);
+
 
             // Write the date and time from which to receive samples to the Mi Band
             await WriteDateBytes(date);
@@ -71,6 +74,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             // Convert date to bytes
             byte[] Timebytes = GetTimeBytes(date, TimeUnit.Minutes);
+            Trace.WriteLine(ConversionHelper.RawBytesToCalendar(Timebytes));
             byte[] Fetchbytes = new byte[10] { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
 
             // Copy the date in the byte template to send to the device
@@ -96,7 +100,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 if (result.Data.Length > 3)
                 {
                     _expectedSamples = result.Data[5] << 16 | result.Data[4] << 8 | result.Data[3];
-                    Console.WriteLine("Expected Samples: " + _expectedSamples);
+                    if(_expectedSamples == 0)
+                    {
+                        _callback(_samples);
+                        return;
+                    }
+                    Trace.WriteLine("Expected Samples: " + _expectedSamples);
                 }
 
 
@@ -105,28 +114,36 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
                 _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
 
-                Console.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
+                Trace.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
 
                 // Write 0x02 to tell the band to start the fetching process
                 await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
-                Console.WriteLine("Done writing 0x02");
+                Trace.WriteLine("Done writing 0x02");
 
 
             }
             // Check if done fetching
             else if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
             {
-                Console.WriteLine("Done Fetching: " + _samples.Count + " Samples");
-                if (_samples.Count == _expectedSamples)
+                Trace.WriteLine("Done Fetching: " + _samples.Count + " Samples");
+
+                Trace.WriteLine(_lastTimestamp >= DateTime.Now.AddMinutes(-1));
+                if (_lastTimestamp >= DateTime.Now.AddMinutes(-1))
                 {
                     _callback(_samples);
                     _charActivitySub?.Dispose();
                     _charUnknownSub?.Dispose();
                 }
+                else
+                {
+                    Trace.WriteLine("else-statement");
+                    await InitiateFetching(_lastTimestamp.AddMinutes(1));
+                }
             }
             else
             {
-                Console.WriteLine("Error while Fetching");
+                Trace.WriteLine("Error while Fetching");
+                _callback(_samples);
                 // Error while fetching
                 _charActivitySub?.Dispose();
                 _charUnknownSub?.Dispose();
@@ -143,13 +160,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             {
                 if (_lastTimestamp > DateTime.Now.AddMinutes(-1))
                 {
-                    Console.WriteLine("Done Fetching: " + _samples.Count + " Samples");
+                    Trace.WriteLine("Done Fetching: " + _samples.Count + " Samples");
                 }
-                else
-                {
-                    Console.WriteLine("Need More fetching");
-                    InitiateFetching(_lastTimestamp.AddMinutes(1));
-                }
+                Trace.WriteLine("Need More fetching");
+                InitiateFetching(_lastTimestamp.AddMinutes(1));
             }
             else
             {
@@ -170,7 +184,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
                     // Add the sample to the sample list
                     _samples.Add(new ActivitySample(timeStamp, category, intensity, steps, heartrate));
-                    Console.WriteLine("Added Sample: Total = " + _samples.Count);
 
                     i += 4;
 
@@ -181,7 +194,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
                     if (timeStamp == d)
                     {
-                        Console.WriteLine("Done Fetching");
+                        Trace.WriteLine("Done Fetching");
                         break;
                     }
                 }
