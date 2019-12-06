@@ -3,8 +3,8 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Views;
@@ -13,7 +13,7 @@ using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class SleepPageViewModel: INotifyPropertyChanged
+    public class SleepPageViewModel : INotifyPropertyChanged
     {
         public DateTime StartDate { get; }
 
@@ -33,6 +33,10 @@ namespace WindesHeartApp.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static IEnumerable<Sleep> SleepInfo = new List<Sleep>();
+
+        public string AwakeColor = "#ffffff";
+        public string LightColor = "#1281ff";
+        public string DeepColor = "#002bba";
 
         private Chart _chart;
         public Chart Chart
@@ -62,7 +66,7 @@ namespace WindesHeartApp.ViewModels
         public SleepPageViewModel(ISleepRepository sleepRepository)
         {
             _sleepRepository = sleepRepository;
-            StartDate = DateTime.Now;
+            StartDate = DateTime.Today;
             SelectedDate = StartDate;
 
             NextDayBinding = new Command(NextDayBtnClick);
@@ -141,17 +145,11 @@ namespace WindesHeartApp.ViewModels
 
         private List<Sleep> GetCurrentSleep()
         {
-            List<Sleep> sleepData = new List<Sleep>();
-            foreach (Sleep info in SleepInfo)
-            {
-                //If the same day
-                if (info.DateTime.Year == SelectedDate.Year && info.DateTime.Month == SelectedDate.Month && info.DateTime.Day == SelectedDate.Day)
-                {
-                    //add to result
-                    sleepData.Add(info);
-                }
-            }
-            return sleepData;
+            return SleepInfo.Where(s => s.DateTime.Year == SelectedDate.Year &&
+            s.DateTime.Month == SelectedDate.Month &&
+            s.DateTime > SelectedDate.AddHours(-12) &&
+            s.DateTime < SelectedDate.AddHours(12)).
+            OrderBy(x => x.DateTime).ToList();
         }
 
         public void UpdateChart()
@@ -159,31 +157,48 @@ namespace WindesHeartApp.ViewModels
             List<Sleep> sleepData = GetCurrentSleep();
             List<Entry> entries = new List<Entry>();
 
-            foreach(Sleep data in sleepData)
+            //For each hour
+            for (int i = 20; i < 36; i++)
             {
-                switch (data.SleepType)
+                int hour = i;
+                if (i >= 24) hour -= 24;
+
+                //Get sleep data for that hour
+                List<Sleep> data = sleepData.Where(x => x.DateTime.Hour == hour).ToList();
+
+                //If there is sleepdata for that hour, add that
+                if (data != null && data.Count > 0)
                 {
-                    case SleepType.Awake:
-                        Entry entry1 = new Entry(1);
-                        entry1.Color = SKColor.Parse("#ffffff");
-                        entry1.Label = data.DateTime.Hour.ToString();
-                        entry1.ValueLabel = "Awake";
-                        entries.Add(entry1);
-                        break;
-                    case SleepType.Light:
-                        Entry entry2 = new Entry(2);
-                        entry2.Color = SKColor.Parse("#33daff");
-                        entry2.Label = data.DateTime.Hour.ToString();
-                        entry2.ValueLabel = "Light";
-                        entries.Add(entry2);
-                        break;
-                    case SleepType.Deep:
-                        Entry entry3 = new Entry(3);
-                        entry3.Color = SKColor.Parse("#3366ff");
-                        entry3.Label = data.DateTime.Hour.ToString();
-                        entry3.ValueLabel = "Deep";
-                        entries.Add(entry3);
-                        break;
+                    //Set Right color for entry according to sleep type
+                    foreach (Sleep s in data)
+                    {
+                        switch (s.SleepType)
+                        {
+                            case SleepType.Awake:
+                                Entry awakeEntry = new Entry(1);
+                                awakeEntry.Color = SKColor.Parse(AwakeColor);
+                                entries.Add(awakeEntry);
+                                break;
+                            case SleepType.Light:
+                                Entry lightEntry = new Entry(1);
+                                lightEntry.Color = SKColor.Parse(LightColor);
+                                entries.Add(lightEntry);
+                                break;
+                            case SleepType.Deep:
+                                Entry deepEntry = new Entry(1);
+                                deepEntry.Color = SKColor.Parse(DeepColor);
+                                entries.Add(deepEntry);
+                                break;
+                        }
+                    }
+
+                }
+                else
+                {
+                    //If no sleep data, add awake entry
+                    Entry entry = new Entry(1);
+                    entry.Color = SKColor.Parse(AwakeColor);
+                    entries.Add(entry);
                 }
             }
 
@@ -191,7 +206,7 @@ namespace WindesHeartApp.ViewModels
             {
                 Entries = entries,
                 BackgroundColor = SKColors.Transparent,
-                LabelTextSize = 45
+                Margin = 0
             };
         }
 
