@@ -19,7 +19,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
         private DateTime _firstTimestamp;
         private DateTime _lastTimestamp;
-        private DateTime _givenDate;
         private int _pkg = 0;
 
         private IDisposable _charUnknownSub;
@@ -60,8 +59,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             // Subscribe to the unknown and activity characteristics
             _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(handleUnknownChar);
             _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(handleActivityChar);
-
-            _givenDate = date;
 
 
             // Write the date and time from which to receive samples to the Mi Band
