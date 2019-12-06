@@ -35,7 +35,6 @@ namespace WindesHeartApp.Services
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(5);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
-                Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
                 Globals.DevicePageViewModel.StatusText = "Connected";
