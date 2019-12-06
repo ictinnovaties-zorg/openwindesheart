@@ -7,7 +7,6 @@ namespace WindesHeartApp.Data
     {
         public DbSet<Heartrate> Heartrates { get; set; }
         public DbSet<Step> Steps { get; set; }
-
         public DbSet<Sleep> Sleep { get; set; }
 
         private readonly string _databasePath;
@@ -15,7 +14,7 @@ namespace WindesHeartApp.Data
         public DatabaseContext(string databasePath)
         {
             _databasePath = databasePath;
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
 
             Database.EnsureCreated();
 

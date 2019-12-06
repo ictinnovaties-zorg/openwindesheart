@@ -18,8 +18,6 @@ namespace WindesHeartApp.Services
                 return;
             Globals.heartrateviewModel.Heartrate = heartrate.HeartrateValue;
             Globals.homepageviewModel.Heartrate = heartrate.HeartrateValue;
-            var heartRate = new Models.Heartrate(DateTime.Now, heartrate.HeartrateValue);
-            await Globals.HeartrateRepository.AddAsync(heartRate);
         }
 
         //OnHeartrateChange/Measurement

@@ -102,7 +102,6 @@ namespace WindesHeartApp.Pages
             interval60Button.Clicked += (s, e) => { OnIntervalLabelClicked(interval60Button); };
             #endregion
         }
-
         private void OnIntervalLabelClicked(Button intervalLabel)
         {
             intervaldefaultButton.BorderColor = Color.White;

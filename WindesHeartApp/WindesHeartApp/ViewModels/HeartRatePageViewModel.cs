@@ -26,6 +26,7 @@ namespace WindesHeartApp.ViewModels
         private int _peakHeartrate;
         public DateTime _dateTime;
         private Chart _chart;
+        private IEnumerable<Heartrate> _heartrates;
         public event PropertyChangedEventHandler PropertyChanged;
         public Command NextDayBinding { get; set; }
         public Command PreviousDayBinding { get; set; }
@@ -44,13 +45,20 @@ namespace WindesHeartApp.ViewModels
 
         public async void OnAppearing()
         {
+            _dateTime = DateTime.Now;
+            await _heartrateRepository.AddAsync(new Heartrate(DateTime.Now.AddHours(-12), 420));
+            await _heartrateRepository.AddAsync(new Heartrate(DateTime.Now.AddHours(-5), 420));
+            await _heartrateRepository.AddAsync(new Heartrate(DateTime.Now, 420));
+            var rates = await _heartrateRepository.GetAllAsync();
+            _heartrates = rates;
             InitLabels();
+            InitChart();
         }
 
         private async Task InitLabels()
         {
-            var now = DateTime.Now;
-            IEnumerable<Heartrate> heartrateslast6hours = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime >= now.AddHours(-6));
+            _dateTime = _dateTime.AddHours(-6);
+            var heartrateslast6hours = _heartrates.Where(x => x.DateTime >= _dateTime);
             if (heartrateslast6hours != null)
             {
                 AverageHeartrate = Convert.ToInt32(heartrateslast6hours?.Select(x => x.HeartrateValue).Average());
@@ -86,7 +94,6 @@ namespace WindesHeartApp.ViewModels
                         TextColor = SKColors.Black
                     };
                     list.Add(entry);
-
                     Chart = new PointChart() { Entries = list, BackgroundColor = Globals.PrimaryColor.ToSKColor(), LabelTextSize = 15, MaxValue = 150, MinValue = 30, PointMode = PointMode.Square, PointSize = 10 };
 
                 }
@@ -95,30 +102,6 @@ namespace WindesHeartApp.ViewModels
 
         public async void UpdateInterval(int interval)
         {
-            Interval = interval;
-            var heartrates = await _heartrateRepository.GetAllAsync();
-            var list = heartrates.ToList();
-            if (list.Count != 0)
-            {
-                var count = list.Count;
-                var result = new List<Entry>();
-                for (int i = 0; i < count; i++)
-                {
-                    if ((i % Interval) == 0)
-                    {
-                        var heartrate = list[i];
-                        result.Add(new Entry(heartrate.HeartrateValue)
-                        {
-                            ValueLabel = heartrate.HeartrateValue.ToString(),
-                            Color = SKColors.Black,
-                            Label = $"{heartrate.DateTime.ToString(CultureInfo.InvariantCulture)} ",
-                            TextColor = SKColors.Black
-                        });
-                    }
-                }
-
-                Chart = new PointChart() { Entries = result, BackgroundColor = Globals.PrimaryColor.ToSKColor(), LabelTextSize = 15, MaxValue = 150, MinValue = 30, PointMode = PointMode.Square, PointSize = 10 };
-            }
         }
 
         public Chart Chart
