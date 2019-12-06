@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
@@ -25,7 +26,7 @@ namespace WindesHeartApp.Data.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return null;
             }
         }
@@ -40,7 +41,7 @@ namespace WindesHeartApp.Data.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -53,7 +54,7 @@ namespace WindesHeartApp.Data.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not delete sleep entries: " + e);
+                Debug.WriteLine("Could not delete sleep entries: " + e);
             }
         }
     }

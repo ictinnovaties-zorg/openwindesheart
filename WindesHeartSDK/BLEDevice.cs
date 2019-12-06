@@ -52,7 +52,7 @@ namespace WindesHeartSDK
                 return false;
             }
         }
-        public abstract void SetTimeDisplayUnit(bool is24hours);
+        public abstract void SetTimeDisplayFormat(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
         public abstract void SetLanguage(string localeString);
         public abstract bool SetTime(DateTime dateTime);

@@ -1,5 +1,6 @@
 ﻿using FormsControls.Base;
 using System;
+using System.Diagnostics;
 using WindesHeartApp.Resources;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -132,21 +133,21 @@ namespace WindesHeartApp.Pages
 
         private void LearnmoreButton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("OPEN GITHUB PAGE?? ");
+            Debug.WriteLine("OPEN GITHUB PAGE?? ");
         }
 
 
 
         private void Logo_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("Logo - Clicked.");
+            Debug.WriteLine("Logo - Clicked.");
             Navigation.PopAsync();
             Vibration.Vibrate(4200);
         }
 
         private void LearnMore_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("Learn More - Clicked.");
+            Debug.WriteLine("Learn More - Clicked.");
             Vibration.Vibrate(4200);
         }
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };

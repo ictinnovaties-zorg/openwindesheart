@@ -158,7 +158,6 @@ namespace WindesHeartApp.Pages
 
         public void EnableRealTimeSteps(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsChanged);
             Trace.WriteLine("Enabled realtime steps");
         }
 
@@ -195,10 +194,6 @@ namespace WindesHeartApp.Pages
 
         private void Setln_Clicked(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.EnableSleepTracking(true);
-            Windesheart.ConnectedDevice.SetDateDisplayFormat(is24hour);
-            Windesheart.ConnectedDevice.SetTimeDisplayUnit(is24hour);
-            Windesheart.ConnectedDevice.SetActivateOnLiftWrist(is24hour);
             if (is24hour)
             {
                 Windesheart.ConnectedDevice.SetLanguage("nl-NL");

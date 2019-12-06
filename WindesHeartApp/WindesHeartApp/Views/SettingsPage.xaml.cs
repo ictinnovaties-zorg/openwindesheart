@@ -1,6 +1,7 @@
 ﻿using FormsControls.Base;
 using System;
 using WindesHeartApp.Resources;
+using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -40,10 +41,40 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(savechangesButton);
             #endregion
 
+            Button ToggleFormatButton = PageBuilder.AddButton(absoluteLayout, "Toggle 12/24H", "ToggleDisplayFormatsCommand", 0.05, 0.35, 0.45, 0.05, 10, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Button ToggleWristActivation = PageBuilder.AddButton(absoluteLayout, "Toggle wristactivation", "ToggleWristActivationCommand", 0.95, 0.35, 0.45, 0.05, 10, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+
+
+
+            Label ToggleDatetimeFormatLabel = new Label { Text = "Select Secondary Color", TextColor = Globals.LightTextColor, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
+            AbsoluteLayout.SetLayoutBounds(ToggleDatetimeFormatLabel, new Rectangle(0.5, 0.45, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(ToggleDatetimeFormatLabel, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(ToggleDatetimeFormatLabel);
+
+            Picker FormatPicker = new Picker { Title = "Select..", FontSize = Globals.ScreenHeight / 100 * 2.5 };
+            foreach (string colorName in Globals.ColorDictionary.Keys)
+            {
+                FormatPicker.Items.Add(colorName);
+            }
+            FormatPicker.SelectedIndexChanged += (sender, args) =>
+                    {
+                        if (FormatPicker.SelectedIndex == -1)
+                        {
+                        }
+                        else
+                        {
+                            Windesheart.ConnectedDevice.SetLanguage("nl-NL");
+                        }
+                    };
+            AbsoluteLayout.SetLayoutBounds(FormatPicker, new Rectangle(0.5, 0.5, Globals.ScreenWidth - Globals.ScreenWidth / 100 * 4, -1));
+            AbsoluteLayout.SetLayoutFlags(FormatPicker, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(FormatPicker);
+
+
             #region button-color picker with Label
 
             Label secondarycolorpickerlabel = new Label { Text = "Select Secondary Color", TextColor = Globals.LightTextColor, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
-            AbsoluteLayout.SetLayoutBounds(secondarycolorpickerlabel, new Rectangle(0.5, 0.45, -1, -1));
+            AbsoluteLayout.SetLayoutBounds(secondarycolorpickerlabel, new Rectangle(0.5, 0.55, -1, -1));
             AbsoluteLayout.SetLayoutFlags(secondarycolorpickerlabel, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(secondarycolorpickerlabel);
 
@@ -64,7 +95,7 @@ namespace WindesHeartApp.Pages
                             secondaryPicker.BackgroundColor = Globals.ColorDictionary[_tempsecondaryColor];
                         }
                     };
-            AbsoluteLayout.SetLayoutBounds(secondaryPicker, new Rectangle(0.5, 0.5, Globals.ScreenWidth - Globals.ScreenWidth / 100 * 4, -1));
+            AbsoluteLayout.SetLayoutBounds(secondaryPicker, new Rectangle(0.5, 0.6, Globals.ScreenWidth - Globals.ScreenWidth / 100 * 4, -1));
             AbsoluteLayout.SetLayoutFlags(secondaryPicker, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(secondaryPicker);
             #endregion

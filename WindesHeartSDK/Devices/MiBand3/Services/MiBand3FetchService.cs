@@ -57,8 +57,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             _charUnknownSub?.Dispose();
 
             // Subscribe to the unknown and activity characteristics
-            _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(handleUnknownChar);
-            _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(handleActivityChar);
+            _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(HandleUnknownChar);
+            _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(HandleActivityChar);
 
 
             // Write the date and time from which to receive samples to the Mi Band
@@ -88,7 +88,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// Called when recieving MetaData
         /// </summary>
         /// <param name="result"></param>
-        public async void handleUnknownChar(CharacteristicGattResult result)
+        public async void HandleUnknownChar(CharacteristicGattResult result)
         {
             // Create an empty byte array and copy the response type to it
             byte[] responseByte = new byte[3];
@@ -154,7 +154,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// Called when recieving samples
         /// </summary>
         /// <param name="result"></param>
-        private void handleActivityChar(CharacteristicGattResult result)
+        private void HandleActivityChar(CharacteristicGattResult result)
         {
             if (result.Data.Length % 4 != 1)
             {
@@ -177,8 +177,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     _lastTimestamp = timeStamp;
 
                     // Create a sample from the recieved bytes
-                    var category = result.Data[i] & 0xff; 
-                    var intensity = result.Data[i + 1] & 0xff; 
+                    var category = result.Data[i] & 0xff;
+                    var intensity = result.Data[i + 1] & 0xff;
                     var steps = result.Data[i + 2] & 0xff;
                     var heartrate = result.Data[i + 3];
 
