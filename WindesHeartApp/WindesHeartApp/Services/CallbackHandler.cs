@@ -49,6 +49,7 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.StatusText = "Connected";
                 Globals.DevicePageViewModel.IsLoading = false;
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
+                Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnectCallBack);
                 if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)
                 {
                     if (App.Current.Properties.ContainsKey(_key))
@@ -64,6 +65,11 @@ namespace WindesHeartApp.Services
                 Debug.WriteLine("FAIL");
                 return;
             }
+        }
+
+        public static void OnDisconnectCallBack(Object obj)
+        {
+            Globals.DevicePageViewModel.StatusText = "Disconnected";
         }
     }
 }
