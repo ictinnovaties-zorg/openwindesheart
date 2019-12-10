@@ -46,7 +46,6 @@ namespace WindesHeartApp.ViewModels
             _dateTime = DateTime.Now.AddHours(-6);
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime.AddHours(6).ToString()}";
             var rates = await _heartrateRepository.GetAllAsync();
-            DrawChart();
             if (rates.Count() != 0)
             {
                 _heartrates = rates;
@@ -57,6 +56,7 @@ namespace WindesHeartApp.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Heartrates", "Unfortunately, no heartrate data was found.", "Ok");
             }
+            DrawChart();
         }
 
         public string DayLabelText
