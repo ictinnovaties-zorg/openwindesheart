@@ -8,7 +8,6 @@ using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
 using WindesHeartSdk.Model;
 using WindesHeartSDK;
-using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -27,10 +26,10 @@ namespace WindesHeartApp.Services
 
         public async void StartFetching()
         {
-            Globals.homepageviewModel.IsLoading = true;
+            Globals.HomePageViewModel.IsLoading = true;
             var startDate = await GetLastAddedDateTime();
             Windesheart.ConnectedDevice.FetchData(startDate.AddMinutes(1), FillDatabase);
-            Globals.homepageviewModel.IsLoading = false;
+            Globals.HomePageViewModel.IsLoading = false;
         }
 
         private async void FillDatabase(List<ActivitySample> samples)
@@ -54,9 +53,9 @@ namespace WindesHeartApp.Services
         {
             var steps = await _stepsRepository.GetAllAsync();
 
-            if(steps.Count() > 0)
+            if (steps.Count() > 0)
             {
-                Debug.WriteLine("Last added datetime is: "+steps.Last().DateTime);
+                Debug.WriteLine("Last added datetime is: " + steps.Last().DateTime);
                 return steps.Last().DateTime;
             }
             Debug.WriteLine("Last added datetime is: " + DateTime.Now.AddDays(-30));
