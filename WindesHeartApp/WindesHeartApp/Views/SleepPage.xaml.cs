@@ -122,7 +122,7 @@ namespace WindesHeartApp.Views
             DateTime today = DateTime.Now;
 
             int size = (int)(Globals.ScreenHeight / 100 * 8.0);
-            Day1Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), Globals.SleepViewModel.PreviousDayBtnClick, 0.05, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day1Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), Globals.SleepViewModel.Day1BtnClick, 0.05, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day1Button.BorderColor = Color.Black;
             Day1Button.BorderWidth = 2;
 
