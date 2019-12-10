@@ -130,7 +130,7 @@ namespace WindesHeartApp.ViewModels
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new StepsPage()
             {
-                BindingContext = Globals.StepsViewModel
+                BindingContext = Globals.StepsPageViewModel
             });
             IsLoading = false;
         }
