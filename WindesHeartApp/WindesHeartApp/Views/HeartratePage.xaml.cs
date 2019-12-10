@@ -23,7 +23,7 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Globals.HeartrateviewModel.OnAppearing();
+            Globals.HeartratePageViewModel.OnAppearing();
         }
 
 
@@ -43,7 +43,7 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(previousBtn, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(previousBtn, new Rectangle(0.3, 0.135, 0.1, 0.1));
             previousBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "PreviousDayBinding" });
-            previousBtn.Clicked += Globals.HeartrateviewModel.PreviousDayBtnClick;
+            previousBtn.Clicked += Globals.HeartratePageViewModel.PreviousDayBtnClick;
             absoluteLayout.Children.Add(previousBtn);
 
             ImageButton nextBtn = new ImageButton
@@ -53,7 +53,7 @@ namespace WindesHeartApp.Pages
             };
             AbsoluteLayout.SetLayoutFlags(nextBtn, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(nextBtn, new Rectangle(0.7, 0.135, 0.1, 0.1));
-            nextBtn.Clicked += Globals.HeartrateviewModel.NextDayBtnClick;
+            nextBtn.Clicked += Globals.HeartratePageViewModel.NextDayBtnClick;
             absoluteLayout.Children.Add(nextBtn);
 
             PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.20, Color.Black, "DayLabelText", 15);
@@ -101,7 +101,7 @@ namespace WindesHeartApp.Pages
             intervalButton.BorderColor = Color.Black;
 
             var interval = Convert.ToInt32(intervalButton.Text);
-            Globals.HeartrateviewModel.UpdateInterval(interval);
+            Globals.HeartratePageViewModel.UpdateInterval(interval);
         }
 
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation

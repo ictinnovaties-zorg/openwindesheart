@@ -16,14 +16,14 @@ namespace WindesHeartApp.Services
         {
             if (heartrate.HeartrateValue == 0)
                 return;
-            Globals.HeartrateviewModel.Heartrate = heartrate.HeartrateValue;
-            Globals.HomepageviewModel.Heartrate = heartrate.HeartrateValue;
+            Globals.HeartratePageViewModel.Heartrate = heartrate.HeartrateValue;
+            Globals.HomePageViewModel.Heartrate = heartrate.HeartrateValue;
         }
 
         //OnHeartrateChange/Measurement
         public static void ChangeBattery(Battery battery)
         {
-            Globals.HomepageviewModel.UpdateBattery(battery);
+            Globals.HomePageViewModel.UpdateBattery(battery);
         }
 
         public static void OnStepsUpdated(StepInfo stepsInfo)
@@ -39,7 +39,7 @@ namespace WindesHeartApp.Services
             {
                 Globals.SamplesService.EmptyDatabase();
                 Globals.SamplesService.StartFetching();
-                
+
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(5);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);

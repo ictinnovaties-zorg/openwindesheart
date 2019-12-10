@@ -6,14 +6,14 @@ using WindesHeartSDK;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class SettingsPageViewmodel : INotifyPropertyChanged
+    public class SettingsPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly ISettingsRepository _settingsRepository;
         private bool _toggle = true;
         private bool _toggle2 = true;
 
-        public SettingsPageViewmodel(ISettingsRepository settingsRepository)
+        public SettingsPageViewModel(ISettingsRepository settingsRepository)
         {
             _settingsRepository = settingsRepository;
         }

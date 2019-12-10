@@ -16,7 +16,7 @@ using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class HeartRatePageViewModel : INotifyPropertyChanged
+    public class HeartratePageViewModel : INotifyPropertyChanged
     {
         private int _heartrate;
         private readonly IHeartrateRepository _heartrateRepository;
@@ -34,7 +34,7 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
+        public HeartratePageViewModel(IHeartrateRepository heartrateRepository)
         {
             _heartrateRepository = heartrateRepository;
         }

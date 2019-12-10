@@ -8,11 +8,13 @@ namespace WindesHeartApp.Resources
 {
     public static class Globals
     {
-        public static HeartRatePageViewModel HeartrateviewModel;
+        public static HeartratePageViewModel HeartratePageViewModel;
         public static SamplesService SamplesService { get; private set; }
         public static DevicePageViewModel DevicePageViewModel;
-        public static HomePageViewModel HomepageviewModel;
-        public static SettingsPageViewmodel SettingsPageViewmodel;
+        public static HomePageViewModel HomePageViewModel;
+        public static SettingsPageViewModel SettingsPageViewModel;
+        public static StepsViewModel StepsViewModel;
+        public static SleepPageViewModel SleepPageViewModel;
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
         public static Color PrimaryColor { get; set; } = Color.FromHex("#96d1ff");
@@ -25,8 +27,7 @@ namespace WindesHeartApp.Resources
         public static float DailyStepsGoal { get; internal set; }
         public static Dictionary<string, Color> ColorDictionary;
         public static Dictionary<string, string> FormatDictionary;
-        public static StepsViewModel StepsViewModel;
-        public static SleepPageViewModel SleepViewModel;
+
 
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
@@ -35,13 +36,13 @@ namespace WindesHeartApp.Resources
             SleepRepository = sleepRepository;
             SettingsRepository = settingsRepository;
             HeartrateRepository = heartrateRepository;
-            HeartrateviewModel = new HeartRatePageViewModel(HeartrateRepository);
+            HeartratePageViewModel = new HeartratePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsViewModel = new StepsViewModel(StepsRepository);
-            SettingsPageViewmodel = new SettingsPageViewmodel(SettingsRepository);
-            SleepViewModel = new SleepPageViewModel(sleepRepository);
+            SettingsPageViewModel = new SettingsPageViewModel(SettingsRepository);
+            SleepPageViewModel = new SleepPageViewModel(sleepRepository);
             DevicePageViewModel = new DevicePageViewModel();
-            HomepageviewModel = new HomePageViewModel();
+            HomePageViewModel = new HomePageViewModel();
             ColorDictionary = new Dictionary<string, Color>
             {
                 { "Aqua", Color.Aqua},

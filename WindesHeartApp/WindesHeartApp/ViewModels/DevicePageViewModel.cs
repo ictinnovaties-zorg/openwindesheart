@@ -33,9 +33,9 @@ namespace WindesHeartApp.ViewModels
             Windesheart.ConnectedDevice.Disconnect();
             IsLoading = false;
             StatusText = "Disconnected";
-            Globals.HeartrateviewModel.Heartrate = 0;
-            Globals.HomepageviewModel.Heartrate = 0;
-            Globals.HomepageviewModel.Battery = 0;
+            Globals.HeartratePageViewModel.Heartrate = 0;
+            Globals.HomePageViewModel.Heartrate = 0;
+            Globals.HomePageViewModel.Battery = 0;
         }
         private void OnPropertyChanged([CallerMemberName] string name = "")
         {

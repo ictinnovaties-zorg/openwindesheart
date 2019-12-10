@@ -19,9 +19,9 @@ namespace WindesHeartApp.Services
 
         public SamplesService(IHeartrateRepository heartrateRepository, IStepsRepository stepsRepository, ISleepRepository sleepRepository)
         {
-            this._heartrateRepository = heartrateRepository;
-            this._stepsRepository = stepsRepository;
-            this._sleepRepository = sleepRepository;
+            _heartrateRepository = heartrateRepository;
+            _stepsRepository = stepsRepository;
+            _sleepRepository = sleepRepository;
         }
 
         public async void StartFetching()

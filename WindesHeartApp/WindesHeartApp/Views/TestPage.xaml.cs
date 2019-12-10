@@ -103,27 +103,27 @@ namespace WindesHeartApp.Pages
         {
             var battery = await Windesheart.ConnectedDevice.GetBattery();
             Trace.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-            Globals.HomepageviewModel.Battery = battery.BatteryPercentage;
+            Globals.HomePageViewModel.Battery = battery.BatteryPercentage;
             if (battery.Status == StatusEnum.Charging)
             {
-                Globals.HomepageviewModel.BatteryImage = "BatteryCharging.png";
+                Globals.HomePageViewModel.BatteryImage = "BatteryCharging.png";
                 return;
             }
             if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
             {
-                Globals.HomepageviewModel.BatteryImage = "BatteryQuart.png";
+                Globals.HomePageViewModel.BatteryImage = "BatteryQuart.png";
             }
             else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
             {
-                Globals.HomepageviewModel.BatteryImage = "BatteryHalf.png";
+                Globals.HomePageViewModel.BatteryImage = "BatteryHalf.png";
             }
             else if (battery.BatteryPercentage >= 51 && battery.BatteryPercentage < 76)
             {
-                Globals.HomepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
+                Globals.HomePageViewModel.BatteryImage = "BatteryThreeQuarts.png";
             }
             else if (battery.BatteryPercentage >= 76)
             {
-                Globals.HomepageviewModel.BatteryImage = "BatteryFull.png";
+                Globals.HomePageViewModel.BatteryImage = "BatteryFull.png";
             }
         }
 
