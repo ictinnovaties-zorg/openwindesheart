@@ -82,6 +82,7 @@ namespace WindesHeartApp.ViewModels
             _dateTime = _dateTime.AddHours(-6);
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             _dateTime2 = _dateTime2.AddHours(-6);
+            DrawChart(0);
 
         }
 
@@ -90,6 +91,7 @@ namespace WindesHeartApp.ViewModels
             _dateTime = _dateTime.AddHours(6);
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             _dateTime2 = _dateTime2.AddHours(6);
+            DrawChart(0);
         }
 
         private void DrawChart(int interval)
