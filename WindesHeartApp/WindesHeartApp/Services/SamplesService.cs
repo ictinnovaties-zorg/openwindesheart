@@ -64,7 +64,7 @@ namespace WindesHeartApp.Services
 
         private async Task AddHeartrate(DateTime datetime, ActivitySample sample)
         {
-            var heartRate = new Heartrate(datetime, sample.HeartRate);
+            var heartRate = new Heartrate(datetime, sample.HeartRate != 255 ? sample.HeartRate : 0);
             await _heartrateRepository.AddAsync(heartRate);
         }
 
