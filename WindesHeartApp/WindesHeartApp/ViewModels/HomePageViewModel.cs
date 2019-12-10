@@ -120,7 +120,7 @@ namespace WindesHeartApp.ViewModels
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SettingsPage()
             {
-                BindingContext = Globals.SettingsViewModel
+                BindingContext = Globals.SettingsPageViewModel
             });
             IsLoading = false;
         }

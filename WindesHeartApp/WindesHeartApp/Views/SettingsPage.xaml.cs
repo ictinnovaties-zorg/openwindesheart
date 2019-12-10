@@ -41,8 +41,8 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(savechangesButton);
             #endregion
 
-            Button ToggleFormatButton = PageBuilder.AddButton(absoluteLayout, "Toggle 12/24H", Globals.SettingsPageViewmodel.ToggleDisplayFormatsClicked, 0.05, 0.35, 0.45, 0.05, 10, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
-            Button ToggleWristActivation = PageBuilder.AddButton(absoluteLayout, "Toggle wristactivation", Globals.SettingsPageViewmodel.ToggleWristActivatedClicked, 0.95, 0.35, 0.45, 0.05, 10, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Button ToggleFormatButton = PageBuilder.AddButton(absoluteLayout, "Toggle 12/24H", Globals.SettingsPageViewModel.ToggleDisplayFormatsClicked, 0.05, 0.35, 0.45, 0.05, 10, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            Button ToggleWristActivation = PageBuilder.AddButton(absoluteLayout, "Toggle wristactivation", Globals.SettingsPageViewModel.ToggleWristActivatedClicked, 0.95, 0.35, 0.45, 0.05, 10, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
 
 
 
