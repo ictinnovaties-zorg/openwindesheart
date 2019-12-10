@@ -16,16 +16,14 @@ namespace WindesHeartApp.Services
         {
             if (heartrate.HeartrateValue == 0)
                 return;
-            Globals.heartrateviewModel.Heartrate = heartrate.HeartrateValue;
-            Globals.homepageviewModel.Heartrate = heartrate.HeartrateValue;
-            var heartRate = new Models.Heartrate(DateTime.Now, heartrate.HeartrateValue);
-            await Globals.HeartrateRepository.AddAsync(heartRate);
+            Globals.HeartrateviewModel.Heartrate = heartrate.HeartrateValue;
+            Globals.HomepageviewModel.Heartrate = heartrate.HeartrateValue;
         }
 
         //OnHeartrateChange/Measurement
         public static void ChangeBattery(Battery battery)
         {
-            Globals.homepageviewModel.UpdateBattery(battery);
+            Globals.HomepageviewModel.UpdateBattery(battery);
         }
 
         public static void OnStepsUpdated(StepInfo stepsInfo)
