@@ -24,8 +24,6 @@ namespace WindesHeartApp.Data
         {
             optionsBuilder.UseSqlite($"Filename={_databasePath}");
         }
-
-
     }
     public static class EntityExtensions
     {

@@ -174,7 +174,7 @@ namespace WindesHeartApp.Pages
 
         public void FetchData(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-1), HandleActivityData);
+            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-2), HandleActivityData);
         }
 
         private void HandleActivityData(List<ActivitySample> samples)

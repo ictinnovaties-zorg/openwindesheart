@@ -36,7 +36,6 @@ namespace WindesHeartApp.Data.Repository
             try
             {
                 var tracking = await _databaseContext.Heartrates.AddAsync(heartrate);
-                await _databaseContext.SaveChangesAsync();
                 return tracking.State == EntityState.Added;
             }
             catch (Exception e)
@@ -70,6 +69,11 @@ namespace WindesHeartApp.Data.Repository
                 Debug.WriteLine(e.Message);
                 return null;
             }
+        }
+
+        public async void SaveChangesAsync()
+        {
+            await _databaseContext.SaveChangesAsync();
         }
     }
 }

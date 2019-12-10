@@ -13,6 +13,7 @@ namespace WindesHeartApp.Data.Interfaces
         void RemoveAll();
 
         Task<IEnumerable<Heartrate>> HeartratesByQueryAsync(Func<Heartrate, bool> predicate);
-        
+
+        void SaveChangesAsync();
     }
 }
