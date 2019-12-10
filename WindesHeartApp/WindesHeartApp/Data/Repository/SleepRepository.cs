@@ -23,7 +23,7 @@ namespace WindesHeartApp.Data.Repository
             try
             {
                 var sleep = await _databaseContext.Sleep.ToListAsync();
-                return sleep;
+                return sleep.OrderBy(x => x.DateTime).ToList();
             }
             catch (Exception e)
             {
