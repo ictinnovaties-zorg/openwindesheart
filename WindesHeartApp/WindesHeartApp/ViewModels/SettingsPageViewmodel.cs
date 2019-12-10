@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartSDK;
-using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
@@ -12,14 +12,10 @@ namespace WindesHeartApp.ViewModels
         private readonly ISettingsRepository _settingsRepository;
         public bool toggle = true;
         public bool toggle2 = true;
-        public Command ToggleDisplayFormatsCommand { get; }
-        public Command ToggleWristActivatedCommand { get; }
 
         public SettingsPageViewmodel(ISettingsRepository settingsRepository)
         {
             _settingsRepository = settingsRepository;
-            ToggleDisplayFormatsCommand = new Command(ToggleDisplayFormatsClicked);
-            ToggleWristActivatedCommand = new Command(ToggleWristActivatedClicked);
         }
 
         private void OnPropertyChanged([CallerMemberName] string name = "")
@@ -27,14 +23,14 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private void ToggleDisplayFormatsClicked()
+        public void ToggleDisplayFormatsClicked(object sender, EventArgs args)
         {
             Windesheart.ConnectedDevice.SetTimeDisplayFormat(toggle);
             Windesheart.ConnectedDevice.SetDateDisplayFormat(toggle);
             toggle = !toggle;
         }
 
-        private void ToggleWristActivatedClicked()
+        public void ToggleWristActivatedClicked(object sender, EventArgs args)
         {
 
             Windesheart.ConnectedDevice.SetActivateOnLiftWrist(toggle2);
