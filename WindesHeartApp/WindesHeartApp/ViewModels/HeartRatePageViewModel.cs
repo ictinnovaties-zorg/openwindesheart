@@ -16,7 +16,7 @@ using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class HeartratePageViewModel : INotifyPropertyChanged
+    public class HeartRatePageViewModel : INotifyPropertyChanged
     {
         private int _heartrate;
         private readonly IHeartrateRepository _heartrateRepository;
@@ -34,7 +34,7 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public HeartratePageViewModel(IHeartrateRepository heartrateRepository)
+        public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
         {
             _heartrateRepository = heartrateRepository;
         }
@@ -46,10 +46,12 @@ namespace WindesHeartApp.ViewModels
             _dateTime = DateTime.Now.AddHours(-6);
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime.AddHours(6).ToString()}";
             var rates = await _heartrateRepository.GetAllAsync();
+            DrawChart();
             if (rates.Count() != 0)
             {
                 _heartrates = rates;
                 InitLabels();
+
             }
             else
             {
@@ -69,7 +71,7 @@ namespace WindesHeartApp.ViewModels
 
         private void InitLabels()
         {
-            var heartrateslast6hours = _heartrates.Where(x => x.DateTime >= _dateTime).Where(x => x.HeartrateValue != 0);
+            var heartrateslast6hours = _heartrates.Where(x => x.DateTime >= _dateTime);
             if (heartrateslast6hours != null)
             {
                 AverageHeartrate = Convert.ToInt32(heartrateslast6hours?.Select(x => x.HeartrateValue).Average());
@@ -111,7 +113,6 @@ namespace WindesHeartApp.ViewModels
                 List<Entry> list = new List<Entry>();
                 foreach (Heartrate heartrate in heartrates)
                 {
-
                     var entry = new Entry(heartrate.HeartrateValue)
                     {
                         ValueLabel = heartrate.HeartrateValue.ToString(),

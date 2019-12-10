@@ -8,7 +8,7 @@ namespace WindesHeartApp.Resources
 {
     public static class Globals
     {
-        public static HeartratePageViewModel HeartratePageViewModel;
+        public static HeartRatePageViewModel HeartratePageViewModel;
         public static SamplesService SamplesService { get; private set; }
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel HomePageViewModel;
@@ -36,7 +36,7 @@ namespace WindesHeartApp.Resources
             SleepRepository = sleepRepository;
             SettingsRepository = settingsRepository;
             HeartrateRepository = heartrateRepository;
-            HeartratePageViewModel = new HeartratePageViewModel(HeartrateRepository);
+            HeartratePageViewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsViewModel = new StepsViewModel(StepsRepository);
             SettingsPageViewModel = new SettingsPageViewModel(SettingsRepository);

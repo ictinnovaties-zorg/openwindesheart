@@ -4,6 +4,7 @@ using System.Diagnostics;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -50,6 +51,7 @@ namespace WindesHeartApp.Services
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
                 Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnectCallBack);
                 Globals.SamplesService.StartFetching();
+                Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)
                 {
                     if (App.Current.Properties.ContainsKey(_key))
