@@ -40,7 +40,7 @@ namespace WindesHeartApp.Services
                 Globals.SamplesService.EmptyDatabase();
                 Globals.SamplesService.StartFetching();
 
-                Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(5);
+                Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);

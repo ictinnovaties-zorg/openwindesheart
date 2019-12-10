@@ -41,6 +41,7 @@ namespace WindesHeartApp.ViewModels
 
         public async void OnAppearing()
         {
+            Interval = 0;
             _dateTime2 = DateTime.Now;
             _dateTime = DateTime.Now.AddHours(-6);
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime.AddHours(6).ToString()}";
@@ -82,6 +83,7 @@ namespace WindesHeartApp.ViewModels
             _dateTime = _dateTime.AddHours(-6);
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             _dateTime2 = _dateTime2.AddHours(-6);
+            DrawChart();
 
         }
 
@@ -90,9 +92,10 @@ namespace WindesHeartApp.ViewModels
             _dateTime = _dateTime.AddHours(6);
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             _dateTime2 = _dateTime2.AddHours(6);
+            DrawChart();
         }
 
-        private void DrawChart(int interval)
+        private void DrawChart()
         {
             if (_heartrates != null)
             {
@@ -100,9 +103,9 @@ namespace WindesHeartApp.ViewModels
 
                 heartrates = heartrates.Where(x => x.DateTime <= _dateTime2);
 
-                if (interval != 0)
+                if (Interval != 0)
                 {
-                    heartrates = heartrates.Where((x, i) => i % interval == 0);
+                    heartrates = heartrates.Where((x, i) => i % Interval == 0);
                 }
 
                 List<Entry> list = new List<Entry>();
@@ -134,8 +137,11 @@ namespace WindesHeartApp.ViewModels
 
         public void UpdateInterval(int interval)
         {
-            DrawChart(interval);
+            Interval = interval;
+            DrawChart();
         }
+
+        public int Interval { get; set; }
 
         public Chart Chart
         {
