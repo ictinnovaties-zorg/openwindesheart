@@ -43,6 +43,7 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutFlags(previousBtn, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(previousBtn, new Rectangle(0.3, 0.135, 0.1, 0.1));
             previousBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "PreviousDayBinding" });
+            previousBtn.Clicked += Globals.HeartrateviewModel.PreviousDayBtnClick;
             absoluteLayout.Children.Add(previousBtn);
 
             ImageButton nextBtn = new ImageButton
@@ -52,13 +53,14 @@ namespace WindesHeartApp.Pages
             };
             AbsoluteLayout.SetLayoutFlags(nextBtn, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(nextBtn, new Rectangle(0.7, 0.135, 0.1, 0.1));
-            nextBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "NextDayBinding" });
+            nextBtn.Clicked += Globals.HeartrateviewModel.NextDayBtnClick;
             absoluteLayout.Children.Add(nextBtn);
 
             PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.20, Color.Black, "DayLabelText", 15);
 
             ChartView chart = new ChartView { BackgroundColor = Globals.PrimaryColor };
             //chart.Chart.BackgroundColor = Globals.PrimaryColor.ToSKColor();
+
             chart.SetBinding(ChartView.ChartProperty, "Chart");
             AbsoluteLayout.SetLayoutBounds(chart, new Rectangle(0.5, 0.4, 0.95, 0.35));
             AbsoluteLayout.SetLayoutFlags(chart, AbsoluteLayoutFlags.All);
@@ -78,30 +80,30 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(heartonlyImage2);
             var itnervallabel = PageBuilder.AddLabel(absoluteLayout, "Interval:", 0.30, 0.84, Color.Black, "", 15);
 
-            intervaldefaultButton = PageBuilder.AddButton(absoluteLayout, "5", "", 0.50, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            intervaldefaultButton = PageBuilder.AddButton(absoluteLayout, "5", OnIntervalLabelClicked, 0.50, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             intervaldefaultButton.BorderWidth = 1;
             intervaldefaultButton.BorderColor = Globals.HeartrateviewModel.Interval == 15 ? Color.Black : Color.White;
-            intervaldefaultButton.Clicked += (s, e) => OnIntervalLabelClicked(intervaldefaultButton);
 
-            interval15Button = PageBuilder.AddButton(absoluteLayout, "15", "", 0.70, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            interval15Button = PageBuilder.AddButton(absoluteLayout, "15", OnIntervalLabelClicked, 0.70, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval15Button.BorderWidth = 1;
             interval15Button.BorderColor = Globals.HeartrateviewModel.Interval == 15 ? Color.Black : Color.White;
-            interval15Button.Clicked += (s, e) => OnIntervalLabelClicked(interval15Button);
 
-            interval30Button = PageBuilder.AddButton(absoluteLayout, "30", "", 0.90, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            interval30Button = PageBuilder.AddButton(absoluteLayout, "30", OnIntervalLabelClicked, 0.90, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval30Button.BorderWidth = 1;
             interval30Button.BorderColor = Globals.HeartrateviewModel.Interval == 30 ? Color.Black : Color.White;
-            interval30Button.Clicked += (s, e) => OnIntervalLabelClicked(interval30Button);
             #endregion
         }
-        private void OnIntervalLabelClicked(Button intervalLabel)
+
+        private async void OnIntervalLabelClicked(object sender, EventArgs args)
         {
+            var intervalButton = sender as Button;
+
             intervaldefaultButton.BorderColor = Color.White;
             interval15Button.BorderColor = Color.White;
             interval30Button.BorderColor = Color.White;
-            intervalLabel.BorderColor = Color.Black;
+            intervalButton.BorderColor = Color.Black;
 
-            var interval = Convert.ToInt32(intervalLabel.Text);
+            var interval = Convert.ToInt32(intervalButton.Text);
             Globals.HeartrateviewModel.UpdateInterval(interval);
         }
 

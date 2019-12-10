@@ -75,20 +75,20 @@ namespace WindesHeartApp.Pages
                     bool isScanning = Windesheart.StartScanning(WhenDeviceFound);
                     if (!isScanning)
                     {
-                        Debug.WriteLine("Can't start scanning... Bluetooth adapter not ready?");
+                        Trace.WriteLine("Can't start scanning... Bluetooth adapter not ready?");
                     }
                 }
             }
             catch (Exception r)
             {
-                Debug.WriteLine(r.Message);
+                Trace.WriteLine(r.Message);
             }
         }
 
 
         private void WhenDeviceFound(BLEDevice device)
         {
-            Debug.WriteLine("Device found! Connecting...");
+            Trace.WriteLine("Device found! Connecting...");
             Windesheart.StopScanning();
             device.Connect(CallbackHandler.OnConnetionCallBack);
         }
@@ -102,7 +102,7 @@ namespace WindesHeartApp.Pages
         private async void ReadCurrentBattery(object sender, EventArgs e)
         {
             var battery = await Windesheart.ConnectedDevice.GetBattery();
-            Debug.WriteLine("Battery: " + battery.BatteryPercentage + "%");
+            Trace.WriteLine("Battery: " + battery.BatteryPercentage + "%");
             Globals.HomepageviewModel.Battery = battery.BatteryPercentage;
             if (battery.Status == StatusEnum.Charging)
             {
@@ -130,13 +130,13 @@ namespace WindesHeartApp.Pages
         private void SetTime(object sender, EventArgs e)
         {
             bool timeset = Windesheart.ConnectedDevice.SetTime(new DateTime(2000, 1, 1, 1, 1, 1));
-            Debug.WriteLine("Time set " + timeset);
+            Trace.WriteLine("Time set " + timeset);
         }
 
         private void SetCurrentTime(object sender, EventArgs e)
         {
             bool timeset = Windesheart.ConnectedDevice.SetTime(DateTime.Now);
-            Debug.WriteLine("Time set " + timeset);
+            Trace.WriteLine("Time set " + timeset);
         }
 
         private void ReadBatteryContinuous(object sender, EventArgs e)
@@ -153,44 +153,38 @@ namespace WindesHeartApp.Pages
         public async void GetSteps(object sender, EventArgs e)
         {
             StepInfo steps = await Windesheart.ConnectedDevice.GetSteps();
-            Debug.WriteLine("Steps: " + steps.StepCount);
+            Trace.WriteLine("Steps: " + steps.StepCount);
         }
 
         public void EnableRealTimeSteps(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsChanged);
-            Debug.WriteLine("Enabled realtime steps");
+            Trace.WriteLine("Enabled realtime steps");
         }
 
         public void DisableRealTimeSteps(object sender, EventArgs e)
         {
             Windesheart.ConnectedDevice.DisableRealTimeSteps();
-            Debug.WriteLine("Disabled realtime steps");
+            Trace.WriteLine("Disabled realtime steps");
         }
 
         public void OnStepsChanged(StepInfo steps)
         {
-            Debug.WriteLine("Steps updated: " + steps.StepCount);
+            Trace.WriteLine("Steps updated: " + steps.StepCount);
         }
 
         public void FetchData(object sender, EventArgs e)
         {
-            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-10), HandleActivityData);
+            Windesheart.ConnectedDevice.FetchData(DateTime.Now.AddDays(-1), HandleActivityData);
         }
 
         private void HandleActivityData(List<ActivitySample> samples)
         {
-            Debug.WriteLine("Samples found! Here they come:");
+            Trace.WriteLine("Samples found! Here they come:");
 
             foreach (ActivitySample sample in samples)
             {
                 Debug.WriteLine(sample.ToString());
             }
-        }
-
-        private void GoBack_Clicked(object sender, EventArgs e)
-        {
-            Navigation.PopAsync();
         }
 
         private void Setln_Clicked(object sender, EventArgs e)

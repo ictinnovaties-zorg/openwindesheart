@@ -12,7 +12,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
     public class MiBand3BatteryService
     {
         private readonly MiBand3.Models.MiBand3 MiBand;
-        private IDisposable RealTimeDisposible;
+        public IDisposable RealTimeDisposible;
 
         public MiBand3BatteryService(MiBand3.Models.MiBand3 device)
         {

@@ -37,19 +37,17 @@ namespace WindesHeartApp.Services
         {
             if (result == ConnectionResult.Succeeded)
             {
-                Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(5);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
                 Windesheart.ConnectedDevice.EnableSleepTracking(true);
                 Windesheart.ConnectedDevice.SetActivateOnLiftWrist(true);
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
-                Windesheart.ConnectedDevice.SetActivateOnLiftWrist(true);
                 Globals.DevicePageViewModel.StatusText = "Connected";
                 Globals.DevicePageViewModel.IsLoading = false;
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
+                Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnectCallBack);
                 if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)
                 {
                     if (App.Current.Properties.ContainsKey(_key))
@@ -67,17 +65,9 @@ namespace WindesHeartApp.Services
             }
         }
 
-        private static void SaveDeviceInAppProperties(Guid guid)
+        public static void OnDisconnectCallBack(Object obj)
         {
-            if (guid != Guid.Empty)
-            {
-                if (App.Current.Properties.ContainsKey(_key))
-                {
-                    App.Current.Properties.Remove(_key);
-                }
-
-                App.Current.Properties.Add(_key, guid);
-            }
+            Globals.DevicePageViewModel.StatusText = "Disconnected";
         }
     }
 }

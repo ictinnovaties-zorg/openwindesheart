@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Services;
 using WindesHeartApp.ViewModels;
@@ -20,21 +19,27 @@ namespace WindesHeartApp.Resources
         public static Color SecondaryColor { get; set; } = Color.FromHex("#53b1ff");
         public static Color LightTextColor { get; set; } = Color.FromHex("#999999");
         public static IStepsRepository StepsRepository { get; set; }
+        public static ISleepRepository SleepRepository { get; set; }
+        public static ISettingsRepository SettingsRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
         public static float DailyStepsGoal { get; internal set; }
         public static Dictionary<string, Color> ColorDictionary;
         public static Dictionary<string, string> FormatDictionary;
         public static StepsViewModel StepsViewModel;
+        public static SleepPageViewModel SleepViewModel;
 
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
             DailyStepsGoal = 1000;
             StepsRepository = stepsRepository;
+            SleepRepository = sleepRepository;
+            SettingsRepository = settingsRepository;
             HeartrateRepository = heartrateRepository;
-            HeartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
-            SamplesService = new SamplesService(heartrateRepository, StepsRepository, sleepRepository);
-            StepsViewModel = new StepsViewModel(stepsRepository);
-            SettingspageviewModel = new SettingsPageViewmodel(settingsRepository);
+            HeartrateviewModel = new HeartRatePageViewModel(HeartrateRepository);
+            SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
+            StepsViewModel = new StepsViewModel(StepsRepository);
+            SettingspageviewModel = new SettingsPageViewmodel(SettingsRepository);
+            SleepViewModel = new SleepPageViewModel(sleepRepository);
             DevicePageViewModel = new DevicePageViewModel();
             HomepageviewModel = new HomePageViewModel();
             ColorDictionary = new Dictionary<string, Color>
@@ -55,26 +60,6 @@ namespace WindesHeartApp.Resources
                 {"EN", "en-EN"},
                 {"DU", "du-DU"}
             };
-        }
-
-        public static bool SaveDeviceInAppProperties(Guid guid)
-        {
-            if (guid != Guid.Empty)
-            {
-                if (!App.Current.Properties.ContainsKey("LastConnectedDeviceGuid"))
-                {
-                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
-                }
-                else
-                {
-                    App.Current.Properties.Remove("LastConnectedDeviceGuid");
-                    App.Current.Properties.Add("LastConnectedDeviceGuid", guid);
-                }
-
-                return true;
-            }
-
-            return false;
         }
     }
 }

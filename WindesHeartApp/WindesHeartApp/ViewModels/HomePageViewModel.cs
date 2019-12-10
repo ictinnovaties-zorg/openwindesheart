@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WindesHeartApp.Pages;
@@ -17,21 +18,9 @@ namespace WindesHeartApp.ViewModels
         private string _batteryImage = "";
         private bool _isLoading;
         public event PropertyChangedEventHandler PropertyChanged;
-        public Command AboutButtonCommand { get; }
-        public Command SleepButtonCommand { get; }
-        public Command StepsButtonCommand { get; }
-        public Command SettingsButtonCommand { get; }
-        public Command HeartrateButtonCommand { get; }
-        public Command DeviceButtonCommand { get; }
 
         public HomePageViewModel()
         {
-            AboutButtonCommand = new Command(AboutButtonClicked);
-            StepsButtonCommand = new Command(StepsButtonClicked);
-            SleepButtonCommand = new Command(SleepButtonClicked);
-            SettingsButtonCommand = new Command(SettingsButtonClicked);
-            HeartrateButtonCommand = new Command(HeartrateButtonClicked);
-            DeviceButtonCommand = new Command(DeviceButtonClicked);
             if (Windesheart.ConnectedDevice != null)
                 ReadCurrentBattery();
 
@@ -39,6 +28,7 @@ namespace WindesHeartApp.ViewModels
 
         public async Task ReadCurrentBattery()
         {
+            //catch!!
             var battery = await Windesheart.ConnectedDevice.GetBattery();
             UpdateBattery(battery);
         }
@@ -120,13 +110,13 @@ namespace WindesHeartApp.ViewModels
 
         public string DisplayBattery => Battery != 0 ? $"{Battery.ToString()}%" : "";
 
-        private async void AboutButtonClicked()
+        public async void AboutButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new AboutPage());
             IsLoading = false;
         }
-        private async void SettingsButtonClicked()
+        public async void SettingsButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SettingsPage()
@@ -136,7 +126,7 @@ namespace WindesHeartApp.ViewModels
             IsLoading = false;
         }
 
-        private async void StepsButtonClicked()
+        public async void StepsButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new StepsPage()
@@ -146,7 +136,7 @@ namespace WindesHeartApp.ViewModels
             IsLoading = false;
         }
 
-        private async void HeartrateButtonClicked()
+        public async void HeartrateButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
 
@@ -157,17 +147,17 @@ namespace WindesHeartApp.ViewModels
             IsLoading = false;
         }
 
-        private async void SleepButtonClicked()
+        public async void SleepButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SleepPage()
             {
-                BindingContext = Globals.HeartrateviewModel
+                BindingContext = Globals.SleepViewModel
             });
             IsLoading = false;
         }
 
-        private async void DeviceButtonClicked()
+        public async void DeviceButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new DevicePage()

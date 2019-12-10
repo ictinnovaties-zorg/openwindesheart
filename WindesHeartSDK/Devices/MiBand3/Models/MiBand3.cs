@@ -36,10 +36,16 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
         }
 
-        public override void Connect(Action<ConnectionResult> callback)
+        public override void Connect(Action<ConnectionResult> connectCallback)
         {
-            ConnectionCallback = callback;
+            ConnectionCallback = connectCallback;
             BluetoothService.Connect();
+        }
+
+        public override void SubscribeToDisconnect(Action<Object> disconnectCallback)
+        {
+            DisconnectCallback = disconnectCallback;
+            Device.WhenDisconnected().Subscribe(observer => DisconnectCallback(observer));
         }
 
         public override void Disconnect(bool rememberDevice = true)
@@ -60,6 +66,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public override void DisposeDisposables()
         {
             _authenticationService.AuthenticationDisposable?.Dispose();
+            _stepsService.realtimeDisposable?.Dispose();
+            _heartrateService.RealtimeDisposible?.Dispose();
+            _batteryService.RealTimeDisposible?.Dispose();
             ConnectionDisposable?.Dispose();
             CharacteristicDisposable?.Dispose();
         }

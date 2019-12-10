@@ -11,7 +11,6 @@ using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
-using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
@@ -28,8 +27,6 @@ namespace WindesHeartApp.ViewModels
         private IEnumerable<Heartrate> _heartrates;
         private string _daylabelText;
         public event PropertyChangedEventHandler PropertyChanged;
-        public Command NextDayBinding { get; set; }
-        public Command PreviousDayBinding { get; set; }
 
         public void OnPropertyChanged([CallerMemberName] string name = "")
         {
@@ -39,8 +36,6 @@ namespace WindesHeartApp.ViewModels
         public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
         {
             _heartrateRepository = heartrateRepository;
-            NextDayBinding = new Command(NextDayBtnClick);
-            PreviousDayBinding = new Command(PreviousDayBtnClick);
         }
 
         public async void OnAppearing()
@@ -78,7 +73,7 @@ namespace WindesHeartApp.ViewModels
 
         }
 
-        private void PreviousDayBtnClick()
+        public void PreviousDayBtnClick(object sender, EventArgs args)
         {
             _dateTime = _dateTime.AddHours(-6);
             var heartrates = _heartrates.Where(x => x.DateTime >= _dateTime);
@@ -97,13 +92,22 @@ namespace WindesHeartApp.ViewModels
                         TextColor = SKColors.Black
                     };
                     list.Add(entry);
-                    Chart = new PointChart() { Entries = list, BackgroundColor = Globals.PrimaryColor.ToSKColor(), LabelTextSize = 15, MaxValue = 150, MinValue = 30, PointMode = PointMode.Square, PointSize = 10 };
+                    Chart = new PointChart()
+                    {
+                        Entries = list,
+                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
+                        LabelTextSize = 15,
+                        MaxValue = 150,
+                        MinValue = 30,
+                        PointMode = PointMode.Square,
+                        PointSize = 10
+                    };
 
                 }
             }
         }
 
-        private void NextDayBtnClick()
+        public void NextDayBtnClick(object sender, EventArgs args)
         {
             _dateTime = _dateTime.AddHours(6);
             var heartrates = _heartrates.Where(x => x.DateTime >= _dateTime);
