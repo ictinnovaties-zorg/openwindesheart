@@ -17,26 +17,12 @@ namespace WindesHeartApp
             InitializeComponent();
             Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, settingsRepository);
             MainPage = new AnimationNavigationPage(new HomePage());
-            FillDatabase();
         }
 
         protected override void OnStart()
         {
 
-        }
-
-        private async void FillDatabase()
-        {
-            Globals.StepsRepository.RemoveAll();
-            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today, 700));
-            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-1), 480));
-            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-2), 1200));
-            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-3), 3500));
-            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-4), 1300));
-            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-5), 2200));
-            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-6), 1400));
-            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-7), 8310));
-        }
+        }       
 
         protected override void OnSleep()
         {

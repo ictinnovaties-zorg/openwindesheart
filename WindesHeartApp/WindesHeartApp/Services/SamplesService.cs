@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartSdk.Model;
 using WindesHeartSDK;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -21,20 +24,37 @@ namespace WindesHeartApp.Services
             this._sleepRepository = sleepRepository;
         }
 
-        public void StartFetching(DateTime startDate)
+        public async void StartFetching()
         {
-            Windesheart.ConnectedDevice.FetchData(startDate, FillDatabase);
+            var startDate = await GetLastAddedDateTime();
+            Windesheart.ConnectedDevice.FetchData(startDate.AddMinutes(1), FillDatabase);
         }
 
         private async void FillDatabase(List<ActivitySample> samples)
         {
+            Debug.WriteLine("Filling DB with samples");
             foreach (var sample in samples)
             {
                 var datetime = sample.Timestamp;
+
                 await AddHeartrate(datetime, sample);
                 await AddStep(datetime, sample);
                 await AddSleep(datetime, sample);
             }
+            Debug.WriteLine("Fetched all samples");
+        }
+
+        private async Task<DateTime> GetLastAddedDateTime()
+        {
+            var steps = await _stepsRepository.GetAllAsync();
+
+            if(steps.Count() > 0)
+            {
+                Debug.WriteLine("Last added datetime is: "+steps.Last().DateTime);
+                return steps.Last().DateTime;
+            }
+            Debug.WriteLine("Last added datetime is: " + DateTime.Now.AddDays(-30));
+            return DateTime.Now.AddDays(-30);
         }
 
         private async Task AddHeartrate(DateTime datetime, ActivitySample sample)
