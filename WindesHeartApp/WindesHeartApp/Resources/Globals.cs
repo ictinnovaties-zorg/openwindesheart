@@ -22,9 +22,11 @@ namespace WindesHeartApp.Resources
         public static Color LightTextColor { get; set; } = Color.FromHex("#999999");
         public static IStepsRepository StepsRepository { get; set; }
         public static ISleepRepository SleepRepository { get; set; }
+        public static IHeartrateRepository HeartrateRepository { get; set; }
         public static float DailyStepsGoal { get; internal set; }
 
         public static Dictionary<string, Color> ColorDictionary;
+        public static Dictionary<string, string> FormatDictionary;
 
         public static StepsViewModel StepsViewModel;
         public static SleepPageViewModel SleepViewModel;
@@ -35,7 +37,7 @@ namespace WindesHeartApp.Resources
 
             StepsRepository = stepsRepository;
             SleepRepository = sleepRepository;
-
+            HeartrateRepository = heartrateRepository;
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
             SamplesService = new SamplesService(heartrateRepository, StepsRepository, sleepRepository);
             StepsViewModel = new StepsViewModel(stepsRepository);
@@ -54,6 +56,12 @@ namespace WindesHeartApp.Resources
                 { "Purple", Color.Purple }, { "Red", Color.Red },
                 { "Silver", Color.Silver }, { "Teal", Color.Teal },
                 { "White", Color.White }, { "Yellow", Color.Yellow }
+            };
+            FormatDictionary = new Dictionary<string, string>
+            {
+                {"NL", "nl-NL"},
+                {"EN", "en-EN"},
+                {"DU", "du-DU"}
             };
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
@@ -98,7 +99,7 @@ namespace WindesHeartApp.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
             }
         }
         private void DeviceSelected(BLEDevice device)
@@ -111,7 +112,7 @@ namespace WindesHeartApp.ViewModels
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
             }
         }
 

@@ -25,38 +25,37 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
             Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", Globals.DevicePageViewModel.ScanButtonClicked, 0.15, 0.25, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor); PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
-
+            PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
 
+            #region device ListView
             var deviceTemplate = new DataTemplate(() =>
             {
                 Grid grid = new Grid
                 {
                     ColumnDefinitions = new ColumnDefinitionCollection
                     {
-                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 25},
-                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 25},
-                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 25},
-                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 25}
+                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 33},
+                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 33},
+                        new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 33},
                     }
                 };
 
-                Label label = new Label();
+                Label label = new Label { FontAttributes = FontAttributes.Bold, VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center, FontSize = 12 };
                 label.SetBinding(Label.TextProperty, "Name");
                 grid.Children.Add(label, 0, 0);
 
 
-                Label label2 = new Label { HorizontalOptions = LayoutOptions.End };
+                Label label2 = new Label { VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Start, FontAttributes = FontAttributes.Italic, FontSize = 12 };
                 label2.SetBinding(Label.TextProperty, "Rssi");
+
                 grid.Children.Add(label2, 2, 0);
 
-                Label label3 = new Label { Text = "Signal strength:", HorizontalOptions = LayoutOptions.Start };
+                Label label3 = new Label { Text = "Signal strength:", VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center, FontSize = 12 };
                 grid.Children.Add(label3, 1, 0);
 
                 return new ViewCell { View = grid };
             });
-
-            #region device ListView
             devicelist = new ListView { BackgroundColor = Globals.SecondaryColor, ItemTemplate = deviceTemplate };
             devicelist.SetBinding(ListView.SelectedItemProperty, new Binding("SelectedDevice", BindingMode.TwoWay));
             devicelist.SetBinding(ListView.ItemsSourceProperty, new Binding("DeviceList"));
@@ -68,7 +67,6 @@ namespace WindesHeartApp.Pages
             #region disconnectButton
             Button disconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", Globals.DevicePageViewModel.DisconnectButtonClicked, 0.15, 0.85, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             #endregion
-
         }
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 

@@ -18,6 +18,7 @@ namespace WindesHeartSDK
         public IDisposable CharacteristicDisposable;
 
         public Action<ConnectionResult> ConnectionCallback;
+        public Action<Object> DisconnectCallback;
 
         //Services
         public readonly BluetoothService BluetoothService;
@@ -38,9 +39,23 @@ namespace WindesHeartSDK
         public abstract void DisposeDisposables();
         
         public abstract void OnConnect();
-        public abstract void Connect(Action<ConnectionResult> callback);
+
+        public abstract void SubscribeToDisconnect(Action<Object> disconnectCallback);
+        public abstract void Connect(Action<ConnectionResult> connectCallback);
         public abstract void Disconnect(bool rememberDevice = true);
-        public abstract void SetTimeDisplayUnit(bool is24hours);
+
+        public bool isConnected()
+        {
+            if(Device.Status == ConnectionStatus.Connected)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public abstract void SetTimeDisplayFormat(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
         public abstract void SetLanguage(string localeString);
         public abstract bool SetTime(DateTime dateTime);

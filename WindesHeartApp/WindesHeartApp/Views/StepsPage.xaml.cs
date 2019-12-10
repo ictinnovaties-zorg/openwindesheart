@@ -33,7 +33,7 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Globals.StepsViewModel.OnApearing();
+            Globals.StepsViewModel.OnAppearing();
         }
 
         private void BuildPage()

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
-using WindesHeartApp.Data.Repository;
 using WindesHeartApp.Models;
 using WindesHeartSdk.Model;
 using WindesHeartSDK;
@@ -30,7 +28,7 @@ namespace WindesHeartApp.Services
 
         private async void FillDatabase(List<ActivitySample> samples)
         {
-            foreach(var sample in samples)
+            foreach (var sample in samples)
             {
                 var datetime = sample.Timestamp;
                 await AddHeartrate(datetime, sample);
@@ -53,14 +51,14 @@ namespace WindesHeartApp.Services
 
         private async Task AddSleep(DateTime datetime, ActivitySample sample)
         {
-            Sleep sleep = null;
-            switch(sample.Category)
+            Sleep sleep;
+            switch (sample.Category)
             {
                 case 112:
                     sleep = new Sleep(datetime, SleepType.Light);
                     break;
                 case 121:
-                case 122: 
+                case 122:
                 case 123:
                     sleep = new Sleep(datetime, SleepType.Deep);
                     break;

@@ -3,11 +3,11 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
-using WindesHeartApp.Resources;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -18,7 +18,7 @@ namespace WindesHeartApp.ViewModels
         public DateTime StartDate { get; }
 
         public DateTime SelectedDate;
-        private IStepsRepository _stepsRepository;
+        private readonly IStepsRepository _stepsRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -35,10 +35,10 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        public async void OnApearing()
+        public async void OnAppearing()
         {
             //Get all steps from DB
-            StepInfo = await Globals.StepsRepository.GetAllAsync();
+            StepInfo = await _stepsRepository.GetAllAsync();
 
             //Update chart
             Step steps = GetCurrentSteps();
@@ -60,9 +60,9 @@ namespace WindesHeartApp.ViewModels
 
         public void PreviousDayBtnClick(object sender, EventArgs args)
         {
-            Console.WriteLine("Previous day clicked!");
+            Debug.WriteLine("Previous day clicked!");
             SelectedDate = SelectedDate.AddDays(-1);
-            Console.WriteLine(SelectedDate);
+            Debug.WriteLine(SelectedDate);
 
             if (!StepsPage.Day1Button.IsEnabled)
             {
@@ -186,7 +186,7 @@ namespace WindesHeartApp.ViewModels
             {
                 SelectedDate = SelectedDate.AddDays(1);
             }
-            Console.WriteLine(SelectedDate);
+            Debug.WriteLine(SelectedDate);
 
             //Set right day button selected
             if (!StepsPage.Day1Button.IsEnabled)
