@@ -23,7 +23,6 @@ namespace WindesHeartApp.ViewModels
         {
             if (Windesheart.ConnectedDevice != null)
                 ReadCurrentBattery();
-
         }
 
         public async Task ReadCurrentBattery()
@@ -121,7 +120,7 @@ namespace WindesHeartApp.ViewModels
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SettingsPage()
             {
-                BindingContext = Globals.SettingspageviewModel
+                BindingContext = Globals.SettingsPageViewmodel
             });
             IsLoading = false;
         }

@@ -12,7 +12,7 @@ namespace WindesHeartApp.Resources
         public static SamplesService SamplesService { get; private set; }
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel HomepageviewModel;
-        public static SettingsPageViewmodel SettingspageviewModel;
+        public static SettingsPageViewmodel SettingsPageViewmodel;
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
         public static Color PrimaryColor { get; set; } = Color.FromHex("#96d1ff");
@@ -38,7 +38,7 @@ namespace WindesHeartApp.Resources
             HeartrateviewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsViewModel = new StepsViewModel(StepsRepository);
-            SettingspageviewModel = new SettingsPageViewmodel(SettingsRepository);
+            SettingsPageViewmodel = new SettingsPageViewmodel(SettingsRepository);
             SleepViewModel = new SleepPageViewModel(sleepRepository);
             DevicePageViewModel = new DevicePageViewModel();
             HomepageviewModel = new HomePageViewModel();
