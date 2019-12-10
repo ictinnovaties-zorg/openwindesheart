@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
@@ -55,6 +56,20 @@ namespace WindesHeartApp.Data.Repository
             catch (Exception e)
             {
                 Debug.WriteLine("Could not delete sleep entries: " + e);
+            }
+        }
+
+        public async Task<IEnumerable<Sleep>> SleepByQueryAsync(Func<Sleep, bool> predicate)
+        {
+            try
+            {
+                var sleep = await _databaseContext.Sleep.ToListAsync();
+                return sleep.Where(predicate);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
             }
         }
     }

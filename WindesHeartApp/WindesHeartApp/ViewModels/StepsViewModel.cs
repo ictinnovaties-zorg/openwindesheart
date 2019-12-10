@@ -20,16 +20,6 @@ namespace WindesHeartApp.ViewModels
         public DateTime SelectedDate;
         private readonly IStepsRepository _stepsRepository;
 
-        public Command NextDayBinding { get; }
-        public Command PreviousDayBinding { get; }
-        public Command Day1Binding { get; }
-        public Command Day2Binding { get; }
-        public Command Day3Binding { get; }
-        public Command Day4Binding { get; }
-        public Command Day5Binding { get; }
-        public Command Day6Binding { get; }
-        public Command TodayBinding { get; }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static IEnumerable<Step> StepInfo = new List<Step>();
@@ -66,19 +56,9 @@ namespace WindesHeartApp.ViewModels
             _stepsRepository = stepsRepository;
             StartDate = DateTime.Now;
             SelectedDate = StartDate;
-
-            NextDayBinding = new Command(NextDayBtnClick);
-            PreviousDayBinding = new Command(PreviousDayBtnClick);
-            Day1Binding = new Command(Day1BtnClick);
-            Day2Binding = new Command(Day2BtnClick);
-            Day3Binding = new Command(Day3BtnClick);
-            Day4Binding = new Command(Day4BtnClick);
-            Day5Binding = new Command(Day5BtnClick);
-            Day6Binding = new Command(Day6BtnClick);
-            TodayBinding = new Command(TodayBtnClick);
         }
 
-        private void PreviousDayBtnClick(object obj)
+        public void PreviousDayBtnClick(object sender, EventArgs args)
         {
             Debug.WriteLine("Previous day clicked!");
             SelectedDate = SelectedDate.AddDays(-1);
@@ -199,7 +179,7 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        private void NextDayBtnClick(object obj)
+        public void NextDayBtnClick(object sender, EventArgs args)
         {
             //Dont go in the future
             if (SelectedDate < StartDate)
@@ -254,35 +234,35 @@ namespace WindesHeartApp.ViewModels
             UpdateDay();
         }
 
-        private void TodayBtnClick(object obj)
+        public void TodayBtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate;
             SetDayEnabled(StepsPage.TodayButton);
             UpdateDay();
         }
 
-        private void Day6BtnClick(object obj)
+        public void Day6BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-1);
             SetDayEnabled(StepsPage.Day6Button);
             UpdateDay();
         }
 
-        private void Day5BtnClick(object obj)
+        public void Day5BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-2);
             SetDayEnabled(StepsPage.Day5Button);
             UpdateDay();
         }
 
-        private void Day4BtnClick(object obj)
+        public void Day4BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-3);
             SetDayEnabled(StepsPage.Day4Button);
             UpdateDay();
         }
 
-        private void Day3BtnClick(object obj)
+        public void Day3BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-4);
             SetDayEnabled(StepsPage.Day3Button);
@@ -304,14 +284,14 @@ namespace WindesHeartApp.ViewModels
             button.IsEnabled = false;
         }
 
-        private void Day2BtnClick(object obj)
+        public void Day2BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-5);
             SetDayEnabled(StepsPage.Day2Button);
             UpdateDay();
         }
 
-        private void Day1BtnClick(object obj)
+        public void Day1BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-6);
             SetDayEnabled(StepsPage.Day1Button);
