@@ -15,7 +15,7 @@ namespace WindesHeartApp.Pages
         public HomePage()
         {
             InitializeComponent();
-            BindingContext = Globals.homepageviewModel;
+            BindingContext = Globals.HomepageviewModel;
             BuildPage();
         }
 
@@ -23,7 +23,7 @@ namespace WindesHeartApp.Pages
         {
             App.RequestLocationPermission();
             if (Windesheart.ConnectedDevice != null)
-                Globals.homepageviewModel.ReadCurrentBattery();
+                Globals.HomepageviewModel.ReadCurrentBattery();
         }
 
         private void BuildPage()

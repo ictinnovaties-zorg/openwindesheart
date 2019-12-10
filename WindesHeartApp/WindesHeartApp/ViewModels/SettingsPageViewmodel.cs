@@ -8,12 +8,12 @@ namespace WindesHeartApp.ViewModels
 {
     public class SettingsPageViewmodel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private readonly ISettingsRepository _settingsRepository;
-        public bool toggle = true;
-        public bool toggle2 = true;
         public Command ToggleDisplayFormatsCommand { get; }
         public Command ToggleWristActivatedCommand { get; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private readonly ISettingsRepository _settingsRepository;
+        private bool _toggle = true;
+        private bool _toggle2 = true;
 
         public SettingsPageViewmodel(ISettingsRepository settingsRepository)
         {
@@ -29,16 +29,16 @@ namespace WindesHeartApp.ViewModels
 
         private void ToggleDisplayFormatsClicked()
         {
-            Windesheart.ConnectedDevice.SetTimeDisplayFormat(toggle);
-            Windesheart.ConnectedDevice.SetDateDisplayFormat(toggle);
-            toggle = !toggle;
+            Windesheart.ConnectedDevice.SetTimeDisplayFormat(_toggle);
+            Windesheart.ConnectedDevice.SetDateDisplayFormat(_toggle);
+            _toggle = !_toggle;
         }
 
         private void ToggleWristActivatedClicked()
         {
 
-            Windesheart.ConnectedDevice.SetActivateOnLiftWrist(toggle2);
-            toggle2 = !toggle2;
+            Windesheart.ConnectedDevice.SetActivateOnLiftWrist(_toggle2);
+            _toggle2 = !_toggle2;
         }
 
     }

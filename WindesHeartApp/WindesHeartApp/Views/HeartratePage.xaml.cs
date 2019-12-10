@@ -23,7 +23,7 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Globals.heartrateviewModel.OnAppearing();
+            Globals.HeartrateviewModel.OnAppearing();
         }
 
 
@@ -78,27 +78,27 @@ namespace WindesHeartApp.Pages
 
             intervaldefaultButton = PageBuilder.AddButton(absoluteLayout, "1", "", 0.10, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             intervaldefaultButton.BorderWidth = 1;
-            intervaldefaultButton.BorderColor = Globals.heartrateviewModel.Interval == 15 ? Color.Black : Color.White;
+            intervaldefaultButton.BorderColor = Globals.HeartrateviewModel.Interval == 15 ? Color.Black : Color.White;
             intervaldefaultButton.Clicked += (s, e) => OnIntervalLabelClicked(intervaldefaultButton);
 
             interval15Button = PageBuilder.AddButton(absoluteLayout, "15", "", 0.30, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval15Button.BorderWidth = 1;
-            interval15Button.BorderColor = Globals.heartrateviewModel.Interval == 15 ? Color.Black : Color.White;
+            interval15Button.BorderColor = Globals.HeartrateviewModel.Interval == 15 ? Color.Black : Color.White;
             interval15Button.Clicked += (s, e) => OnIntervalLabelClicked(interval15Button);
 
             interval30Button = PageBuilder.AddButton(absoluteLayout, "30", "", 0.50, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval30Button.BorderWidth = 1;
-            interval30Button.BorderColor = Globals.heartrateviewModel.Interval == 30 ? Color.Black : Color.White;
+            interval30Button.BorderColor = Globals.HeartrateviewModel.Interval == 30 ? Color.Black : Color.White;
             interval30Button.Clicked += (s, e) => OnIntervalLabelClicked(interval30Button);
 
             interval45Button = PageBuilder.AddButton(absoluteLayout, "45", "", 0.70, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval45Button.BorderWidth = 1;
-            interval45Button.BorderColor = Globals.heartrateviewModel.Interval == 45 ? Color.Black : Color.White;
+            interval45Button.BorderColor = Globals.HeartrateviewModel.Interval == 45 ? Color.Black : Color.White;
             interval45Button.Clicked += (s, e) => OnIntervalLabelClicked(interval45Button);
 
             interval60Button = PageBuilder.AddButton(absoluteLayout, "60", "", 0.90, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval60Button.BorderWidth = 1;
-            interval60Button.BorderColor = Globals.heartrateviewModel.Interval == 60 ? Color.Black : Color.White;
+            interval60Button.BorderColor = Globals.HeartrateviewModel.Interval == 60 ? Color.Black : Color.White;
             interval60Button.Clicked += (s, e) => { OnIntervalLabelClicked(interval60Button); };
             #endregion
         }
@@ -112,7 +112,7 @@ namespace WindesHeartApp.Pages
             intervalLabel.BorderColor = Color.Black;
 
             var interval = Convert.ToInt32(intervalLabel.Text);
-            Globals.heartrateviewModel.UpdateInterval(interval);
+            Globals.HeartrateviewModel.UpdateInterval(interval);
         }
 
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation

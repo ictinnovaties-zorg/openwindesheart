@@ -9,12 +9,11 @@ namespace WindesHeartApp.Resources
 {
     public static class Globals
     {
-        public static HeartRatePageViewModel heartrateviewModel;
+        public static HeartRatePageViewModel HeartrateviewModel;
         public static SamplesService SamplesService { get; private set; }
-
         public static DevicePageViewModel DevicePageViewModel;
-        public static HomePageViewModel homepageviewModel;
-        public static SettingsPageViewmodel settingspageviewModel;
+        public static HomePageViewModel HomepageviewModel;
+        public static SettingsPageViewmodel SettingspageviewModel;
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
         public static Color PrimaryColor { get; set; } = Color.FromHex("#96d1ff");
@@ -23,24 +22,21 @@ namespace WindesHeartApp.Resources
         public static IStepsRepository StepsRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
         public static float DailyStepsGoal { get; internal set; }
-
         public static Dictionary<string, Color> ColorDictionary;
         public static Dictionary<string, string> FormatDictionary;
-
         public static StepsViewModel StepsViewModel;
 
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
             DailyStepsGoal = 1000;
-
             StepsRepository = stepsRepository;
             HeartrateRepository = heartrateRepository;
-            heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
+            HeartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
             SamplesService = new SamplesService(heartrateRepository, StepsRepository, sleepRepository);
             StepsViewModel = new StepsViewModel(stepsRepository);
-            settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
+            SettingspageviewModel = new SettingsPageViewmodel(settingsRepository);
             DevicePageViewModel = new DevicePageViewModel();
-            homepageviewModel = new HomePageViewModel();
+            HomepageviewModel = new HomePageViewModel();
             ColorDictionary = new Dictionary<string, Color>
             {
                 { "Aqua", Color.Aqua},

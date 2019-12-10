@@ -131,7 +131,7 @@ namespace WindesHeartApp.ViewModels
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SettingsPage()
             {
-                BindingContext = Globals.settingspageviewModel
+                BindingContext = Globals.SettingspageviewModel
             });
             IsLoading = false;
         }
@@ -152,7 +152,7 @@ namespace WindesHeartApp.ViewModels
 
             await Application.Current.MainPage.Navigation.PushAsync(new HeartratePage()
             {
-                BindingContext = Globals.heartrateviewModel
+                BindingContext = Globals.HeartrateviewModel
             });
             IsLoading = false;
         }
@@ -162,7 +162,7 @@ namespace WindesHeartApp.ViewModels
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SleepPage()
             {
-                BindingContext = Globals.heartrateviewModel
+                BindingContext = Globals.HeartrateviewModel
             });
             IsLoading = false;
         }
