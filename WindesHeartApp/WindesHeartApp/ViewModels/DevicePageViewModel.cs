@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.BluetoothLE;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
@@ -86,6 +88,12 @@ namespace WindesHeartApp.ViewModels
         {
             try
             {
+                if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOff)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Bluetooth turned off", "Bluetooth is turned off. Please enable bluetooth to start scanning for devices", "OK");
+                    StatusText = "Bluetooth turned off";
+                    return;
+                }
                 StatusText = "Scanning for devices";
                 IsLoading = true;
                 var devices = await Windesheart.ScanForDevices();
