@@ -26,6 +26,7 @@ namespace WindesHeartApp.ViewModels
         public DateTime _dateTime;
         private Chart _chart;
         private IEnumerable<Heartrate> _heartrates;
+        private string _daylabelText;
         public event PropertyChangedEventHandler PropertyChanged;
         public Command NextDayBinding { get; set; }
         public Command PreviousDayBinding { get; set; }
@@ -44,11 +45,26 @@ namespace WindesHeartApp.ViewModels
 
         public async void OnAppearing()
         {
+            Interval = 0;
             _dateTime = DateTime.Now.AddHours(-6);
+            DayLabelText = $"{_dateTime.ToString()} - {_dateTime.AddHours(6).ToString()}";
             var rates = await _heartrateRepository.GetAllAsync();
-            _heartrates = rates;
-            InitLabels();
-            InitChart();
+            if (rates.Count() != 0)
+            {
+                _heartrates = rates;
+                InitChart(Interval);
+                InitLabels();
+            }
+        }
+
+        public string DayLabelText
+        {
+            get { return _daylabelText; }
+            set
+            {
+                _daylabelText = value;
+                OnPropertyChanged();
+            }
         }
 
         private void InitLabels()
@@ -112,7 +128,7 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        private void InitChart()
+        private void InitChart(int interval)
         {
             var heartrates = _heartrates.Where(x => x.DateTime >= _dateTime);
             List<Entry> list = new List<Entry>();
@@ -137,6 +153,8 @@ namespace WindesHeartApp.ViewModels
 
         public void UpdateInterval(int interval)
         {
+            Interval = interval;
+            InitChart(interval);
         }
 
         public Chart Chart

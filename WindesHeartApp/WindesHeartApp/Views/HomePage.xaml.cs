@@ -70,7 +70,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddButton(absoluteLayout, "About", "AboutButtonCommand", 0.80, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             PageBuilder.AddButton(absoluteLayout, "Device", "DeviceButtonCommand", 0.80, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             PageBuilder.AddButton(absoluteLayout, "Heartrate", "HeartrateButtonCommand", 0.20, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            PageBuilder.AddButton(absoluteLayout, "Steps", "StepsButtonCommand",  0.90, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            PageBuilder.AddButton(absoluteLayout, "Steps", "StepsButtonCommand", 0.90, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             PageBuilder.AddButton(absoluteLayout, "Settings", "SettingsButtonCommand", 0.20, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             PageBuilder.AddButton(absoluteLayout, "Sleep", "SleepButtonCommand", 0.10, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
 

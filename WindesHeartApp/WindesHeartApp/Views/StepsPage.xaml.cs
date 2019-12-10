@@ -67,8 +67,7 @@ namespace WindesHeartApp.Pages
             nextBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "NextDayBinding" });
             absoluteLayout.Children.Add(nextBtn);
 
-            CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black, "", 0);
-            CurrentDayLabel.FontSize = 15;
+            CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black, "", 15);
 
             CurrentStepsLabel = PageBuilder.AddLabel(absoluteLayout, "0", 0.5, 0.37, Color.Black, "", 0);
             CurrentStepsLabel.SetBinding(Label.TextProperty, new Binding("StepsLabelText"));
