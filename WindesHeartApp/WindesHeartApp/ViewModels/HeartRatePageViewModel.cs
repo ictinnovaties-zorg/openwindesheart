@@ -154,16 +154,6 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        public int Heartrate
-        {
-            get => _heartrate;
-            set
-            {
-                _heartrate = value;
-                OnPropertyChanged();
-            }
-        }
-
         public int AverageHeartrate
         {
             get => _averageHeartrate;
