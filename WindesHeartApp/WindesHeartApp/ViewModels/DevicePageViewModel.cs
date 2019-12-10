@@ -7,7 +7,6 @@ using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
-using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
@@ -19,19 +18,14 @@ namespace WindesHeartApp.ViewModels
         private ObservableCollection<BLEDevice> _deviceList;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Command ScanButtonCommand { get; }
-        public Command DisconnectButtonCommand { get; }
-
         public DevicePageViewModel()
         {
-            ScanButtonCommand = new Command(ScanButtonClicked);
-            DisconnectButtonCommand = new Command(DisconnectButtonClicked);
             if (DeviceList == null)
                 DeviceList = new ObservableCollection<BLEDevice>();
             if (Windesheart.ConnectedDevice == null)
                 StatusText = "Disconnected";
         }
-        private void DisconnectButtonClicked()
+        public void DisconnectButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
             Windesheart.ConnectedDevice.Disconnect();
@@ -88,7 +82,7 @@ namespace WindesHeartApp.ViewModels
 
             }
         }
-        private async void ScanButtonClicked()
+        public async void ScanButtonClicked(object sender, EventArgs args)
         {
             try
             {

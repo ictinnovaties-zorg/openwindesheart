@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
-using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
@@ -27,8 +26,6 @@ namespace WindesHeartApp.ViewModels
         public DateTime _dateTime;
         private Chart _chart;
         public event PropertyChangedEventHandler PropertyChanged;
-        public Command NextDayBinding { get; set; }
-        public Command PreviousDayBinding { get; set; }
 
         public void OnPropertyChanged([CallerMemberName] string name = "")
         {
@@ -38,8 +35,6 @@ namespace WindesHeartApp.ViewModels
         public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
         {
             _heartrateRepository = heartrateRepository;
-            NextDayBinding = new Command(NextDayBtnClick);
-            PreviousDayBinding = new Command(PreviousDayBtnClick);
         }
 
         public async void OnAppearing()
@@ -59,11 +54,11 @@ namespace WindesHeartApp.ViewModels
 
         }
 
-        private async void PreviousDayBtnClick()
+        public async void PreviousDayBtnClick(object sender, EventArgs args)
         {
         }
 
-        private async void NextDayBtnClick()
+        public async void NextDayBtnClick(object sender, EventArgs args)
         {
         }
 

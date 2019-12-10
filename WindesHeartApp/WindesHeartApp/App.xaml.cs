@@ -29,6 +29,7 @@ namespace WindesHeartApp
         {
             Globals.StepsRepository.RemoveAll();
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today, 700));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddHours(1), 120));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-1), 480));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-2), 1200));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-3), 3500));
@@ -36,6 +37,26 @@ namespace WindesHeartApp
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-5), 2200));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-6), 1400));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-7), 8310));
+
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(-4), SleepType.Awake));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(-3), SleepType.Light));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(-2), SleepType.Light));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(-1), SleepType.Deep));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today, SleepType.Deep));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(1), SleepType.Deep));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(2), SleepType.Deep));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(3), SleepType.Light));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(4), SleepType.Deep));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(4).AddMinutes(20), SleepType.Deep));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(4).AddMinutes(35), SleepType.Awake));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(4).AddMinutes(50), SleepType.Light));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(5), SleepType.Light));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(6), SleepType.Light));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(7), SleepType.Light));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddHours(7).AddMinutes(30), SleepType.Awake));
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Now, SleepType.Awake));
+
+            await Globals.SleepRepository.AddAsync(new Sleep(DateTime.Today.AddDays(-1), SleepType.Awake));
         }
 
         protected override void OnSleep()

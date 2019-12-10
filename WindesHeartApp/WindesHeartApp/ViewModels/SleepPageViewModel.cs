@@ -7,26 +7,31 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
-using WindesHeartApp.Pages;
+using WindesHeartApp.Views;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class StepsViewModel : INotifyPropertyChanged
+    public class SleepPageViewModel : INotifyPropertyChanged
     {
         public DateTime StartDate { get; }
 
         public DateTime SelectedDate;
-        private readonly IStepsRepository _stepsRepository;
+        private ISleepRepository _sleepRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public static IEnumerable<Step> StepInfo = new List<Step>();
+        public static IEnumerable<Sleep> SleepInfo = new List<Sleep>();
+
+        public string AwakeColor = "#ffffff";
+        public string LightColor = "#1281ff";
+        public string DeepColor = "#002bba";
 
         private ButtonRow _buttonRow;
 
         private Chart _chart;
+
         public Chart Chart
         {
             get => _chart;
@@ -39,8 +44,8 @@ namespace WindesHeartApp.ViewModels
 
         public async void OnAppearing()
         {
-            //Get all steps from DB
-            StepInfo = await _stepsRepository.GetAllAsync();
+            //Get all sleep data from DB
+            SleepInfo = await _sleepRepository.GetAllAsync();
 
             //Update chart
             UpdateChart();
@@ -48,18 +53,18 @@ namespace WindesHeartApp.ViewModels
             //Init buttons on bottom
             List<Button> dayButtons = new List<Button>
             {
-                StepsPage.Day1Button,
-                StepsPage.Day2Button,
-                StepsPage.Day3Button,
-                StepsPage.Day4Button,
-                StepsPage.Day5Button,
-                StepsPage.Day6Button,
-                StepsPage.TodayButton
+                SleepPage.Day1Button,
+                SleepPage.Day2Button,
+                SleepPage.Day3Button,
+                SleepPage.Day4Button,
+                SleepPage.Day5Button,
+                SleepPage.Day6Button,
+                SleepPage.TodayButton
             };
             _buttonRow = new ButtonRow(dayButtons);
 
             //Switch to today
-            TodayBtnClick(StepsPage.TodayButton, new EventArgs());
+            TodayBtnClick(SleepPage.TodayButton, new EventArgs());
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")
@@ -67,78 +72,97 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public StepsViewModel(IStepsRepository stepsRepository)
+        public SleepPageViewModel(ISleepRepository sleepRepository)
         {
-            _stepsRepository = stepsRepository;
-            StartDate = DateTime.Now;
+            _sleepRepository = sleepRepository;
+            StartDate = DateTime.Today;
             SelectedDate = StartDate;
         }
-
 
         private void UpdateInfo()
         {
             if (SelectedDate == StartDate)
             {
-                StepsPage.CurrentDayLabel.Text = "Today";
+                SleepPage.CurrentDayLabel.Text = "Today";
             }
             else if (SelectedDate >= StartDate.AddDays(-6))
             {
-                StepsPage.CurrentDayLabel.Text = SelectedDate.DayOfWeek.ToString();
+                SleepPage.CurrentDayLabel.Text = SelectedDate.DayOfWeek.ToString();
             }
             else
             {
-                StepsPage.CurrentDayLabel.Text = SelectedDate.ToString("dd/MM/yyyy");
+                SleepPage.CurrentDayLabel.Text = SelectedDate.ToString("dd/MM/yyyy");
             }
+
 
             //Update chart
             UpdateChart();
         }
 
-        private int GetCurrentSteps()
+        private List<Sleep> GetCurrentSleep()
         {
-            List<Step> steps = StepInfo.Where(s => s.DateTime.Year == SelectedDate.Year &&
+            return SleepInfo.Where(s => s.DateTime.Year == SelectedDate.Year &&
             s.DateTime.Month == SelectedDate.Month &&
             s.DateTime > SelectedDate.AddHours(-12) &&
             s.DateTime < SelectedDate.AddHours(12)).
             OrderBy(x => x.DateTime).ToList();
-
-            //Get stepcount for that day by adding them together
-            int stepCount = 0;
-            steps.ForEach(x => stepCount += x.StepCount);
-            return stepCount;
         }
 
         public void UpdateChart()
         {
-            int stepCount = GetCurrentSteps();
-
+            List<Sleep> sleepData = GetCurrentSleep();
             List<Entry> entries = new List<Entry>();
 
-            float percentageDone = (float)stepCount / 2000;
-
-            //Add part done
-            entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
-
-            //Update labels
-            StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
-
-            double kilometers = (double)stepCount / 1000;
-            StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
-
-            StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
-
-            //If goal not reached, fill other part transparent
-            if (percentageDone < 1)
+            //For each hour
+            for (int i = 20; i < 36; i++)
             {
-                float percentageLeft = 1 - percentageDone;
-                entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
+                int hour = i;
+                if (i >= 24) hour -= 24;
+
+                //Get sleep data for that hour
+                List<Sleep> data = sleepData.Where(x => x.DateTime.Hour == hour).ToList();
+
+                //If there is sleepdata for that hour, add that
+                if (data != null && data.Count > 0)
+                {
+                    //Set Right color for entry according to sleep type
+                    foreach (Sleep s in data)
+                    {
+                        switch (s.SleepType)
+                        {
+                            case SleepType.Awake:
+                                Entry awakeEntry = new Entry(1);
+                                awakeEntry.Color = SKColor.Parse(AwakeColor);
+                                entries.Add(awakeEntry);
+                                break;
+                            case SleepType.Light:
+                                Entry lightEntry = new Entry(1);
+                                lightEntry.Color = SKColor.Parse(LightColor);
+                                entries.Add(lightEntry);
+                                break;
+                            case SleepType.Deep:
+                                Entry deepEntry = new Entry(1);
+                                deepEntry.Color = SKColor.Parse(DeepColor);
+                                entries.Add(deepEntry);
+                                break;
+                        }
+                    }
+
+                }
+                else
+                {
+                    //If no sleep data, add awake entry
+                    Entry entry = new Entry(1);
+                    entry.Color = SKColor.Parse(AwakeColor);
+                    entries.Add(entry);
+                }
             }
 
-            Chart = new DonutChart
+            Chart = new BarChart
             {
                 Entries = entries,
                 BackgroundColor = SKColors.Transparent,
-                HoleRadius = 0.7f
+                Margin = 0
             };
         }
 

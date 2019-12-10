@@ -21,6 +21,7 @@ namespace WindesHeartApp.Resources
         public static Color SecondaryColor { get; set; } = Color.FromHex("#53b1ff");
         public static Color LightTextColor { get; set; } = Color.FromHex("#999999");
         public static IStepsRepository StepsRepository { get; set; }
+        public static ISleepRepository SleepRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
         public static float DailyStepsGoal { get; internal set; }
 
@@ -28,16 +29,19 @@ namespace WindesHeartApp.Resources
         public static Dictionary<string, string> FormatDictionary;
 
         public static StepsViewModel StepsViewModel;
+        public static SleepPageViewModel SleepViewModel;
 
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
             DailyStepsGoal = 1000;
 
             StepsRepository = stepsRepository;
+            SleepRepository = sleepRepository;
             HeartrateRepository = heartrateRepository;
             heartrateviewModel = new HeartRatePageViewModel(heartrateRepository);
             SamplesService = new SamplesService(heartrateRepository, StepsRepository, sleepRepository);
             StepsViewModel = new StepsViewModel(stepsRepository);
+            SleepViewModel = new SleepPageViewModel(sleepRepository);
             settingspageviewModel = new SettingsPageViewmodel(settingsRepository);
             DevicePageViewModel = new DevicePageViewModel();
             homepageviewModel = new HomePageViewModel();
