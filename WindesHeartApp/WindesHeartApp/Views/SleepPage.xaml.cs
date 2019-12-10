@@ -64,8 +64,8 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutBounds(nextBtn, new Rectangle(0.7, 0.175, 0.1, 0.1));
             absoluteLayout.Children.Add(nextBtn);
 
-            CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.2, Color.Black, "", 0);
-            CurrentDayLabel.FontSize = 15;
+            CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.19, Color.Black, "", 0);
+            CurrentDayLabel.FontSize = 16;
 
             BoxView awakeRectangle = new BoxView();
             awakeRectangle.Color = Color.FromHex(Globals.SleepPageViewModel.AwakeColor);
@@ -73,13 +73,13 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutBounds(awakeRectangle, new Rectangle(0.1, 0.3, 20, 20));
             absoluteLayout.Children.Add(awakeRectangle);
 
-            PageBuilder.AddLabel(absoluteLayout, "Awake", 0.18, 0.3, Color.Black, "", 14);
+            PageBuilder.AddLabel(absoluteLayout, "Awake", 0.2, 0.3, Color.Black, "", 14);
 
 
             BoxView lightRectangle = new BoxView();
             lightRectangle.Color = Color.FromHex(Globals.SleepPageViewModel.LightColor);
             AbsoluteLayout.SetLayoutFlags(lightRectangle, AbsoluteLayoutFlags.PositionProportional);
-            AbsoluteLayout.SetLayoutBounds(lightRectangle, new Rectangle(0.39, 0.3, 20, 20));
+            AbsoluteLayout.SetLayoutBounds(lightRectangle, new Rectangle(0.37, 0.3, 20, 20));
             absoluteLayout.Children.Add(lightRectangle);
 
             PageBuilder.AddLabel(absoluteLayout, "Light sleep", 0.52, 0.3, Color.Black, "", 14);
@@ -90,7 +90,7 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutBounds(deepRectangle, new Rectangle(0.7, 0.3, 20, 20));
             absoluteLayout.Children.Add(deepRectangle);
 
-            PageBuilder.AddLabel(absoluteLayout, "Deep sleep", 0.87, 0.3, Color.Black, "", 14);
+            PageBuilder.AddLabel(absoluteLayout, "Deep sleep", 0.9, 0.3, Color.Black, "", 14);
 
             ChartView chart = new ChartView();
             chart.SetBinding(ChartView.ChartProperty, "Chart");
@@ -115,37 +115,37 @@ namespace WindesHeartApp.Views
         {
             var culture = CultureInfo.CurrentCulture;
 
-            int fontsize = 14;
+            int fontsize = 10;
             float height = 0.80f;
 
             DateTime today = DateTime.Now;
 
             int size = (int)(Globals.ScreenHeight / 100 * 8.0);
-            Day1Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), Globals.SleepPageViewModel.Day1BtnClick, 0.05, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day1Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), Globals.SleepPageViewModel.Day1BtnClick, 0.2, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day1Button.BorderColor = Color.Black;
             Day1Button.BorderWidth = 2;
 
-            Day2Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-5).DayOfWeek), Globals.SleepPageViewModel.Day2BtnClick, 0.20, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day2Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-5).DayOfWeek), Globals.SleepPageViewModel.Day2BtnClick, 0.4, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day2Button.BorderColor = Color.Black;
             Day2Button.BorderWidth = 2;
 
-            Day3Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-4).DayOfWeek), Globals.SleepPageViewModel.Day3BtnClick, 0.35, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day3Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-4).DayOfWeek), Globals.SleepPageViewModel.Day3BtnClick, 0.6, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day3Button.BorderColor = Color.Black;
             Day3Button.BorderWidth = 2;
 
-            Day4Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-3).DayOfWeek), Globals.SleepPageViewModel.Day4BtnClick, 0.50, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day4Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-3).DayOfWeek), Globals.SleepPageViewModel.Day4BtnClick, 0.8, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day4Button.BorderColor = Color.Black;
             Day4Button.BorderWidth = 2;
 
-            Day5Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-2).DayOfWeek), Globals.SleepPageViewModel.Day5BtnClick, 0.65, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day5Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-2).DayOfWeek), Globals.SleepPageViewModel.Day5BtnClick, 0.3, height + 0.10f, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day5Button.BorderColor = Color.Black;
             Day5Button.BorderWidth = 2;
 
-            Day6Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-1).DayOfWeek), Globals.SleepPageViewModel.Day6BtnClick, 0.80, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day6Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-1).DayOfWeek), Globals.SleepPageViewModel.Day6BtnClick, 0.5, height + 0.10f, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day6Button.BorderColor = Color.Black;
             Day6Button.BorderWidth = 2;
 
-            TodayButton = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.DayOfWeek), Globals.SleepPageViewModel.TodayBtnClick, 0.95, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            TodayButton = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.DayOfWeek), Globals.SleepPageViewModel.TodayBtnClick, 0.7, height + 0.10f, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             TodayButton.BorderColor = Color.Black;
             TodayButton.BorderWidth = 2;
 
