@@ -102,7 +102,7 @@ namespace WindesHeartApp.ViewModels
             s.DateTime < SelectedDate.AddHours(12)).
             OrderBy(x => x.DateTime).ToList();
 
-            //Get stepcount for that they by adding them
+            //Get stepcount for that day by adding them together
             int stepCount = 0;
             steps.ForEach(x => stepCount += x.StepCount);
             return stepCount;
