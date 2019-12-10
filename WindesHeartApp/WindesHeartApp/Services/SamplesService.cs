@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
-using WindesHeartApp.Resources;
 using WindesHeartSdk.Model;
 using WindesHeartSDK;
 
@@ -26,10 +25,8 @@ namespace WindesHeartApp.Services
 
         public async void StartFetching()
         {
-            Globals.HomePageViewModel.IsLoading = true;
             var startDate = await GetLastAddedDateTime();
             Windesheart.ConnectedDevice.FetchData(startDate.AddMinutes(1), FillDatabase);
-            Globals.HomePageViewModel.IsLoading = false;
         }
 
         private async void FillDatabase(List<ActivitySample> samples)
