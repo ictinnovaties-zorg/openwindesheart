@@ -8,6 +8,7 @@ using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
 using WindesHeartSdk.Model;
 using WindesHeartSDK;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -26,6 +27,7 @@ namespace WindesHeartApp.Services
 
         public async void StartFetching()
         {
+            Application.Current.MainPage.Navigation.PopAsync();
             Globals.HomePageViewModel.IsLoading = true;
             var startDate = await GetLastAddedDateTime();
             Windesheart.ConnectedDevice.FetchData(startDate.AddMinutes(1), FillDatabase);
