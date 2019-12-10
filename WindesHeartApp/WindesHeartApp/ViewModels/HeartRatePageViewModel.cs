@@ -21,7 +21,6 @@ namespace WindesHeartApp.ViewModels
         private int _heartrate;
         private readonly IHeartrateRepository _heartrateRepository;
         private int _averageHeartrate;
-        public int Interval;
         private int _peakHeartrate;
         public DateTime _dateTime;
         private Chart _chart;
@@ -42,7 +41,6 @@ namespace WindesHeartApp.ViewModels
 
         public async void OnAppearing()
         {
-            Interval = 0;
             _dateTime2 = DateTime.Now;
             _dateTime = DateTime.Now.AddHours(-6);
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime.AddHours(6).ToString()}";
@@ -102,9 +100,9 @@ namespace WindesHeartApp.ViewModels
 
                 heartrates = heartrates.Where(x => x.DateTime <= _dateTime2);
 
-                if (Interval != 0)
+                if (interval != 0)
                 {
-                    heartrates = heartrates.Where((x, i) => i % Interval == 0);
+                    heartrates = heartrates.Where((x, i) => i % interval == 0);
                 }
 
                 List<Entry> list = new List<Entry>();
@@ -135,7 +133,6 @@ namespace WindesHeartApp.ViewModels
 
         public void UpdateInterval(int interval)
         {
-            Interval = interval;
             DrawChart(interval);
         }
 
