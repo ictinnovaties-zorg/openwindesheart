@@ -62,6 +62,9 @@ namespace WindesHeartApp.ViewModels
                 SleepPage.TodayButton
             };
             _buttonRow = new ButtonRow(dayButtons);
+
+            //Switch to today
+            TodayBtnClick(SleepPage.TodayButton, new EventArgs());
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")

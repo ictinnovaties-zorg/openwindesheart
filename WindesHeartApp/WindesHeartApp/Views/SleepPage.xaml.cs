@@ -32,7 +32,6 @@ namespace WindesHeartApp.Views
         protected override void OnAppearing()
         {
             Globals.SleepViewModel.OnAppearing();
-            TodayButton.IsEnabled = false;
         }
 
         private void BuildPage()

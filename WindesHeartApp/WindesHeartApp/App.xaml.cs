@@ -29,6 +29,7 @@ namespace WindesHeartApp
         {
             Globals.StepsRepository.RemoveAll();
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today, 700));
+            await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddHours(1), 120));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-1), 480));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-2), 1200));
             await Globals.StepsRepository.AddAsync(new Step(DateTime.Today.AddDays(-3), 3500));

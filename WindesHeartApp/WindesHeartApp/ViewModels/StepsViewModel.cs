@@ -3,7 +3,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
@@ -24,6 +24,8 @@ namespace WindesHeartApp.ViewModels
 
         public static IEnumerable<Step> StepInfo = new List<Step>();
 
+        private ButtonRow _buttonRow;
+
         private Chart _chart;
         public Chart Chart
         {
@@ -41,9 +43,23 @@ namespace WindesHeartApp.ViewModels
             StepInfo = await _stepsRepository.GetAllAsync();
 
             //Update chart
-            Step steps = GetCurrentSteps();
-            if (steps != null) UpdateChart(steps.StepCount);
-            else UpdateChart(0);
+            UpdateChart();
+
+            //Init buttons on bottom
+            List<Button> dayButtons = new List<Button>
+            {
+                StepsPage.Day1Button,
+                StepsPage.Day2Button,
+                StepsPage.Day3Button,
+                StepsPage.Day4Button,
+                StepsPage.Day5Button,
+                StepsPage.Day6Button,
+                StepsPage.TodayButton
+            };
+            _buttonRow = new ButtonRow(dayButtons);
+
+            //Switch to today
+            TodayBtnClick(StepsPage.TodayButton, new EventArgs());
         }
 
         void OnPropertyChanged([CallerMemberName] string name = "")
@@ -58,50 +74,8 @@ namespace WindesHeartApp.ViewModels
             SelectedDate = StartDate;
         }
 
-        public void PreviousDayBtnClick(object sender, EventArgs args)
-        {
-            Debug.WriteLine("Previous day clicked!");
-            SelectedDate = SelectedDate.AddDays(-1);
-            Debug.WriteLine(SelectedDate);
 
-            if (!StepsPage.Day1Button.IsEnabled)
-            {
-                StepsPage.Day1Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day2Button.IsEnabled)
-            {
-                StepsPage.Day1Button.IsEnabled = false;
-                StepsPage.Day2Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day3Button.IsEnabled)
-            {
-                StepsPage.Day2Button.IsEnabled = false;
-                StepsPage.Day3Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day4Button.IsEnabled)
-            {
-                StepsPage.Day3Button.IsEnabled = false;
-                StepsPage.Day4Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day5Button.IsEnabled)
-            {
-                StepsPage.Day4Button.IsEnabled = false;
-                StepsPage.Day5Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day6Button.IsEnabled)
-            {
-                StepsPage.Day5Button.IsEnabled = false;
-                StepsPage.Day6Button.IsEnabled = true;
-            }
-            else if (!StepsPage.TodayButton.IsEnabled)
-            {
-                StepsPage.Day6Button.IsEnabled = false;
-                StepsPage.TodayButton.IsEnabled = true;
-            }
-            UpdateDay();
-        }
-
-        private void UpdateDay()
+        private void UpdateInfo()
         {
             if (SelectedDate == StartDate)
             {
@@ -116,186 +90,139 @@ namespace WindesHeartApp.ViewModels
                 StepsPage.CurrentDayLabel.Text = SelectedDate.ToString("dd/MM/yyyy");
             }
 
-
             //Update chart
-            Step steps = GetCurrentSteps();
-            if (steps != null) UpdateChart(steps.StepCount);
-            else UpdateChart(0);
+            UpdateChart();
         }
 
-        private Step GetCurrentSteps()
+        private int GetCurrentSteps()
         {
-            if (StepInfo != null)
-            {
-                foreach (Step info in StepInfo)
-                {
-                    //If the same day
-                    if (info.DateTime.Year == SelectedDate.Year && info.DateTime.Month == SelectedDate.Month &&
-                        info.DateTime.Day == SelectedDate.Day)
-                    {
-                        //we found our info!
-                        return info;
-                    }
-                }
+            List<Step> steps = StepInfo.Where(s => s.DateTime.Year == SelectedDate.Year &&
+            s.DateTime.Month == SelectedDate.Month &&
+            s.DateTime > SelectedDate.AddHours(-12) &&
+            s.DateTime < SelectedDate.AddHours(12)).
+            OrderBy(x => x.DateTime).ToList();
 
-                return null;
-            }
-
-            return null;
+            //Get stepcount for that they by adding them
+            int stepCount = 0;
+            steps.ForEach(x => stepCount += x.StepCount);
+            return stepCount;
         }
 
-        public void UpdateChart(int stepCount)
+        public void UpdateChart()
         {
-            if (stepCount != null)
+            int stepCount = GetCurrentSteps();
+
+            List<Entry> entries = new List<Entry>();
+
+            float percentageDone = (float)stepCount / 2000;
+
+            //Add part done
+            entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
+
+            //Update labels
+            StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
+
+            double kilometers = (double)stepCount / 1000;
+            StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
+
+            StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
+
+            //If goal not reached, fill other part transparent
+            if (percentageDone < 1)
             {
-                List<Entry> entries = new List<Entry>();
-
-                float percentageDone = (float)stepCount / 2000;
-
-                //Add part done
-                entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
-
-                //Update labels
-                StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
-
-                double kilometers = (double)stepCount / 1000;
-                StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
-
-                StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
-
-                //If goal not reached, fill other part transparent
-                if (percentageDone < 1)
-                {
-                    float percentageLeft = 1 - percentageDone;
-                    entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
-                }
-
-                Chart = new DonutChart
-                {
-                    Entries = entries,
-                    BackgroundColor = SKColors.Transparent,
-                    HoleRadius = 0.7f
-                };
+                float percentageLeft = 1 - percentageDone;
+                entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
             }
+
+            Chart = new DonutChart
+            {
+                Entries = entries,
+                BackgroundColor = SKColors.Transparent,
+                HoleRadius = 0.7f
+            };
+        }
+
+        public void PreviousDayBtnClick(object sender, EventArgs args)
+        {
+            Console.WriteLine("Previous day clicked!");
+
+            //You can always go back
+            _buttonRow.ToPrevious();
+            SelectedDate = SelectedDate.AddDays(-1);
+            UpdateInfo();
         }
 
         public void NextDayBtnClick(object sender, EventArgs args)
         {
-            //Dont go in the future
-            if (SelectedDate < StartDate)
+            //If already today, you cant go next
+            if (_buttonRow.ToNext())
             {
                 SelectedDate = SelectedDate.AddDays(1);
+                UpdateInfo();
             }
-            Debug.WriteLine(SelectedDate);
-
-            //Set right day button selected
-            if (!StepsPage.Day1Button.IsEnabled)
-            {
-                StepsPage.Day2Button.IsEnabled = false;
-                StepsPage.Day1Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day2Button.IsEnabled)
-            {
-                StepsPage.Day3Button.IsEnabled = false;
-                StepsPage.Day2Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day3Button.IsEnabled)
-            {
-                StepsPage.Day4Button.IsEnabled = false;
-                StepsPage.Day3Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day4Button.IsEnabled)
-            {
-                StepsPage.Day5Button.IsEnabled = false;
-                StepsPage.Day4Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day5Button.IsEnabled)
-            {
-                StepsPage.Day6Button.IsEnabled = false;
-                StepsPage.Day5Button.IsEnabled = true;
-            }
-            else if (!StepsPage.Day6Button.IsEnabled)
-            {
-                StepsPage.TodayButton.IsEnabled = false;
-                StepsPage.Day6Button.IsEnabled = true;
-            }
-            else if (!StepsPage.TodayButton.IsEnabled)
-            {
-                StepsPage.TodayButton.IsEnabled = false;
-            }
-            else
-            {
-                //If SelectedDate is at 6 days back again
-                if (SelectedDate == StartDate.AddDays(-6))
-                {
-                    StepsPage.Day1Button.IsEnabled = false;
-                }
-            }
-            UpdateDay();
         }
 
         public void TodayBtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate;
-            SetDayEnabled(StepsPage.TodayButton);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
         public void Day6BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-1);
-            SetDayEnabled(StepsPage.Day6Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
         public void Day5BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-2);
-            SetDayEnabled(StepsPage.Day5Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
         public void Day4BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-3);
-            SetDayEnabled(StepsPage.Day4Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
         public void Day3BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-4);
-            SetDayEnabled(StepsPage.Day3Button);
-            UpdateDay();
-        }
-
-        private void SetDayEnabled(Button button)
-        {
-            //First, enable all buttons
-            StepsPage.Day1Button.IsEnabled = true;
-            StepsPage.Day2Button.IsEnabled = true;
-            StepsPage.Day3Button.IsEnabled = true;
-            StepsPage.Day4Button.IsEnabled = true;
-            StepsPage.Day5Button.IsEnabled = true;
-            StepsPage.Day6Button.IsEnabled = true;
-            StepsPage.TodayButton.IsEnabled = true;
-
-            //Then disable the selected Day
-            button.IsEnabled = false;
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
         public void Day2BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-5);
-            SetDayEnabled(StepsPage.Day2Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
 
         public void Day1BtnClick(object sender, EventArgs args)
         {
             SelectedDate = StartDate.AddDays(-6);
-            SetDayEnabled(StepsPage.Day1Button);
-            UpdateDay();
+            if (_buttonRow.SwitchTo(sender as Button))
+            {
+                UpdateInfo();
+            }
         }
     }
 }
