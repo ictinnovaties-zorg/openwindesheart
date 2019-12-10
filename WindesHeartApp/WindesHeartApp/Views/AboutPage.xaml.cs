@@ -22,7 +22,6 @@ namespace WindesHeartApp.Pages
             PageBuilder.BuildPageBasics(absoluteLayout, this);
 
             #region define Image 
-
             Grid grid = new Grid();
             AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(0.5, 0, 1, 0.3));
@@ -64,7 +63,7 @@ namespace WindesHeartApp.Pages
             var formattedText = new FormattedString();
             formattedText.Spans.Add(new Span
             {
-                Text = "This app is written by Windesheim Students\nIt's",
+                Text = "This app is written by Windesheim-students.\nIt's",
                 FontSize = Globals.ScreenHeight / 100 * 2.5
             });
             formattedText.Spans.Add(new Span
@@ -82,12 +81,12 @@ namespace WindesHeartApp.Pages
             { Text = " demo", FontAttributes = FontAttributes.Bold, FontSize = Globals.ScreenHeight / 100 * 2.5 });
             formattedText.Spans.Add(new Span
             {
-                Text = " the ",
+                Text = " the open source ",
                 FontSize = Globals.ScreenHeight / 100 * 2.5
             });
             formattedText.Spans.Add(new Span
             {
-                Text = " WindesHeartSDK",
+                Text = "WindesHeartSDK.",
                 FontAttributes = FontAttributes.Bold,
                 FontSize = Globals.ScreenHeight / 100 * 2.5
             });

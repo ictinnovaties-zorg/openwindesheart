@@ -103,27 +103,27 @@ namespace WindesHeartApp.Pages
         {
             var battery = await Windesheart.ConnectedDevice.GetBattery();
             Trace.WriteLine("Battery: " + battery.BatteryPercentage + "%");
-            Globals.homepageviewModel.Battery = battery.BatteryPercentage;
+            Globals.HomepageviewModel.Battery = battery.BatteryPercentage;
             if (battery.Status == StatusEnum.Charging)
             {
-                Globals.homepageviewModel.BatteryImage = "BatteryCharging.png";
+                Globals.HomepageviewModel.BatteryImage = "BatteryCharging.png";
                 return;
             }
             if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
             {
-                Globals.homepageviewModel.BatteryImage = "BatteryQuart.png";
+                Globals.HomepageviewModel.BatteryImage = "BatteryQuart.png";
             }
             else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
             {
-                Globals.homepageviewModel.BatteryImage = "BatteryHalf.png";
+                Globals.HomepageviewModel.BatteryImage = "BatteryHalf.png";
             }
             else if (battery.BatteryPercentage >= 51 && battery.BatteryPercentage < 76)
             {
-                Globals.homepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
+                Globals.HomepageviewModel.BatteryImage = "BatteryThreeQuarts.png";
             }
             else if (battery.BatteryPercentage >= 76)
             {
-                Globals.homepageviewModel.BatteryImage = "BatteryFull.png";
+                Globals.HomepageviewModel.BatteryImage = "BatteryFull.png";
             }
         }
 
@@ -185,11 +185,6 @@ namespace WindesHeartApp.Pages
             {
                 Debug.WriteLine(sample.ToString());
             }
-        }
-
-        private void GoBack_Clicked(object sender, EventArgs e)
-        {
-            Navigation.PopAsync();
         }
 
         private void Setln_Clicked(object sender, EventArgs e)

@@ -38,7 +38,7 @@ namespace WindesHeartApp.Pages
                 NumberOfTapsRequired = 1,
                 Command = new Command(execute: () => { ReturnButton_Clicked(sender, EventArgs.Empty); })
             });
-            AbsoluteLayout.SetLayoutBounds(returnGrid, new Rectangle(0.95, 0.95, Globals.ScreenHeight / 100 * 8, Globals.ScreenHeight / 100 * 8));
+            AbsoluteLayout.SetLayoutBounds(returnGrid, new Rectangle(0.95, 0.95, Globals.ScreenHeight / 100 * 8.5, Globals.ScreenHeight / 100 * 8.5));
             AbsoluteLayout.SetLayoutFlags(returnGrid, AbsoluteLayoutFlags.PositionProportional);
 
             ImageButton returnButton = new ImageButton { Source = "GoBack.png", BackgroundColor = Color.Transparent };
