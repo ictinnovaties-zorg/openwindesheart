@@ -82,15 +82,12 @@ namespace WindesHeartApp.Pages
 
             intervaldefaultButton = PageBuilder.AddButton(absoluteLayout, "5", OnIntervalLabelClicked, 0.50, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             intervaldefaultButton.BorderWidth = 1;
-            intervaldefaultButton.BorderColor = Globals.HeartrateviewModel.Interval == 15 ? Color.Black : Color.White;
 
             interval15Button = PageBuilder.AddButton(absoluteLayout, "15", OnIntervalLabelClicked, 0.70, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval15Button.BorderWidth = 1;
-            interval15Button.BorderColor = Globals.HeartrateviewModel.Interval == 15 ? Color.Black : Color.White;
 
             interval30Button = PageBuilder.AddButton(absoluteLayout, "30", OnIntervalLabelClicked, 0.90, 0.85, 50, 50, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval30Button.BorderWidth = 1;
-            interval30Button.BorderColor = Globals.HeartrateviewModel.Interval == 30 ? Color.Black : Color.White;
             #endregion
         }
 
