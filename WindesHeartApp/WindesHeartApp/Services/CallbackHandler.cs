@@ -38,8 +38,6 @@ namespace WindesHeartApp.Services
             if (result == ConnectionResult.Succeeded)
             {
                 Globals.SamplesService.EmptyDatabase();
-                Globals.SamplesService.StartFetching();
-
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
@@ -51,6 +49,7 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.IsLoading = false;
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
                 Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnectCallBack);
+                Globals.SamplesService.StartFetching();
                 if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)
                 {
                     if (App.Current.Properties.ContainsKey(_key))
