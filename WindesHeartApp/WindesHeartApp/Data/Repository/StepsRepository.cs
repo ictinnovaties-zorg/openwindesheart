@@ -37,7 +37,6 @@ namespace WindesHeartApp.Data.Repository
             try
             {
                 var tracking = await _databaseContext.Steps.AddAsync(step);
-                await _databaseContext.SaveChangesAsync();
                 return tracking.State == EntityState.Added;
             }
             catch (Exception e)
@@ -57,6 +56,11 @@ namespace WindesHeartApp.Data.Repository
             {
                 Debug.WriteLine("Could not delete step entries: " + e);
             }
+        }
+
+        public async void SaveChangesAsync()
+        {
+            await _databaseContext.SaveChangesAsync();
         }
     }
 }

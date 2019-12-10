@@ -26,8 +26,10 @@ namespace WindesHeartApp.Services
 
         public async void StartFetching()
         {
+            Globals.HomePageViewModel.IsLoading = true;
             var startDate = await GetLastAddedDateTime();
             Windesheart.ConnectedDevice.FetchData(startDate.AddMinutes(1), FillDatabase);
+            Globals.HomePageViewModel.IsLoading = true;
         }
 
         private async void FillDatabase(List<ActivitySample> samples)
@@ -41,6 +43,9 @@ namespace WindesHeartApp.Services
                 await AddStep(datetime, sample);
                 await AddSleep(datetime, sample);
             }
+            _heartrateRepository.SaveChangesAsync();
+            _stepsRepository.SaveChangesAsync();
+            _sleepRepository.SaveChangesAsync();
             Debug.WriteLine("Fetched all samples");
         }
 

@@ -37,7 +37,6 @@ namespace WindesHeartApp.Data.Repository
             try
             {
                 var tracking = await _databaseContext.Sleep.AddAsync(sleep);
-                await _databaseContext.SaveChangesAsync();
                 return tracking.State == EntityState.Added;
             }
             catch (Exception e)
@@ -71,6 +70,10 @@ namespace WindesHeartApp.Data.Repository
                 Console.WriteLine(e.Message);
                 return null;
             }
+        }
+        public async void SaveChangesAsync()
+        {
+            await _databaseContext.SaveChangesAsync();
         }
     }
 }
