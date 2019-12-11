@@ -4,6 +4,7 @@ using System.Diagnostics;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -12,11 +13,10 @@ namespace WindesHeartApp.Services
         private static readonly string _key = "LastConnectedDeviceGuid";
 
         //OnHeartrateChange/Measurement
-        public static async void ChangeHeartRate(Heartrate heartrate)
+        public static void ChangeHeartRate(Heartrate heartrate)
         {
             if (heartrate.HeartrateValue == 0)
                 return;
-            Globals.HeartratePageViewModel.Heartrate = heartrate.HeartrateValue;
             Globals.HomePageViewModel.Heartrate = heartrate.HeartrateValue;
         }
 
@@ -49,6 +49,7 @@ namespace WindesHeartApp.Services
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
                 Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnectCallBack);
                 Globals.SamplesService.StartFetching();
+                Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)
                 {
                     if (App.Current.Properties.ContainsKey(_key))

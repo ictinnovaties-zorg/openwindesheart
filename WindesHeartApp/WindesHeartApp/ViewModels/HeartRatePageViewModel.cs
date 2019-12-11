@@ -16,9 +16,8 @@ using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class HeartratePageViewModel : INotifyPropertyChanged
+    public class HeartRatePageViewModel : INotifyPropertyChanged
     {
-        private int _heartrate;
         private readonly IHeartrateRepository _heartrateRepository;
         private int _averageHeartrate;
         private int _peakHeartrate;
@@ -34,7 +33,7 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public HeartratePageViewModel(IHeartrateRepository heartrateRepository)
+        public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
         {
             _heartrateRepository = heartrateRepository;
         }
@@ -44,17 +43,20 @@ namespace WindesHeartApp.ViewModels
             Interval = 0;
             _dateTime2 = DateTime.Now;
             _dateTime = DateTime.Now.AddHours(-6);
-            DayLabelText = $"{_dateTime.ToString()} - {_dateTime.AddHours(6).ToString()}";
+
+            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             var rates = await _heartrateRepository.GetAllAsync();
             if (rates.Count() != 0)
             {
                 _heartrates = rates;
                 InitLabels();
+
             }
             else
             {
                 await Application.Current.MainPage.DisplayAlert("Heartrates", "Unfortunately, no heartrate data was found.", "Ok");
             }
+            DrawChart();
         }
 
         public string DayLabelText
@@ -69,7 +71,7 @@ namespace WindesHeartApp.ViewModels
 
         private void InitLabels()
         {
-            var heartrateslast6hours = _heartrates.Where(x => x.DateTime >= _dateTime);
+            var heartrateslast6hours = _heartrates.Where(x => x.DateTime >= _dateTime).Where(x => x.HeartrateValue != 0);
             if (heartrateslast6hours != null)
             {
                 AverageHeartrate = Convert.ToInt32(heartrateslast6hours?.Select(x => x.HeartrateValue).Average());
@@ -81,8 +83,8 @@ namespace WindesHeartApp.ViewModels
         public void PreviousDayBtnClick(object sender, EventArgs args)
         {
             _dateTime = _dateTime.AddHours(-6);
-            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             _dateTime2 = _dateTime2.AddHours(-6);
+            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             DrawChart();
 
         }
@@ -90,8 +92,8 @@ namespace WindesHeartApp.ViewModels
         public void NextDayBtnClick(object sender, EventArgs args)
         {
             _dateTime = _dateTime.AddHours(6);
-            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             _dateTime2 = _dateTime2.AddHours(6);
+            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             DrawChart();
         }
 
@@ -152,16 +154,6 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        public int Heartrate
-        {
-            get => _heartrate;
-            set
-            {
-                _heartrate = value;
-                OnPropertyChanged();
-            }
-        }
-
         public int AverageHeartrate
         {
             get => _averageHeartrate;
@@ -183,7 +175,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(PeakHeartrateText));
             }
         }
-        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate of last 12 hours: {AverageHeartrate.ToString()}" : "";
-        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Your peak heartrate of the last 12 hours: {PeakHeartrate.ToString()}" : "";
+        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate of the last 6 hours: {AverageHeartrate.ToString()}" : "";
+        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Peak heartrate of the last 6 hours: {PeakHeartrate.ToString()}" : "";
     }
 }

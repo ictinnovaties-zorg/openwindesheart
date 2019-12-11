@@ -47,6 +47,20 @@ namespace WindesHeartApp.Data.Repository
             }
         }
 
+        public async Task<bool> AddRangeAsync(List<Step> steps)
+        {
+            try
+            {
+                await _databaseContext.Steps.AddRangeAsync(steps);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
         public void RemoveAll()
         {
             try
