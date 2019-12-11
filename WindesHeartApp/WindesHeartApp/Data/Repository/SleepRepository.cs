@@ -46,6 +46,20 @@ namespace WindesHeartApp.Data.Repository
             }
         }
 
+        public async Task<bool> AddRangeAsync(List<Sleep> sleep)
+        {
+            try
+            {
+                await _databaseContext.Sleep.AddRangeAsync(sleep);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
         public void RemoveAll()
         {
             try

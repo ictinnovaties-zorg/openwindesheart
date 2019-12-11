@@ -18,6 +18,10 @@ namespace WindesHeartApp.Services
         private readonly IStepsRepository _stepsRepository;
         private readonly ISleepRepository _sleepRepository;
 
+        private List<Step> _steps = new List<Step>();
+        private List<Heartrate> _heartrates = new List<Heartrate>();
+        private List<Sleep> _sleep = new List<Sleep>();
+
         public SamplesService(IHeartrateRepository heartrateRepository, IStepsRepository stepsRepository, ISleepRepository sleepRepository)
         {
             _heartrateRepository = heartrateRepository;
@@ -37,14 +41,21 @@ namespace WindesHeartApp.Services
         {
 
             Debug.WriteLine("Filling DB with samples");
+            
+
             foreach (var sample in samples)
             {
                 var datetime = sample.Timestamp;
 
-                await AddHeartrate(datetime, sample);
-                await AddStep(datetime, sample);
-                await AddSleep(datetime, sample);
+                AddHeartrate(datetime, sample);
+                AddStep(datetime, sample);
+                AddSleep(datetime, sample);
             }
+
+            await _heartrateRepository.AddRangeAsync(_heartrates);
+            await _sleepRepository.AddRangeAsync(_sleep);
+            await _stepsRepository.AddRangeAsync(_steps);
+
             _heartrateRepository.SaveChangesAsync();
             _stepsRepository.SaveChangesAsync();
             _sleepRepository.SaveChangesAsync();
@@ -65,19 +76,21 @@ namespace WindesHeartApp.Services
             return DateTime.Now.AddDays(-30);
         }
 
-        private async Task AddHeartrate(DateTime datetime, ActivitySample sample)
+        private void AddHeartrate(DateTime datetime, ActivitySample sample)
         {
             var heartRate = new Heartrate(datetime, sample.HeartRate != 255 ? sample.HeartRate : 0);
-            await _heartrateRepository.AddAsync(heartRate);
+            _heartrates.Add(heartRate);
+            // await _heartrateRepository.AddAsync(heartRate);
         }
 
-        private async Task AddStep(DateTime datetime, ActivitySample sample)
+        private void AddStep(DateTime datetime, ActivitySample sample)
         {
             var step = new Step(datetime, sample.Steps);
-            await _stepsRepository.AddAsync(step);
+            _steps.Add(step);
+            // await _stepsRepository.AddAsync(step);
         }
 
-        private async Task AddSleep(DateTime datetime, ActivitySample sample)
+        private void AddSleep(DateTime datetime, ActivitySample sample)
         {
             Sleep sleep;
             switch (sample.Category)
@@ -95,8 +108,8 @@ namespace WindesHeartApp.Services
                     sleep = new Sleep(datetime, SleepType.Awake);
                     break;
             }
-
-            await _sleepRepository.AddAsync(sleep);
+            _sleep.Add(sleep);
+            // await _sleepRepository.AddAsync(sleep);
         }
 
         public void EmptyDatabase()

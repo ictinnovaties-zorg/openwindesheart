@@ -15,9 +15,8 @@ namespace WindesHeartApp.Data
         {
             _databasePath = databasePath;
             Database.EnsureDeleted();
-
+            
             Database.EnsureCreated();
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

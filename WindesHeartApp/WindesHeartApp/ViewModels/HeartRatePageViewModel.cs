@@ -71,7 +71,7 @@ namespace WindesHeartApp.ViewModels
 
         private void InitLabels()
         {
-            var heartrateslast6hours = _heartrates.Where(x => x.DateTime >= _dateTime);
+            var heartrateslast6hours = _heartrates.Where(x => x.DateTime >= _dateTime).Where(x => x.HeartrateValue != 0);
             if (heartrateslast6hours != null)
             {
                 AverageHeartrate = Convert.ToInt32(heartrateslast6hours?.Select(x => x.HeartrateValue).Average());
@@ -185,7 +185,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(PeakHeartrateText));
             }
         }
-        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate of last 12 hours: {AverageHeartrate.ToString()}" : "";
-        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Your peak heartrate of the last 12 hours: {PeakHeartrate.ToString()}" : "";
+        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate of last 6 hours: {AverageHeartrate.ToString()}" : "";
+        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Your peak heartrate of the last 6 hours: {PeakHeartrate.ToString()}" : "";
     }
 }
