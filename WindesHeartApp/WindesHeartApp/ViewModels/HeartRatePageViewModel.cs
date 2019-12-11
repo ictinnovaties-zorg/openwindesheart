@@ -18,7 +18,6 @@ namespace WindesHeartApp.ViewModels
 {
     public class HeartRatePageViewModel : INotifyPropertyChanged
     {
-        private int _heartrate;
         private readonly IHeartrateRepository _heartrateRepository;
         private int _averageHeartrate;
         private int _peakHeartrate;
@@ -44,7 +43,8 @@ namespace WindesHeartApp.ViewModels
             Interval = 0;
             _dateTime2 = DateTime.Now;
             _dateTime = DateTime.Now.AddHours(-6);
-            DayLabelText = $"{_dateTime.ToString()} - {_dateTime.AddHours(6).ToString()}";
+
+            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             var rates = await _heartrateRepository.GetAllAsync();
             if (rates.Count() != 0)
             {
@@ -83,8 +83,8 @@ namespace WindesHeartApp.ViewModels
         public void PreviousDayBtnClick(object sender, EventArgs args)
         {
             _dateTime = _dateTime.AddHours(-6);
-            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             _dateTime2 = _dateTime2.AddHours(-6);
+            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             DrawChart();
 
         }
@@ -92,8 +92,8 @@ namespace WindesHeartApp.ViewModels
         public void NextDayBtnClick(object sender, EventArgs args)
         {
             _dateTime = _dateTime.AddHours(6);
-            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             _dateTime2 = _dateTime2.AddHours(6);
+            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             DrawChart();
         }
 
