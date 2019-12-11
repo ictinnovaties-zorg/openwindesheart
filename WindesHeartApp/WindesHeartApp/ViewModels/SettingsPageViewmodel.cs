@@ -3,19 +3,17 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartSDK;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
     public class SettingsPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private readonly ISettingsRepository _settingsRepository;
-        private bool _toggle = true;
         private bool _toggle2 = true;
 
         public SettingsPageViewModel(ISettingsRepository settingsRepository)
         {
-            _settingsRepository = settingsRepository;
         }
 
         private void OnPropertyChanged([CallerMemberName] string name = "")
@@ -23,19 +21,44 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public void ToggleDisplayFormatsClicked(object sender, EventArgs args)
+        public void DateIndexChanged(object sender, EventArgs args)
         {
-            Windesheart.ConnectedDevice.SetTimeDisplayFormat(_toggle);
-            Windesheart.ConnectedDevice.SetDateDisplayFormat(_toggle);
-            _toggle = !_toggle;
+            Picker picker = sender as Picker;
+            if (picker.SelectedIndex != -1)
+            {
+                string format = picker.Items[picker.SelectedIndex];
+                if (format.Equals("MM/DD/YYY"))
+                {
+                    Windesheart.ConnectedDevice?.SetDateDisplayFormat(false);
+                }
+                else
+                {
+                    Windesheart.ConnectedDevice?.SetDateDisplayFormat(true);
+                }
+            }
+        }
+        public void HourIndexChanged(object sender, EventArgs e)
+        {
+            Picker picker = sender as Picker;
+            if (picker.SelectedIndex != -1)
+            {
+                string format = picker.Items[picker.SelectedIndex];
+                if (format.Equals("24 hour"))
+                {
+                    Windesheart.ConnectedDevice?.SetTimeDisplayFormat(true);
+                }
+                else
+                {
+                    Windesheart.ConnectedDevice?.SetTimeDisplayFormat(false);
+                }
+            }
         }
 
         public void ToggleWristActivatedClicked(object sender, EventArgs args)
         {
 
-            Windesheart.ConnectedDevice.SetActivateOnLiftWrist(_toggle2);
+            Windesheart.ConnectedDevice?.SetActivateOnLiftWrist(_toggle2);
             _toggle2 = !_toggle2;
         }
-
     }
 }

@@ -1,16 +1,15 @@
 ﻿using FormsControls.Base;
-using System;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Rectangle = Xamarin.Forms.Rectangle;
 
 namespace WindesHeartApp.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : ContentPage, IAnimationPage
     {
-        private string _tempsecondaryColor;
         public SettingsPage()
         {
             InitializeComponent();
@@ -26,87 +25,89 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddLabel(absoluteLayout, "Settings", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
-            #region save changes Button
+            #region Datetime format
+            Label dateLabel = new Label { Text = "Date Format", TextColor = Globals.LightTextColor, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
+            AbsoluteLayout.SetLayoutBounds(dateLabel, new Rectangle(0.5, 0.2, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(dateLabel, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(dateLabel);
 
-            Button savechangesButton = new Button
-            {
-                Text = "Save Changes",
-                BackgroundColor = Globals.SecondaryColor,
-                FontSize = Globals.ScreenHeight / 100 * 2,
-                CornerRadius = (int)Globals.ScreenHeight / 100 * 7
-            };
-            AbsoluteLayout.SetLayoutBounds(savechangesButton, new Rectangle(0.5, 0.90, Globals.ScreenHeight / 100 * 30, Globals.ScreenHeight / 100 * 7));
-            AbsoluteLayout.SetLayoutFlags(savechangesButton, AbsoluteLayoutFlags.PositionProportional);
-            savechangesButton.Clicked += SaveChangesButtonClicked;
-            absoluteLayout.Children.Add(savechangesButton);
+            Picker datePicker = new Picker { Title = "Set Format...", FontSize = Globals.ScreenHeight / 100 * 2.5 };
+            datePicker.Items.Add("MM/DD/YYYY");
+            datePicker.Items.Add("DD/MM/YYYY");
+            datePicker.SelectedIndexChanged += Globals.SettingsPageViewModel.DateIndexChanged;
+            AbsoluteLayout.SetLayoutBounds(datePicker, new Rectangle(0.5, 0.25, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(datePicker, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(datePicker);
             #endregion
 
-            Button ToggleFormatButton = PageBuilder.AddButton(absoluteLayout, "Toggle 12/24H", Globals.SettingsPageViewModel.ToggleDisplayFormatsClicked, 0.05, 0.35, 0.45, 0.05, 10, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
-            Button ToggleWristActivation = PageBuilder.AddButton(absoluteLayout, "Toggle wristactivation", Globals.SettingsPageViewModel.ToggleWristActivatedClicked, 0.95, 0.35, 0.45, 0.05, 10, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            #region hour notation format
+            Label hourLabel = new Label { Text = "Hour Notation", TextColor = Globals.LightTextColor, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
+            AbsoluteLayout.SetLayoutBounds(hourLabel, new Rectangle(0.5, 0.3, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(hourLabel, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(hourLabel);
+
+            Picker hourPicker = new Picker { Title = "Set Notation...", FontSize = Globals.ScreenHeight / 100 * 2.5 };
+            hourPicker.Items.Add("24 hour");
+            hourPicker.Items.Add("12 hour");
+            hourPicker.SelectedIndexChanged += Globals.SettingsPageViewModel.HourIndexChanged;
+            AbsoluteLayout.SetLayoutBounds(hourPicker, new Rectangle(0.5, 0.35, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(hourPicker, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(hourPicker);
+            #endregion
+
+            #region Toggle Wrist Activation
+            Button ToggleWristActivation = PageBuilder.AddButton(absoluteLayout, "Toggle wristactivation", Globals.SettingsPageViewModel.ToggleWristActivatedClicked, 0.95, 0.2, 0.45, 0.05, 10, 12, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
+            #endregion
 
 
+            #region Daily step goal
+            Label stepsLabel = new Label { Text = "Daily Steps Goal", TextColor = Globals.LightTextColor, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
+            AbsoluteLayout.SetLayoutBounds(stepsLabel, new Rectangle(0.5, 0.4, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(stepsLabel, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(stepsLabel);
 
-            Label ToggleDatetimeFormatLabel = new Label { Text = "Select Secondary Color", TextColor = Globals.LightTextColor, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
-            AbsoluteLayout.SetLayoutBounds(ToggleDatetimeFormatLabel, new Rectangle(0.5, 0.45, -1, -1));
-            AbsoluteLayout.SetLayoutFlags(ToggleDatetimeFormatLabel, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(ToggleDatetimeFormatLabel);
-
-            Picker FormatPicker = new Picker { Title = "Select..", FontSize = Globals.ScreenHeight / 100 * 2.5 };
-            foreach (string colorName in Globals.ColorDictionary.Keys)
+            Picker stepsPicker = new Picker { Title = Globals.DailyStepsGoal.ToString(), FontSize = Globals.ScreenHeight / 100 * 2.5 };
+            for (int i = 1; i < 21; i++)
             {
-                FormatPicker.Items.Add(colorName);
+                stepsPicker.Items.Add((i * 1000).ToString());
+            }
+            stepsPicker.SelectedIndexChanged += (sender, args) =>
+            {
+                if (stepsPicker.SelectedIndex != -1)
+                {
+                    string steps = stepsPicker.Items[stepsPicker.SelectedIndex];
+                    Globals.DailyStepsGoal = int.Parse(steps);
+                }
+            };
+            AbsoluteLayout.SetLayoutBounds(stepsPicker, new Rectangle(0.5, 0.45, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(stepsPicker, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(stepsPicker);
+            #endregion
+
+            #region Format picker
+            Label formatLabel = new Label { Text = "Device Language", TextColor = Globals.LightTextColor, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
+            AbsoluteLayout.SetLayoutBounds(formatLabel, new Rectangle(0.5, 0.45, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(formatLabel, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(formatLabel);
+
+            Picker FormatPicker = new Picker { Title = "Set Language...", FontSize = Globals.ScreenHeight / 100 * 2.5 };
+            foreach (string format in Globals.languageDictionary.Keys)
+            {
+                FormatPicker.Items.Add(format);
             }
             FormatPicker.SelectedIndexChanged += (sender, args) =>
-                    {
-                        if (FormatPicker.SelectedIndex == -1)
-                        {
-                        }
-                        else
-                        {
-                            Windesheart.ConnectedDevice.SetLanguage("nl-NL");
-                        }
-                    };
+            {
+                if (FormatPicker.SelectedIndex != -1)
+                {
+                    Windesheart.ConnectedDevice?.SetLanguage(FormatPicker.Items[FormatPicker.SelectedIndex]);
+                }
+            };
             AbsoluteLayout.SetLayoutBounds(FormatPicker, new Rectangle(0.5, 0.5, Globals.ScreenWidth - Globals.ScreenWidth / 100 * 4, -1));
             AbsoluteLayout.SetLayoutFlags(FormatPicker, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(FormatPicker);
-
-
-            #region button-color picker with Label
-
-            Label secondarycolorpickerlabel = new Label { Text = "Select Secondary Color", TextColor = Globals.LightTextColor, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
-            AbsoluteLayout.SetLayoutBounds(secondarycolorpickerlabel, new Rectangle(0.5, 0.55, -1, -1));
-            AbsoluteLayout.SetLayoutFlags(secondarycolorpickerlabel, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(secondarycolorpickerlabel);
-
-            Picker secondaryPicker = new Picker { Title = "Select..", FontSize = Globals.ScreenHeight / 100 * 2.5 };
-            foreach (string colorName in Globals.ColorDictionary.Keys)
-            {
-                secondaryPicker.Items.Add(colorName);
-            }
-            secondaryPicker.SelectedIndexChanged += (sender, args) =>
-                    {
-                        if (secondaryPicker.SelectedIndex == -1)
-                        {
-                            Globals.PrimaryColor = Color.FromHex("#96d1ff");
-                        }
-                        else
-                        {
-                            _tempsecondaryColor = secondaryPicker.Items[secondaryPicker.SelectedIndex];
-                            secondaryPicker.BackgroundColor = Globals.ColorDictionary[_tempsecondaryColor];
-                        }
-                    };
-            AbsoluteLayout.SetLayoutBounds(secondaryPicker, new Rectangle(0.5, 0.6, Globals.ScreenWidth - Globals.ScreenWidth / 100 * 4, -1));
-            AbsoluteLayout.SetLayoutFlags(secondaryPicker, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(secondaryPicker);
             #endregion
         }
 
-        private void SaveChangesButtonClicked(object sender, EventArgs e)
-        {
-            if (_tempsecondaryColor != null)
-                Globals.SecondaryColor = Globals.ColorDictionary[_tempsecondaryColor];
-            Navigation.PopAsync();
-        }
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)

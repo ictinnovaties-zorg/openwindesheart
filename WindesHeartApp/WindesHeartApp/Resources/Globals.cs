@@ -24,14 +24,13 @@ namespace WindesHeartApp.Resources
         public static ISleepRepository SleepRepository { get; set; }
         public static ISettingsRepository SettingsRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
-        public static float DailyStepsGoal { get; internal set; }
-        public static Dictionary<string, Color> ColorDictionary;
-        public static Dictionary<string, string> FormatDictionary;
+        public static int DailyStepsGoal { get; internal set; }
+        public static Dictionary<string, string> languageDictionary;
 
 
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
         {
-            DailyStepsGoal = 1000;
+            DailyStepsGoal = 10000;
             StepsRepository = stepsRepository;
             SleepRepository = sleepRepository;
             SettingsRepository = settingsRepository;
@@ -43,23 +42,12 @@ namespace WindesHeartApp.Resources
             SleepPageViewModel = new SleepPageViewModel(sleepRepository);
             DevicePageViewModel = new DevicePageViewModel();
             HomePageViewModel = new HomePageViewModel();
-            ColorDictionary = new Dictionary<string, Color>
+
+            languageDictionary = new Dictionary<string, string>
             {
-                { "Aqua", Color.Aqua},
-                { "Black", Color.Black},
-                { "LightBlue (Default)", Color.FromHex("#96d1ff")}, { "Fucshia", Color.Fuchsia },
-                { "Gray", Color.Gray }, { "Green", Color.Green },
-                { "Lime", Color.Lime }, { "Maroon", Color.Maroon },
-                { "Navy", Color.Navy }, { "Olive", Color.Olive },
-                { "Purple", Color.Purple }, { "Red", Color.Red },
-                { "Silver", Color.Silver }, { "Teal", Color.Teal },
-                { "White", Color.White }, { "Yellow", Color.Yellow }
-            };
-            FormatDictionary = new Dictionary<string, string>
-            {
-                {"NL", "nl-NL"},
-                {"EN", "en-EN"},
-                {"DU", "du-DU"}
+                {"Nederlands", "nl-NL"},
+                {"English", "en-EN"},
+                {"Deutsch", "du-DU"}
             };
         }
     }
