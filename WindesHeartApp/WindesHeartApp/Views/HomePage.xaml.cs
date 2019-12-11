@@ -1,5 +1,4 @@
 ﻿using FormsControls.Base;
-using System;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using Xamarin.Forms;
@@ -52,7 +51,7 @@ namespace WindesHeartApp.Pages
 
             Label hrLabel = new Label { FontSize = Globals.ScreenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold };
             hrLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartRate"));
-            AbsoluteLayout.SetLayoutBounds(hrLabel, new Rectangle(0.05, 0.18, -1, -1));
+            AbsoluteLayout.SetLayoutBounds(hrLabel, new Rectangle(0.15, 0.18, -1, -1));
             AbsoluteLayout.SetLayoutFlags(hrLabel, AbsoluteLayoutFlags.PositionProportional);
             absoluteLayout.Children.Add(hrLabel);
             #endregion
@@ -67,16 +66,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddButton(absoluteLayout, "Settings", Globals.HomePageViewModel.SettingsButtonClicked, 0.20, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             PageBuilder.AddButton(absoluteLayout, "Sleep", Globals.HomePageViewModel.SleepButtonClicked, 0.10, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
 
-            var button =
-                PageBuilder.AddButton(absoluteLayout, "TEST", TestButtonClicked, 0.5, 0.5, 0.4, 0.05, 0, 0, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
         }
-
-        private void TestButtonClicked(object sender, EventArgs e)
-        {
-
-            Navigation.PushAsync(new TestPage());
-        }
-
 
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
