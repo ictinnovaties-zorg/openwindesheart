@@ -15,7 +15,6 @@ namespace WindesHeartApp.Data
         {
             _databasePath = databasePath;
             Database.EnsureDeleted();
-            
             Database.EnsureCreated();
         }
 

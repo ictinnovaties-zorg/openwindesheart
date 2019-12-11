@@ -13,9 +13,9 @@ namespace WindesHeartApp.Data.Repository
     public class SleepRepository : ISleepRepository
     {
         private readonly DatabaseContext _databaseContext;
-        public SleepRepository(string dbPath)
+        public SleepRepository(DatabaseContext databaseContext)
         {
-            _databaseContext = new DatabaseContext(dbPath);
+            _databaseContext = databaseContext;
         }
 
         public async Task<IEnumerable<Sleep>> GetAllAsync()

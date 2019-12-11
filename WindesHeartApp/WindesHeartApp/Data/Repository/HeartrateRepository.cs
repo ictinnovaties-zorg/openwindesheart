@@ -12,9 +12,9 @@ namespace WindesHeartApp.Data.Repository
     public class HeartrateRepository : IHeartrateRepository
     {
         private readonly DatabaseContext _databaseContext;
-        public HeartrateRepository(string dbPath)
+        public HeartrateRepository(DatabaseContext databaseContext)
         {
-            _databaseContext = new DatabaseContext(dbPath);
+            _databaseContext = databaseContext;
         }
 
         public async Task<IEnumerable<Heartrate>> GetAllAsync()
@@ -22,7 +22,7 @@ namespace WindesHeartApp.Data.Repository
             try
             {
                 var heartrates = await _databaseContext.Heartrates.ToListAsync();
-                return heartrates;
+                return heartrates.OrderBy(x => x.DateTime).ToList();
             }
             catch (Exception e)
             {

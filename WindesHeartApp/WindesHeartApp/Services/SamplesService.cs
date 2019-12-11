@@ -66,7 +66,7 @@ namespace WindesHeartApp.Services
         private async Task<DateTime> GetLastAddedDateTime()
         {
             var steps = await _stepsRepository.GetAllAsync();
-
+            Debug.WriteLine("Steps db contains: " + steps.Count() + " entries");
             if (steps.Count() > 0)
             {
                 Debug.WriteLine("Last added datetime is: " + steps.Last().DateTime);
