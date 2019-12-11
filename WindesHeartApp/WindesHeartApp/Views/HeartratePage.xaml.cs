@@ -91,7 +91,7 @@ namespace WindesHeartApp.Pages
             #endregion
         }
 
-        private async void OnIntervalLabelClicked(object sender, EventArgs args)
+        private void OnIntervalLabelClicked(object sender, EventArgs args)
         {
             var intervalButton = sender as Button;
 
