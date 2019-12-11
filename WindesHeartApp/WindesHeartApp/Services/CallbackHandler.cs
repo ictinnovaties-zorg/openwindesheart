@@ -37,7 +37,6 @@ namespace WindesHeartApp.Services
         {
             if (result == ConnectionResult.Succeeded)
             {
-                Globals.SamplesService.EmptyDatabase();
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);

@@ -2,6 +2,7 @@
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using System;
+using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
@@ -12,10 +13,10 @@ namespace WindesHeartApp
 {
     public partial class App : Application
     {
-        public App(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
+        public App(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository, DatabaseContext databaseContext)
         {
             InitializeComponent();
-            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, settingsRepository);
+            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, settingsRepository,databaseContext);
             MainPage = new AnimationNavigationPage(new HomePage());
         }
 
