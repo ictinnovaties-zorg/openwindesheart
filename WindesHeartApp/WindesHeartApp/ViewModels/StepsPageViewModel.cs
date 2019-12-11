@@ -16,7 +16,7 @@ using Entry = Microcharts.Entry;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class StepsViewModel : INotifyPropertyChanged
+    public class StepsPageViewModel : INotifyPropertyChanged
     {
         public DateTime StartDate { get; }
 
@@ -74,7 +74,7 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public StepsViewModel(IStepsRepository stepsRepository)
+        public StepsPageViewModel(IStepsRepository stepsRepository)
         {
             _stepsRepository = stepsRepository;
             StartDate = DateTime.Today;
