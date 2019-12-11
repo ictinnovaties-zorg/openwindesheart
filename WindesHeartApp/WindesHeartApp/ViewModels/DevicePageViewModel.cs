@@ -86,6 +86,7 @@ namespace WindesHeartApp.ViewModels
         }
         public async void ScanButtonClicked(object sender, EventArgs args)
         {
+            DeviceList = new ObservableCollection<BLEDevice>();
             try
             {
                 //If already scanning, stop scanning
