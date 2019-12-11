@@ -13,7 +13,7 @@ namespace WindesHeartApp.Resources
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel HomePageViewModel;
         public static SettingsPageViewModel SettingsPageViewModel;
-        public static StepsViewModel StepsViewModel;
+        public static StepsPageViewModel StepsPageViewModel;
         public static SleepPageViewModel SleepPageViewModel;
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
@@ -38,7 +38,7 @@ namespace WindesHeartApp.Resources
             HeartrateRepository = heartrateRepository;
             HeartratePageViewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
-            StepsViewModel = new StepsViewModel(StepsRepository);
+            StepsPageViewModel = new StepsPageViewModel(StepsRepository);
             SettingsPageViewModel = new SettingsPageViewModel(SettingsRepository);
             SleepPageViewModel = new SleepPageViewModel(sleepRepository);
             DevicePageViewModel = new DevicePageViewModel();

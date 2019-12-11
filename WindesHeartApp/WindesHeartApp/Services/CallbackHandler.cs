@@ -13,11 +13,10 @@ namespace WindesHeartApp.Services
         private static readonly string _key = "LastConnectedDeviceGuid";
 
         //OnHeartrateChange/Measurement
-        public static async void ChangeHeartRate(Heartrate heartrate)
+        public static void ChangeHeartRate(Heartrate heartrate)
         {
             if (heartrate.HeartrateValue == 0)
                 return;
-            Globals.HeartratePageViewModel.Heartrate = heartrate.HeartrateValue;
             Globals.HomePageViewModel.Heartrate = heartrate.HeartrateValue;
         }
 

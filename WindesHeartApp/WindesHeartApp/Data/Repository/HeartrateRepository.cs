@@ -67,7 +67,7 @@ namespace WindesHeartApp.Data.Repository
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Could not delete heartrate entries: "+e);
+                Debug.WriteLine("Could not delete heartrate entries: " + e);
             }
         }
 
