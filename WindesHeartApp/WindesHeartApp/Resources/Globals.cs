@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Services;
 using WindesHeartApp.ViewModels;
@@ -24,12 +25,13 @@ namespace WindesHeartApp.Resources
         public static ISleepRepository SleepRepository { get; set; }
         public static ISettingsRepository SettingsRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
+        public static DatabaseContext DatabaseContext { get; set; }
         public static float DailyStepsGoal { get; internal set; }
         public static Dictionary<string, Color> ColorDictionary;
         public static Dictionary<string, string> FormatDictionary;
 
 
-        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
+        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository, DatabaseContext databaseContext)
         {
             DailyStepsGoal = 1000;
             StepsRepository = stepsRepository;
@@ -40,9 +42,10 @@ namespace WindesHeartApp.Resources
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsViewModel = new StepsViewModel(StepsRepository);
             SettingsPageViewModel = new SettingsPageViewModel(SettingsRepository);
-            SleepPageViewModel = new SleepPageViewModel(sleepRepository);
+            SleepPageViewModel = new SleepPageViewModel(SleepRepository);
             DevicePageViewModel = new DevicePageViewModel();
             HomePageViewModel = new HomePageViewModel();
+            DatabaseContext = databaseContext;
             ColorDictionary = new Dictionary<string, Color>
             {
                 { "Aqua", Color.Aqua},

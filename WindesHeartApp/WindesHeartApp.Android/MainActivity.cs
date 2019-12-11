@@ -5,6 +5,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using System.IO;
+using WindesHeartApp.Data;
 using WindesHeartApp.Data.Repository;
 using WindesHeartApp.Resources;
 
@@ -27,9 +28,11 @@ namespace WindesHeartApp.Droid
             var dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),
                 "WindesHeart.db");
 
+            var dbContext = new DatabaseContext(dbPath);
+
             Globals.ScreenHeight = (int)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
             Globals.ScreenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
-            LoadApplication(new App(new HeartrateRepository(dbPath), new SleepRepository(dbPath), new StepsRepository(dbPath), new SettingsRepository(dbPath)));
+            LoadApplication(new App(new HeartrateRepository(dbContext), new SleepRepository(dbContext), new StepsRepository(dbContext), new SettingsRepository(dbContext), dbContext));
 
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
