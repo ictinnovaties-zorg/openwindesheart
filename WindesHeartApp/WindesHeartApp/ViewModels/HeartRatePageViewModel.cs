@@ -175,7 +175,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(PeakHeartrateText));
             }
         }
-        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate of last 6 hours: {AverageHeartrate.ToString()}" : "";
-        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Your peak heartrate of the last 6 hours: {PeakHeartrate.ToString()}" : "";
+        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate of the last 6 hours: {AverageHeartrate.ToString()}" : "";
+        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Peak heartrate of the last 6 hours: {PeakHeartrate.ToString()}" : "";
     }
 }
