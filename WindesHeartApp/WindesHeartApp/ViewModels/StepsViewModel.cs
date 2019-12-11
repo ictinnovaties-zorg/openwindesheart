@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
+using WindesHeartSDK;
+using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -24,9 +27,13 @@ namespace WindesHeartApp.ViewModels
 
         public static IEnumerable<Step> StepInfo = new List<Step>();
 
+        public int TodayStepCount = 0;
+
         private ButtonRow _buttonRow;
 
         private Chart _chart;
+
+
         public Chart Chart
         {
             get => _chart;
@@ -70,7 +77,7 @@ namespace WindesHeartApp.ViewModels
         public StepsViewModel(IStepsRepository stepsRepository)
         {
             _stepsRepository = stepsRepository;
-            StartDate = DateTime.Now;
+            StartDate = DateTime.Today;
             SelectedDate = StartDate;
         }
 
@@ -94,13 +101,32 @@ namespace WindesHeartApp.ViewModels
             UpdateChart();
         }
 
-        private int GetCurrentSteps()
+        public void OnStepsUpdated(StepInfo stepsInfo)
         {
+            StepsPage.CurrentStepsLabel.Text = stepsInfo.StepCount.ToString();
+        }
+
+        private async Task<int> GetCurrentSteps()
+        {
+            //If looking at today
+            if (SelectedDate.Equals(DateTime.Today))
+            {
+                Console.WriteLine("Today selected!");
+
+                //If device is connected
+                if (Windesheart.ConnectedDevice != null && Windesheart.ConnectedDevice.isConnected())
+                {
+                    //Read stepcount from device
+                    StepInfo currentSteps = await Windesheart.ConnectedDevice.GetSteps();
+                    return currentSteps.StepCount;
+                }
+            }
+
+
             List<Step> steps = StepInfo.Where(s => s.DateTime.Year == SelectedDate.Year &&
             s.DateTime.Month == SelectedDate.Month &&
-            s.DateTime > SelectedDate.AddHours(-12) &&
-            s.DateTime < SelectedDate.AddHours(12)).
-            OrderBy(x => x.DateTime).ToList();
+            s.DateTime.Day == SelectedDate.Day)
+            .OrderBy(x => x.DateTime).ToList();
 
             //Get stepcount for that day by adding them together
             int stepCount = 0;
@@ -108,9 +134,9 @@ namespace WindesHeartApp.ViewModels
             return stepCount;
         }
 
-        public void UpdateChart()
+        public async void UpdateChart()
         {
-            int stepCount = GetCurrentSteps();
+            int stepCount = await GetCurrentSteps();
 
             List<Entry> entries = new List<Entry>();
 

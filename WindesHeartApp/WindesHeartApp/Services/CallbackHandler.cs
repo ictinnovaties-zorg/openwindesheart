@@ -30,6 +30,7 @@ namespace WindesHeartApp.Services
         {
             var count = stepsInfo.StepCount;
             Debug.WriteLine($"Stepcount updated: {count}");
+            Globals.StepsViewModel.OnStepsUpdated(stepsInfo);
 
         }
 
@@ -39,9 +40,9 @@ namespace WindesHeartApp.Services
             {
                 Globals.SamplesService.EmptyDatabase();
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
-                Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
-                Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-                Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
+                Windesheart.ConnectedDevice.EnableRealTimeHeartrate(ChangeHeartRate);
+                Windesheart.ConnectedDevice.EnableRealTimeBattery(ChangeBattery);
+                Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsUpdated);
                 Windesheart.ConnectedDevice.EnableSleepTracking(true);
                 Windesheart.ConnectedDevice.SetActivateOnLiftWrist(true);
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
