@@ -38,7 +38,7 @@ namespace WindesHeartApp.Pages
             #region define battery and hr Label
             Image batteryImage = new Image { HeightRequest = (int)(Globals.ScreenHeight / 100 * 2.5) };
             batteryImage.SetBinding(Image.SourceProperty, new Binding("BatteryImage"));
-            AbsoluteLayout.SetLayoutBounds(batteryImage, new Rectangle(0.85, 0.18, -1, -1));
+            AbsoluteLayout.SetLayoutBounds(batteryImage, new Rectangle(0.85, 0.182, -1, -1));
             AbsoluteLayout.SetLayoutFlags(batteryImage, AbsoluteLayoutFlags.PositionProportional);
 
             var bandNameLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.95, 0.16, Color.Black, "BandNameLabel", 12);

@@ -1,5 +1,7 @@
 ﻿using FormsControls.Base;
+using System.Collections.ObjectModel;
 using WindesHeartApp.Resources;
+using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -17,6 +19,10 @@ namespace WindesHeartApp.Pages
             BuildPage();
         }
 
+        protected override void OnAppearing()
+        {
+            Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
+        }
         private void BuildPage()
         {
             absoluteLayout = new AbsoluteLayout();
