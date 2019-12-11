@@ -9,7 +9,8 @@ namespace WindesHeartApp.Pages
     [System.Runtime.InteropServices.Guid("A63B9823-FB43-4942-BAAA-5F02EAF86AC8")]
     public partial class DevicePage : ContentPage, IAnimationPage
     {
-        public static ListView devicelist;
+        public static ListView Devicelist;
+        public static Button ScanButton;
         public DevicePage()
         {
             InitializeComponent();
@@ -24,7 +25,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout, this);
 
-            Button scanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", Globals.DevicePageViewModel.ScanButtonClicked, 0.15, 0.25, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor); PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
+            ScanButton = PageBuilder.AddButton(absoluteLayout, "Scan for devices", Globals.DevicePageViewModel.ScanButtonClicked, 0.15, 0.25, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor); PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
 
@@ -56,18 +57,24 @@ namespace WindesHeartApp.Pages
 
                 return new ViewCell { View = grid };
             });
-            devicelist = new ListView { BackgroundColor = Globals.SecondaryColor, ItemTemplate = deviceTemplate };
-            devicelist.SetBinding(ListView.SelectedItemProperty, new Binding("SelectedDevice", BindingMode.TwoWay));
-            devicelist.SetBinding(ListView.ItemsSourceProperty, new Binding("DeviceList"));
-            AbsoluteLayout.SetLayoutBounds(devicelist, new Rectangle(0.5, 0.55, 0.90, 0.4));
-            AbsoluteLayout.SetLayoutFlags(devicelist, AbsoluteLayoutFlags.All);
-            absoluteLayout.Children.Add(devicelist);
+            Devicelist = new ListView { BackgroundColor = Globals.SecondaryColor, ItemTemplate = deviceTemplate };
+            Devicelist.SetBinding(ListView.SelectedItemProperty, new Binding("SelectedDevice", BindingMode.TwoWay));
+            Devicelist.SetBinding(ListView.ItemsSourceProperty, new Binding("DeviceList"));
+            AbsoluteLayout.SetLayoutBounds(Devicelist, new Rectangle(0.5, 0.55, 0.90, 0.4));
+            AbsoluteLayout.SetLayoutFlags(Devicelist, AbsoluteLayoutFlags.All);
+            absoluteLayout.Children.Add(Devicelist);
             #endregion
 
             #region disconnectButton
             Button disconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", Globals.DevicePageViewModel.DisconnectButtonClicked, 0.15, 0.85, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             #endregion
         }
+
+        protected override void OnDisappearing()
+        {
+            Globals.DevicePageViewModel.OnDisappearing();
+        }
+
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
