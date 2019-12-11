@@ -48,6 +48,13 @@ namespace WindesHeartApp.ViewModels
             //Get all sleep data from DB
             SleepInfo = await _sleepRepository.GetAllAsync();
 
+            if(SleepInfo.Count() == 0)
+            {
+                Device.BeginInvokeOnMainThread(async delegate
+                {
+                    await Application.Current.MainPage.DisplayAlert("No data", "Unfortunately, no sleep-data was found.", "Ok");
+                });
+            }
             //Update chart
             UpdateChart();
 
@@ -104,7 +111,7 @@ namespace WindesHeartApp.ViewModels
         {
             return SleepInfo.Where(s => s.DateTime.Year == SelectedDate.Year &&
             s.DateTime.Month == SelectedDate.Month &&
-            s.DateTime > SelectedDate.AddHours(-12) &&
+            s.DateTime > SelectedDate.AddHours(-4) &&
             s.DateTime < SelectedDate.AddHours(12)).
             OrderBy(x => x.DateTime).ToList();
         }
@@ -123,13 +130,11 @@ namespace WindesHeartApp.ViewModels
                 //Get sleep data for that hour
                 List<Sleep> data = sleepData.Where(x => x.DateTime.Hour == hour).ToList();
 
-                //If there is sleepdata for that hour, add that
-                if (data != null && data.Count > 0)
+                for(int j = 0; j < 60; j++)
                 {
-                    //Set Right color for entry according to sleep type
-                    foreach (Sleep s in data)
+                    if(data.ElementAtOrDefault(j) != null)
                     {
-                        switch (s.SleepType)
+                        switch (data[j].SleepType)
                         {
                             case SleepType.Awake:
                                 Entry awakeEntry = new Entry(1);
@@ -147,15 +152,12 @@ namespace WindesHeartApp.ViewModels
                                 entries.Add(deepEntry);
                                 break;
                         }
+                    } else
+                    {
+                        Entry entry = new Entry(1);
+                        entry.Color = SKColor.Parse(AwakeColor);
+                        entries.Add(entry);
                     }
-
-                }
-                else
-                {
-                    //If no sleep data, add awake entry
-                    Entry entry = new Entry(1);
-                    entry.Color = SKColor.Parse(AwakeColor);
-                    entries.Add(entry);
                 }
             }
 

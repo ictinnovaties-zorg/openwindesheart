@@ -30,7 +30,7 @@ namespace WindesHeartApp.ViewModels
         public void DisconnectButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
-            Windesheart.ConnectedDevice.Disconnect();
+            Windesheart.ConnectedDevice?.Disconnect();
             IsLoading = false;
             StatusText = "Disconnected";
             Globals.HomePageViewModel.Heartrate = 0;
@@ -78,7 +78,7 @@ namespace WindesHeartApp.ViewModels
                     return;
                 OnPropertyChanged();
                 DeviceSelected(_selectedDevice);
-                DevicePage.devicelist.SelectedItem = null;
+                DevicePage.Devicelist.SelectedItem = null;
                 _selectedDevice = null;
 
             }
@@ -87,33 +87,67 @@ namespace WindesHeartApp.ViewModels
         {
             try
             {
-                if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOff)
+                //If already scanning, stop scanning
+                if (CrossBleAdapter.Current.IsScanning)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Bluetooth turned off", "Bluetooth is turned off. Please enable bluetooth to start scanning for devices", "OK");
-                    StatusText = "Bluetooth turned off";
-                    return;
+                    Windesheart.StopScanning();
+                    DevicePage.ScanButton.Text = "Scan for devices";
+                    IsLoading = false;
                 }
-                StatusText = "Scanning for devices";
-                IsLoading = true;
-                var devices = await Windesheart.ScanForDevices();
-                if (devices != null)
+                else
                 {
-                    DeviceList = devices;
-                }
 
-                StatusText = $"Results found: {devices.Count}";
-                IsLoading = false;
+                    if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOff)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Bluetooth turned off", "Bluetooth is turned off. Please enable bluetooth to start scanning for devices", "OK");
+                        StatusText = "Bluetooth turned off";
+                        return;
+                    }
+
+                    //If started scanning
+                    if (Windesheart.StartScanning(OnDeviceFound))
+                    {
+                        DevicePage.ScanButton.Text = "Stop scanning";
+                        StatusText = "Scanning...";
+                        IsLoading = true;
+                    }
+                    else
+                    {
+                        StatusText = "Could not start scanning.";
+                        DevicePage.ScanButton.Text = "Scan for devices";
+                    }
+                }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
         }
+
+        /// <summary>
+        /// Called when leaving the page
+        /// </summary>
+        public void OnDisappearing()
+        {
+            Console.WriteLine("Stopping scanning...");
+            Windesheart.StopScanning();
+            IsLoading = false;
+            StatusText = "";
+        }
+
+        private void OnDeviceFound(BLEDevice device)
+        {
+            DeviceList.Add(device);
+        }
+
         private void DeviceSelected(BLEDevice device)
         {
             try
             {
-                StatusText = $"Connecting to {device.Name}";
+                DevicePage.ScanButton.Text = "Scan for devices";
+                Windesheart.StopScanning();
+
+                StatusText = "Connecting...";
                 IsLoading = true;
                 device.Connect(CallbackHandler.OnConnetionCallBack);
             }
