@@ -45,6 +45,20 @@ namespace WindesHeartApp.Data.Repository
             }
         }
 
+        public async Task<bool> AddRangeAsync(List<Heartrate> heartrates)
+        {
+            try
+            {
+                await _databaseContext.Heartrates.AddRangeAsync(heartrates);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
         public void RemoveAll()
         {
             try
@@ -53,7 +67,7 @@ namespace WindesHeartApp.Data.Repository
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Could not delete heartrate entries: "+e);
+                Debug.WriteLine("Could not delete heartrate entries: " + e);
             }
         }
 

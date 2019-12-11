@@ -68,10 +68,10 @@ namespace WindesHeartApp.Pages
             absoluteLayout.Children.Add(chart);
 
             var averageHeartrateLabel =
-                PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.65, Color.Black, "AverageLabelText", 20);
+                PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.65, Color.Black, "AverageLabelText", 15);
 
             var peakHeartrateLabel =
-                PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.68, Color.Black, "PeakHeartrateText", 20);
+                PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.70, Color.Black, "PeakHeartrateText", 15);
 
             #region heartrateinterval selector
             Image heartonlyImage2 = new Image { Source = "HeartOnlyTransparent.png" };

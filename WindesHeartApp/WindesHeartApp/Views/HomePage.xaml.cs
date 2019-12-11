@@ -1,5 +1,4 @@
 ﻿using FormsControls.Base;
-using System;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using Xamarin.Forms;
@@ -23,7 +22,10 @@ namespace WindesHeartApp.Pages
         {
             App.RequestLocationPermission();
             if (Windesheart.ConnectedDevice != null)
+            {
                 Globals.HomePageViewModel.ReadCurrentBattery();
+                Globals.HomePageViewModel.BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+            }
         }
 
         private void BuildPage()
@@ -34,36 +36,25 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddHeaderImages(absoluteLayout);
 
             #region define battery and hr Label
-            Image batteryImage = new Image();
+            Image batteryImage = new Image { HeightRequest = (int)(Globals.ScreenHeight / 100 * 2.5) };
             batteryImage.SetBinding(Image.SourceProperty, new Binding("BatteryImage"));
-            batteryImage.HeightRequest = Globals.ScreenHeight / 100 * 2.5;
-
             AbsoluteLayout.SetLayoutBounds(batteryImage, new Rectangle(0.85, 0.18, -1, -1));
             AbsoluteLayout.SetLayoutFlags(batteryImage, AbsoluteLayoutFlags.PositionProportional);
 
-            Label batteryLabel = new Label
-            { FontSize = Globals.ScreenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold };
-            batteryLabel.SetBinding(Label.TextProperty, new Binding("DisplayBattery"));
-            AbsoluteLayout.SetLayoutBounds(batteryLabel, new Rectangle(0.95, 0.18, -1, -1));
-            AbsoluteLayout.SetLayoutFlags(batteryLabel, AbsoluteLayoutFlags.PositionProportional);
+            var bandNameLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.95, 0.16, Color.Black, "BandNameLabel", 12);
+            bandNameLabel.FontAttributes = FontAttributes.Bold;
+            bandNameLabel.FontAttributes = FontAttributes.Italic;
 
+            var batteryLabel = PageBuilder.AddLabel(absoluteLayout, "", 0.95, 0.18, Color.Black, "DisplayBattery", (int)(Globals.ScreenHeight / 100 * 2.5));
+            batteryLabel.FontAttributes = FontAttributes.Bold;
             absoluteLayout.Children.Add(batteryImage);
-            absoluteLayout.Children.Add(batteryLabel);
 
-            Image heartrateImage = new Image();
-            heartrateImage.SetBinding(Image.SourceProperty, new Binding("HeartImage"));
-            heartrateImage.HeightRequest = Globals.ScreenHeight / 100 * 2.5;
-
-            AbsoluteLayout.SetLayoutBounds(heartrateImage, new Rectangle(0.85, 0.18, -1, -1));
-            AbsoluteLayout.SetLayoutFlags(heartrateImage, AbsoluteLayoutFlags.PositionProportional);
-            Label HRLabel = new Label
-            { FontSize = Globals.ScreenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold };
-            HRLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartRate"));
-            AbsoluteLayout.SetLayoutBounds(HRLabel, new Rectangle(0.05, 0.18, -1, -1));
-            AbsoluteLayout.SetLayoutFlags(HRLabel, AbsoluteLayoutFlags.PositionProportional);
-            absoluteLayout.Children.Add(HRLabel);
-            absoluteLayout.Children.Add(heartrateImage);
-            #endregion 
+            Label hrLabel = new Label { FontSize = Globals.ScreenHeight / 100 * 2.5, FontAttributes = FontAttributes.Bold };
+            hrLabel.SetBinding(Label.TextProperty, new Binding("DisplayHeartRate"));
+            AbsoluteLayout.SetLayoutBounds(hrLabel, new Rectangle(0.15, 0.18, -1, -1));
+            AbsoluteLayout.SetLayoutFlags(hrLabel, AbsoluteLayoutFlags.PositionProportional);
+            absoluteLayout.Children.Add(hrLabel);
+            #endregion
 
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.65, 100, 100, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
 
@@ -75,16 +66,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddButton(absoluteLayout, "Settings", Globals.HomePageViewModel.SettingsButtonClicked, 0.20, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             PageBuilder.AddButton(absoluteLayout, "Sleep", Globals.HomePageViewModel.SleepButtonClicked, 0.10, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, 15, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
 
-            var button =
-                PageBuilder.AddButton(absoluteLayout, "TEST", TestButtonClicked, 0.5, 0.5, 0.4, 0.05, 0, 0, AbsoluteLayoutFlags.All, Globals.SecondaryColor);
         }
-
-        private void TestButtonClicked(object sender, EventArgs e)
-        {
-
-            Navigation.PushAsync(new TestPage());
-        }
-
 
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 

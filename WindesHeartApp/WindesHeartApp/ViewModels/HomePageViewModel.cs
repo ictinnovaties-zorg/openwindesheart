@@ -17,12 +17,16 @@ namespace WindesHeartApp.ViewModels
         private int _heartrate;
         private string _batteryImage = "";
         private bool _isLoading;
+        private string _bandnameLabel;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public HomePageViewModel()
         {
             if (Windesheart.ConnectedDevice != null)
+            {
                 ReadCurrentBattery();
+                BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+            }
         }
 
         public async Task ReadCurrentBattery()
@@ -105,7 +109,17 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(DisplayHeartRate));
             }
         }
-        public string DisplayHeartRate => Heartrate != 0 ? $"Your Last heartbeat was: {Heartrate.ToString()}" : "";
+
+        public string BandNameLabel
+        {
+            get => _bandnameLabel;
+            set
+            {
+                _bandnameLabel = value;
+                OnPropertyChanged();
+            }
+        }
+        public string DisplayHeartRate => Heartrate != 0 ? $"Last Heartbeat: {Heartrate.ToString()}" : "";
 
         public string DisplayBattery => Battery != 0 ? $"{Battery.ToString()}%" : "";
 
@@ -130,7 +144,7 @@ namespace WindesHeartApp.ViewModels
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new StepsPage()
             {
-                BindingContext = Globals.StepsViewModel
+                BindingContext = Globals.StepsPageViewModel
             });
             IsLoading = false;
         }

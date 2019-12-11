@@ -9,12 +9,12 @@ namespace WindesHeartApp.Resources
 {
     public static class Globals
     {
-        public static HeartratePageViewModel HeartratePageViewModel;
+        public static HeartRatePageViewModel HeartratePageViewModel;
         public static SamplesService SamplesService { get; private set; }
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel HomePageViewModel;
         public static SettingsPageViewModel SettingsPageViewModel;
-        public static StepsPageViewModel StepsViewModel;
+        public static StepsPageViewModel StepsPageViewModel;
         public static SleepPageViewModel SleepPageViewModel;
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
@@ -38,9 +38,9 @@ namespace WindesHeartApp.Resources
             SleepRepository = sleepRepository;
             SettingsRepository = settingsRepository;
             HeartrateRepository = heartrateRepository;
-            HeartratePageViewModel = new HeartratePageViewModel(HeartrateRepository);
+            HeartratePageViewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
-            StepsViewModel = new StepsPageViewModel(StepsRepository);
+            StepsPageViewModel = new StepsPageViewModel(StepsRepository);
             SettingsPageViewModel = new SettingsPageViewModel(SettingsRepository);
             SleepPageViewModel = new SleepPageViewModel(SleepRepository);
             DevicePageViewModel = new DevicePageViewModel();
