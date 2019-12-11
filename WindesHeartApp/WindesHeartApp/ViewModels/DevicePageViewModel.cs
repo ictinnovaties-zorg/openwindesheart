@@ -149,6 +149,8 @@ namespace WindesHeartApp.ViewModels
             Windesheart.StopScanning();
             IsLoading = false;
             StatusText = "";
+            ScanButtonText = "Scan for devices";
+            DeviceList = new ObservableCollection<BLEDevice>();
         }
 
         private void OnDeviceFound(BLEDevice device)

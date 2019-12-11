@@ -91,10 +91,17 @@ namespace WindesHeartApp.ViewModels
 
         public void NextDayBtnClick(object sender, EventArgs args)
         {
-            _dateTime = _dateTime.AddHours(6);
-            _dateTime2 = _dateTime2.AddHours(6);
-            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
-            DrawChart();
+            if (!(_dateTime2.AddHours(6) > DateTime.Now))
+            {
+                _dateTime = _dateTime.AddHours(6);
+                _dateTime2 = _dateTime2.AddHours(6);
+                DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
+                DrawChart();
+            }
+            else
+            {
+                Application.Current.MainPage.DisplayAlert("Heartrates", "Unfortunately, you can't foresee the future.", "Ok");
+            }
         }
 
         private void DrawChart()
