@@ -156,7 +156,7 @@ namespace WindesHeartApp.ViewModels
                         {
                             ValueLabel = heartrate.HeartrateValue.ToString(),
                             Color = SKColors.Black,
-                            TextColor = SKColors.Black
+                            Label = null
                         };
                     }
 

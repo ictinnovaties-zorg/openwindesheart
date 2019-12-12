@@ -11,6 +11,12 @@ namespace WindesHeartApp.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage, IAnimationPage
     {
+        public static Button AboutButton;
+        public static Button DeviceButton;
+        public static Button SleepButton;
+        public static Button StepsButton;
+        public static Button HeartrateButton;
+        public static Button SettingsButton;
         public HomePage()
         {
             InitializeComponent();
@@ -59,12 +65,12 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.65, 100, 100, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
 
             int buttonSize = (int)(Globals.ScreenHeight / 100 * 8.5);
-            PageBuilder.AddButton(absoluteLayout, "About", Globals.HomePageViewModel.AboutButtonClicked, 0.80, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            PageBuilder.AddButton(absoluteLayout, "Device", Globals.HomePageViewModel.DeviceButtonClicked, 0.80, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            PageBuilder.AddButton(absoluteLayout, "Heartrate", Globals.HomePageViewModel.HeartrateButtonClicked, 0.20, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            PageBuilder.AddButton(absoluteLayout, "Steps", Globals.HomePageViewModel.StepsButtonClicked, 0.90, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            PageBuilder.AddButton(absoluteLayout, "Settings", Globals.HomePageViewModel.SettingsButtonClicked, 0.20, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            PageBuilder.AddButton(absoluteLayout, "Sleep", Globals.HomePageViewModel.SleepButtonClicked, 0.10, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            AboutButton = PageBuilder.AddButton(absoluteLayout, "About", Globals.HomePageViewModel.AboutButtonClicked, 0.80, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            DeviceButton = PageBuilder.AddButton(absoluteLayout, "Device", Globals.HomePageViewModel.DeviceButtonClicked, 0.80, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            HeartrateButton = PageBuilder.AddButton(absoluteLayout, "Heartrate", Globals.HomePageViewModel.HeartrateButtonClicked, 0.20, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            StepsButton = PageBuilder.AddButton(absoluteLayout, "Steps", Globals.HomePageViewModel.StepsButtonClicked, 0.90, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            SettingsButton = PageBuilder.AddButton(absoluteLayout, "Settings", Globals.HomePageViewModel.SettingsButtonClicked, 0.20, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            SleepButton = PageBuilder.AddButton(absoluteLayout, "Sleep", Globals.HomePageViewModel.SleepButtonClicked, 0.10, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
 
         }
 

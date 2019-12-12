@@ -32,7 +32,6 @@ namespace WindesHeartApp.ViewModels
 
         public void ToggleWristActivatedClicked(object sender, EventArgs args)
         {
-
             Windesheart.ConnectedDevice.SetActivateOnLiftWrist(_toggle2);
             _toggle2 = !_toggle2;
         }
