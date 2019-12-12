@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
@@ -39,16 +38,16 @@ namespace WindesHeartApp.ViewModels
 
         public async void OnAppearing()
         {
-            Interval = 0;
+            Interval = 5;
             _dateTime2 = DateTime.Now;
-            _dateTime = DateTime.Now.AddHours(-6);
+            _dateTime = DateTime.Now.AddHours(-1);
 
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             var rates = await _heartrateRepository.GetAllAsync();
             if (rates.Count() != 0)
             {
                 _heartrates = rates;
-                InitLabels();
+                DrawLabels();
 
             }
             else
@@ -68,34 +67,40 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        private void InitLabels()
+        private void DrawLabels()
         {
-            var heartrateslast6hours = _heartrates.Where(x => x.DateTime >= _dateTime).Where(x => x.HeartrateValue != 0);
-            if (heartrateslast6hours != null)
+            var heartrates = _heartrates
+                .Where(x => x.DateTime >= _dateTime)
+                .Where(x => x.DateTime <= _dateTime2)
+                .Where(x => x.HeartrateValue != 0);
+            if (heartrates != null)
             {
-                AverageHeartrate = Convert.ToInt32(heartrateslast6hours?.Select(x => x.HeartrateValue).Average());
-                PeakHeartrate = Convert.ToInt32((heartrateslast6hours?.Select(x => x.HeartrateValue).Max()));
+                AverageHeartrate = Convert.ToInt32(heartrates?.Select(x => x.HeartrateValue).Average());
+                PeakHeartrate = Convert.ToInt32((heartrates?.Select(x => x.HeartrateValue).Max()));
             }
 
         }
 
         public void PreviousDayBtnClick(object sender, EventArgs args)
         {
-            _dateTime = _dateTime.AddHours(-6);
-            _dateTime2 = _dateTime2.AddHours(-6);
+            _dateTime = _dateTime.AddHours(-1);
+            _dateTime2 = _dateTime2.AddHours(-1);
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
             DrawChart();
+            DrawLabels();
+
 
         }
 
         public void NextDayBtnClick(object sender, EventArgs args)
         {
-            if (!(_dateTime2.AddHours(6) > DateTime.Now))
+            if (!(_dateTime2.AddHours(1) > DateTime.Now))
             {
-                _dateTime = _dateTime.AddHours(6);
-                _dateTime2 = _dateTime2.AddHours(6);
+                _dateTime = _dateTime.AddHours(1);
+                _dateTime2 = _dateTime2.AddHours(1);
                 DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
                 DrawChart();
+                DrawLabels();
             }
             else
             {
@@ -117,64 +122,47 @@ namespace WindesHeartApp.ViewModels
                 }
 
                 List<Entry> list = new List<Entry>();
-                int dateLabelInterval = 5;
-                //switch (Interval)
-
-                //{
-                //    case 1:
-                //        dateLabelInterval = 5;
-                //        break;
-                //    case 5:
-                //        dateLabelInterval = 10;
-                //        break;
-                //    case 15:
-                //        dateLabelInterval = 10;
-                //        break;
-                //    case 30:
-                //        dateLabelInterval = 10;
-                //        break;
-
-                //}
-
-                var labelcounter = 1;
                 foreach (Heartrate heartrate in heartrates)
                 {
                     Entry entry;
-                    if (labelcounter % dateLabelInterval == 0)
+                    entry = new Entry(heartrate.HeartrateValue)
                     {
-                        entry = new Entry(heartrate.HeartrateValue)
-                        {
-                            ValueLabel = heartrate.HeartrateValue.ToString(),
-                            Color = SKColors.Black,
-                            Label = $"{heartrate.DateTime.Hour.ToString()}:{heartrate.DateTime.Minute.ToString()} ",
-                            TextColor = SKColors.Black
-                        };
-                    }
-                    else
-                    {
-                        entry = new Entry(heartrate.HeartrateValue)
-                        {
-                            ValueLabel = heartrate.HeartrateValue.ToString(),
-                            Color = SKColors.Black,
-                            Label = null
-                        };
-                    }
+                        ValueLabel = heartrate.HeartrateValue.ToString(),
+                        Color = SKColors.Black,
+                        Label = Interval != 1 ? $"{heartrate.DateTime.ToString("HH:mm")}" : "",
+                        TextColor = SKColors.Black
+                    };
 
                     list.Add(entry);
-                    labelcounter++;
                 }
 
-                Chart = new PointChart()
+                if (Interval == 1)
                 {
-                    Entries = list,
-                    BackgroundColor = Globals.PrimaryColor.ToSKColor(),
-                    LabelTextSize = 15,
-                    MaxValue = 150,
-                    MinValue = 30,
-                    PointMode = PointMode.Square,
-                    PointSize = 10
-                };
-
+                    Chart = new PointChart()
+                    {
+                        Entries = list,
+                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
+                        PointMode = PointMode.Circle,
+                        PointSize = 10,
+                        LabelTextSize = 12,
+                        MinValue = 40,
+                        MaxValue = 180
+                    };
+                }
+                else
+                {
+                    Chart = new LineChart()
+                    {
+                        Entries = list,
+                        LineMode = LineMode.Spline,
+                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
+                        PointMode = PointMode.Circle,
+                        PointSize = 10,
+                        LabelTextSize = 12,
+                        MinValue = 40,
+                        MaxValue = 180
+                    };
+                }
             }
         }
 
@@ -217,7 +205,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(PeakHeartrateText));
             }
         }
-        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate of the last 6 hours: {AverageHeartrate.ToString()}" : "";
-        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Peak heartrate of the last 6 hours: {PeakHeartrate.ToString()}" : "";
+        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate: {AverageHeartrate.ToString()}(Failed measurements ignored)" : "";
+        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Peak heartrate: {PeakHeartrate.ToString()}" : "";
     }
 }

@@ -11,7 +11,7 @@ namespace WindesHeartApp.Pages
     public partial class HeartratePage : ContentPage, IAnimationPage
     {
         public Button interval15Button;
-        public Button interval30Button;
+        public Button interval10Button;
         public Button interval5Button;
         public Button intervaldefaultButton;
         public HeartratePage()
@@ -79,20 +79,20 @@ namespace WindesHeartApp.Pages
 
             intervaldefaultButton = PageBuilder.AddButton(absoluteLayout, "1", OnIntervalLabelClicked, 0.50, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             intervaldefaultButton.BorderWidth = 1;
-            intervaldefaultButton.BorderColor = Color.Black;
+            intervaldefaultButton.BorderColor = Color.White;
 
 
             interval5Button = PageBuilder.AddButton(absoluteLayout, "5", OnIntervalLabelClicked, 0.65, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval5Button.BorderWidth = 1;
-            interval5Button.BorderColor = Color.White;
+            interval5Button.BorderColor = Color.Black;
 
-            interval15Button = PageBuilder.AddButton(absoluteLayout, "15", OnIntervalLabelClicked, 0.80, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            interval10Button = PageBuilder.AddButton(absoluteLayout, "10", OnIntervalLabelClicked, 0.80, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            interval10Button.BorderWidth = 1;
+            interval10Button.BorderColor = Color.White;
+
+            interval15Button = PageBuilder.AddButton(absoluteLayout, "15", OnIntervalLabelClicked, 0.95, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             interval15Button.BorderWidth = 1;
             interval15Button.BorderColor = Color.White;
-
-            interval30Button = PageBuilder.AddButton(absoluteLayout, "30", OnIntervalLabelClicked, 0.95, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            interval30Button.BorderWidth = 1;
-            interval30Button.BorderColor = Color.White;
             #endregion
         }
 
@@ -103,7 +103,7 @@ namespace WindesHeartApp.Pages
             intervaldefaultButton.BorderColor = Color.White;
             interval5Button.BorderColor = Color.White;
             interval15Button.BorderColor = Color.White;
-            interval30Button.BorderColor = Color.White;
+            interval10Button.BorderColor = Color.White;
             intervalButton.BorderColor = Color.Black;
 
             var interval = Convert.ToInt32(intervalButton.Text);
