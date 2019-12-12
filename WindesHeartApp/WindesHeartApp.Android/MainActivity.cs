@@ -29,7 +29,7 @@ namespace WindesHeartApp.Droid
 
             Globals.ScreenHeight = (int)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
             Globals.ScreenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
-            LoadApplication(new App(new HeartrateRepository(dbPath), new SleepRepository(dbPath), new StepsRepository(dbPath), new SettingsRepository(dbPath)));
+            LoadApplication(new App(new HeartrateRepository(dbPath), new SleepRepository(dbPath), new StepsRepository(dbPath)));
 
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
