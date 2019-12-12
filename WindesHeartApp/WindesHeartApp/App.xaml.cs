@@ -1,10 +1,8 @@
 ﻿using FormsControls.Base;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
-using System;
 using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
-using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
@@ -16,7 +14,7 @@ namespace WindesHeartApp
         public App(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository, DatabaseContext databaseContext)
         {
             InitializeComponent();
-            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, settingsRepository,databaseContext);
+            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, settingsRepository, databaseContext);
             MainPage = new AnimationNavigationPage(new HomePage());
         }
 
