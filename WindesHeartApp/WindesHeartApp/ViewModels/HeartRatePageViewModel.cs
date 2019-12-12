@@ -4,7 +4,6 @@ using SkiaSharp.Views.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
@@ -108,38 +107,74 @@ namespace WindesHeartApp.ViewModels
         {
             if (_heartrates != null)
             {
-                var heartrates = _heartrates.Where(x => x.DateTime >= _dateTime);
+                var heartrates = _heartrates
+                    .Where(x => x.DateTime >= _dateTime)
+                    .Where(x => x.DateTime <= _dateTime2);
 
-                heartrates = heartrates.Where(x => x.DateTime <= _dateTime2);
-
-                if (Interval != 0)
+                if (Interval != 0 && Interval != 1)
                 {
                     heartrates = heartrates.Where((x, i) => i % Interval == 0);
                 }
 
                 List<Entry> list = new List<Entry>();
+                int dateLabelInterval = 5;
+                //switch (Interval)
+
+                //{
+                //    case 1:
+                //        dateLabelInterval = 5;
+                //        break;
+                //    case 5:
+                //        dateLabelInterval = 10;
+                //        break;
+                //    case 15:
+                //        dateLabelInterval = 10;
+                //        break;
+                //    case 30:
+                //        dateLabelInterval = 10;
+                //        break;
+
+                //}
+
+                var labelcounter = 1;
                 foreach (Heartrate heartrate in heartrates)
                 {
-                    var entry = new Entry(heartrate.HeartrateValue)
+                    Entry entry;
+                    if (labelcounter % dateLabelInterval == 0)
                     {
-                        ValueLabel = heartrate.HeartrateValue.ToString(),
-                        Color = SKColors.Black,
-                        Label = $"{heartrate.DateTime.ToString(CultureInfo.InvariantCulture)} ",
-                        TextColor = SKColors.Black
-                    };
-                    list.Add(entry);
-                    Chart = new PointChart()
+                        entry = new Entry(heartrate.HeartrateValue)
+                        {
+                            ValueLabel = heartrate.HeartrateValue.ToString(),
+                            Color = SKColors.Black,
+                            Label = $"{heartrate.DateTime.Hour.ToString()}:{heartrate.DateTime.Minute.ToString()} ",
+                            TextColor = SKColors.Black
+                        };
+                    }
+                    else
                     {
-                        Entries = list,
-                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
-                        LabelTextSize = 15,
-                        MaxValue = 150,
-                        MinValue = 30,
-                        PointMode = PointMode.Square,
-                        PointSize = 10
-                    };
+                        entry = new Entry(heartrate.HeartrateValue)
+                        {
+                            ValueLabel = heartrate.HeartrateValue.ToString(),
+                            Color = SKColors.Black,
+                            TextColor = SKColors.Black
+                        };
+                    }
 
+                    list.Add(entry);
+                    labelcounter++;
                 }
+
+                Chart = new PointChart()
+                {
+                    Entries = list,
+                    BackgroundColor = Globals.PrimaryColor.ToSKColor(),
+                    LabelTextSize = 15,
+                    MaxValue = 150,
+                    MinValue = 30,
+                    PointMode = PointMode.Square,
+                    PointSize = 10
+                };
+
             }
         }
 
