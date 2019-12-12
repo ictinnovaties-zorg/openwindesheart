@@ -31,7 +31,11 @@ namespace WindesHeartApp.Services
 
         public async void StartFetching()
         {
-            Device.BeginInvokeOnMainThread(delegate { Globals.HomePageViewModel.IsLoading = true; });
+            Device.BeginInvokeOnMainThread(delegate
+            {
+                Globals.HomePageViewModel.IsLoading = true;
+                Globals.HomePageViewModel.ToggleEnableButtons();
+            });
             var startDate = await GetLastAddedDateTime();
             Windesheart.ConnectedDevice.FetchData(startDate.AddMinutes(1), FillDatabase);
 
@@ -41,7 +45,7 @@ namespace WindesHeartApp.Services
         {
 
             Debug.WriteLine("Filling DB with samples");
-            
+
 
             foreach (var sample in samples)
             {
@@ -60,7 +64,11 @@ namespace WindesHeartApp.Services
             _stepsRepository.SaveChangesAsync();
             _sleepRepository.SaveChangesAsync();
             Debug.WriteLine("Fetched all samples");
-            Device.BeginInvokeOnMainThread(delegate { Globals.HomePageViewModel.IsLoading = false; });
+            Device.BeginInvokeOnMainThread(delegate
+            {
+                Globals.HomePageViewModel.IsLoading = false;
+                Globals.HomePageViewModel.ToggleEnableButtons();
+            });
         }
 
         private async Task<DateTime> GetLastAddedDateTime()

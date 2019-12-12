@@ -144,7 +144,6 @@ namespace WindesHeartApp.ViewModels
                         BackgroundColor = Globals.PrimaryColor.ToSKColor(),
                         PointMode = PointMode.Circle,
                         PointSize = 10,
-                        LabelTextSize = 12,
                         MinValue = 40,
                         MaxValue = 180
                     };
@@ -158,7 +157,7 @@ namespace WindesHeartApp.ViewModels
                         BackgroundColor = Globals.PrimaryColor.ToSKColor(),
                         PointMode = PointMode.Circle,
                         PointSize = 10,
-                        LabelTextSize = 12,
+                        LabelTextSize = 15,
                         MinValue = 40,
                         MaxValue = 180
                     };
