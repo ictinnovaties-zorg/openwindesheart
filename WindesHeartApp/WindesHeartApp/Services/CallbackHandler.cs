@@ -45,7 +45,8 @@ namespace WindesHeartApp.Services
                 Windesheart.ConnectedDevice.SetActivateOnLiftWrist(true);
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
                 Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnectCallBack);
-                Windesheart.ConnectedDevice.SetFitnessGoal(10000);
+                Windesheart.ConnectedDevice.EnableFitnessGoalNotification(true);
+                Windesheart.ConnectedDevice.SetFitnessGoal(5000);
                 Globals.DevicePageViewModel.StatusText = "Connected";
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
                 Globals.DevicePageViewModel.IsLoading = false;

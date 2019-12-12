@@ -80,7 +80,19 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             Trace.WriteLine(CommandBytes.Length);
 
             await BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic8UserInfo).Write(CommandBytes);
-    }
+        }
+
+        public async void EnableStepGoalNotification(bool enable)
+        {
+            if (enable)
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableGoalNotification);
+            }
+            else
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableGoalNotification);
+            }
+        }
 
         /// <summary>
         /// Set permanent activate on wrist lift. true for enable. false for disable

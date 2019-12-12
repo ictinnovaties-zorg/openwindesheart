@@ -45,6 +45,8 @@ namespace WindesHeartSDK
         public abstract void Connect(Action<ConnectionResult> connectCallback);
         public abstract void Disconnect(bool rememberDevice = true);
 
+        public abstract void EnableFitnessGoalNotification(bool enable);
+
         public bool isConnected()
         {
             if(Device.Status == ConnectionStatus.Connected)
