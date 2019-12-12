@@ -19,7 +19,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
         private DateTime _firstTimestamp;
         private DateTime _lastTimestamp;
-        private int _pkg = 0;
+        private int _samplenumber = 0;
 
         private IDisposable _charUnknownSub;
         private IDisposable _charActivitySub;
@@ -51,14 +51,14 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <param name="date"></param>
         public async Task InitiateFetching(DateTime date)
         {
-            _pkg = 0;
+            _samplenumber = 0;
             //Dispose all DIsposables to prevent double data
             _charActivitySub?.Dispose();
             _charUnknownSub?.Dispose();
 
             // Subscribe to the unknown and activity characteristics
-            _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(handleUnknownChar);
-            _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(handleActivityChar);
+            _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(HandleUnknownChar);
+            _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(HandleActivityChar);
 
 
             // Write the date and time from which to receive samples to the Mi Band
@@ -88,7 +88,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// Called when recieving MetaData
         /// </summary>
         /// <param name="result"></param>
-        public async void handleUnknownChar(CharacteristicGattResult result)
+        public async void HandleUnknownChar(CharacteristicGattResult result)
         {
             // Create an empty byte array and copy the response type to it
             byte[] responseByte = new byte[3];
@@ -154,8 +154,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// Called when recieving samples
         /// </summary>
         /// <param name="result"></param>
-        private void handleActivityChar(CharacteristicGattResult result)
+        private void HandleActivityChar(CharacteristicGattResult result)
         {
+            // Each sample is made up from 4 bytes. The first byte represents the status.
             if (result.Data.Length % 4 != 1)
             {
                 if (_lastTimestamp > DateTime.Now.AddMinutes(-1))
@@ -167,23 +168,24 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             }
             else
             {
-                var LocalPkg = _pkg; // ??
-                _pkg++;
+                var samplecount = _samplenumber;
+                _samplenumber++;
                 var i = 1;
                 while (i < result.Data.Length)
                 {
-                    int timeIndex = (LocalPkg) * 4 + (i - 1) / 4;
+                    int timeIndex = (samplecount) * 4 + (i - 1) / 4;
                     var timeStamp = _firstTimestamp.AddMinutes(timeIndex);
                     _lastTimestamp = timeStamp;
 
                     // Create a sample from the recieved bytes
-                    var category = result.Data[i] & 0xff; 
-                    var intensity = result.Data[i + 1] & 0xff; 
+                    byte[] rawdata = new byte[] { result.Data[i], result.Data[i + 1], result.Data[i + 2], result.Data[i + 3]};
+                    var category = result.Data[i] & 0xff;
+                    var intensity = result.Data[i + 1] & 0xff;
                     var steps = result.Data[i + 2] & 0xff;
                     var heartrate = result.Data[i + 3];
 
                     // Add the sample to the sample list
-                    _samples.Add(new ActivitySample(timeStamp, category, intensity, steps, heartrate));
+                    _samples.Add(new ActivitySample(timeStamp, category, intensity, steps, heartrate, rawdata));
 
                     i += 4;
 
@@ -191,7 +193,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     d.AddSeconds(-d.Second);
                     d.AddMilliseconds(-d.Millisecond);
 
-
+                    // Make sure we aren't getting samples from the future
                     if (timeStamp == d)
                     {
                         Trace.WriteLine("Done Fetching");

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WindesHeartApp.Pages;
@@ -16,29 +17,24 @@ namespace WindesHeartApp.ViewModels
         private int _heartrate;
         private string _batteryImage = "";
         private bool _isLoading;
+        public bool toggle;
+        private string _bandnameLabel;
         public event PropertyChangedEventHandler PropertyChanged;
-        public Command AboutButtonCommand { get; }
-        public Command SleepButtonCommand { get; }
-        public Command StepsButtonCommand { get; }
-        public Command SettingsButtonCommand { get; }
-        public Command HeartrateButtonCommand { get; }
-        public Command DeviceButtonCommand { get; }
 
         public HomePageViewModel()
         {
-            AboutButtonCommand = new Command(AboutButtonClicked);
-            StepsButtonCommand = new Command(StepsButtonClicked);
-            SleepButtonCommand = new Command(SleepButtonClicked);
-            SettingsButtonCommand = new Command(SettingsButtonClicked);
-            HeartrateButtonCommand = new Command(HeartrateButtonClicked);
-            DeviceButtonCommand = new Command(DeviceButtonClicked);
             if (Windesheart.ConnectedDevice != null)
+            {
                 ReadCurrentBattery();
+                BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+            }
 
+            toggle = false;
         }
 
         public async Task ReadCurrentBattery()
         {
+            //catch!!
             var battery = await Windesheart.ConnectedDevice.GetBattery();
             UpdateBattery(battery);
         }
@@ -116,66 +112,106 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(DisplayHeartRate));
             }
         }
-        public string DisplayHeartRate => Heartrate != 0 ? $"Your Last heartbeat was: {Heartrate.ToString()}" : "";
+
+        public string BandNameLabel
+        {
+            get => _bandnameLabel;
+            set
+            {
+                _bandnameLabel = value;
+                OnPropertyChanged();
+            }
+        }
+        public string DisplayHeartRate => Heartrate != 0 ? $"Last Heartbeat: {Heartrate.ToString()}" : "";
 
         public string DisplayBattery => Battery != 0 ? $"{Battery.ToString()}%" : "";
 
-        private async void AboutButtonClicked()
+        public async void AboutButtonClicked(object sender, EventArgs args)
         {
+            ToggleEnableButtons();
+
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new AboutPage());
             IsLoading = false;
+            ToggleEnableButtons();
+
         }
-        private async void SettingsButtonClicked()
+        public async void SettingsButtonClicked(object sender, EventArgs args)
         {
+            ToggleEnableButtons();
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SettingsPage()
             {
-                BindingContext = Globals.settingspageviewModel
+                BindingContext = Globals.SettingsPageViewModel
             });
             IsLoading = false;
+            ToggleEnableButtons();
         }
 
-        private async void StepsButtonClicked()
+        public async void StepsButtonClicked(object sender, EventArgs args)
         {
+            ToggleEnableButtons();
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new StepsPage()
             {
-                BindingContext = Globals.StepsViewModel
+                BindingContext = Globals.StepsPageViewModel
             });
             IsLoading = false;
+            ToggleEnableButtons();
         }
 
-        private async void HeartrateButtonClicked()
+        public async void HeartrateButtonClicked(object sender, EventArgs args)
         {
+            ToggleEnableButtons();
             IsLoading = true;
-
             await Application.Current.MainPage.Navigation.PushAsync(new HeartratePage()
             {
-                BindingContext = Globals.heartrateviewModel
+                BindingContext = Globals.HeartratePageViewModel
             });
             IsLoading = false;
+            ToggleEnableButtons();
+
+
         }
 
-        private async void SleepButtonClicked()
+        public async void SleepButtonClicked(object sender, EventArgs args)
         {
+            ToggleEnableButtons();
+
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SleepPage()
             {
-                BindingContext = Globals.heartrateviewModel
+                BindingContext = Globals.SleepPageViewModel
             });
             IsLoading = false;
+            ToggleEnableButtons();
+
         }
 
-        private async void DeviceButtonClicked()
+        public async void DeviceButtonClicked(object sender, EventArgs args)
         {
+            ToggleEnableButtons();
+
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new DevicePage()
             {
                 BindingContext = Globals.DevicePageViewModel
             });
             IsLoading = false;
+            ToggleEnableButtons();
 
+
+        }
+
+        public void ToggleEnableButtons()
+        {
+            HomePage.SleepButton.IsEnabled = toggle;
+            HomePage.AboutButton.IsEnabled = toggle;
+            HomePage.SettingsButton.IsEnabled = toggle;
+            HomePage.StepsButton.IsEnabled = toggle;
+            HomePage.HeartrateButton.IsEnabled = toggle;
+            HomePage.DeviceButton.IsEnabled = toggle;
+            toggle = !toggle;
         }
     }
 }

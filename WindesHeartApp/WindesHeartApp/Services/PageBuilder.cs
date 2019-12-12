@@ -38,7 +38,7 @@ namespace WindesHeartApp.Pages
                 NumberOfTapsRequired = 1,
                 Command = new Command(execute: () => { ReturnButton_Clicked(sender, EventArgs.Empty); })
             });
-            AbsoluteLayout.SetLayoutBounds(returnGrid, new Rectangle(0.95, 0.95, Globals.ScreenHeight / 100 * 8, Globals.ScreenHeight / 100 * 8));
+            AbsoluteLayout.SetLayoutBounds(returnGrid, new Rectangle(0.95, 0.95, Globals.ScreenHeight / 100 * 8.5, Globals.ScreenHeight / 100 * 8.5));
             AbsoluteLayout.SetLayoutFlags(returnGrid, AbsoluteLayoutFlags.PositionProportional);
 
             ImageButton returnButton = new ImageButton { Source = "GoBack.png", BackgroundColor = Color.Transparent };
@@ -86,7 +86,7 @@ namespace WindesHeartApp.Pages
             return label;
         }
 
-        public static Button AddButton(AbsoluteLayout absoluteLayout, string text, string bindingPath, double x, double y, double width, double height, int cornerradius, int fontsize, AbsoluteLayoutFlags flags, Color backgroundColor)
+        public static Button AddButton(AbsoluteLayout absoluteLayout, string text, EventHandler onclick, double x, double y, double width, double height, int cornerradius, int fontsize, AbsoluteLayoutFlags flags, Color backgroundColor)
         {
             Button button = new Button() { Text = text };
             if (fontsize != 0)
@@ -94,7 +94,7 @@ namespace WindesHeartApp.Pages
             button.BackgroundColor = backgroundColor;
             if (cornerradius != 0)
                 button.CornerRadius = cornerradius;
-            button.SetBinding(Button.CommandProperty, new Binding() { Path = bindingPath });
+            button.Clicked += onclick;
             AbsoluteLayout.SetLayoutFlags(button, flags);
             AbsoluteLayout.SetLayoutBounds(button, new Rectangle(x, y, width, height));
             absoluteLayout.Children.Add(button);

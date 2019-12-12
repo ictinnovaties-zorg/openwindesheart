@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item>
+    <color android:color="#96d1ff">#96d1ff</color>
+  </item>
+  <item>
+    <bitmap
+      android:src="@drawable/Windesheart_Splash"
+      android:tileMode="disabled"
+      android:gravity="center"/>
+  </item>
+</layer-list> 

@@ -1,11 +1,11 @@
 ﻿using Microcharts;
+using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
@@ -16,120 +16,163 @@ namespace WindesHeartApp.ViewModels
 {
     public class HeartRatePageViewModel : INotifyPropertyChanged
     {
-        private int _heartrate;
         private readonly IHeartrateRepository _heartrateRepository;
         private int _averageHeartrate;
-        public int Interval;
         private int _peakHeartrate;
         public DateTime _dateTime;
         private Chart _chart;
+        private IEnumerable<Heartrate> _heartrates;
+        private string _daylabelText;
+        private DateTime _dateTime2;
         public event PropertyChangedEventHandler PropertyChanged;
-        public Command NextDayBinding { get; set; }
-        public Command PreviousDayBinding { get; set; }
-
-        public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
-        {
-            _heartrateRepository = heartrateRepository;
-            NextDayBinding = new Command(NextDayBtnClick);
-            PreviousDayBinding = new Command(PreviousDayBtnClick);
-        }
-
-        private async void PreviousDayBtnClick(object obj)
-        {
-            _dateTime = _dateTime.AddHours(-24);
-            var heartrates = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime > _dateTime);
-            if (heartrates != null)
-            {
-                var heartratesprevious24hours = from a in heartrates
-                                                where a.DateTime < _dateTime.AddHours(24)
-                                                select a;
-                //checks for null data
-
-                foreach (Heartrate heartrate in heartratesprevious24hours)
-                {
-                    List<Entry> list = new List<Entry>();
-                    var entry = new Entry(heartrate.HeartrateValue);
-                    entry.ValueLabel = heartrate.HeartrateValue.ToString();
-                    entry.Color = Globals.PrimaryColor.ToSKColor();
-                    list.Add(entry);
-
-                    Chart = new PointChart()
-                    {
-                        Entries = list
-                    };
-
-                }
-            }
-        }
-
-        private async void NextDayBtnClick(object obj)
-        {
-            //checks for null data
-            _dateTime = _dateTime.AddHours(24);
-            var heartrates = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime > _dateTime);
-            if (heartrates != null)
-            {
-                var heartratesprevious24hours = from a in heartrates
-                                                where a.DateTime < _dateTime.AddHours(24)
-                                                select a;
-
-                foreach (Heartrate heartrate in heartratesprevious24hours)
-                {
-                    List<Entry> list = new List<Entry>();
-                    var entry = new Entry(heartrate.HeartrateValue);
-                    entry.ValueLabel = heartrate.HeartrateValue.ToString();
-                    entry.Color = Globals.PrimaryColor.ToSKColor();
-                    list.Add(entry);
-
-                    Chart = new PointChart()
-                    {
-                        Entries = list
-                    };
-
-                }
-            }
-        }
-
-        public async Task InitLabels()
-        {
-            var heartrateslast24horus = await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime >= DateTime.Now.AddHours(-24));
-            if (heartrateslast24horus != null)
-            {
-                AverageHeartrate = Convert.ToInt32(heartrateslast24horus?.Select(x => x.HeartrateValue).Average());
-                PeakHeartrate = Convert.ToInt32((heartrateslast24horus?.Select(x => x.HeartrateValue).Max()));
-            }
-
-        }
 
         public void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public async Task InitChart()
+        public HeartRatePageViewModel(IHeartrateRepository heartrateRepository)
         {
+            _heartrateRepository = heartrateRepository;
+        }
 
-            var heartrates =
-                await _heartrateRepository.HeartratesByQueryAsync(x => x.DateTime == DateTime.Now.AddHours(-24));
-            List<Entry> list = new List<Entry>();
+        public async void OnAppearing()
+        {
+            Interval = 5;
+            _dateTime2 = DateTime.Now;
+            _dateTime = DateTime.Now.AddHours(-1);
 
+            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
+            var rates = await _heartrateRepository.GetAllAsync();
+            if (rates.Count() != 0)
+            {
+                _heartrates = rates;
+                DrawLabels();
+
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Heartrates", "Unfortunately, no heartrate data was found.", "Ok");
+            }
+            DrawChart();
+        }
+
+        public string DayLabelText
+        {
+            get { return _daylabelText; }
+            set
+            {
+                _daylabelText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private void DrawLabels()
+        {
+            var heartrates = _heartrates
+                .Where(x => x.DateTime >= _dateTime)
+                .Where(x => x.DateTime <= _dateTime2)
+                .Where(x => x.HeartrateValue != 0);
             if (heartrates != null)
             {
+                AverageHeartrate = Convert.ToInt32(heartrates?.Select(x => x.HeartrateValue).Average());
+                PeakHeartrate = Convert.ToInt32((heartrates?.Select(x => x.HeartrateValue).Max()));
+            }
+
+        }
+
+        public void PreviousDayBtnClick(object sender, EventArgs args)
+        {
+            _dateTime = _dateTime.AddHours(-1);
+            _dateTime2 = _dateTime2.AddHours(-1);
+            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
+            DrawChart();
+            DrawLabels();
+
+
+        }
+
+        public void NextDayBtnClick(object sender, EventArgs args)
+        {
+            if (!(_dateTime2.AddHours(1) > DateTime.Now))
+            {
+                _dateTime = _dateTime.AddHours(1);
+                _dateTime2 = _dateTime2.AddHours(1);
+                DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
+                DrawChart();
+                DrawLabels();
+            }
+            else
+            {
+                Application.Current.MainPage.DisplayAlert("Heartrates", "Unfortunately, you can't foresee the future.", "Ok");
+            }
+        }
+
+        private void DrawChart()
+        {
+            if (_heartrates != null)
+            {
+                var heartrates = _heartrates
+                    .Where(x => x.DateTime >= _dateTime)
+                    .Where(x => x.DateTime <= _dateTime2);
+
+                if (Interval != 0 && Interval != 1)
+                {
+                    heartrates = heartrates.Where((x, i) => i % Interval == 0);
+                }
+
+                List<Entry> list = new List<Entry>();
                 foreach (Heartrate heartrate in heartrates)
                 {
-                    var entry = new Entry(heartrate.HeartrateValue);
-                    entry.ValueLabel = heartrate.HeartrateValue.ToString();
-                    entry.Color = Globals.PrimaryColor.ToSKColor();
-                    list.Add(entry);
-
-                    Chart = new PointChart()
+                    Entry entry;
+                    entry = new Entry(heartrate.HeartrateValue)
                     {
-                        Entries = list
+                        ValueLabel = heartrate.HeartrateValue.ToString(),
+                        Color = SKColors.Black,
+                        Label = Interval != 1 ? $"{heartrate.DateTime.ToString("HH:mm")}" : "",
+                        TextColor = SKColors.Black
                     };
 
+                    list.Add(entry);
+                }
+
+                if (Interval == 1)
+                {
+                    Chart = new PointChart()
+                    {
+                        Entries = list,
+                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
+                        PointMode = PointMode.Circle,
+                        PointSize = 10,
+                        LabelTextSize = 12,
+                        MinValue = 40,
+                        MaxValue = 180
+                    };
+                }
+                else
+                {
+                    Chart = new LineChart()
+                    {
+                        Entries = list,
+                        LineMode = LineMode.Spline,
+                        BackgroundColor = Globals.PrimaryColor.ToSKColor(),
+                        PointMode = PointMode.Circle,
+                        PointSize = 10,
+                        LabelTextSize = 12,
+                        MinValue = 40,
+                        MaxValue = 180
+                    };
                 }
             }
         }
+
+        public void UpdateInterval(int interval)
+        {
+            Interval = interval;
+            DrawChart();
+        }
+
+        public int Interval { get; set; }
 
         public Chart Chart
         {
@@ -137,16 +180,6 @@ namespace WindesHeartApp.ViewModels
             set
             {
                 _chart = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int Heartrate
-        {
-            get => _heartrate;
-            set
-            {
-                _heartrate = value;
                 OnPropertyChanged();
             }
         }
@@ -172,41 +205,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged(nameof(PeakHeartrateText));
             }
         }
-
-        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate of last 12 hours: {AverageHeartrate.ToString()}" : "";
-
-        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Your peak heartrate of the last 12 hours: {PeakHeartrate.ToString()}" : "";
-
-        public async void UpdateInterval(int interval)
-        {
-            Interval = interval;
-            var heartrates = await _heartrateRepository.GetAllAsync();
-            if (heartrates.Count() != 0)
-            {
-                var list = heartrates.ToList();
-                var count = list.Count;
-                var result = new List<Entry>();
-                for (int i = 0; i < count; i++)
-                {
-                    if ((i % Interval) == 0)
-                    {
-                        var heartrate = list[i];
-                        result.Add(new Entry(heartrate.HeartrateValue)
-                        {
-                            TextColor = Globals.PrimaryColor.ToSKColor(),
-                            ValueLabel = heartrate.HeartrateValue.ToString()
-                        });
-                    }
-                }
-
-                Chart = new PointChart()
-                {
-                    Entries = result
-                };
-            }
-        }
+        public string AverageLabelText => AverageHeartrate != 0 ? $"Average heartrate: {AverageHeartrate.ToString()}(Failed measurements ignored)" : "";
+        public string PeakHeartrateText => PeakHeartrate != 0 ? $"Peak heartrate: {PeakHeartrate.ToString()}" : "";
     }
-
-
-
 }

@@ -9,6 +9,9 @@ namespace WindesHeartApp.Data.Interfaces
     {
         Task<IEnumerable<Step>> GetAllAsync();
         Task<bool> AddAsync(Step steps);
+        Task<bool> AddRangeAsync(List<Step> steps);
         void RemoveAll();
+        void SaveChangesAsync();
+
     }
 }

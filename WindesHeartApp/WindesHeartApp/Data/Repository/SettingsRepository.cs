@@ -8,9 +8,9 @@ namespace WindesHeartApp.Data.Repository
     public class SettingsRepository : ISettingsRepository
     {
         private readonly DatabaseContext _databaseContext;
-        public SettingsRepository(string dbPath)
+        public SettingsRepository(DatabaseContext databaseContext)
         {
-            _databaseContext = new DatabaseContext(dbPath);
+            _databaseContext = databaseContext;
         }
         public Task<IEnumerable<string>> GetAllAsync()
         {

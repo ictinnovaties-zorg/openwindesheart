@@ -1,21 +1,40 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
+using WindesHeartSDK;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class SettingsPageViewmodel : INotifyPropertyChanged
+    public class SettingsPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly ISettingsRepository _settingsRepository;
-        public SettingsPageViewmodel(ISettingsRepository settingsRepository)
+        private bool _toggle = true;
+        private bool _toggle2 = true;
+
+        public SettingsPageViewModel(ISettingsRepository settingsRepository)
         {
             _settingsRepository = settingsRepository;
         }
 
-        void OnPropertyChanged([CallerMemberName] string name = "")
+        private void OnPropertyChanged([CallerMemberName] string name = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        public void ToggleDisplayFormatsClicked(object sender, EventArgs args)
+        {
+            Windesheart.ConnectedDevice.SetTimeDisplayFormat(_toggle);
+            Windesheart.ConnectedDevice.SetDateDisplayFormat(_toggle);
+            _toggle = !_toggle;
+        }
+
+        public void ToggleWristActivatedClicked(object sender, EventArgs args)
+        {
+            Windesheart.ConnectedDevice.SetActivateOnLiftWrist(_toggle2);
+            _toggle2 = !_toggle2;
+        }
+
     }
 }

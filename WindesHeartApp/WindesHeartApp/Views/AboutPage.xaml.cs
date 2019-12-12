@@ -1,5 +1,6 @@
 ﻿using FormsControls.Base;
 using System;
+using System.Diagnostics;
 using WindesHeartApp.Resources;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -21,7 +22,6 @@ namespace WindesHeartApp.Pages
             PageBuilder.BuildPageBasics(absoluteLayout, this);
 
             #region define Image 
-
             Grid grid = new Grid();
             AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(0.5, 0, 1, 0.3));
@@ -63,7 +63,7 @@ namespace WindesHeartApp.Pages
             var formattedText = new FormattedString();
             formattedText.Spans.Add(new Span
             {
-                Text = "This app is written by Windesheim Students\nIt's",
+                Text = "This app is written by Windesheim-students.\nIt's",
                 FontSize = Globals.ScreenHeight / 100 * 2.5
             });
             formattedText.Spans.Add(new Span
@@ -81,12 +81,12 @@ namespace WindesHeartApp.Pages
             { Text = " demo", FontAttributes = FontAttributes.Bold, FontSize = Globals.ScreenHeight / 100 * 2.5 });
             formattedText.Spans.Add(new Span
             {
-                Text = " the ",
+                Text = " the open source ",
                 FontSize = Globals.ScreenHeight / 100 * 2.5
             });
             formattedText.Spans.Add(new Span
             {
-                Text = " WindesHeartSDK",
+                Text = "WindesHeartSDK.",
                 FontAttributes = FontAttributes.Bold,
                 FontSize = Globals.ScreenHeight / 100 * 2.5
             });
@@ -132,21 +132,21 @@ namespace WindesHeartApp.Pages
 
         private void LearnmoreButton_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("OPEN GITHUB PAGE?? ");
+            Debug.WriteLine("OPEN GITHUB PAGE?? ");
         }
 
 
 
         private void Logo_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("Logo - Clicked.");
+            Debug.WriteLine("Logo - Clicked.");
             Navigation.PopAsync();
             Vibration.Vibrate(4200);
         }
 
         private void LearnMore_Clicked(object sender, EventArgs e)
         {
-            Console.WriteLine("Learn More - Clicked.");
+            Debug.WriteLine("Learn More - Clicked.");
             Vibration.Vibrate(4200);
         }
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };

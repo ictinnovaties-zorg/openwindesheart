@@ -7,7 +7,6 @@ namespace WindesHeartApp.Data
     {
         public DbSet<Heartrate> Heartrates { get; set; }
         public DbSet<Step> Steps { get; set; }
-
         public DbSet<Sleep> Sleep { get; set; }
 
         private readonly string _databasePath;
@@ -16,17 +15,13 @@ namespace WindesHeartApp.Data
         {
             _databasePath = databasePath;
             //Database.EnsureDeleted();
-
             Database.EnsureCreated();
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite($"Filename={_databasePath}");
         }
-
-
     }
     public static class EntityExtensions
     {
