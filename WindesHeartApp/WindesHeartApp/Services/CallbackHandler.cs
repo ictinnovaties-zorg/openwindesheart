@@ -48,6 +48,7 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.IsLoading = false;
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
                 Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnectCallBack);
+                Windesheart.ConnectedDevice.SetFitnessGoal(10000);
                 Globals.SamplesService.StartFetching();
                 Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)

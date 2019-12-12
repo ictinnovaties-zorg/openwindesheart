@@ -35,6 +35,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Resources
         public static byte[] Byte_DateFormat_dd_MM_YYYY = new byte[] { 0x06, 30, 0x00, Convert.ToByte('d'), Convert.ToByte('d'), Convert.ToByte('/'), Convert.ToByte('M'), Convert.ToByte('M'), Convert.ToByte('/'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y') };
         public static byte[] Byte_DateFormat_MM_dd_YYYY = new byte[] { 0x06, 30, 0x00, Convert.ToByte('M'), Convert.ToByte('M'), Convert.ToByte('/'), Convert.ToByte('d'), Convert.ToByte('d'), Convert.ToByte('/'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y') };
 
+        //User settings
+        public static Guid GuidCharacteristic8UserInfo = new Guid("00000008-0000-3512-2118-0009af100700");
+
         //Battery Guid
         public static Guid GuidCharacteristic6BatteryInfo = new Guid("00000006-0000-3512-2118-0009af100700");
 

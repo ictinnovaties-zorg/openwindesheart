@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Text;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
@@ -60,11 +61,26 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             }
         }
 
+        /// <summary>
+        /// Set the step target on the Mi Band. Max value of 2 bytes (around 16.000)
+        /// </summary>
+        /// <param name="goal"></param>
         public async void SetFitnessGoal(int goal)
         {
-            var fitnessGoal = new byte[] { 0x5, 0, (byte)(goal & 0xff), (byte)(((uint) goal >> 8) & 0xff) };
-            await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(fitnessGoal);
-        }
+            var beginCommand = new byte[] { 0x10, 0x0, 0x0 };
+            var endCommand = new byte[] { 0, 0 };
+            var goalBytes = BitConverter.GetBytes((ushort) goal);
+
+            byte[] CommandBytes = new byte[beginCommand.Length + endCommand.Length + goalBytes.Length];
+
+            Buffer.BlockCopy(beginCommand, 0, CommandBytes, 0, beginCommand.Length);
+            Buffer.BlockCopy(goalBytes, 0, CommandBytes, beginCommand.Length, goalBytes.Length);
+            Buffer.BlockCopy(endCommand, 0, CommandBytes, beginCommand.Length + goalBytes.Length, endCommand.Length);
+
+            Trace.WriteLine(CommandBytes.Length);
+
+            await BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic8UserInfo).Write(CommandBytes);
+    }
 
         /// <summary>
         /// Set permanent activate on wrist lift. true for enable. false for disable
