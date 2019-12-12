@@ -129,7 +129,7 @@ namespace WindesHeartApp.ViewModels
                     {
                         ValueLabel = heartrate.HeartrateValue.ToString(),
                         Color = SKColors.Black,
-                        Label = Interval != 1 ? $"{heartrate.DateTime.ToString("HH:mm")}" : "",
+                        Label = Interval != 1 ? $"{heartrate.DateTime:HH:mm}" : "",
                         TextColor = SKColors.Black
                     };
 
@@ -144,7 +144,6 @@ namespace WindesHeartApp.ViewModels
                         BackgroundColor = Globals.PrimaryColor.ToSKColor(),
                         PointMode = PointMode.Circle,
                         PointSize = 10,
-                        LabelTextSize = 12,
                         MinValue = 40,
                         MaxValue = 180
                     };
@@ -158,7 +157,7 @@ namespace WindesHeartApp.ViewModels
                         BackgroundColor = Globals.PrimaryColor.ToSKColor(),
                         PointMode = PointMode.Circle,
                         PointSize = 10,
-                        LabelTextSize = 12,
+                        LabelTextSize = 20,
                         MinValue = 40,
                         MaxValue = 180
                     };

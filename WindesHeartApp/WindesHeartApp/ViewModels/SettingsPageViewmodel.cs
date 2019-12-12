@@ -10,8 +10,8 @@ namespace WindesHeartApp.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly ISettingsRepository _settingsRepository;
-        private bool _toggle = true;
-        private bool _toggle2 = true;
+        private bool _toggle;
+        private bool _toggle2;
 
         public SettingsPageViewModel(ISettingsRepository settingsRepository)
         {

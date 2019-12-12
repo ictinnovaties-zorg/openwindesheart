@@ -43,14 +43,14 @@ namespace WindesHeartApp.Services
                 Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsUpdated);
                 Windesheart.ConnectedDevice.EnableSleepTracking(true);
                 Windesheart.ConnectedDevice.SetActivateOnLiftWrist(true);
-                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
-                Globals.DevicePageViewModel.StatusText = "Connected";
-                Globals.DevicePageViewModel.IsLoading = false;
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
                 Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnectCallBack);
                 Windesheart.ConnectedDevice.SetFitnessGoal(10000);
-                Globals.SamplesService.StartFetching();
+                Globals.DevicePageViewModel.StatusText = "Connected";
+                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
+                Globals.DevicePageViewModel.IsLoading = false;
                 Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
+                Globals.SamplesService.StartFetching();
                 if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)
                 {
                     if (App.Current.Properties.ContainsKey(_key))
