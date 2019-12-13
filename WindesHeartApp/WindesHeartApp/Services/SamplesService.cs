@@ -1,9 +1,6 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
@@ -31,13 +28,13 @@ namespace WindesHeartApp.Services
             Device.BeginInvokeOnMainThread(delegate
             {
                 Globals.HomePageViewModel.IsLoading = true;
-                Globals.HomePageViewModel.ToggleEnableButtons();
-            });            
+                Globals.HomePageViewModel.EnableDisableButtons(false);
+            });
             var startDate = GetLastAddedDateTime();
             Windesheart.ConnectedDevice.FetchData(startDate, FillDatabase);
 
         }
-        
+
         private void FillDatabase(List<ActivitySample> samples)
         {
             Debug.WriteLine("Filling DB with samples");
@@ -55,13 +52,13 @@ namespace WindesHeartApp.Services
             Device.BeginInvokeOnMainThread(delegate
             {
                 Globals.HomePageViewModel.IsLoading = false;
-                Globals.HomePageViewModel.ToggleEnableButtons();
-            });        
+                Globals.HomePageViewModel.EnableDisableButtons(true);
+            });
         }
 
         private DateTime GetLastAddedDateTime()
         {
-            return _stepsRepository.LastAddedDatetime();           
+            return _stepsRepository.LastAddedDatetime();
         }
 
         private void AddHeartrate(DateTime datetime, ActivitySample sample)
@@ -95,6 +92,6 @@ namespace WindesHeartApp.Services
                     break;
             }
             _sleepRepository.Add(sleep);
-        }       
+        }
     }
 }

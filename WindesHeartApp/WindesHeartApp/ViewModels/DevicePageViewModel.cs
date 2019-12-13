@@ -140,7 +140,7 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        /// <summary> f
+        /// <summary> 
         /// Called when leaving the page
         /// </summary>
         public void OnDisappearing()
@@ -160,6 +160,11 @@ namespace WindesHeartApp.ViewModels
 
         private void DeviceSelected(BLEDevice device)
         {
+            if (device == null)
+            {
+                return;
+            }
+
             try
             {
                 ScanButtonText = "Scan for devices";
@@ -167,7 +172,7 @@ namespace WindesHeartApp.ViewModels
 
                 StatusText = "Connecting...";
                 IsLoading = true;
-                device?.Connect(CallbackHandler.OnConnetionCallBack);
+                device.Connect(CallbackHandler.OnConnetionCallBack);
             }
             catch (Exception e)
             {
