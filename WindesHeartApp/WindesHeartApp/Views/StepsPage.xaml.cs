@@ -98,7 +98,7 @@ namespace WindesHeartApp.Pages
         {
             var culture = CultureInfo.CurrentCulture;
 
-            int fontsize = 14;
+            int fontsize = 8;
             float height = 0.84f;
 
             DateTime today = DateTime.Now;

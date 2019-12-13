@@ -1,7 +1,6 @@
 ﻿using FormsControls.Base;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
-using System;
 using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Data.Repository;

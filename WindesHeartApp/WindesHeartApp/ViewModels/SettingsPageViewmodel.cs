@@ -10,8 +10,8 @@ namespace WindesHeartApp.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly ISettingsRepository _settingsRepository;
-        private bool _toggle = true;
-        private bool _toggle2 = true;
+        private bool _toggle;
+        private bool _toggle2;
 
         public SettingsPageViewModel(ISettingsRepository settingsRepository)
         {
@@ -32,7 +32,6 @@ namespace WindesHeartApp.ViewModels
 
         public void ToggleWristActivatedClicked(object sender, EventArgs args)
         {
-
             Windesheart.ConnectedDevice.SetActivateOnLiftWrist(_toggle2);
             _toggle2 = !_toggle2;
         }

@@ -28,7 +28,11 @@ namespace WindesHeartApp.Services
 
         public void StartFetching()
         {
-            Device.BeginInvokeOnMainThread(delegate { Globals.HomePageViewModel.IsLoading = true; });
+            Device.BeginInvokeOnMainThread(delegate
+            {
+                Globals.HomePageViewModel.IsLoading = true;
+                Globals.HomePageViewModel.ToggleEnableButtons();
+            });            
             var startDate = GetLastAddedDateTime();
             Windesheart.ConnectedDevice.FetchData(startDate, FillDatabase);
 
@@ -48,7 +52,11 @@ namespace WindesHeartApp.Services
             }
             Globals.Database.Instance.Commit();
             Debug.WriteLine("DB filled with samples");
-            Device.BeginInvokeOnMainThread(delegate { Globals.HomePageViewModel.IsLoading = false; });
+            Device.BeginInvokeOnMainThread(delegate
+            {
+                Globals.HomePageViewModel.IsLoading = false;
+                Globals.HomePageViewModel.ToggleEnableButtons();
+            });        
         }
 
         private DateTime GetLastAddedDateTime()

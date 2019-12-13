@@ -40,9 +40,12 @@ namespace WindesHeartSDK
         
         public abstract void OnConnect();
 
+        public abstract void SetFitnessGoal(int goal);
         public abstract void SubscribeToDisconnect(Action<Object> disconnectCallback);
         public abstract void Connect(Action<ConnectionResult> connectCallback);
         public abstract void Disconnect(bool rememberDevice = true);
+
+        public abstract void EnableFitnessGoalNotification(bool enable);
 
         public bool isConnected()
         {
