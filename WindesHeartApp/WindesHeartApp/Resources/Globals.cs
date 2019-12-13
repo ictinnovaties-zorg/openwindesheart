@@ -1,6 +1,6 @@
 ﻿using Plugin.Settings;
 using Plugin.Settings.Abstractions;
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Services;
@@ -13,7 +13,7 @@ namespace WindesHeartApp.Resources
     {
         private static ISettings AppSettings => CrossSettings.Current;
 
-        public static HeartratePageViewModel HeartratePageViewModel;
+        public static HeartRatePageViewModel HeartratePageViewModel;
         public static SamplesService SamplesService { get; private set; }
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel HomePageViewModel;
@@ -31,15 +31,7 @@ namespace WindesHeartApp.Resources
         public static IHeartrateRepository HeartrateRepository { get; set; }
 
         public static DatabaseContext DatabaseContext { get; set; }
-        public static Dictionary<string, Color> ColorDictionary;
         public static Dictionary<string, string> FormatDictionary;
-
-        public static int DailyStepsGoal
-        {
-            get => AppSettings.GetValueOrDefault(nameof(DailyStepsGoal), 10000);
-            set => AppSettings.AddOrUpdateValue(nameof(DailyStepsGoal), value);
-        }
-
         public static Dictionary<string, string> LanguageDictionary;
 
         public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, DatabaseContext databaseContext)
@@ -49,7 +41,7 @@ namespace WindesHeartApp.Resources
             HeartrateRepository = heartrateRepository;
             HeartratePageViewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
-            StepsViewModel = new StepsPageViewModel(StepsRepository);
+            StepsPageViewModel = new StepsPageViewModel(StepsRepository);
             SettingsPageViewModel = new SettingsPageViewModel();
             SleepPageViewModel = new SleepPageViewModel(sleepRepository);
             DevicePageViewModel = new DevicePageViewModel();

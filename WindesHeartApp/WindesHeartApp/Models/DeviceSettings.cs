@@ -1,8 +1,5 @@
 ﻿using Plugin.Settings;
 using Plugin.Settings.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WindesHeartApp.Models
 {
@@ -32,6 +29,12 @@ namespace WindesHeartApp.Models
         {
             get => AppSettings.GetValueOrDefault(nameof(TimeFormat24Hour), true);
             set => AppSettings.AddOrUpdateValue(nameof(TimeFormat24Hour), value);
+        }
+
+        public static int DailyStepsGoal
+        {
+            get => AppSettings.GetValueOrDefault(nameof(DailyStepsGoal), 10000);
+            set => AppSettings.AddOrUpdateValue(nameof(DailyStepsGoal), value);
         }
     }
 }

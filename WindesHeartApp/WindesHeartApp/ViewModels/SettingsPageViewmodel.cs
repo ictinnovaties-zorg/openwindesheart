@@ -2,7 +2,6 @@
 using Plugin.Settings.Abstractions;
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
@@ -19,6 +18,7 @@ namespace WindesHeartApp.ViewModels
         private int _languageIndex = 0;
         private int _hourIndex = 0;
         private int _dateIndex = 0;
+        private int _stepIndex = 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -44,7 +44,7 @@ namespace WindesHeartApp.ViewModels
 
             for (int i = 0; i < SettingsPage.StepsPicker.Items.Count; i++)
             {
-                if (Globals.DailyStepsGoal.ToString().Equals(SettingsPage.StepsPicker.Items[i]))
+                if (DeviceSettings.DailyStepsGoal.ToString().Equals(SettingsPage.StepsPicker.Items[i]))
                 {
                     SettingsPage.StepsPicker.SelectedIndex = i;
                 }
@@ -88,7 +88,7 @@ namespace WindesHeartApp.ViewModels
                 }
             }
         }
-        
+
         public void HourIndexChanged(object sender, EventArgs e)
         {
             Picker picker = sender as Picker;
@@ -134,7 +134,7 @@ namespace WindesHeartApp.ViewModels
                     //Set picker index back to old value
                     picker.SelectedIndex = _languageIndex;
                     Console.WriteLine("Something went wrong!");
-                }      
+                }
             }
         }
 
@@ -143,8 +143,20 @@ namespace WindesHeartApp.ViewModels
             Picker picker = sender as Picker;
             if (picker.SelectedIndex != -1)
             {
-                string steps = picker.Items[picker.SelectedIndex];
-                Globals.DailyStepsGoal = int.Parse(steps);
+                int steps = int.Parse(picker.Items[picker.SelectedIndex]);
+                try
+                {
+                    //Set on device
+                    Windesheart.ConnectedDevice?.SetFitnessGoal(steps);
+                    DeviceSettings.DailyStepsGoal = steps;
+                    _stepIndex = picker.SelectedIndex;
+                }
+                catch (Exception)
+                {
+                    //Set picker index back to old value
+                    picker.SelectedIndex = _stepIndex;
+                    Console.WriteLine("Something went wrong!");
+                }
             }
         }
 
@@ -152,7 +164,7 @@ namespace WindesHeartApp.ViewModels
         {
             Switch sw = sender as Switch;
             bool toggled = sw.IsToggled;
-            
+
             try
             {
                 Windesheart.ConnectedDevice?.SetActivateOnLiftWrist(toggled);

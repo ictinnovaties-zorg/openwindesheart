@@ -14,7 +14,7 @@ namespace WindesHeartApp.Services
         private static readonly string _key = "LastConnectedDeviceGuid";
 
         //OnHeartrateChange/Measurement
-        public static void ChangeHeartRate(Heartrate heartrate)
+        public static void ChangeHeartRate(WindesHeartSDK.Models.Heartrate heartrate)
         {
             if (heartrate.HeartrateValue == 0)
                 return;
@@ -57,7 +57,7 @@ namespace WindesHeartApp.Services
                 App.Current.Properties.TryGetValue(_key, out object storedKey);
 
                 //If a previous key is stored
-                if(storedKey != null && storedKey is Guid)
+                if (storedKey != null && storedKey is Guid)
                 {
                     //If connected device key is not the same as stored one
                     if (!storedKey.Equals(Windesheart.ConnectedDevice.Device.Uuid))
@@ -112,7 +112,8 @@ namespace WindesHeartApp.Services
 
                 Windesheart.ConnectedDevice?.SetActivateOnLiftWrist(wristRaise);
                 DeviceSettings.WristRaiseDisplay = wristRaise;
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
