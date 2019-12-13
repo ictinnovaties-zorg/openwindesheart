@@ -26,7 +26,6 @@ namespace WindesHeartApp.Pages
             Globals.HeartratePageViewModel.OnAppearing();
         }
 
-
         private void BuildPage()
         {
             absoluteLayout = new AbsoluteLayout();
@@ -124,9 +123,10 @@ namespace WindesHeartApp.Pages
             {
                 Source = "Refresh.png",
                 HorizontalOptions = LayoutOptions.Start,
-                HeightRequest = Globals.ScreenHeight / 100 * 4.5,
-                BackgroundColor = Globals.SecondaryColor
+                HeightRequest = Globals.ScreenHeight / 100 * 5.0,
+                BackgroundColor = Color.Transparent,
             };
+            RefreshButton.Margin = new Thickness(2, 0, 0, 0);
             RefreshButton.Clicked += RefreshButtonClicked;
             grid.Children.Add(frame);
             grid.Children.Add(RefreshButton); ;
@@ -140,7 +140,6 @@ namespace WindesHeartApp.Pages
             });
             absoluteLayout.Children.Add(grid);
             #endregion
-
         }
 
         private async void RefreshButtonClicked(object sender, EventArgs e)

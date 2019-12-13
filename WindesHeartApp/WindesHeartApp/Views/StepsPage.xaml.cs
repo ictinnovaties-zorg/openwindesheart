@@ -16,9 +16,6 @@ namespace WindesHeartApp.Pages
         public static Label CurrentDayLabel;
         public static Label KilometersLabel;
         public static Label KcalLabel;
-
-        public static Button ToggleRealTimeStepsButton;
-
         public static Button Day1Button;
         public static Button Day2Button;
         public static Button Day3Button;
@@ -26,7 +23,6 @@ namespace WindesHeartApp.Pages
         public static Button Day5Button;
         public static Button Day6Button;
         public static Button TodayButton;
-
         public StepsPage()
         {
             InitializeComponent();
@@ -120,7 +116,7 @@ namespace WindesHeartApp.Pages
             {
                 Source = "Refresh.png",
                 HorizontalOptions = LayoutOptions.Start,
-                HeightRequest = Globals.ScreenHeight / 100 * 4.5,
+                HeightRequest = Globals.ScreenHeight / 100 * 5.0,
                 BackgroundColor = Globals.SecondaryColor
             };
             RefreshButton.Clicked += RefreshButtonClicked;
