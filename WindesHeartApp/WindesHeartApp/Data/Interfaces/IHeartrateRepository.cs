@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WindesHeartApp.Models;
 
 namespace WindesHeartApp.Data.Interfaces
@@ -10,6 +8,5 @@ namespace WindesHeartApp.Data.Interfaces
         IEnumerable<Heartrate> GetAll();
         void Add(Heartrate heartrate);
         void RemoveAll();
-        IEnumerable<Heartrate> HeartratesByQuery(Func<Heartrate, bool> predicate);
     }
 }

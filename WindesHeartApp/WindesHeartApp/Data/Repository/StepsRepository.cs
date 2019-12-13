@@ -1,9 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 
@@ -30,15 +28,10 @@ namespace WindesHeartApp.Data.Repository
             return _database.Instance.Table<Step>().OrderBy(x => x.DateTime).ToList();
         }
 
-        public IEnumerable<Step> HeartratesByQuery(Func<Step, bool> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
         public DateTime LastAddedDatetime()
         {
             var steps = this.GetAll();
-            if(steps.Count() > 0)
+            if (steps.Count() > 0)
             {
                 return steps.Last().DateTime.AddMinutes(1);
             }

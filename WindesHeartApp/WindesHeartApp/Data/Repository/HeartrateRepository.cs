@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 
@@ -26,11 +22,6 @@ namespace WindesHeartApp.Data.Repository
         public IEnumerable<Heartrate> GetAll()
         {
             return _database.Instance.Table<Heartrate>().OrderBy(x => x.DateTime).ToList();
-        }
-
-        public IEnumerable<Heartrate> HeartratesByQuery(Func<Heartrate, bool> predicate)
-        {
-            throw new NotImplementedException();
         }
 
         public void RemoveAll()
