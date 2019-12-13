@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,82 +11,38 @@ namespace WindesHeartApp.Data.Repository
 {
     public class SleepRepository : ISleepRepository
     {
-        private readonly DatabaseContext _databaseContext;
-        public SleepRepository(DatabaseContext databaseContext)
+        private readonly Database _database;
+        public SleepRepository(Database database)
         {
-            _databaseContext = databaseContext;
+            _database = database;
         }
 
-        public async Task<IEnumerable<Sleep>> GetAllAsync()
+        public void Add(Sleep sleep)
         {
-            try
-            {
-                var sleep = await _databaseContext.Sleep.ToListAsync();
-                return sleep.OrderBy(x => x.DateTime).ToList();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return null;
-            }
+            var query = "INSERT INTO Sleep(DateTime, SleepType) VALUES(?,?)";
+            var command = _database.Instance.CreateCommand(query, new object[] { sleep.DateTime, sleep.SleepType });
+            command.ExecuteNonQuery();
         }
 
-        public async Task<bool> AddAsync(Sleep sleep)
+        public IEnumerable<Sleep> GetAll()
         {
-            try
-            {
-                var tracking = await _databaseContext.Sleep.AddAsync(sleep);
-                return tracking.State == EntityState.Added;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return false;
-            }
+            return _database.Instance.Table<Sleep>().OrderBy(x => x.DateTime).ToList();
         }
 
-        public async Task<bool> AddRangeAsync(List<Sleep> sleep)
+        public IEnumerable<Sleep> HeartratesByQuery(Func<Sleep, bool> predicate)
         {
-            try
-            {
-                await _databaseContext.Sleep.AddRangeAsync(sleep);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return false;
-            }
+            throw new NotImplementedException();
         }
 
         public void RemoveAll()
         {
-            try
+            var sleeps = this.GetAll();
+            foreach (var sleep in sleeps)
             {
-                _databaseContext.Sleep.Clear<Sleep>();
+                var query = "DELETE FROM Sleep WHERE Id = ?";
+                var command = _database.Instance.CreateCommand(query, new object[] { sleep.Id });
+                command.ExecuteNonQuery();
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Could not delete sleep entries: " + e);
-            }
-        }
-
-        public async Task<IEnumerable<Sleep>> SleepByQueryAsync(Func<Sleep, bool> predicate)
-        {
-            try
-            {
-                var sleep = await _databaseContext.Sleep.ToListAsync();
-                return sleep.Where(predicate);
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e.Message);
-                return null;
-            }
-        }
-        public async void SaveChangesAsync()
-        {
-            await _databaseContext.SaveChangesAsync();
         }
     }
 }

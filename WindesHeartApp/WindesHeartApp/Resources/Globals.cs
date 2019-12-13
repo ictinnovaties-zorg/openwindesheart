@@ -29,16 +29,16 @@ namespace WindesHeartApp.Resources
         public static IStepsRepository StepsRepository { get; set; }
         public static ISleepRepository SleepRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
-
-        public static DatabaseContext DatabaseContext { get; set; }
         public static Dictionary<string, string> FormatDictionary;
         public static Dictionary<string, string> LanguageDictionary;
+        public static Database Database;
 
-        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, DatabaseContext databaseContext)
+        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, Database database)
         {
             StepsRepository = stepsRepository;
             SleepRepository = sleepRepository;
             HeartrateRepository = heartrateRepository;
+            Database = database;
             HeartratePageViewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsPageViewModel = new StepsPageViewModel(StepsRepository);

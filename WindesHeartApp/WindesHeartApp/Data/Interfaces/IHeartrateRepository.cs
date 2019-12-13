@@ -7,15 +7,9 @@ namespace WindesHeartApp.Data.Interfaces
 {
     public interface IHeartrateRepository
     {
-        Task<IEnumerable<Heartrate>> GetAllAsync();
-        Task<bool> AddAsync(Heartrate heartrate);
-
-        Task<bool> AddRangeAsync(List<Heartrate> heartrates);
-
+        IEnumerable<Heartrate> GetAll();
+        void Add(Heartrate heartrate);
         void RemoveAll();
-
-        Task<IEnumerable<Heartrate>> HeartratesByQueryAsync(Func<Heartrate, bool> predicate);
-
-        void SaveChangesAsync();
+        IEnumerable<Heartrate> HeartratesByQuery(Func<Heartrate, bool> predicate);
     }
 }
