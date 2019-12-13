@@ -38,6 +38,7 @@ namespace WindesHeartApp.Services
         {
             if (result == ConnectionResult.Succeeded)
             {
+                SyncSettings();
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
                 Windesheart.ConnectedDevice.EnableRealTimeHeartrate(ChangeHeartRate);
                 Windesheart.ConnectedDevice.EnableRealTimeBattery(ChangeBattery);
@@ -54,23 +55,6 @@ namespace WindesHeartApp.Services
                 Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 Globals.SamplesService.StartFetching();
 
-                App.Current.Properties.TryGetValue(_key, out object storedKey);
-
-                //If a previous key is stored
-                if (storedKey != null && storedKey is Guid)
-                {
-                    //If connected device key is not the same as stored one
-                    if (!storedKey.Equals(Windesheart.ConnectedDevice.Device.Uuid))
-                    {
-                        //Its the first time
-                        OnNewDeviceConnected();
-                    }
-                }
-                else
-                {
-                    //If no previous key stored, its the first time
-                    OnNewDeviceConnected();
-                }
 
                 if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)
                 {
@@ -89,29 +73,17 @@ namespace WindesHeartApp.Services
             }
         }
 
-        public static void OnNewDeviceConnected()
+        /// <summary>
+        /// Set the device settings equal to the settings from the app
+        /// </summary>
+        public static void SyncSettings()
         {
-            Debug.WriteLine("NEW DEVICE!");
-
-            //Reset device settings to default
-            bool DMY = true; // Day-Month-Year date format
-            string language = "en-EN"; //Language English
-            bool is24Hour = true; //24 hour clock
-            bool wristRaise = false; //Display doesn't turn on on wrist raise
-
             try
             {
-                Windesheart.ConnectedDevice?.SetDateDisplayFormat(DMY);
-                DeviceSettings.DateFormatDMY = DMY;
-
-                Windesheart.ConnectedDevice?.SetLanguage(language);
-                DeviceSettings.DeviceLanguage = language;
-
-                Windesheart.ConnectedDevice?.SetTimeDisplayFormat(is24Hour);
-                DeviceSettings.TimeFormat24Hour = is24Hour;
-
-                Windesheart.ConnectedDevice?.SetActivateOnLiftWrist(wristRaise);
-                DeviceSettings.WristRaiseDisplay = wristRaise;
+                Windesheart.ConnectedDevice?.SetDateDisplayFormat(DeviceSettings.DateFormatDMY);
+                Windesheart.ConnectedDevice?.SetLanguage(DeviceSettings.DeviceLanguage);
+                Windesheart.ConnectedDevice?.SetTimeDisplayFormat(DeviceSettings.TimeFormat24Hour);
+                Windesheart.ConnectedDevice?.SetActivateOnLiftWrist(DeviceSettings.WristRaiseDisplay);
             }
             catch (Exception e)
             {
