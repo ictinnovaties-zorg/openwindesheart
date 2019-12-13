@@ -7,10 +7,10 @@ namespace WindesHeartApp.Data.Repository
 {
     public class SettingsRepository : ISettingsRepository
     {
-        private readonly DatabaseContext _databaseContext;
-        public SettingsRepository(DatabaseContext databaseContext)
+        private readonly Database _database;
+        public SettingsRepository(Database database)
         {
-            _databaseContext = databaseContext;
+            _database = database;
         }
         public Task<IEnumerable<string>> GetAllAsync()
         {

@@ -24,13 +24,9 @@ namespace WindesHeartApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library",
-                "WindesHeart.db");
-            var dbContext = new DatabaseContext(dbPath);
-
             FormsControls.Touch.Main.Init();
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App(new HeartrateRepository(dbContext), new SleepRepository(dbContext), new StepsRepository(dbContext), new SettingsRepository(dbContext), dbContext));
+            LoadApplication(new App());
 
             Globals.ScreenHeight = (int)UIScreen.MainScreen.Bounds.Height;
             Globals.ScreenWidth = (int)UIScreen.MainScreen.Bounds.Width;

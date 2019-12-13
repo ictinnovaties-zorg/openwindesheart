@@ -7,11 +7,11 @@ namespace WindesHeartApp.Data.Interfaces
 {
     public interface IStepsRepository
     {
-        Task<IEnumerable<Step>> GetAllAsync();
-        Task<bool> AddAsync(Step steps);
-        Task<bool> AddRangeAsync(List<Step> steps);
+        IEnumerable<Step> GetAll();
+        void Add(Step step);
         void RemoveAll();
-        void SaveChangesAsync();
+        IEnumerable<Step> HeartratesByQuery(Func<Step, bool> predicate);
 
+        DateTime LastAddedDatetime();
     }
 }

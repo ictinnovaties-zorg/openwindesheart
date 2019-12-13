@@ -66,8 +66,8 @@
     <PackageReference Include="Microcharts.Forms">
       <Version>0.7.1</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
-      <Version>3.1.0</Version>
+    <PackageReference Include="sqlite-net-pcl">
+      <Version>1.6.292</Version>
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
       <Version>4.7.0</Version>

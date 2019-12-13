@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,83 +10,38 @@ namespace WindesHeartApp.Data.Repository
 {
     public class HeartrateRepository : IHeartrateRepository
     {
-        private readonly DatabaseContext _databaseContext;
-        public HeartrateRepository(DatabaseContext databaseContext)
+        private readonly Database _database;
+        public HeartrateRepository(Database database)
         {
-            _databaseContext = databaseContext;
+            _database = database;
         }
 
-        public async Task<IEnumerable<Heartrate>> GetAllAsync()
+        public void Add(Heartrate heartrate)
         {
-            try
-            {
-                var heartrates = await _databaseContext.Heartrates.ToListAsync();
-                return heartrates.OrderBy(x => x.DateTime).ToList();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return null;
-            }
+            var query = "INSERT INTO Heartrates(DateTime, HeartrateValue) VALUES(?,?)";
+            var command = _database.Instance.CreateCommand(query, new object[] { heartrate.DateTime, heartrate.HeartrateValue });
+            command.ExecuteNonQuery();
         }
 
-        public async Task<bool> AddAsync(Heartrate heartrate)
+        public IEnumerable<Heartrate> GetAll()
         {
-            try
-            {
-                var tracking = await _databaseContext.Heartrates.AddAsync(heartrate);
-                return tracking.State == EntityState.Added;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return false;
-            }
+            return _database.Instance.Table<Heartrate>().OrderBy(x => x.DateTime).ToList();
         }
 
-        public async Task<bool> AddRangeAsync(List<Heartrate> heartrates)
+        public IEnumerable<Heartrate> HeartratesByQuery(Func<Heartrate, bool> predicate)
         {
-            try
-            {
-                await _databaseContext.Heartrates.AddRangeAsync(heartrates);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return false;
-            }
+            throw new NotImplementedException();
         }
 
         public void RemoveAll()
         {
-            try
+            var heartrates = this.GetAll();
+            foreach (var heartrate in heartrates)
             {
-                _databaseContext.Heartrates.Clear<Heartrate>();
+                var query = "DELETE FROM Heartrates WHERE Id = ?";
+                var command = _database.Instance.CreateCommand(query, new object[] { heartrate.Id });
+                command.ExecuteNonQuery();
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Could not delete heartrate entries: " + e);
-            }
-        }
-
-        public async Task<IEnumerable<Heartrate>> HeartratesByQueryAsync(Func<Heartrate, bool> predicate)
-        {
-            try
-            {
-                var heartrates = await _databaseContext.Heartrates.ToListAsync();
-                return heartrates.Where(predicate);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return null;
-            }
-        }
-
-        public async void SaveChangesAsync()
-        {
-            await _databaseContext.SaveChangesAsync();
         }
     }
 }

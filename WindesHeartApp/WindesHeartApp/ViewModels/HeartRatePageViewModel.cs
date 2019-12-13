@@ -43,7 +43,7 @@ namespace WindesHeartApp.ViewModels
             _dateTime = DateTime.Now.AddHours(-1);
 
             DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
-            var rates = await _heartrateRepository.GetAllAsync();
+            var rates = _heartrateRepository.GetAll();
             if (rates.Count() != 0)
             {
                 _heartrates = rates;
