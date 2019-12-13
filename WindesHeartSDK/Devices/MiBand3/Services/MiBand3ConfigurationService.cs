@@ -62,7 +62,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         }
 
         /// <summary>
-        /// Set the step target on the Mi Band. Max value of 2 bytes (around 16.000)
+        /// Set the step target on the Mi Band. Max value of 2 bytes (around 65.000)
         /// </summary>
         /// <param name="goal"></param>
         public async void SetFitnessGoal(int goal)
@@ -76,8 +76,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             Buffer.BlockCopy(beginCommand, 0, CommandBytes, 0, beginCommand.Length);
             Buffer.BlockCopy(goalBytes, 0, CommandBytes, beginCommand.Length, goalBytes.Length);
             Buffer.BlockCopy(endCommand, 0, CommandBytes, beginCommand.Length + goalBytes.Length, endCommand.Length);
-
-            Trace.WriteLine(CommandBytes.Length);
 
             await BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic8UserInfo).Write(CommandBytes);
         }
