@@ -40,6 +40,7 @@ namespace WindesHeartApp.Pages
                     {
                         new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 33},
                         new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 33},
+
                         new ColumnDefinition {Width = Globals.ScreenWidth / 100 * 33},
                     }
                 };

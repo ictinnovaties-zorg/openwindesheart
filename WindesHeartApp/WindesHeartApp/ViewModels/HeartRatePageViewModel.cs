@@ -73,7 +73,7 @@ namespace WindesHeartApp.ViewModels
                 .Where(x => x.DateTime >= _dateTime)
                 .Where(x => x.DateTime <= _dateTime2)
                 .Where(x => x.HeartrateValue != 0);
-            if (heartrates != null)
+            if (heartrates.Count() != 0)
             {
                 AverageHeartrate = Convert.ToInt32(heartrates?.Select(x => x.HeartrateValue).Average());
                 PeakHeartrate = Convert.ToInt32((heartrates?.Select(x => x.HeartrateValue).Max()));
