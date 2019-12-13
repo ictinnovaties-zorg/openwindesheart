@@ -167,7 +167,7 @@ namespace WindesHeartApp.ViewModels
 
                 StatusText = "Connecting...";
                 IsLoading = true;
-                device?.Connect(CallbackHandler.OnConnetionCallBack);
+                device?.Connect(CallbackHandler.OnConnect);
             }
             catch (Exception e)
             {
