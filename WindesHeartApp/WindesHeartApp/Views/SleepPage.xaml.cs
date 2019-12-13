@@ -5,6 +5,7 @@ using System;
 using System.Globalization;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
+using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -109,6 +110,49 @@ namespace WindesHeartApp.Views
 
             }
             AddDayButtons(absoluteLayout);
+
+            #region refreshbutton
+            Grid grid = new Grid
+            {
+            };
+            Frame frame = new Frame();
+            frame.CornerRadius = 10;
+            frame.BorderColor = Color.White;
+            frame.BackgroundColor = Globals.SecondaryColor;
+            frame.HorizontalOptions = LayoutOptions.FillAndExpand;
+            frame.VerticalOptions = LayoutOptions.FillAndExpand;
+
+
+            frame.HasShadow = true;
+
+            grid.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                NumberOfTapsRequired = 1,
+                Command = new Command(execute: () => { RefreshButtonClicked(this, EventArgs.Empty); })
+            });
+            grid.Opacity = 20;
+            AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(0.15, 0.95, Globals.ScreenHeight / 100 * 10, Globals.ScreenHeight / 100 * 6));
+            AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.PositionProportional);
+            ImageButton RefreshButton = new ImageButton
+            {
+                Source = "Refresh.png",
+                HorizontalOptions = LayoutOptions.Start,
+                HeightRequest = Globals.ScreenHeight / 100 * 4.5,
+                BackgroundColor = Globals.SecondaryColor
+            };
+            RefreshButton.Clicked += RefreshButtonClicked;
+            grid.Children.Add(frame);
+            grid.Children.Add(RefreshButton); ;
+
+            Label RefreshLabel = new Label() { Text = "data ", VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.End, FontSize = 20, FontAttributes = FontAttributes.Italic };
+            grid.Children.Add(RefreshLabel);
+            RefreshLabel.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                NumberOfTapsRequired = 1,
+                Command = new Command(execute: () => { RefreshButtonClicked(this, EventArgs.Empty); }),
+            });
+            absoluteLayout.Children.Add(grid);
+            #endregion
         }
 
         private void AddDayButtons(AbsoluteLayout absoluteLayout)
@@ -116,39 +160,52 @@ namespace WindesHeartApp.Views
             var culture = CultureInfo.CurrentCulture;
 
             int fontsize = 8;
-            float height = 0.80f;
+            float height = 0.84f;
 
             DateTime today = DateTime.Now;
 
             int size = (int)(Globals.ScreenHeight / 100 * 8.0);
-            Day1Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), Globals.SleepPageViewModel.Day1BtnClick, 0.2, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day1Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), Globals.SleepPageViewModel.Day1BtnClick, 0.05, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day1Button.BorderColor = Color.Black;
             Day1Button.BorderWidth = 2;
 
-            Day2Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-5).DayOfWeek), Globals.SleepPageViewModel.Day2BtnClick, 0.4, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day2Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-5).DayOfWeek), Globals.SleepPageViewModel.Day2BtnClick, 0.20, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day2Button.BorderColor = Color.Black;
             Day2Button.BorderWidth = 2;
 
-            Day3Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-4).DayOfWeek), Globals.SleepPageViewModel.Day3BtnClick, 0.6, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day3Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-4).DayOfWeek), Globals.SleepPageViewModel.Day3BtnClick, 0.35, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day3Button.BorderColor = Color.Black;
             Day3Button.BorderWidth = 2;
 
-            Day4Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-3).DayOfWeek), Globals.SleepPageViewModel.Day4BtnClick, 0.8, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day4Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-3).DayOfWeek), Globals.SleepPageViewModel.Day4BtnClick, 0.50, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day4Button.BorderColor = Color.Black;
             Day4Button.BorderWidth = 2;
 
-            Day5Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-2).DayOfWeek), Globals.SleepPageViewModel.Day5BtnClick, 0.3, height + 0.10f, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day5Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-2).DayOfWeek), Globals.SleepPageViewModel.Day5BtnClick, 0.65, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day5Button.BorderColor = Color.Black;
             Day5Button.BorderWidth = 2;
 
-            Day6Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-1).DayOfWeek), Globals.SleepPageViewModel.Day6BtnClick, 0.5, height + 0.10f, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day6Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-1).DayOfWeek), Globals.SleepPageViewModel.Day6BtnClick, 0.80, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day6Button.BorderColor = Color.Black;
             Day6Button.BorderWidth = 2;
 
-            TodayButton = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.DayOfWeek), Globals.SleepPageViewModel.TodayBtnClick, 0.7, height + 0.10f, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            TodayButton = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.DayOfWeek), Globals.SleepPageViewModel.TodayBtnClick, 0.95, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             TodayButton.BorderColor = Color.Black;
             TodayButton.BorderWidth = 2;
 
+
+        }
+
+        private async void RefreshButtonClicked(object sender, EventArgs e)
+        {
+            if (Windesheart.ConnectedDevice == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error while refreshing data",
+                    "Can only refresh data when connected to a device!", "Ok");
+                return;
+            }
+            Application.Current.MainPage.Navigation.PopAsync();
+            Globals.SamplesService.StartFetching();
         }
 
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };

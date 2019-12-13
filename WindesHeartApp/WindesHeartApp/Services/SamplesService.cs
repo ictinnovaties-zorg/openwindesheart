@@ -27,7 +27,7 @@ namespace WindesHeartApp.Services
         {
             Device.BeginInvokeOnMainThread(delegate
             {
-                Globals.HomePageViewModel.IsLoading = true;
+               Globals.HomePageViewModel.IsLoading = true;
                 Globals.HomePageViewModel.EnableDisableButtons(false);
             });
             var startDate = GetLastAddedDateTime();

@@ -3,6 +3,7 @@ using Microcharts.Forms;
 using System;
 using System.Globalization;
 using WindesHeartApp.Resources;
+using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -92,6 +93,49 @@ namespace WindesHeartApp.Pages
             KilometersLabel.FontSize = 20;
 
             AddDayButtons(absoluteLayout);
+
+            #region refreshbutton
+            Grid grid = new Grid
+            {
+            };
+            Frame frame = new Frame();
+            frame.CornerRadius = 10;
+            frame.BorderColor = Color.White;
+            frame.BackgroundColor = Globals.SecondaryColor;
+            frame.HorizontalOptions = LayoutOptions.FillAndExpand;
+            frame.VerticalOptions = LayoutOptions.FillAndExpand;
+
+
+            frame.HasShadow = true;
+
+            grid.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                NumberOfTapsRequired = 1,
+                Command = new Command(execute: () => { RefreshButtonClicked(this, EventArgs.Empty); })
+            });
+            grid.Opacity = 20;
+            AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(0.15, 0.95, Globals.ScreenHeight / 100 * 10, Globals.ScreenHeight / 100 * 6));
+            AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.PositionProportional);
+            ImageButton RefreshButton = new ImageButton
+            {
+                Source = "Refresh.png",
+                HorizontalOptions = LayoutOptions.Start,
+                HeightRequest = Globals.ScreenHeight / 100 * 4.5,
+                BackgroundColor = Globals.SecondaryColor
+            };
+            RefreshButton.Clicked += RefreshButtonClicked;
+            grid.Children.Add(frame);
+            grid.Children.Add(RefreshButton); ;
+
+            Label RefreshLabel = new Label() { Text = "data ", VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.End, FontSize = 20, FontAttributes = FontAttributes.Italic };
+            grid.Children.Add(RefreshLabel);
+            RefreshLabel.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                NumberOfTapsRequired = 1,
+                Command = new Command(execute: () => { RefreshButtonClicked(this, EventArgs.Empty); }),
+            });
+            absoluteLayout.Children.Add(grid);
+            #endregion
         }
 
         private void AddDayButtons(AbsoluteLayout absoluteLayout)
@@ -132,6 +176,18 @@ namespace WindesHeartApp.Pages
             TodayButton.BorderColor = Color.Black;
             TodayButton.BorderWidth = 2;
 
+        }
+
+        private async void RefreshButtonClicked(object sender, EventArgs e)
+        {
+            if (Windesheart.ConnectedDevice == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error while refreshing data",
+                    "Can only refresh data when connected to a device!", "Ok");
+                return;
+            }
+            Application.Current.MainPage.Navigation.PopAsync();
+            Globals.SamplesService.StartFetching();
         }
 
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
