@@ -137,7 +137,7 @@ namespace WindesHeartApp.Views
             {
                 Source = "Refresh.png",
                 HorizontalOptions = LayoutOptions.Start,
-                HeightRequest = Globals.ScreenHeight / 100 * 5.0,
+                HeightRequest = Globals.ScreenHeight / 100 * 4.5,
                 BackgroundColor = Color.Transparent,
             };
             RefreshButton.Margin = new Thickness(2, 0, 0, 0);
@@ -145,8 +145,10 @@ namespace WindesHeartApp.Views
             grid.Children.Add(frame);
             grid.Children.Add(RefreshButton); ;
 
-            Label RefreshLabel = new Label() { Text = "data ", VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.End, FontSize = 20, FontAttributes = FontAttributes.Italic };
+            Label RefreshLabel = new Label() { Text = "data", VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.End, FontSize = 20, FontAttributes = FontAttributes.Italic };
+            RefreshLabel.Margin = new Thickness(0, 0, 2, 0);
             grid.Children.Add(RefreshLabel);
+
             RefreshLabel.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 NumberOfTapsRequired = 1,
