@@ -40,7 +40,7 @@ namespace WindesHeartApp.ViewModels
         public async void OnAppearing()
         {
             //Get all steps from DB
-            StepInfo = await _stepsRepository.GetAllAsync();
+            StepInfo = _stepsRepository.GetAll();
 
             //Update chart
             UpdateChart();

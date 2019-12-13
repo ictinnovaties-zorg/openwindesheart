@@ -4,6 +4,7 @@ using Plugin.Permissions.Abstractions;
 using System;
 using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
+using WindesHeartApp.Data.Repository;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
@@ -13,10 +14,12 @@ namespace WindesHeartApp
 {
     public partial class App : Application
     {
-        public App(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository, DatabaseContext databaseContext)
+        public App()
         {
             InitializeComponent();
-            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, settingsRepository,databaseContext);
+            var database = new Database();
+            Globals.BuildGlobals(new HeartrateRepository(database), new SleepRepository(database), new StepsRepository(database), new SettingsRepository(database), database);
+            database.EmptyDatabase();
             MainPage = new AnimationNavigationPage(new HomePage());
         }
 
@@ -42,6 +45,11 @@ namespace WindesHeartApp
             {
                 await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
             }
+        }
+
+        public void CreateDatabase()
+        {
+
         }
     }
 }

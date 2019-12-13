@@ -7,11 +7,9 @@ namespace WindesHeartApp.Data.Interfaces
 {
     public interface ISleepRepository
     {
-        Task<IEnumerable<Sleep>> GetAllAsync();
-        Task<bool> AddAsync(Sleep sleep);
-        Task<bool> AddRangeAsync(List<Sleep> sleep);
+        IEnumerable<Sleep> GetAll();
+        void Add(Sleep sleep);
         void RemoveAll();
-        Task<IEnumerable<Sleep>> SleepByQueryAsync(Func<Sleep, bool> predicate);
-        void SaveChangesAsync();
+        IEnumerable<Sleep> HeartratesByQuery(Func<Sleep, bool> predicate);
     }
 }

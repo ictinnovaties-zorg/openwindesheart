@@ -25,19 +25,21 @@ namespace WindesHeartApp.Resources
         public static ISleepRepository SleepRepository { get; set; }
         public static ISettingsRepository SettingsRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
-        public static DatabaseContext DatabaseContext { get; set; }
         public static float DailyStepsGoal { get; internal set; }
         public static Dictionary<string, Color> ColorDictionary;
         public static Dictionary<string, string> FormatDictionary;
 
+        public static Database Database;
 
-        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository, DatabaseContext databaseContext)
+
+        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository, Database database)
         {
             DailyStepsGoal = 1000;
             StepsRepository = stepsRepository;
             SleepRepository = sleepRepository;
             SettingsRepository = settingsRepository;
             HeartrateRepository = heartrateRepository;
+            Database = database;
             HeartratePageViewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsPageViewModel = new StepsPageViewModel(StepsRepository);
@@ -45,7 +47,6 @@ namespace WindesHeartApp.Resources
             SleepPageViewModel = new SleepPageViewModel(SleepRepository);
             DevicePageViewModel = new DevicePageViewModel();
             HomePageViewModel = new HomePageViewModel();
-            DatabaseContext = databaseContext;
             ColorDictionary = new Dictionary<string, Color>
             {
                 { "Aqua", Color.Aqua},

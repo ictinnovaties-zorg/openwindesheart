@@ -46,7 +46,7 @@ namespace WindesHeartApp.ViewModels
         public async void OnAppearing()
         {
             //Get all sleep data from DB
-            SleepInfo = await _sleepRepository.GetAllAsync();
+            SleepInfo = _sleepRepository.GetAll();
 
             if(SleepInfo.Count() == 0)
             {
