@@ -29,7 +29,7 @@ namespace WindesHeartApp.Services
         {
             var count = stepsInfo.StepCount;
             Debug.WriteLine($"Stepcount updated: {count}");
-            Globals.StepsPageViewModel.OnStepsUpdated(stepsInfo);
+            Globals.StepsPageViewModel.OnStepsUpdated(count);
 
         }
 

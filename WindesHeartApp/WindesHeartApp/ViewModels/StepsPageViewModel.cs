@@ -3,12 +3,13 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
+using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -21,7 +22,6 @@ namespace WindesHeartApp.ViewModels
         public DateTime StartDate { get; }
 
         public DateTime SelectedDate;
-        private readonly IStepsRepository _stepsRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,10 +47,11 @@ namespace WindesHeartApp.ViewModels
         public async void OnAppearing()
         {
             //Get all steps from DB
-            StepInfo = _stepsRepository.GetAll();
+            StepInfo = Globals.StepsRepository.GetAll();
 
             //Update chart
-            UpdateChart();
+            int stepCount = await GetCurrentSteps();
+            UpdateChart(stepCount);
 
             //Init buttons on bottom
             List<Button> dayButtons = new List<Button>
@@ -74,15 +75,14 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public StepsPageViewModel(IStepsRepository stepsRepository)
+        public StepsPageViewModel()
         {
-            _stepsRepository = stepsRepository;
             StartDate = DateTime.Today;
             SelectedDate = StartDate;
         }
 
 
-        private void UpdateInfo()
+        private async void UpdateInfo()
         {
             if (SelectedDate == StartDate)
             {
@@ -98,12 +98,21 @@ namespace WindesHeartApp.ViewModels
             }
 
             //Update chart
-            UpdateChart();
+            int stepCount = await GetCurrentSteps();
+            UpdateChart(stepCount);
         }
 
-        public void OnStepsUpdated(StepInfo stepsInfo)
+        public void OnStepsUpdated(int steps)
         {
-            StepsPage.CurrentStepsLabel.Text = stepsInfo.StepCount.ToString();
+            Debug.WriteLine("Steps viewmodel method!");
+
+            //If looking at today
+            if (SelectedDate.Equals(DateTime.Today))
+            {
+                //Update that info
+                Debug.WriteLine("Updating chart!!");
+                UpdateChart(steps);
+            }
         }
 
         private async Task<int> GetCurrentSteps()
@@ -134,10 +143,8 @@ namespace WindesHeartApp.ViewModels
             return stepCount;
         }
 
-        public async void UpdateChart()
+        public async void UpdateChart(int stepCount)
         {
-            int stepCount = await GetCurrentSteps();
-
             List<Entry> entries = new List<Entry>();
 
             float percentageDone = (float)stepCount / DeviceSettings.DailyStepsGoal;
