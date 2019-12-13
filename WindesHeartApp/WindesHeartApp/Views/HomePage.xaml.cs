@@ -41,6 +41,21 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddLabel(absoluteLayout, "Home", 0.05, 0.10, Globals.LightTextColor, "", 30);
             PageBuilder.AddHeaderImages(absoluteLayout);
 
+            #region define fetch progressbar 
+            ProgressBar fetchProgressBar = new ProgressBar
+            {
+                ProgressColor = Color.Red,
+                WidthRequest = 300
+            };
+            fetchProgressBar.SetBinding(ProgressBar.ProgressProperty, new Binding("FetchProgress"));
+            fetchProgressBar.SetBinding(ProgressBar.IsVisibleProperty, new Binding("FetchProgressVisible"));
+
+            AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.15, 0.25, -1,-1));
+            AbsoluteLayout.SetLayoutFlags(fetchProgressBar, AbsoluteLayoutFlags.PositionProportional);
+
+            absoluteLayout.Children.Add(fetchProgressBar);
+            #endregion
+
             #region define battery and hr Label
             Image batteryImage = new Image { HeightRequest = (int)(Globals.ScreenHeight / 100 * 2.5) };
             batteryImage.SetBinding(Image.SourceProperty, new Binding("BatteryImage"));

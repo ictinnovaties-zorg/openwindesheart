@@ -16,6 +16,9 @@ namespace WindesHeartApp.Services
         private readonly IStepsRepository _stepsRepository;
         private readonly ISleepRepository _sleepRepository;
 
+        private DateTime _fetchingStartDate;
+        private float _progressedSamples = 0f;
+
         public SamplesService(IHeartrateRepository heartrateRepository, IStepsRepository stepsRepository, ISleepRepository sleepRepository)
         {
             _heartrateRepository = heartrateRepository;
@@ -30,11 +33,31 @@ namespace WindesHeartApp.Services
                 Globals.HomePageViewModel.IsLoading = true;
                 Globals.HomePageViewModel.EnableDisableButtons(false);
             });
-            var startDate = GetLastAddedDateTime();
-            Windesheart.ConnectedDevice.FetchData(startDate, FillDatabase);
+            _fetchingStartDate = GetLastAddedDateTime();
+            Windesheart.ConnectedDevice.FetchData(_fetchingStartDate, FillDatabase, ProgressCalculator);
 
         }
 
+        private void ProgressCalculator(float samples)
+        {
+            TimeSpan timeSpanned = DateTime.Now.AddMinutes(-1) - _fetchingStartDate;
+            float totalSamples = (float)Math.Round(timeSpanned.TotalMinutes);
+            _progressedSamples += samples;
+
+            //Calculates percentage of progression. -10f to leave some space for DB insertion progress indication.
+            float calculatedProgress = (_progressedSamples / totalSamples);
+
+            //Leave some space on progressbar for DB insertion
+            if(calculatedProgress > 0.9f)
+            {
+                calculatedProgress = 0.9f;
+            }
+
+            Device.BeginInvokeOnMainThread(delegate
+            {
+                Globals.HomePageViewModel.ShowFetchProgress(calculatedProgress);
+            });
+        }
         private void FillDatabase(List<ActivitySample> samples)
         {
             Debug.WriteLine("Filling DB with samples");
@@ -53,6 +76,7 @@ namespace WindesHeartApp.Services
             {
                 Globals.HomePageViewModel.IsLoading = false;
                 Globals.HomePageViewModel.EnableDisableButtons(true);
+                Globals.HomePageViewModel.ShowFetchProgress(100f);
             });
         }
 
