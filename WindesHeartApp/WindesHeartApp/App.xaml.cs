@@ -1,9 +1,8 @@
 ﻿using FormsControls.Base;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
-using System;
-using WindesHeartApp.Data.Interfaces;
-using WindesHeartApp.Models;
+using WindesHeartApp.Data;
+using WindesHeartApp.Data.Repository;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
@@ -12,10 +11,12 @@ namespace WindesHeartApp
 {
     public partial class App : Application
     {
-        public App(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository)
+        public App()
         {
             InitializeComponent();
-            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, settingsRepository);
+            var database = new Database();
+            Globals.BuildGlobals(new HeartrateRepository(database), new SleepRepository(database), new StepsRepository(database), database);
+            database.EmptyDatabase();
             MainPage = new AnimationNavigationPage(new HomePage());
         }
 
@@ -41,6 +42,11 @@ namespace WindesHeartApp
             {
                 await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
             }
+        }
+
+        public void CreateDatabase()
+        {
+
         }
     }
 }

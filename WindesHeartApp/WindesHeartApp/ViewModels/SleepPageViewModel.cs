@@ -3,6 +3,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using WindesHeartApp.Data.Interfaces;
@@ -45,7 +46,7 @@ namespace WindesHeartApp.ViewModels
         public async void OnAppearing()
         {
             //Get all sleep data from DB
-            SleepInfo = await _sleepRepository.GetAllAsync();
+            SleepInfo = _sleepRepository.GetAll();
 
             if(SleepInfo.Count() == 0)
             {
@@ -170,7 +171,7 @@ namespace WindesHeartApp.ViewModels
 
         public void PreviousDayBtnClick(object sender, EventArgs args)
         {
-            Console.WriteLine("Previous day clicked!");
+            Trace.WriteLine("Previous day clicked!");
 
             //You can always go back
             _buttonRow.ToPrevious();

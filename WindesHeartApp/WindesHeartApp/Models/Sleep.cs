@@ -11,6 +11,8 @@ namespace WindesHeartApp.Models
         Light,
         Deep
     }
+
+    [Table("Sleep")]
     public class Sleep
     {
         public Sleep() { }
@@ -20,10 +22,13 @@ namespace WindesHeartApp.Models
             this.SleepType = sleepType;
         }
 
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey, AutoIncrement, Column("Id")]
         public int Id { get; set; }
 
+        [Column("DateTime")]
         public DateTime DateTime { get; set; }
+
+        [Column("SleepType")]
         public SleepType SleepType { get; set; }
     }
 }

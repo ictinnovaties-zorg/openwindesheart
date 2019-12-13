@@ -82,7 +82,7 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutBounds(lightRectangle, new Rectangle(0.37, 0.3, 20, 20));
             absoluteLayout.Children.Add(lightRectangle);
 
-            PageBuilder.AddLabel(absoluteLayout, "Light sleep", 0.52, 0.3, Color.Black, "", 14);
+            PageBuilder.AddLabel(absoluteLayout, "Light sleep", 0.53, 0.3, Color.Black, "", 14);
 
             BoxView deepRectangle = new BoxView();
             deepRectangle.Color = Color.FromHex(Globals.SleepPageViewModel.DeepColor);
@@ -90,7 +90,7 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutBounds(deepRectangle, new Rectangle(0.7, 0.3, 20, 20));
             absoluteLayout.Children.Add(deepRectangle);
 
-            PageBuilder.AddLabel(absoluteLayout, "Deep sleep", 0.9, 0.3, Color.Black, "", 14);
+            PageBuilder.AddLabel(absoluteLayout, "Deep sleep", 0.92, 0.3, Color.Black, "", 14);
 
             ChartView chart = new ChartView();
             chart.SetBinding(ChartView.ChartProperty, "Chart");
@@ -115,7 +115,7 @@ namespace WindesHeartApp.Views
         {
             var culture = CultureInfo.CurrentCulture;
 
-            int fontsize = 10;
+            int fontsize = 8;
             float height = 0.80f;
 
             DateTime today = DateTime.Now;

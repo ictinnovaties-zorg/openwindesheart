@@ -1,9 +1,7 @@
 
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+using System.Linq;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 
@@ -11,56 +9,45 @@ namespace WindesHeartApp.Data.Repository
 {
     public class StepsRepository : IStepsRepository
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly Database _database;
 
-        public StepsRepository(string dbPath)
+        public StepsRepository(Database database)
         {
-            _databaseContext = new DatabaseContext(dbPath);
+            _database = database;
         }
 
-        public async Task<IEnumerable<Step>> GetAllAsync()
+        public void Add(Step step)
         {
-            try
-            {
-                var steps = await _databaseContext.Steps.ToListAsync();
-                return steps;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return null;
-            }
+            var query = "INSERT INTO Steps(DateTime, StepCount) VALUES(?,?)";
+            var command = _database.Instance.CreateCommand(query, new object[] { step.DateTime, step.StepCount });
+            command.ExecuteNonQuery();
         }
 
-        public async Task<bool> AddAsync(Step step)
+        public IEnumerable<Step> GetAll()
         {
-            try
+            return _database.Instance.Table<Step>().OrderBy(x => x.DateTime).ToList();
+        }
+
+        public DateTime LastAddedDatetime()
+        {
+            var steps = this.GetAll();
+            if (steps.Count() > 0)
             {
-                var tracking = await _databaseContext.Steps.AddAsync(step);
-                return tracking.State == EntityState.Added;
+                return steps.Last().DateTime.AddMinutes(1);
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                return false;
-            }
+
+            return DateTime.Now.AddMonths(-1);
         }
 
         public void RemoveAll()
         {
-            try
+            var steps = this.GetAll();
+            foreach (var step in steps)
             {
-                _databaseContext.Steps.Clear<Step>();
+                var query = "DELETE FROM Steps WHERE Id = ?";
+                var command = _database.Instance.CreateCommand(query, new object[] { step.Id });
+                command.ExecuteNonQuery();
             }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Could not delete step entries: " + e);
-            }
-        }
-
-        public async void SaveChangesAsync()
-        {
-            await _databaseContext.SaveChangesAsync();
         }
     }
 }

@@ -1,12 +1,15 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
+using WindesHeartApp.Resources;
 using WindesHeartSdk.Model;
 using WindesHeartSDK;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -23,55 +26,57 @@ namespace WindesHeartApp.Services
             _sleepRepository = sleepRepository;
         }
 
-        public async void StartFetching()
+        public void StartFetching()
         {
-            var startDate = await GetLastAddedDateTime();
-            Windesheart.ConnectedDevice.FetchData(startDate.AddMinutes(1), FillDatabase);
-        }
+            Device.BeginInvokeOnMainThread(delegate
+            {
+                Globals.HomePageViewModel.IsLoading = true;
+                Globals.HomePageViewModel.ToggleEnableButtons();
+            });            
+            var startDate = GetLastAddedDateTime();
+            Windesheart.ConnectedDevice.FetchData(startDate, FillDatabase);
 
-        private async void FillDatabase(List<ActivitySample> samples)
+        }
+        
+        private void FillDatabase(List<ActivitySample> samples)
         {
             Debug.WriteLine("Filling DB with samples");
+            Globals.Database.Instance.BeginTransaction();
             foreach (var sample in samples)
             {
                 var datetime = sample.Timestamp;
 
-                await AddHeartrate(datetime, sample);
-                await AddStep(datetime, sample);
-                await AddSleep(datetime, sample);
+                AddHeartrate(datetime, sample);
+                AddStep(datetime, sample);
+                AddSleep(datetime, sample);
             }
-            _heartrateRepository.SaveChangesAsync();
-            _stepsRepository.SaveChangesAsync();
-            _sleepRepository.SaveChangesAsync();
-            Debug.WriteLine("Fetched all samples");
-        }
-
-        private async Task<DateTime> GetLastAddedDateTime()
-        {
-            var steps = await _stepsRepository.GetAllAsync();
-
-            if (steps.Count() > 0)
+            Globals.Database.Instance.Commit();
+            Debug.WriteLine("DB filled with samples");
+            Device.BeginInvokeOnMainThread(delegate
             {
-                Debug.WriteLine("Last added datetime is: " + steps.Last().DateTime);
-                return steps.Last().DateTime;
-            }
-            Debug.WriteLine("Last added datetime is: " + DateTime.Now.AddDays(-30));
-            return DateTime.Now.AddDays(-30);
+                Globals.HomePageViewModel.IsLoading = false;
+                Globals.HomePageViewModel.ToggleEnableButtons();
+            });        
         }
 
-        private async Task AddHeartrate(DateTime datetime, ActivitySample sample)
+        private DateTime GetLastAddedDateTime()
         {
-            var heartRate = new Heartrate(datetime, sample.HeartRate);
-            await _heartrateRepository.AddAsync(heartRate);
+            return _stepsRepository.LastAddedDatetime();           
         }
 
-        private async Task AddStep(DateTime datetime, ActivitySample sample)
+        private void AddHeartrate(DateTime datetime, ActivitySample sample)
+        {
+            var heartRate = new Heartrate(datetime, sample.HeartRate != 255 ? sample.HeartRate : 0);
+            _heartrateRepository.Add(heartRate);
+        }
+
+        private void AddStep(DateTime datetime, ActivitySample sample)
         {
             var step = new Step(datetime, sample.Steps);
-            await _stepsRepository.AddAsync(step);
+            _stepsRepository.Add(step);
         }
 
-        private async Task AddSleep(DateTime datetime, ActivitySample sample)
+        private void AddSleep(DateTime datetime, ActivitySample sample)
         {
             Sleep sleep;
             switch (sample.Category)
@@ -89,15 +94,7 @@ namespace WindesHeartApp.Services
                     sleep = new Sleep(datetime, SleepType.Awake);
                     break;
             }
-
-            await _sleepRepository.AddAsync(sleep);
-        }
-
-        public void EmptyDatabase()
-        {
-            _heartrateRepository.RemoveAll();
-            _stepsRepository.RemoveAll();
-            _sleepRepository.RemoveAll();
-        }
+            _sleepRepository.Add(sleep);
+        }       
     }
 }

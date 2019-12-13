@@ -47,7 +47,7 @@ namespace WindesHeartApp.ViewModels
         public async void OnAppearing()
         {
             //Get all steps from DB
-            StepInfo = await _stepsRepository.GetAllAsync();
+            StepInfo = _stepsRepository.GetAll();
 
             //Update chart
             UpdateChart();
@@ -140,7 +140,7 @@ namespace WindesHeartApp.ViewModels
 
             List<Entry> entries = new List<Entry>();
 
-            float percentageDone = (float)stepCount / 2000;
+            float percentageDone = (float)stepCount / DeviceSettings.DailyStepsGoal;
 
             //Add part done
             entries.Add(new Entry(percentageDone) { Color = SKColors.Black });

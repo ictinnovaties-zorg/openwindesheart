@@ -18,6 +18,7 @@ namespace WindesHeartApp.ViewModels
         private string _statusText;
         private BLEDevice _selectedDevice;
         private ObservableCollection<BLEDevice> _deviceList;
+        private string _scanbuttonText;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DevicePageViewModel()
@@ -26,6 +27,7 @@ namespace WindesHeartApp.ViewModels
                 DeviceList = new ObservableCollection<BLEDevice>();
             if (Windesheart.ConnectedDevice == null)
                 StatusText = "Disconnected";
+            ScanButtonText = "Scan for devices";
         }
         public void DisconnectButtonClicked(object sender, EventArgs args)
         {
@@ -33,7 +35,6 @@ namespace WindesHeartApp.ViewModels
             Windesheart.ConnectedDevice?.Disconnect();
             IsLoading = false;
             StatusText = "Disconnected";
-            Globals.HeartratePageViewModel.Heartrate = 0;
             Globals.HomePageViewModel.Heartrate = 0;
             Globals.HomePageViewModel.Battery = 0;
         }
@@ -56,6 +57,16 @@ namespace WindesHeartApp.ViewModels
             set
             {
                 _statusText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ScanButtonText
+        {
+            get { return _scanbuttonText; }
+            set
+            {
+                _scanbuttonText = value;
                 OnPropertyChanged();
             }
         }
@@ -84,15 +95,18 @@ namespace WindesHeartApp.ViewModels
 
             }
         }
+
         public async void ScanButtonClicked(object sender, EventArgs args)
         {
+            DeviceList = new ObservableCollection<BLEDevice>();
+            DisconnectButtonClicked(sender, EventArgs.Empty);
             try
             {
                 //If already scanning, stop scanning
                 if (CrossBleAdapter.Current.IsScanning)
                 {
                     Windesheart.StopScanning();
-                    DevicePage.ScanButton.Text = "Scan for devices";
+                    ScanButtonText = "Scan for devices";
                     IsLoading = false;
                 }
                 else
@@ -100,7 +114,8 @@ namespace WindesHeartApp.ViewModels
 
                     if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOff)
                     {
-                        await Application.Current.MainPage.DisplayAlert("Bluetooth turned off", "Bluetooth is turned off. Please enable bluetooth to start scanning for devices", "OK");
+                        await Application.Current.MainPage.DisplayAlert("Bluetooth turned off",
+                            "Bluetooth is turned off. Please enable bluetooth to start scanning for devices", "OK");
                         StatusText = "Bluetooth turned off";
                         return;
                     }
@@ -108,14 +123,14 @@ namespace WindesHeartApp.ViewModels
                     //If started scanning
                     if (Windesheart.StartScanning(OnDeviceFound))
                     {
-                        DevicePage.ScanButton.Text = "Stop scanning";
+                        ScanButtonText = "Stop scanning";
                         StatusText = "Scanning...";
                         IsLoading = true;
                     }
                     else
                     {
                         StatusText = "Could not start scanning.";
-                        DevicePage.ScanButton.Text = "Scan for devices";
+                        ScanButtonText = "Scan for devices";
                     }
                 }
             }
@@ -125,7 +140,7 @@ namespace WindesHeartApp.ViewModels
             }
         }
 
-        /// <summary>
+        /// <summary> f
         /// Called when leaving the page
         /// </summary>
         public void OnDisappearing()
@@ -134,6 +149,8 @@ namespace WindesHeartApp.ViewModels
             Windesheart.StopScanning();
             IsLoading = false;
             StatusText = "";
+            ScanButtonText = "Scan for devices";
+            DeviceList = new ObservableCollection<BLEDevice>();
         }
 
         private void OnDeviceFound(BLEDevice device)
@@ -145,12 +162,12 @@ namespace WindesHeartApp.ViewModels
         {
             try
             {
-                DevicePage.ScanButton.Text = "Scan for devices";
+                ScanButtonText = "Scan for devices";
                 Windesheart.StopScanning();
 
                 StatusText = "Connecting...";
                 IsLoading = true;
-                device.Connect(CallbackHandler.OnConnetionCallBack);
+                device?.Connect(CallbackHandler.OnConnect);
             }
             catch (Exception e)
             {

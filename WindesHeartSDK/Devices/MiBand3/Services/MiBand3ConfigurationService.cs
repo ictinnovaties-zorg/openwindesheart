@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Text;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
@@ -57,6 +58,37 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             else
             {
                 await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DateFormat_MM_dd_YYYY);
+            }
+        }
+
+        /// <summary>
+        /// Set the step target on the Mi Band. Max value of 2 bytes (around 65.000)
+        /// </summary>
+        /// <param name="goal"></param>
+        public async void SetFitnessGoal(int goal)
+        {
+            var beginCommand = new byte[] { 0x10, 0x0, 0x0 };
+            var endCommand = new byte[] { 0, 0 };
+            var goalBytes = BitConverter.GetBytes((ushort) goal);
+
+            byte[] CommandBytes = new byte[beginCommand.Length + endCommand.Length + goalBytes.Length];
+
+            Buffer.BlockCopy(beginCommand, 0, CommandBytes, 0, beginCommand.Length);
+            Buffer.BlockCopy(goalBytes, 0, CommandBytes, beginCommand.Length, goalBytes.Length);
+            Buffer.BlockCopy(endCommand, 0, CommandBytes, beginCommand.Length + goalBytes.Length, endCommand.Length);
+
+            await BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic8UserInfo).Write(CommandBytes);
+        }
+
+        public async void EnableStepGoalNotification(bool enable)
+        {
+            if (enable)
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableGoalNotification);
+            }
+            else
+            {
+                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableGoalNotification);
             }
         }
 

@@ -3,6 +3,7 @@ using Foundation;
 using System;
 using System.IO;
 using UIKit;
+using WindesHeartApp.Data;
 using WindesHeartApp.Data.Repository;
 using WindesHeartApp.Resources;
 
@@ -23,12 +24,9 @@ namespace WindesHeartApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library",
-                "WindesHeart.db");
-
             FormsControls.Touch.Main.Init();
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App(new HeartrateRepository(dbPath), new SleepRepository(dbPath), new StepsRepository(dbPath), new SettingsRepository(dbPath)));
+            LoadApplication(new App());
 
             Globals.ScreenHeight = (int)UIScreen.MainScreen.Bounds.Height;
             Globals.ScreenWidth = (int)UIScreen.MainScreen.Bounds.Width;
