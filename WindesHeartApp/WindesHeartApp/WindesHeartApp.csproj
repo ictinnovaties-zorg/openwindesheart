@@ -28,9 +28,6 @@
     <Compile Update="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\TestPage.xaml.cs">
-      <DependentUpon>TestPage.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>

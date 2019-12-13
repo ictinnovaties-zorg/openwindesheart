@@ -88,6 +88,7 @@ namespace WindesHeartApp.ViewModels
                 }
             }
         }
+        
         public void HourIndexChanged(object sender, EventArgs e)
         {
             Picker picker = sender as Picker;

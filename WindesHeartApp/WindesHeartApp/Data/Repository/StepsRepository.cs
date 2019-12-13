@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
@@ -13,9 +14,9 @@ namespace WindesHeartApp.Data.Repository
     {
         private readonly DatabaseContext _databaseContext;
 
-        public StepsRepository(string dbPath)
+        public StepsRepository(DatabaseContext databaseContext)
         {
-            _databaseContext = new DatabaseContext(dbPath);
+            _databaseContext = databaseContext;
         }
 
         public async Task<IEnumerable<Step>> GetAllAsync()
@@ -23,7 +24,7 @@ namespace WindesHeartApp.Data.Repository
             try
             {
                 var steps = await _databaseContext.Steps.ToListAsync();
-                return steps;
+                return steps.OrderBy(x => x.DateTime).ToList();
             }
             catch (Exception e)
             {
@@ -38,6 +39,20 @@ namespace WindesHeartApp.Data.Repository
             {
                 var tracking = await _databaseContext.Steps.AddAsync(step);
                 return tracking.State == EntityState.Added;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public async Task<bool> AddRangeAsync(List<Step> steps)
+        {
+            try
+            {
+                await _databaseContext.Steps.AddRangeAsync(steps);
+                return true;
             }
             catch (Exception e)
             {

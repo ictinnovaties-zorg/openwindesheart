@@ -5,6 +5,7 @@ using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -13,11 +14,10 @@ namespace WindesHeartApp.Services
         private static readonly string _key = "LastConnectedDeviceGuid";
 
         //OnHeartrateChange/Measurement
-        public static async void ChangeHeartRate(WindesHeartSDK.Models.Heartrate heartrate)
+        public static void ChangeHeartRate(Heartrate heartrate)
         {
             if (heartrate.HeartrateValue == 0)
                 return;
-            Globals.HeartratePageViewModel.Heartrate = heartrate.HeartrateValue;
             Globals.HomePageViewModel.Heartrate = heartrate.HeartrateValue;
         }
 
@@ -38,18 +38,20 @@ namespace WindesHeartApp.Services
         {
             if (result == ConnectionResult.Succeeded)
             {
-                Globals.SamplesService.EmptyDatabase();
                 Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
-                Windesheart.ConnectedDevice.EnableRealTimeHeartrate(CallbackHandler.ChangeHeartRate);
-                Windesheart.ConnectedDevice.EnableRealTimeBattery(CallbackHandler.ChangeBattery);
-                Windesheart.ConnectedDevice.EnableRealTimeSteps(CallbackHandler.OnStepsUpdated);
+                Windesheart.ConnectedDevice.EnableRealTimeHeartrate(ChangeHeartRate);
+                Windesheart.ConnectedDevice.EnableRealTimeBattery(ChangeBattery);
+                Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsUpdated);
                 Windesheart.ConnectedDevice.EnableSleepTracking(true);
                 Windesheart.ConnectedDevice.SetActivateOnLiftWrist(true);
-                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
-                Globals.DevicePageViewModel.StatusText = "Connected";
-                Globals.DevicePageViewModel.IsLoading = false;
                 Windesheart.ConnectedDevice.SetTime(DateTime.Now);
                 Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnectCallBack);
+                Windesheart.ConnectedDevice.EnableFitnessGoalNotification(true);
+                Windesheart.ConnectedDevice.SetFitnessGoal(5000);
+                Globals.DevicePageViewModel.StatusText = "Connected";
+                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
+                Globals.DevicePageViewModel.IsLoading = false;
+                Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 Globals.SamplesService.StartFetching();
 
                 App.Current.Properties.TryGetValue(_key, out object storedKey);

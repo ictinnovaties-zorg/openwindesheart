@@ -1,9 +1,8 @@
 ﻿using FormsControls.Base;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
-using System;
+using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
-using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
@@ -12,10 +11,10 @@ namespace WindesHeartApp
 {
     public partial class App : Application
     {
-        public App(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository)
+        public App(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, DatabaseContext databaseContext)
         {
             InitializeComponent();
-            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository);
+            Globals.BuildGlobals(heartrateRepository, sleepRepository, stepsRepository, databaseContext);
             MainPage = new AnimationNavigationPage(new HomePage());
         }
 

@@ -1,6 +1,7 @@
 ﻿using Plugin.Settings;
 using Plugin.Settings.Abstractions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Services;
 using WindesHeartApp.ViewModels;
@@ -17,7 +18,7 @@ namespace WindesHeartApp.Resources
         public static DevicePageViewModel DevicePageViewModel;
         public static HomePageViewModel HomePageViewModel;
         public static SettingsPageViewModel SettingsPageViewModel;
-        public static StepsPageViewModel StepsViewModel;
+        public static StepsPageViewModel StepsPageViewModel;
         public static SleepPageViewModel SleepPageViewModel;
 
         public static double ScreenHeight { get; set; }
@@ -29,6 +30,10 @@ namespace WindesHeartApp.Resources
         public static ISleepRepository SleepRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
 
+        public static DatabaseContext DatabaseContext { get; set; }
+        public static Dictionary<string, Color> ColorDictionary;
+        public static Dictionary<string, string> FormatDictionary;
+
         public static int DailyStepsGoal
         {
             get => AppSettings.GetValueOrDefault(nameof(DailyStepsGoal), 10000);
@@ -37,13 +42,12 @@ namespace WindesHeartApp.Resources
 
         public static Dictionary<string, string> LanguageDictionary;
 
-
-        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository)
+        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, DatabaseContext databaseContext)
         {
             StepsRepository = stepsRepository;
             SleepRepository = sleepRepository;
             HeartrateRepository = heartrateRepository;
-            HeartratePageViewModel = new HeartratePageViewModel(HeartrateRepository);
+            HeartratePageViewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsViewModel = new StepsPageViewModel(StepsRepository);
             SettingsPageViewModel = new SettingsPageViewModel();

@@ -34,7 +34,7 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
-            Globals.StepsViewModel.OnAppearing();
+            Globals.StepsPageViewModel.OnAppearing();
         }
 
         private void BuildPage()
@@ -54,7 +54,7 @@ namespace WindesHeartApp.Pages
             };
             AbsoluteLayout.SetLayoutFlags(previousBtn, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(previousBtn, new Rectangle(0.3, 0.135, 0.1, 0.1));
-            previousBtn.Clicked += Globals.StepsViewModel.PreviousDayBtnClick;
+            previousBtn.Clicked += Globals.StepsPageViewModel.PreviousDayBtnClick;
             absoluteLayout.Children.Add(previousBtn);
 
             ImageButton nextBtn = new ImageButton
@@ -64,7 +64,7 @@ namespace WindesHeartApp.Pages
             };
             AbsoluteLayout.SetLayoutFlags(nextBtn, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(nextBtn, new Rectangle(0.7, 0.135, 0.1, 0.1));
-            nextBtn.Clicked += Globals.StepsViewModel.NextDayBtnClick;
+            nextBtn.Clicked += Globals.StepsPageViewModel.NextDayBtnClick;
             absoluteLayout.Children.Add(nextBtn);
 
             CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black, "", 15);
@@ -98,37 +98,37 @@ namespace WindesHeartApp.Pages
         {
             var culture = CultureInfo.CurrentCulture;
 
-            int fontsize = 14;
+            int fontsize = 8;
             float height = 0.84f;
 
             DateTime today = DateTime.Now;
 
             int size = (int)(Globals.ScreenHeight / 100 * 8.0);
-            Day1Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), Globals.StepsViewModel.Day1BtnClick, 0.05, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day1Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-6).DayOfWeek), Globals.StepsPageViewModel.Day1BtnClick, 0.05, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day1Button.BorderColor = Color.Black;
             Day1Button.BorderWidth = 2;
 
-            Day2Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-5).DayOfWeek), Globals.StepsViewModel.Day2BtnClick, 0.20, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day2Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-5).DayOfWeek), Globals.StepsPageViewModel.Day2BtnClick, 0.20, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day2Button.BorderColor = Color.Black;
             Day2Button.BorderWidth = 2;
 
-            Day3Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-4).DayOfWeek), Globals.StepsViewModel.Day3BtnClick, 0.35, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day3Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-4).DayOfWeek), Globals.StepsPageViewModel.Day3BtnClick, 0.35, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day3Button.BorderColor = Color.Black;
             Day3Button.BorderWidth = 2;
 
-            Day4Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-3).DayOfWeek), Globals.StepsViewModel.Day4BtnClick, 0.50, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day4Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-3).DayOfWeek), Globals.StepsPageViewModel.Day4BtnClick, 0.50, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day4Button.BorderColor = Color.Black;
             Day4Button.BorderWidth = 2;
 
-            Day5Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-2).DayOfWeek), Globals.StepsViewModel.Day5BtnClick, 0.65, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day5Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-2).DayOfWeek), Globals.StepsPageViewModel.Day5BtnClick, 0.65, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day5Button.BorderColor = Color.Black;
             Day5Button.BorderWidth = 2;
 
-            Day6Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-1).DayOfWeek), Globals.StepsViewModel.Day6BtnClick, 0.80, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            Day6Button = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.AddDays(-1).DayOfWeek), Globals.StepsPageViewModel.Day6BtnClick, 0.80, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             Day6Button.BorderColor = Color.Black;
             Day6Button.BorderWidth = 2;
 
-            TodayButton = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.DayOfWeek), Globals.StepsViewModel.TodayBtnClick, 0.95, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            TodayButton = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.DayOfWeek), Globals.StepsPageViewModel.TodayBtnClick, 0.95, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             TodayButton.BorderColor = Color.Black;
             TodayButton.BorderWidth = 2;
 
