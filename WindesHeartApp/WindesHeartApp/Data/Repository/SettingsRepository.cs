@@ -27,9 +27,5 @@ namespace WindesHeartApp.Data.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<string>> HeartratesByQueryAsync(Func<string, bool> predicate)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
