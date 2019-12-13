@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Plugin.Settings;
+using Plugin.Settings.Abstractions;
+using System.Collections.Generic;
 using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Services;
@@ -9,6 +11,8 @@ namespace WindesHeartApp.Resources
 {
     public static class Globals
     {
+        private static ISettings AppSettings => CrossSettings.Current;
+
         public static HeartRatePageViewModel HeartratePageViewModel;
         public static SamplesService SamplesService { get; private set; }
         public static DevicePageViewModel DevicePageViewModel;
@@ -16,6 +20,7 @@ namespace WindesHeartApp.Resources
         public static SettingsPageViewModel SettingsPageViewModel;
         public static StepsPageViewModel StepsPageViewModel;
         public static SleepPageViewModel SleepPageViewModel;
+
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
         public static Color PrimaryColor { get; set; } = Color.FromHex("#96d1ff");
@@ -23,47 +28,30 @@ namespace WindesHeartApp.Resources
         public static Color LightTextColor { get; set; } = Color.FromHex("#999999");
         public static IStepsRepository StepsRepository { get; set; }
         public static ISleepRepository SleepRepository { get; set; }
-        public static ISettingsRepository SettingsRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
-        public static float DailyStepsGoal { get; internal set; }
-        public static Dictionary<string, Color> ColorDictionary;
         public static Dictionary<string, string> FormatDictionary;
-
+        public static Dictionary<string, string> LanguageDictionary;
         public static Database Database;
 
-
-        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, ISettingsRepository settingsRepository, Database database)
+        public static void BuildGlobals(IHeartrateRepository heartrateRepository, ISleepRepository sleepRepository, IStepsRepository stepsRepository, Database database)
         {
-            DailyStepsGoal = 1000;
             StepsRepository = stepsRepository;
             SleepRepository = sleepRepository;
-            SettingsRepository = settingsRepository;
             HeartrateRepository = heartrateRepository;
             Database = database;
             HeartratePageViewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsPageViewModel = new StepsPageViewModel(StepsRepository);
-            SettingsPageViewModel = new SettingsPageViewModel(SettingsRepository);
-            SleepPageViewModel = new SleepPageViewModel(SleepRepository);
+            SettingsPageViewModel = new SettingsPageViewModel();
+            SleepPageViewModel = new SleepPageViewModel(sleepRepository);
             DevicePageViewModel = new DevicePageViewModel();
             HomePageViewModel = new HomePageViewModel();
-            ColorDictionary = new Dictionary<string, Color>
+
+            LanguageDictionary = new Dictionary<string, string>
             {
-                { "Aqua", Color.Aqua},
-                { "Black", Color.Black},
-                { "LightBlue (Default)", Color.FromHex("#96d1ff")}, { "Fucshia", Color.Fuchsia },
-                { "Gray", Color.Gray }, { "Green", Color.Green },
-                { "Lime", Color.Lime }, { "Maroon", Color.Maroon },
-                { "Navy", Color.Navy }, { "Olive", Color.Olive },
-                { "Purple", Color.Purple }, { "Red", Color.Red },
-                { "Silver", Color.Silver }, { "Teal", Color.Teal },
-                { "White", Color.White }, { "Yellow", Color.Yellow }
-            };
-            FormatDictionary = new Dictionary<string, string>
-            {
-                {"NL", "nl-NL"},
-                {"EN", "en-EN"},
-                {"DU", "du-DU"}
+                {"Nederlands", "nl-NL"},
+                {"English", "en-EN"},
+                {"Deutsch", "de-DE"}
             };
         }
     }
