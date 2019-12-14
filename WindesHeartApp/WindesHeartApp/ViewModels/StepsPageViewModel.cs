@@ -143,27 +143,31 @@ namespace WindesHeartApp.ViewModels
             return stepCount;
         }
 
-        public async void UpdateChart(int stepCount)
+        public async void UpdateChart(float stepCount)
         {
             List<Entry> entries = new List<Entry>();
 
-            float percentageDone = (float)stepCount / DeviceSettings.DailyStepsGoal;
+            float percentageDone = (float)stepCount / (float)DeviceSettings.DailyStepsGoal;
 
             //Add part done
             entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
-
-            //Update labels
-            StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
-
             double kilometers = (double)stepCount / 1000;
-            StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
 
-            StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
+            if(StepsPage.CurrentStepsLabel != null)
+            { 
+                //Update labels
+                StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
 
+
+                StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
+
+                StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
+            }
+            
             //If goal not reached, fill other part transparent
             if (percentageDone < 1)
             {
-                float percentageLeft = 1 - percentageDone;
+                float percentageLeft = 1f - percentageDone;
                 entries.Add(new Entry(percentageLeft) { Color = SKColors.Transparent });
             }
 
