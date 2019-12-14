@@ -118,7 +118,9 @@ namespace WindesHeartApp.ViewModels
 
                 if (Interval != 0 && Interval != 1)
                 {
-                    heartrates = heartrates.Where((x, i) => i % Interval == 0);
+                    heartrates = heartrates
+                        .Where(x => x.HeartrateValue != 0)
+                        .Where((x, i) => i % Interval == 0);
                 }
 
                 List<Entry> list = new List<Entry>();
