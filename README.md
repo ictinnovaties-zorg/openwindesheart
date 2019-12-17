@@ -34,25 +34,23 @@ As this SDK has not been tested with other devices, we can not guarantee a worki
 
 ## Documentation
 
-* [Scanning]()  
-* [Connecting]()  
-* [Reading data]()
-* [Reading samples]()
-* [Supported settings]()
-* [Disconnecting]()
+* [Scanning](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Scanning.md)  
+* [Connecting](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Connecting.md)  
+* [Reading data](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Readingdata.md)
+* [Reading samples](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Samples.md)
+* [Supported settings](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Settings.md)
+* [Disconnecting](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Disconnecting.md)
 
 ## SETUP  
 
-1. Clone this repository into your solution and manage a dependency from your mobile-project to this one.  
+* Clone this repository into your solution and manage a dependency from your mobile-project to this one.  
 
-2. Carefully read the docs for implementation of different features.
+* Carefully read the docs for implementation of different features. For a working example, have a look at the Xamarin Forms project on this page.
 
-3. Implement the features in your mobile-application the way you want them!
-
-For a working example, have a look at the Xamarin Forms project on this page.
+* Implement the features in your mobile-application the way you want them!
 
 ## Credits
 
 We would like to thank Hogeschool Windesheim and the lecturate for ICT Innovations in healthcare for giving us this assignment.  
 
-Further we would like to thank Allan Ritchie for creating the [ACR Reactive BluetoothLE Plugin](https://github.com/aritchie/bluetoothle). Without this open-source library our project would not have been possible.
+Further we would like to thank Allan Ritchie for creating the [ACR Reactive BluetoothLE Plugin](https://github.com/aritchie/bluetoothle). Without this open-source library our project would not have been finished within the specified amount of time.
