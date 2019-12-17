@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
+using WindesHeartApp.Resources;
 using WindesHeartSDK;
+using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -172,7 +174,7 @@ namespace WindesHeartApp.ViewModels
                 StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
 
                 double calories = stepCount * 0.4;
-                StepsPage.CalLabel.Text = Math.Round(calories, 2) + " Calories";
+                StepsPage.CaloriesLabel.Text = Math.Round(calories, 2) + " Calories";
             }
             
             //If goal not reached, fill other part transparent
