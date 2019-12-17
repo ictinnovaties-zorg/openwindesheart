@@ -197,4 +197,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\arrow_right.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Refresh.png" />
+  </ItemGroup>
 </Project>

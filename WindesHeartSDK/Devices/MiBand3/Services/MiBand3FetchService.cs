@@ -25,6 +25,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         private IDisposable _charActivitySub;
 
         private Action<List<ActivitySample>> _callback;
+        private Action<float> _progressCallback;
 
         private int _expectedSamples;
 
@@ -37,12 +38,13 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <summary>
         /// Clear the list of samples and start fetching
         /// </summary>
-        public async void StartFetching(DateTime date, Action<List<ActivitySample>> callback)
+        public async void StartFetching(DateTime date, Action<List<ActivitySample>> callback, Action<float> progressCallback)
         {
             _samples.Clear();
             _expectedSamples = 0;
             await InitiateFetching(date);
             _callback = callback;
+            _progressCallback = progressCallback;
         }
 
         /// <summary>
@@ -137,6 +139,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 else
                 {
                     Trace.WriteLine("else-statement");
+                    _progressCallback((float)(_expectedSamples));
                     await InitiateFetching(_lastTimestamp.AddMinutes(1));
                 }
             }

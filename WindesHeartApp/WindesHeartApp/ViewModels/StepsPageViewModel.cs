@@ -7,11 +7,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
-using WindesHeartApp.Resources;
 using WindesHeartSDK;
-using WindesHeartSDK.Models;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -143,6 +142,13 @@ namespace WindesHeartApp.ViewModels
 
             //Get stepcount for that day by adding them together
             int stepCount = 0;
+
+            if(SelectedDate == StartDate && Windesheart.ConnectedDevice != null)
+            {
+                var todaySteps = await Windesheart.ConnectedDevice.GetSteps();
+                return todaySteps.StepCount;
+            }
+
             steps.ForEach(x => stepCount += x.StepCount);
             return stepCount;
         }

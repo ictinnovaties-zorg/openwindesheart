@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WindesHeartApp.Pages;
@@ -19,6 +20,8 @@ namespace WindesHeartApp.ViewModels
         private bool _isLoading;
         public bool toggle;
         private string _bandnameLabel;
+        private float _fetchProgress;
+        private bool _fetchProgressVisible;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public HomePageViewModel()
@@ -27,6 +30,7 @@ namespace WindesHeartApp.ViewModels
             {
                 ReadCurrentBattery();
                 BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+                FetchProgressVisible = true;
             }
 
             toggle = false;
@@ -122,61 +126,86 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public float FetchProgress
+        {
+            get => _fetchProgress;
+            set
+            {
+                _fetchProgress = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayFetchProgress));
+
+
+            }
+        }
+
+        public bool FetchProgressVisible
+        {
+            get => _fetchProgressVisible;
+            set
+            {
+                _fetchProgressVisible = value;
+                OnPropertyChanged();
+            }
+        }
         public string DisplayHeartRate => Heartrate != 0 ? $"Last Heartbeat: {Heartrate.ToString()}" : "";
 
         public string DisplayBattery => Battery != 0 ? $"{Battery.ToString()}%" : "";
 
+        public float DisplayFetchProgress => FetchProgress != 0 ? FetchProgress : 0;
+
         public async void AboutButtonClicked(object sender, EventArgs args)
         {
-            ToggleEnableButtons();
+            EnableDisableButtons(false);
 
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new AboutPage());
             IsLoading = false;
-            ToggleEnableButtons();
+            EnableDisableButtons(true);
 
         }
         public async void SettingsButtonClicked(object sender, EventArgs args)
         {
-            ToggleEnableButtons();
+            EnableDisableButtons(false);
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SettingsPage()
             {
                 BindingContext = Globals.SettingsPageViewModel
             });
             IsLoading = false;
-            ToggleEnableButtons();
+            EnableDisableButtons(true);
         }
 
         public async void StepsButtonClicked(object sender, EventArgs args)
         {
-            ToggleEnableButtons();
+            EnableDisableButtons(false);
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new StepsPage()
             {
                 BindingContext = Globals.StepsPageViewModel
             });
             IsLoading = false;
-            ToggleEnableButtons();
+            EnableDisableButtons(true);
         }
 
         public async void HeartrateButtonClicked(object sender, EventArgs args)
         {
-            ToggleEnableButtons();
+            EnableDisableButtons(false);
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new HeartratePage()
             {
                 BindingContext = Globals.HeartratePageViewModel
             });
             IsLoading = false;
-            ToggleEnableButtons();
+            EnableDisableButtons(true);
 
 
         }
 
         public async void SleepButtonClicked(object sender, EventArgs args)
         {
-            ToggleEnableButtons();
+            EnableDisableButtons(false);
 
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new SleepPage()
@@ -184,13 +213,13 @@ namespace WindesHeartApp.ViewModels
                 BindingContext = Globals.SleepPageViewModel
             });
             IsLoading = false;
-            ToggleEnableButtons();
+            EnableDisableButtons(true);
 
         }
 
         public async void DeviceButtonClicked(object sender, EventArgs args)
         {
-            ToggleEnableButtons();
+            EnableDisableButtons(false);
 
             IsLoading = true;
             await Application.Current.MainPage.Navigation.PushAsync(new DevicePage()
@@ -198,20 +227,32 @@ namespace WindesHeartApp.ViewModels
                 BindingContext = Globals.DevicePageViewModel
             });
             IsLoading = false;
-            ToggleEnableButtons();
+            EnableDisableButtons(true);
 
 
         }
 
-        public void ToggleEnableButtons()
+        public void EnableDisableButtons(bool enable)
         {
-            HomePage.SleepButton.IsEnabled = toggle;
-            HomePage.AboutButton.IsEnabled = toggle;
-            HomePage.SettingsButton.IsEnabled = toggle;
-            HomePage.StepsButton.IsEnabled = toggle;
-            HomePage.HeartrateButton.IsEnabled = toggle;
-            HomePage.DeviceButton.IsEnabled = toggle;
-            toggle = !toggle;
+            HomePage.SleepButton.IsEnabled = enable;
+            HomePage.AboutButton.IsEnabled = enable;
+            HomePage.SettingsButton.IsEnabled = enable;
+            HomePage.StepsButton.IsEnabled = enable;
+            HomePage.HeartrateButton.IsEnabled = enable;
+            HomePage.DeviceButton.IsEnabled = enable;
+        }
+
+        public void ShowFetchProgress(float progress) 
+        {
+            FetchProgress = progress;
+            if (progress == 100f)
+            {
+                FetchProgressVisible = false;
+            }
+            else
+            {
+                FetchProgressVisible = true;
+            }
         }
     }
 }

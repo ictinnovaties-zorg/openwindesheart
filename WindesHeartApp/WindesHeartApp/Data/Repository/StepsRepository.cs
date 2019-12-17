@@ -36,7 +36,7 @@ namespace WindesHeartApp.Data.Repository
                 return steps.Last().DateTime.AddMinutes(1);
             }
 
-            return DateTime.Now.AddMonths(-1);
+            return DateTime.Now.AddDays(-7);
         }
 
         public void RemoveAll()
