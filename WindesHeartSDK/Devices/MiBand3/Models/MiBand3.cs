@@ -159,6 +159,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
             Characteristics?.Clear();
 
+            CharacteristicDisposable?.Dispose();
             //Find unique characteristics
             CharacteristicDisposable = Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
             {

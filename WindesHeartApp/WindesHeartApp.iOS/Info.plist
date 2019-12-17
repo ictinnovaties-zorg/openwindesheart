@@ -41,7 +41,7 @@
 		<string>bluetooth-central</string>
 		<string>bluetooth-peripheral</string>
 	</array>
-	<key>NSLocationAlwaysUsageDescription</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need access to your location to make sure we can find your device</string>
 </dict>
 </plist>

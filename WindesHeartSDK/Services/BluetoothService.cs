@@ -171,7 +171,7 @@ namespace WindesHeartSDK
         /// <summary>
         /// Disconnect current device.
         /// </summary>
-        public void Disconnect(bool rememberDevice)
+        public void Disconnect(bool rememberDevice = true)
         {
             //Cancel the connection
             Console.WriteLine("Disconnecting device..");
@@ -202,8 +202,15 @@ namespace WindesHeartSDK
 
                     if (status == AdapterStatus.PoweredOn && Windesheart.ConnectedDevice != null && startListening)
                     {
+                        var tempConnectCallback = Windesheart.ConnectedDevice.ConnectionCallback;
+                        var DisconnectCallback = Windesheart.ConnectedDevice.DisconnectCallback;                       
                         var device = await GetKnownDevice(Windesheart.ConnectedDevice.Device.Uuid);
-                        device?.Connect(Windesheart.ConnectedDevice?.ConnectionCallback);
+
+                        if (DisconnectCallback != null)
+                        {
+                            device?.SubscribeToDisconnect(DisconnectCallback);
+                        }
+                        device?.Connect(tempConnectCallback);
                     }
                     startListening = true;
                 }
