@@ -66,6 +66,10 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.StatusText = "Connected";
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
                 Globals.DevicePageViewModel.IsLoading = false;
+
+                Globals.HomePageViewModel.ReadCurrentBattery();
+                Globals.HomePageViewModel.BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+
                 Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 Globals.SamplesService.StartFetching();
 
