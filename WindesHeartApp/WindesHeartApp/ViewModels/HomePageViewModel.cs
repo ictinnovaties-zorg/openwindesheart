@@ -245,7 +245,14 @@ namespace WindesHeartApp.ViewModels
         public void ShowFetchProgress(float progress) 
         {
             FetchProgress = progress;
-            FetchProgressVisible = true;
+            if (progress == 100f)
+            {
+                FetchProgressVisible = false;
+            }
+            else
+            {
+                FetchProgressVisible = true;
+            }
         }
     }
 }

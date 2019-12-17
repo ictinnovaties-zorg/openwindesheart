@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
+using WindesHeartSDK;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -75,7 +77,7 @@ namespace WindesHeartApp.ViewModels
         }
 
 
-        private void UpdateInfo()
+        private async void UpdateInfo()
         {
             if (SelectedDate == StartDate)
             {
@@ -94,7 +96,7 @@ namespace WindesHeartApp.ViewModels
             UpdateChart();
         }
 
-        private int GetCurrentSteps()
+        private async Task<int> GetCurrentSteps()
         {
             List<Step> steps = StepInfo.Where(s => s.DateTime.Year == SelectedDate.Year &&
             s.DateTime.Month == SelectedDate.Month &&
@@ -104,13 +106,20 @@ namespace WindesHeartApp.ViewModels
 
             //Get stepcount for that day by adding them together
             int stepCount = 0;
+
+            if(SelectedDate == StartDate && Windesheart.ConnectedDevice != null)
+            {
+                var todaySteps = await Windesheart.ConnectedDevice.GetSteps();
+                return todaySteps.StepCount;
+            }
+
             steps.ForEach(x => stepCount += x.StepCount);
             return stepCount;
         }
 
-        public void UpdateChart()
+        public async void UpdateChart()
         {
-            int stepCount = GetCurrentSteps();
+            int stepCount = await GetCurrentSteps();
 
             List<Entry> entries = new List<Entry>();
 
