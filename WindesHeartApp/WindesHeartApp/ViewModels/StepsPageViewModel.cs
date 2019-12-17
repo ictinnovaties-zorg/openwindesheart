@@ -109,9 +109,13 @@ namespace WindesHeartApp.ViewModels
             //If looking at today
             if (SelectedDate.Equals(DateTime.Today))
             {
+                //Update the chart on main thread
+                Device.BeginInvokeOnMainThread(() =>
+                {
                 //Update that info
                 Debug.WriteLine("Updating chart!!");
-                UpdateChart(steps);
+                    UpdateChart(steps);
+                });
             }
         }
 
@@ -147,7 +151,7 @@ namespace WindesHeartApp.ViewModels
         {
             List<Entry> entries = new List<Entry>();
 
-            float percentageDone = (float)stepCount / (float)DeviceSettings.DailyStepsGoal;
+            float percentageDone = stepCount / DeviceSettings.DailyStepsGoal;
 
             //Add part done
             entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
@@ -161,7 +165,8 @@ namespace WindesHeartApp.ViewModels
 
                 StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
 
-                StepsPage.KcalLabel.Text = ((double)(stepCount / 20) / 1000) + " Kcal";
+                double calories = stepCount * 0.4;
+                StepsPage.CalLabel.Text = Math.Round(calories, 2) + " Calories";
             }
             
             //If goal not reached, fill other part transparent
