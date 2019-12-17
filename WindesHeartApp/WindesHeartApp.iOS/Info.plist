@@ -32,13 +32,16 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.HKTR.OpenWindesHeart</string>
+	<string>com.HKTR.WindesHeartApp</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>WindesHeart wants to use bluetooth</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>bluetooth-central</string>
 		<string>bluetooth-peripheral</string>
 	</array>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need access to your location to make sure we can find your device</string>
 </dict>
 </plist>
