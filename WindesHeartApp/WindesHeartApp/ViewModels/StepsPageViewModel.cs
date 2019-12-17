@@ -131,8 +131,16 @@ namespace WindesHeartApp.ViewModels
                 if (Windesheart.ConnectedDevice != null && Windesheart.ConnectedDevice.isConnected())
                 {
                     //Read stepcount from device
-                    StepInfo currentSteps = await Windesheart.ConnectedDevice.GetSteps();
-                    return currentSteps.StepCount;
+                    try
+                    {
+                        StepInfo currentSteps = await Windesheart.ConnectedDevice.GetSteps();
+                        return currentSteps.StepCount;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Error while trying to get stepcount: " + e.Message);
+                        Debug.WriteLine("Falling back to data from DB...");
+                    }
                 }
             }
 
