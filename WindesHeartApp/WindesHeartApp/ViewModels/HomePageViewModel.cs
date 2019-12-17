@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WindesHeartApp.Pages;
@@ -19,6 +20,8 @@ namespace WindesHeartApp.ViewModels
         private bool _isLoading;
         public bool toggle;
         private string _bandnameLabel;
+        private float _fetchProgress;
+        private bool _fetchProgressVisible;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public HomePageViewModel()
@@ -27,6 +30,7 @@ namespace WindesHeartApp.ViewModels
             {
                 ReadCurrentBattery();
                 BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+                FetchProgressVisible = true;
             }
 
             toggle = false;
@@ -122,9 +126,34 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public float FetchProgress
+        {
+            get => _fetchProgress;
+            set
+            {
+                _fetchProgress = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayFetchProgress));
+
+
+            }
+        }
+
+        public bool FetchProgressVisible
+        {
+            get => _fetchProgressVisible;
+            set
+            {
+                _fetchProgressVisible = value;
+                OnPropertyChanged();
+            }
+        }
         public string DisplayHeartRate => Heartrate != 0 ? $"Last Heartbeat: {Heartrate.ToString()}" : "";
 
         public string DisplayBattery => Battery != 0 ? $"{Battery.ToString()}%" : "";
+
+        public float DisplayFetchProgress => FetchProgress != 0 ? FetchProgress : 0;
 
         public async void AboutButtonClicked(object sender, EventArgs args)
         {
@@ -211,6 +240,12 @@ namespace WindesHeartApp.ViewModels
             HomePage.StepsButton.IsEnabled = enable;
             HomePage.HeartrateButton.IsEnabled = enable;
             HomePage.DeviceButton.IsEnabled = enable;
+        }
+
+        public void ShowFetchProgress(float progress) 
+        {
+            FetchProgress = progress;
+            FetchProgressVisible = true;
         }
     }
 }
