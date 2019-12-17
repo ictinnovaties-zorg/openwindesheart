@@ -17,8 +17,6 @@ namespace WindesHeartApp.Pages
         public static Label KilometersLabel;
         public static Label CaloriesLabel;
 
-        public static Button ToggleRealTimeStepsButton;
-
         public static Button Day1Button;
         public static Button Day2Button;
         public static Button Day3Button;
