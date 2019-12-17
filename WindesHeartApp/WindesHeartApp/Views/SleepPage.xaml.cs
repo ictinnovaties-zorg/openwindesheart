@@ -26,6 +26,7 @@ namespace WindesHeartApp.Views
 
         public SleepPage()
         {
+            BindingContext = Globals.SleepPageViewModel;
             InitializeComponent();
             BuildPage();
         }
@@ -98,6 +99,8 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutFlags(chart, AbsoluteLayoutFlags.All);
             AbsoluteLayout.SetLayoutBounds(chart, new Rectangle(0.5, 0.48, 0.9, 0.26));
             absoluteLayout.Children.Add(chart);
+
+            PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.51, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
 
             //Add hour labels
             int starthour = 20;
