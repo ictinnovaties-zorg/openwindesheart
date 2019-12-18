@@ -15,7 +15,8 @@ namespace WindesHeartApp.Pages
         public static Label CurrentStepsLabel;
         public static Label CurrentDayLabel;
         public static Label KilometersLabel;
-        public static Label KcalLabel;
+        public static Label CaloriesLabel;
+
         public static Button Day1Button;
         public static Button Day2Button;
         public static Button Day3Button;
@@ -82,8 +83,8 @@ namespace WindesHeartApp.Pages
             AbsoluteLayout.SetLayoutBounds(chart, new Rectangle(0.5, 0.25, 0.60, 0.60));
             absoluteLayout.Children.Add(chart);
 
-            KcalLabel = PageBuilder.AddLabel(absoluteLayout, "0 Kcal", 0.5, 0.65, Color.Black, "", 0);
-            KcalLabel.FontSize = 20;
+            CaloriesLabel = PageBuilder.AddLabel(absoluteLayout, "0 Calories", 0.5, 0.65, Color.Black, "", 0);
+            CaloriesLabel.FontSize = 20;
 
             KilometersLabel = PageBuilder.AddLabel(absoluteLayout, "0 Kilometers", 0.5, 0.73, Color.Black, "", 0);
             KilometersLabel.FontSize = 20;
