@@ -110,19 +110,20 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                             return;
                         }
                         Trace.WriteLine("Expected Samples: " + _expectedSamples);
+
+                        if (result.Data.Length > 6) {
+                            // Get the timestamp of the first sample
+                            byte[] DateTimeBytes = new byte[8];
+                            Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
+                            _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
+
+                            Trace.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
+
+                            // Write 0x02 to tell the band to start the fetching process
+                            await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
+                            Trace.WriteLine("Done writing 0x02");
+                        }
                     }
-
-
-                    // Get the timestamp of the first sample
-                    byte[] DateTimeBytes = new byte[8];
-                    Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
-                    _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
-
-                    Trace.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
-
-                    // Write 0x02 to tell the band to start the fetching process
-                    await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
-                    Trace.WriteLine("Done writing 0x02");
                 }
 
                 // Check if done fetching
