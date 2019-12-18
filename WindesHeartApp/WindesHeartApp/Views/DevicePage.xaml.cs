@@ -30,7 +30,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
-
+            
             #region device ListView
             var deviceTemplate = new DataTemplate(() =>
             {

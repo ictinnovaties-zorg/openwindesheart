@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WindesHeartSdk.Model;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Devices.MiBand3Device.Services;
 using WindesHeartSDK.Models;

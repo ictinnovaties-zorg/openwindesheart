@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSdk.Model;
+using WindesHeartSDK.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Helpers;
 using static WindesHeartSDK.Helpers.ConversionHelper;
