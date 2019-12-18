@@ -92,64 +92,66 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <param name="result"></param>
         public async void HandleUnknownChar(CharacteristicGattResult result)
         {
-            // Create an empty byte array and copy the response type to it
-            byte[] responseByte = new byte[3];
-            Buffer.BlockCopy(result.Data, 0, responseByte, 0, 3);
-
-            // Check if our request was accepted
-            if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x01, 0x01 }))
+            if (result.Data.Length >= 3)
             {
-                if (result.Data.Length > 3)
+                // Create an empty byte array and copy the response type to it
+                byte[] responseByte = new byte[3];
+                Buffer.BlockCopy(result.Data, 0, responseByte, 0, 3);
+
+                // Check if our request was accepted
+                if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x01, 0x01 }))
                 {
-                    _expectedSamples = result.Data[5] << 16 | result.Data[4] << 8 | result.Data[3];
-                    if(_expectedSamples == 0)
+                    if (result.Data.Length > 3)
                     {
-                        _callback(_samples);
-                        return;
+                        _expectedSamples = result.Data[5] << 16 | result.Data[4] << 8 | result.Data[3];
+                        if (_expectedSamples == 0)
+                        {
+                            _callback(_samples);
+                            return;
+                        }
+                        Trace.WriteLine("Expected Samples: " + _expectedSamples);
                     }
-                    Trace.WriteLine("Expected Samples: " + _expectedSamples);
+
+
+                    // Get the timestamp of the first sample
+                    byte[] DateTimeBytes = new byte[8];
+                    Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
+                    _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
+
+                    Trace.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
+
+                    // Write 0x02 to tell the band to start the fetching process
+                    await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
+                    Trace.WriteLine("Done writing 0x02");
                 }
 
-
-                // Get the timestamp of the first sample
-                byte[] DateTimeBytes = new byte[8];
-                Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
-                _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
-
-                Trace.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
-
-                // Write 0x02 to tell the band to start the fetching process
-                await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
-                Trace.WriteLine("Done writing 0x02");
-
-
-            }
-            // Check if done fetching
-            else if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
-            {
-                Trace.WriteLine("Done Fetching: " + _samples.Count + " Samples");
-
-                Trace.WriteLine(_lastTimestamp >= DateTime.Now.AddMinutes(-1));
-                if (_lastTimestamp >= DateTime.Now.AddMinutes(-1))
+                // Check if done fetching
+                else if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
                 {
-                    _callback(_samples);
-                    _charActivitySub?.Dispose();
-                    _charUnknownSub?.Dispose();
+                    Trace.WriteLine("Done Fetching: " + _samples.Count + " Samples");
+
+                    Trace.WriteLine(_lastTimestamp >= DateTime.Now.AddMinutes(-1));
+                    if (_lastTimestamp >= DateTime.Now.AddMinutes(-1))
+                    {
+                        _callback(_samples);
+                        _charActivitySub?.Dispose();
+                        _charUnknownSub?.Dispose();
+                    }
+                    else
+                    {
+                        Trace.WriteLine("else-statement");
+                        _progressCallback((float)(_expectedSamples));
+                        await InitiateFetching(_lastTimestamp.AddMinutes(1));
+                    }
                 }
                 else
                 {
-                    Trace.WriteLine("else-statement");
-                    _progressCallback((float)(_expectedSamples));
-                    await InitiateFetching(_lastTimestamp.AddMinutes(1));
+                    Trace.WriteLine("Error while Fetching");
+                    _callback(_samples);
+                    // Error while fetching
+                    _charActivitySub?.Dispose();
+                    _charUnknownSub?.Dispose();
                 }
-            }
-            else
-            {
-                Trace.WriteLine("Error while Fetching");
-                _callback(_samples);
-                // Error while fetching
-                _charActivitySub?.Dispose();
-                _charUnknownSub?.Dispose();
             }
         }
 
