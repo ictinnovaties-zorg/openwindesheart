@@ -29,7 +29,7 @@ namespace WindesHeartApp.Pages
             BuildPage();
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             App.RequestLocationPermission();
             if (Windesheart.ConnectedDevice != null)
@@ -39,7 +39,7 @@ namespace WindesHeartApp.Pages
             {
                 if (App.Current.Properties.ContainsKey(_propertyKey))
                 {
-                    await HandleAutoConnect();
+                    HandleAutoConnect();
                 }
             }           
         }
