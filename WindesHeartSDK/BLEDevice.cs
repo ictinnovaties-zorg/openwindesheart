@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WindesHeartSdk.Model;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK

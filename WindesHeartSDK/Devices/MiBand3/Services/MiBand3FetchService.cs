@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSdk.Model;
+using WindesHeartSDK.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Helpers;
 using static WindesHeartSDK.Helpers.ConversionHelper;
@@ -102,24 +102,44 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <param name="result"></param>
         public async void HandleUnknownChar(CharacteristicGattResult result)
         {
-            // Create an empty byte array and copy the response type to it
-            byte[] responseByte = new byte[3];
-            Buffer.BlockCopy(result.Data, 0, responseByte, 0, 3);
-
-            // Check if our request was accepted
-            if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x01, 0x01 }))
+            if (result.Data.Length >= 3)
             {
-                if (result.Data.Length > 3)
+                // Create an empty byte array and copy the response type to it
+                byte[] responseByte = new byte[3];
+                Buffer.BlockCopy(result.Data, 0, responseByte, 0, 3);
+
+                // Check if our request was accepted
+                if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x01, 0x01 }))
                 {
-                    _expectedSamples = result.Data[5] << 16 | result.Data[4] << 8 | result.Data[3];
-                    if(_expectedSamples == 0)
+                    if (result.Data.Length > 3)
                     {
-                        _finishedCallback(_samples);
-                        return;
+                        _expectedSamples = result.Data[5] << 16 | result.Data[4] << 8 | result.Data[3];
+                        if (_expectedSamples == 0)
+                        {
+                            _finishedCallback(_samples);
+                            return;
+                        }
+                        Trace.WriteLine("Expected Samples: " + _expectedSamples);
+
+                        if (result.Data.Length > 6) {
+                            // Get the timestamp of the first sample
+                            byte[] DateTimeBytes = new byte[8];
+                            Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
+                            _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
+
+                            Trace.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
+
+                            // Write 0x02 to tell the band to start the fetching process
+                            await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
+                            Trace.WriteLine("Done writing 0x02");
+                        }
                     }
-                    Trace.WriteLine("Expected Samples: " + _expectedSamples);
                 }
 
+                // Check if done fetching
+                else if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
+                {
+                    Trace.WriteLine("Done Fetching: " + _samples.Count + " Samples");
 
                 // Get the timestamp of the first sample
                 byte[] DateTimeBytes = new byte[8];

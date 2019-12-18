@@ -4,7 +4,7 @@ using System.Diagnostics;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
-using WindesHeartSdk.Model;
+using WindesHeartSDK.Models;
 using WindesHeartSDK;
 using Xamarin.Forms;
 
@@ -89,7 +89,7 @@ namespace WindesHeartApp.Services
 
         private void AddHeartrate(DateTime datetime, ActivitySample sample)
         {
-            var heartRate = new Heartrate(datetime, sample.HeartRate != 255 ? sample.HeartRate : 0);
+            var heartRate = new WindesHeartApp.Models.Heartrate(datetime, sample.HeartRate != 255 ? sample.HeartRate : 0);
             _heartrateRepository.Add(heartRate);
         }
 
