@@ -1,8 +1,5 @@
-﻿using Plugin.Settings;
-using Plugin.Settings.Abstractions;
-using System;
+﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
@@ -13,8 +10,6 @@ namespace WindesHeartApp.ViewModels
 {
     public class SettingsPageViewModel : INotifyPropertyChanged
     {
-        private static ISettings AppSettings => CrossSettings.Current;
-
         private int _languageIndex = 0;
         private int _hourIndex = 0;
         private int _dateIndex = 0;
@@ -24,11 +19,6 @@ namespace WindesHeartApp.ViewModels
 
         public SettingsPageViewModel()
         {
-        }
-
-        private void OnPropertyChanged([CallerMemberName] string name = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public void OnAppearing()

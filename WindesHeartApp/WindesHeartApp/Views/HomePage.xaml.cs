@@ -30,7 +30,7 @@ namespace WindesHeartApp.Pages
             if (Windesheart.ConnectedDevice != null)
             {
                 Globals.HomePageViewModel.ReadCurrentBattery();
-                Globals.HomePageViewModel.BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+                Globals.HomePageViewModel.BandNameLabel = Windesheart.ConnectedDevice.Name;
             }
         }
 
@@ -50,7 +50,7 @@ namespace WindesHeartApp.Pages
             fetchProgressBar.SetBinding(ProgressBar.ProgressProperty, new Binding("FetchProgress"));
             fetchProgressBar.SetBinding(ProgressBar.IsVisibleProperty, new Binding("FetchProgressVisible"));
 
-            AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.15, 0.25, 0.95,-1));
+            AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.15, 0.25, 0.95, -1));
             AbsoluteLayout.SetLayoutFlags(fetchProgressBar, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
 
             absoluteLayout.Children.Add(fetchProgressBar);

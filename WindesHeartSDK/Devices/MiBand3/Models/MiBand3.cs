@@ -20,7 +20,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         private readonly MiBand3FetchService _fetchService;
         private readonly MiBand3ConfigurationService _configurationService;
 
-        public MiBand3(int rssi, IDevice device) : base(rssi, device)
+        public MiBand3(IDevice device) : base(device)
         {
             _batteryService = new MiBand3BatteryService(this);
             _heartrateService = new MiBand3HeartrateService(this);
@@ -42,7 +42,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             BluetoothService.Connect();
         }
 
-        public override void SubscribeToDisconnect(Action<Object> disconnectCallback)
+        public override void SubscribeToDisconnect(Action<object> disconnectCallback)
         {
             DisconnectCallback = disconnectCallback;
             Device.WhenDisconnected().Subscribe(observer => DisconnectCallback(observer));

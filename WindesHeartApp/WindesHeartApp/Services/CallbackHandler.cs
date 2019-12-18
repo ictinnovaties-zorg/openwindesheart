@@ -65,20 +65,20 @@ namespace WindesHeartApp.Services
                 }
 
                 Globals.DevicePageViewModel.StatusText = "Connected";
-                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
+                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEScanResult>();
                 Globals.DevicePageViewModel.IsLoading = false;
                 Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 Globals.SamplesService.StartFetching();
 
 
-                if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)
+                if (Windesheart.ConnectedDevice.Uuid != Guid.Empty)
                 {
                     if (App.Current.Properties.ContainsKey(_key))
                     {
                         App.Current.Properties.Remove(_key);
                     }
 
-                    App.Current.Properties.Add(_key, Windesheart.ConnectedDevice.Device.Uuid);
+                    App.Current.Properties.Add(_key, Windesheart.ConnectedDevice.Uuid);
                 }
             }
             else if (result == ConnectionResult.Failed)

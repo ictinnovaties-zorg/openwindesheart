@@ -95,15 +95,15 @@ namespace WindesHeartApp.Pages
             Grid grid = new Grid
             {
             };
-            Frame frame = new Frame();
-            frame.CornerRadius = 10;
-            frame.BorderColor = Color.White;
-            frame.BackgroundColor = Globals.SecondaryColor;
-            frame.HorizontalOptions = LayoutOptions.FillAndExpand;
-            frame.VerticalOptions = LayoutOptions.FillAndExpand;
-
-
-            frame.HasShadow = true;
+            Frame frame = new Frame
+            {
+                CornerRadius = 10,
+                BorderColor = Color.White,
+                BackgroundColor = Globals.SecondaryColor,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HasShadow = true
+            };
 
             grid.GestureRecognizers.Add(new TapGestureRecognizer
             {

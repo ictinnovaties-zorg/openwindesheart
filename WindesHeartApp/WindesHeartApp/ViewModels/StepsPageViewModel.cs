@@ -128,7 +128,7 @@ namespace WindesHeartApp.ViewModels
                 Console.WriteLine("Today selected!");
 
                 //If device is connected
-                if (Windesheart.ConnectedDevice != null && Windesheart.ConnectedDevice.isConnected())
+                if (Windesheart.ConnectedDevice != null && Windesheart.ConnectedDevice.IsConnected())
                 {
                     //Read stepcount from device
                     try

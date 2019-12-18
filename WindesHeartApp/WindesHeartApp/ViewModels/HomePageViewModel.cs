@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WindesHeartApp.Pages;
@@ -29,7 +28,7 @@ namespace WindesHeartApp.ViewModels
             if (Windesheart.ConnectedDevice != null)
             {
                 ReadCurrentBattery();
-                BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+                BandNameLabel = Windesheart.ConnectedDevice.Name;
                 FetchProgressVisible = true;
             }
 
@@ -242,7 +241,7 @@ namespace WindesHeartApp.ViewModels
             HomePage.DeviceButton.IsEnabled = enable;
         }
 
-        public void ShowFetchProgress(float progress) 
+        public void ShowFetchProgress(float progress)
         {
             FetchProgress = progress;
             if (progress == 100f)
