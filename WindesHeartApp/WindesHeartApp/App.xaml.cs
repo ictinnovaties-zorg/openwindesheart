@@ -16,7 +16,7 @@ namespace WindesHeartApp
             InitializeComponent();
             var database = new Database();
             Globals.BuildGlobals(new HeartrateRepository(database), new SleepRepository(database), new StepsRepository(database), database);
-            //database.EmptyDatabase();
+            database.EmptyDatabase();
             MainPage = new AnimationNavigationPage(new HomePage());
         }
 

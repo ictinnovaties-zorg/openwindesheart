@@ -82,12 +82,13 @@ namespace WindesHeartApp.Pages
                 ProgressColor = Color.Red,
                 HeightRequest = 20
             };
+
             fetchProgressBar.SetBinding(ProgressBar.ProgressProperty, new Binding("FetchProgress"));
             fetchProgressBar.SetBinding(ProgressBar.IsVisibleProperty, new Binding("FetchProgressVisible"));
 
             AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.15, 0.25, 0.95,-1));
             AbsoluteLayout.SetLayoutFlags(fetchProgressBar, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
-
+            
             absoluteLayout.Children.Add(fetchProgressBar);
             #endregion
 

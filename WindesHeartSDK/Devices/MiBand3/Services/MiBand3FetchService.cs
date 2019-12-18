@@ -24,11 +24,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         private IDisposable _charUnknownSub;
         private IDisposable _charActivitySub;
 
-        private Action<List<ActivitySample>> _callback;
-        private Action<float> _progressCallback;
+        private Action<List<ActivitySample>> _finishedCallback;
+        private Action<int> _remainingSamplesCallback;
+
 
         private int _expectedSamples;
-
+        private int _totalSamples;
 
         public MiBand3FetchService(MiBand3.Models.MiBand3 device)
         {
@@ -38,14 +39,23 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <summary>
         /// Clear the list of samples and start fetching
         /// </summary>
-        public async void StartFetching(DateTime date, Action<List<ActivitySample>> callback, Action<float> progressCallback)
+        public async void StartFetching(DateTime date, Action<List<ActivitySample>> finishedCallback, Action<int> remainingSamplesCallback)
         {
             _samples.Clear();
             _expectedSamples = 0;
+            _totalSamples = 0;
+
             await InitiateFetching(date);
-            _callback = callback;
-            _progressCallback = progressCallback;
+            _finishedCallback = finishedCallback;
+            _remainingSamplesCallback = remainingSamplesCallback;
         }
+
+        public void CalculateExpectedSamples(DateTime startDate)
+        {
+            TimeSpan timespan = DateTime.Now - startDate;
+            _totalSamples = (int)timespan.TotalMinutes;
+        }
+
 
         /// <summary>
         /// Setup the disposables for the fetch operation
@@ -104,7 +114,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     _expectedSamples = result.Data[5] << 16 | result.Data[4] << 8 | result.Data[3];
                     if(_expectedSamples == 0)
                     {
-                        _callback(_samples);
+                        _finishedCallback(_samples);
                         return;
                     }
                     Trace.WriteLine("Expected Samples: " + _expectedSamples);
@@ -115,6 +125,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 byte[] DateTimeBytes = new byte[8];
                 Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
                 _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
+
+                if(_totalSamples == 0)
+                {
+                    CalculateExpectedSamples(_firstTimestamp);
+                }
 
                 Trace.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
 
@@ -132,21 +147,20 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 Trace.WriteLine(_lastTimestamp >= DateTime.Now.AddMinutes(-1));
                 if (_lastTimestamp >= DateTime.Now.AddMinutes(-1))
                 {
-                    _callback(_samples);
+                    _finishedCallback(_samples);
                     _charActivitySub?.Dispose();
                     _charUnknownSub?.Dispose();
                 }
                 else
                 {
                     Trace.WriteLine("else-statement");
-                    _progressCallback((float)(_expectedSamples));
                     await InitiateFetching(_lastTimestamp.AddMinutes(1));
                 }
             }
             else
             {
                 Trace.WriteLine("Error while Fetching");
-                _callback(_samples);
+                _finishedCallback(_samples);
                 // Error while fetching
                 _charActivitySub?.Dispose();
                 _charUnknownSub?.Dispose();
@@ -189,6 +203,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
                     // Add the sample to the sample list
                     _samples.Add(new ActivitySample(timeStamp, category, intensity, steps, heartrate, rawdata));
+
+                    if(_samples.Count % 250 == 0)
+                    {
+                        CalculateExpectedSamples(timeStamp);
+                        _remainingSamplesCallback(_totalSamples);
+                    }
 
                     i += 4;
 
