@@ -26,10 +26,9 @@ namespace WindesHeartApp.iOS
         {
             FormsControls.Touch.Main.Init();
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
-
             Globals.ScreenHeight = (int)UIScreen.MainScreen.Bounds.Height;
             Globals.ScreenWidth = (int)UIScreen.MainScreen.Bounds.Width;
+            LoadApplication(new App());
             return base.FinishedLaunching(app, options);
         }
     }

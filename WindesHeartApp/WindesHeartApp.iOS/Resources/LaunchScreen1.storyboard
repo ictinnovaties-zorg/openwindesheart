@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13142" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="NO" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+            <scene sceneID="EHf-IW-A2E">
+                <objects>
+                    <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                        <layoutGuides>
+                            <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                            <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                        </layoutGuides>
+                        <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" colorSpace="calibratedRGB" red="0.58823529411764708" green="0.81960784313725488" blue="1" alpha="1"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="199" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES" image="WindesHeartTransparent.png">
+                                    <rect key="frame" x="54" y="286" width="307" height="165"/>
+                                </imageView>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="200" fixedFrame="YES">
+                                    <rect key="frame" x="197" y="498" width="20" height="20"/>
+                                </activityIndicatorView>
+                            </subviews>
+                        </view>
+                        <connections>
+                            <outlet property="AppIcon" destination="199" id="name-outlet-199"/>
+                        </connections>
+                    </viewController>
+                    <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </objects>
+                <point key="canvasLocation" x="53" y="375"/>
+            </scene>
+        </scenes>
+        <resources>
+            <image name="WindesHeartTransparent.png" width="1181" height="808"/>
+        </resources>
+</document>
