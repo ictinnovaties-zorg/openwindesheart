@@ -181,7 +181,7 @@ namespace WindesHeartApp.ViewModels
 
                 StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
 
-                double calories = stepCount * 0.4;
+                double calories = stepCount * 0.04;
                 StepsPage.CaloriesLabel.Text = Math.Round(calories, 2) + " Calories";
             }
             

@@ -48,9 +48,9 @@ namespace WindesHeartApp.Pages
         //Set UUID in App-properties
         private void SetApplicationProperties()
         {
-            if(Windesheart.ConnectedDevice != null)
+            if(Windesheart.PairedDevice != null)
             {
-                App.Current.Properties[_propertyKey] = Windesheart.ConnectedDevice.Device.Uuid;
+                App.Current.Properties[_propertyKey] = Windesheart.PairedDevice.Uuid;
             }
         }
 

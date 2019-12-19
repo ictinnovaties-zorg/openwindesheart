@@ -69,7 +69,7 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.IsLoading = false;
 
                 Globals.HomePageViewModel.ReadCurrentBattery();
-                Globals.HomePageViewModel.BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+                Globals.HomePageViewModel.BandNameLabel = Windesheart.PairedDevice.Name;
 
                 Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 Globals.SamplesService.StartFetching();
