@@ -44,7 +44,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         public override void SubscribeToDisconnect(Action<object> disconnectCallback)
         {
             DisconnectCallback = disconnectCallback;
-            Device.WhenDisconnected().Subscribe(observer => DisconnectCallback(observer));
+            IDevice.WhenDisconnected().Subscribe(observer => DisconnectCallback(observer));
         }
 
         public override void Disconnect(bool rememberDevice = true)
@@ -160,7 +160,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
 
             CharacteristicDisposable?.Dispose();
             //Find unique characteristics
-            CharacteristicDisposable = Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
+            CharacteristicDisposable = IDevice.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
             {
                 if (characteristic != null && !Characteristics.Contains(characteristic))
                 {

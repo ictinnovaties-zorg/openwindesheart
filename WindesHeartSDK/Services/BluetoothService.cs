@@ -12,7 +12,7 @@ namespace WindesHeartSDK
     {
         //Globals
         private readonly BLEDevice BLEDevice;
-        private IDevice IDevice => BLEDevice.Device;
+        private IDevice IDevice => BLEDevice.IDevice;
 
         public static AdapterStatus AdapterStatus;
 
@@ -169,7 +169,7 @@ namespace WindesHeartSDK
                     {
                         var tempConnectCallback = Windesheart.ConnectedDevice.ConnectionCallback;
                         var DisconnectCallback = Windesheart.ConnectedDevice.DisconnectCallback;                       
-                        var device = await GetKnownDevice(Windesheart.ConnectedDevice.Device.Uuid);
+                        var device = await GetKnownDevice(Windesheart.ConnectedDevice.IDevice.Uuid);
 
                         if (DisconnectCallback != null)
                         {

@@ -11,11 +11,11 @@ namespace WindesHeartSDK
     {
 
         public bool NeedsAuthentication = false;
-        public string Name { get => Device.Name; }
-        public ConnectionStatus Status { get => Device.Status; }
-        public Guid Uuid { get => Device.Uuid; }
-
+        public string Name { get => IDevice.Name; }
+        public ConnectionStatus Status { get => IDevice.Status; }
+        public Guid Uuid { get => IDevice.Uuid; }
         public List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
+        public readonly IDevice IDevice;
 
         protected readonly BluetoothService BluetoothService;
 
@@ -24,7 +24,7 @@ namespace WindesHeartSDK
         internal IDisposable ConnectionDisposable;
         internal IDisposable CharacteristicDisposable;
         internal IDisposable RssiDisposable;
-        internal readonly IDevice Device;
+
 
         public BLEDevice()
         {
@@ -32,35 +32,35 @@ namespace WindesHeartSDK
 
         public BLEDevice(IDevice device)
         {
-            Device = device;
+            IDevice = device;
             BluetoothService = new BluetoothService(this);
-            ConnectionDisposable = Device.WhenConnected().Subscribe(x => OnConnect());
+            ConnectionDisposable = IDevice.WhenConnected().Subscribe(x => OnConnect());
         }
 
         public async Task<int> ReadRssi()
         {
-            return await Device.ReadRssi();
+            return await IDevice.ReadRssi();
         }
 
         public void OnRssiUpdated(Action callback, TimeSpan? readInterval = null)
         {
             RssiDisposable?.Dispose();
-            RssiDisposable = Device.ReadRssiContinuously(readInterval).Subscribe(x => callback());
+            RssiDisposable = IDevice.ReadRssiContinuously(readInterval).Subscribe(x => callback());
         }
 
         public bool IsConnected()
         {
-            return Device.IsConnected();
+            return IDevice.IsConnected();
         }
 
         public bool IsDisconnected()
         {
-            return Device.IsDisconnected();
+            return IDevice.IsDisconnected();
         }
 
         public bool IsPairingAvailable()
         {
-            return Device.IsPairingAvailable();
+            return IDevice.IsPairingAvailable();
         }
 
         public abstract void DisposeDisposables();
