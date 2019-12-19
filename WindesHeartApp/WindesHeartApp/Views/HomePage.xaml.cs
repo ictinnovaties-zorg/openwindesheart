@@ -1,5 +1,8 @@
 ﻿using FormsControls.Base;
+using System;
+using System.Threading.Tasks;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Services;
 using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -17,6 +20,8 @@ namespace WindesHeartApp.Pages
         public static Button StepsButton;
         public static Button HeartrateButton;
         public static Button SettingsButton;
+
+        private readonly string _propertyKey = "LastConnectedDevice";
         public HomePage()
         {
             InitializeComponent();
@@ -29,8 +34,39 @@ namespace WindesHeartApp.Pages
             App.RequestLocationPermission();
             if (Windesheart.ConnectedDevice != null)
             {
-                Globals.HomePageViewModel.ReadCurrentBattery();
-                Globals.HomePageViewModel.BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+                SetApplicationProperties();
+            }
+            else
+            {
+                if (App.Current.Properties.ContainsKey(_propertyKey))
+                {
+                    HandleAutoConnect();
+                }
+            }
+        }
+
+        //Set UUID in App-properties
+        private void SetApplicationProperties()
+        {
+            if(Windesheart.ConnectedDevice != null)
+            {
+                App.Current.Properties[_propertyKey] = Windesheart.ConnectedDevice.Device.Uuid;
+            }
+        }
+
+        //Handle Auto-connect to the last connected device with App-properties
+        private async Task HandleAutoConnect()
+        {
+            var knownGuid = App.Current.Properties[_propertyKey].ToString();
+            if (!string.IsNullOrEmpty(knownGuid))
+            {
+                Device.BeginInvokeOnMainThread(delegate
+                {
+                    Globals.HomePageViewModel.IsLoading = true;
+                    Globals.HomePageViewModel.EnableDisableButtons(false);
+                });
+                var knownDevice = await Windesheart.GetKnownDevice(Guid.Parse(knownGuid));
+                knownDevice.Connect(CallbackHandler.OnConnect);
             }
         }
 
@@ -47,12 +83,13 @@ namespace WindesHeartApp.Pages
                 ProgressColor = Color.Red,
                 HeightRequest = 20
             };
+
             fetchProgressBar.SetBinding(ProgressBar.ProgressProperty, new Binding("FetchProgress"));
             fetchProgressBar.SetBinding(ProgressBar.IsVisibleProperty, new Binding("FetchProgressVisible"));
 
             AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.15, 0.25, 0.95,-1));
             AbsoluteLayout.SetLayoutFlags(fetchProgressBar, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
-
+            
             absoluteLayout.Children.Add(fetchProgressBar);
             #endregion
 

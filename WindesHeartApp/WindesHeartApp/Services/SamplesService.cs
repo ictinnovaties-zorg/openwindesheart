@@ -17,7 +17,7 @@ namespace WindesHeartApp.Services
         private readonly ISleepRepository _sleepRepository;
 
         private DateTime _fetchingStartDate;
-        private float _progressedSamples = 0f;
+        private int _totalSamples = 0;
 
         public SamplesService(IHeartrateRepository heartrateRepository, IStepsRepository stepsRepository, ISleepRepository sleepRepository)
         {
@@ -38,17 +38,18 @@ namespace WindesHeartApp.Services
 
         }
 
-        private void ProgressCalculator(float samples)
+        private void ProgressCalculator(int remainingSamples)
         {
-            TimeSpan timeSpanned = DateTime.Now.AddMinutes(-1) - _fetchingStartDate;
-            float totalSamples = (float)Math.Round(timeSpanned.TotalMinutes);
-            _progressedSamples += samples;
-
+            if(_totalSamples == 0)
+            {
+                _totalSamples = remainingSamples;
+            } 
             //Calculates percentage of progression. -10f to leave some space for DB insertion progress indication.
-            float calculatedProgress = (_progressedSamples / totalSamples);
+            float calculatedProgress = ((float)_totalSamples - (float)remainingSamples) / (float)_totalSamples;
+
 
             //Leave some space on progressbar for DB insertion
-            if(calculatedProgress > 0.9f)
+            if (calculatedProgress > 0.9f)
             {
                 calculatedProgress = 0.9f;
             }
@@ -60,7 +61,7 @@ namespace WindesHeartApp.Services
         }
         private void FillDatabase(List<ActivitySample> samples)
         {
-            Debug.WriteLine("Filling DB with samples");
+            Debug.WriteLine("Filling DB with samples: "+samples.Count);
             Globals.Database.Instance.BeginTransaction();
             foreach (var sample in samples)
             {
@@ -76,7 +77,7 @@ namespace WindesHeartApp.Services
             {
                 Globals.HomePageViewModel.IsLoading = false;
                 Globals.HomePageViewModel.EnableDisableButtons(true);
-                Globals.HomePageViewModel.ShowFetchProgress(100f);
+                Globals.HomePageViewModel.ShowFetchProgress(1f);
             });
         }
 

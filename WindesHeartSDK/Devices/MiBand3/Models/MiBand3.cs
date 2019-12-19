@@ -137,9 +137,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             return _dateTimeService.SetTime(dateTime);
         }
 
-        public override void FetchData(DateTime startDate, Action<List<ActivitySample>> callback, Action<float> progressCallback)
+        public override void FetchData(DateTime startDate, Action<List<ActivitySample>> finishedCallback, Action<int> remainingSamplesCallback)
         {
-            _fetchService.StartFetching(startDate, callback, progressCallback);
+            _fetchService.StartFetching(startDate, finishedCallback, remainingSamplesCallback);
         }
 
         public override void EnableSleepTracking(bool enable)

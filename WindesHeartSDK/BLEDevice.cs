@@ -68,7 +68,7 @@ namespace WindesHeartSDK
         public abstract void DisableRealTimeSteps();
         public abstract Task<Battery> GetBattery();
         public abstract void EnableSleepTracking(bool enable);
-        public abstract void FetchData(DateTime startDate, Action<List<ActivitySample>> callback, Action<float> progressCallback);
+        public abstract void FetchData(DateTime startDate, Action<List<ActivitySample>> finishedCallback, Action<int> remainingSamplesCallback);
 
         /// <summary>
         /// Get a certain characteristic with its UUID.
