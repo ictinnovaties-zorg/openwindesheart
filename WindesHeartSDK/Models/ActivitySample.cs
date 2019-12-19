@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WindesHeartSdk.Model
+namespace WindesHeartSDK.Models
 {
     public class ActivitySample
     {
