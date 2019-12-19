@@ -67,19 +67,12 @@ namespace WindesHeartApp.Services
                 Globals.DevicePageViewModel.StatusText = "Connected";
                 Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEScanResult>();
                 Globals.DevicePageViewModel.IsLoading = false;
+
+                Globals.HomePageViewModel.ReadCurrentBattery();
+                Globals.HomePageViewModel.BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+
                 Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 Globals.SamplesService.StartFetching();
-
-
-                if (Windesheart.PairedDevice.Uuid != Guid.Empty)
-                {
-                    if (App.Current.Properties.ContainsKey(_key))
-                    {
-                        App.Current.Properties.Remove(_key);
-                    }
-
-                    App.Current.Properties.Add(_key, Windesheart.PairedDevice.Uuid);
-                }
             }
             else if (result == ConnectionResult.Failed)
             {

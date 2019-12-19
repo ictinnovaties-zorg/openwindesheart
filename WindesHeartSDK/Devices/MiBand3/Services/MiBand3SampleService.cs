@@ -25,10 +25,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         private IDisposable _charUnknownSub;
         private IDisposable _charActivitySub;
 
-        private Action<List<ActivitySample>> _callback;
-        private Action<float> _progressCallback;
+        private Action<List<ActivitySample>> _finishedCallback;
+        private Action<int> _remainingSamplesCallback;
 
         private int _expectedSamples;
+        private int _totalSamples;
 
         public MiBand3SampleService(MiBand3 device)
         {
@@ -38,20 +39,29 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <summary>
         /// Clear the list of samples and start fetching
         /// </summary>
-        public async void StartFetching(DateTime date, Action<List<ActivitySample>> callback, Action<float> progressCallback)
+        public async void StartFetching(DateTime date, Action<List<ActivitySample>> finishedCallback, Action<int> remainingSamplesCallback)
         {
             _samples.Clear();
             _expectedSamples = 0;
+            _totalSamples = 0;
+
+            _finishedCallback = finishedCallback;
+            _remainingSamplesCallback = remainingSamplesCallback;
             await InitiateFetching(date);
-            _callback = callback;
-            _progressCallback = progressCallback;
         }
+
+        private void CalculateExpectedSamples(DateTime startDate)
+        {
+            TimeSpan timespan = DateTime.Now - startDate;
+            _totalSamples = (int)timespan.TotalMinutes;
+        }
+
 
         /// <summary>
         /// Setup the disposables for the fetch operation
         /// </summary>
         /// <param name="date"></param>
-        public async Task InitiateFetching(DateTime date)
+        private async Task InitiateFetching(DateTime date)
         {
             _samplenumber = 0;
             //Dispose all DIsposables to prevent double data
@@ -59,9 +69,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             _charUnknownSub?.Dispose();
 
             // Subscribe to the unknown and activity characteristics
-            _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(HandleUnknownChar);
-            _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidActivityData).RegisterAndNotify().Subscribe(HandleActivityChar);
-
+            _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidSamplesRequest).RegisterAndNotify().Subscribe(HandleUnknownChar);
+            _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(HandleActivityChar);
 
             // Write the date and time from which to receive samples to the Mi Band
             await WriteDateBytes(date);
@@ -76,84 +85,56 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             // Convert date to bytes
             byte[] Timebytes = GetTimeBytes(date, TimeUnit.Minutes);
-            Trace.WriteLine(ConversionHelper.RawBytesToCalendar(Timebytes));
             byte[] Fetchbytes = new byte[10] { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
 
             // Copy the date in the byte template to send to the device
             Buffer.BlockCopy(Timebytes, 0, Fetchbytes, 2, 8);
 
             // Send the bytes to the device
-            await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(Fetchbytes);
+            await _miBand3.GetCharacteristic(MiBand3Resource.GuidSamplesRequest).WriteWithoutResponse(Fetchbytes);
         }
 
         /// <summary>
         /// Called when recieving MetaData
         /// </summary>
         /// <param name="result"></param>
-        public async void HandleUnknownChar(CharacteristicGattResult result)
+        private async void HandleUnknownChar(CharacteristicGattResult result)
         {
+            //Correct response
             if (result.Data.Length >= 3)
             {
                 // Create an empty byte array and copy the response type to it
                 byte[] responseByte = new byte[3];
                 Buffer.BlockCopy(result.Data, 0, responseByte, 0, 3);
 
-                // Check if our request was accepted
+                // Start or Continue fetching process
                 if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x01, 0x01 }))
                 {
-                    if (result.Data.Length > 3)
-                    {
-                        _expectedSamples = result.Data[5] << 16 | result.Data[4] << 8 | result.Data[3];
-                        if (_expectedSamples == 0)
-                        {
-                            _callback(_samples);
-                            return;
-                        }
-                        Trace.WriteLine("Expected Samples: " + _expectedSamples);
-
-                        if (result.Data.Length > 6) {
-                            // Get the timestamp of the first sample
-                            byte[] DateTimeBytes = new byte[8];
-                            Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
-                            _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
-
-                            Trace.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
-
-                            // Write 0x02 to tell the band to start the fetching process
-                            await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
-                            Trace.WriteLine("Done writing 0x02");
-                        }
-                    }
+                    await HandleResponse(result.Data);
+                    return;
                 }
 
-                // Check if done fetching
-                else if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
+                // Finished fetching
+                if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
                 {
-                    Trace.WriteLine("Done Fetching: " + _samples.Count + " Samples");
-
-                    Trace.WriteLine(_lastTimestamp >= DateTime.Now.AddMinutes(-1));
                     if (_lastTimestamp >= DateTime.Now.AddMinutes(-1))
                     {
-                        _callback(_samples);
+                        _finishedCallback(_samples);
                         _charActivitySub?.Dispose();
                         _charUnknownSub?.Dispose();
+                        return;
                     }
-                    else
-                    {
-                        Trace.WriteLine("else-statement");
-                        _progressCallback((float)(_expectedSamples));
-                        await InitiateFetching(_lastTimestamp.AddMinutes(1));
-                    }
-                }
-                else
-                {
-                    Trace.WriteLine("Error while Fetching");
-                    _callback(_samples);
-                    // Error while fetching
-                    _charActivitySub?.Dispose();
-                    _charUnknownSub?.Dispose();
+
+                    await InitiateFetching(_lastTimestamp.AddMinutes(1));
+                    return;
                 }
             }
+
+            Trace.WriteLine("No more samples could be fetched, samples returned: "+_samples.Count);
+            _finishedCallback(_samples);
+            _charActivitySub?.Dispose();
+            _charUnknownSub?.Dispose();
+            return;
         }
 
         /// <summary>
@@ -165,46 +146,91 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             // Each sample is made up from 4 bytes. The first byte represents the status.
             if (result.Data.Length % 4 != 1)
             {
-                if (_lastTimestamp > DateTime.Now.AddMinutes(-1))
-                {
-                    Trace.WriteLine("Done Fetching: " + _samples.Count + " Samples");
-                }
-                Trace.WriteLine("Need More fetching");
                 InitiateFetching(_lastTimestamp.AddMinutes(1));
             }
             else
             {
-                var samplecount = _samplenumber;
-                _samplenumber++;
-                var i = 1;
-                while (i < result.Data.Length)
+                CreateSamplesFromResponse(result.Data);
+            }
+        }
+
+        private async Task HandleResponse(byte[] data)
+        {
+            if(data.Length > 6)
+            {
+                //Start fetching
+                try
                 {
-                    int timeIndex = (samplecount) * 4 + (i - 1) / 4;
-                    var timeStamp = _firstTimestamp.AddMinutes(timeIndex);
-                    _lastTimestamp = timeStamp;
+                    // Get the timestamp of the first sample
+                    byte[] DateTimeBytes = new byte[8];
+                    Buffer.BlockCopy(data, 7, DateTimeBytes, 0, 8);
+                    _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
 
-                    // Create a sample from the recieved bytes
-                    byte[] rawdata = new byte[] { result.Data[i], result.Data[i + 1], result.Data[i + 2], result.Data[i + 3]};
-                    var category = result.Data[i] & 0xff;
-                    var intensity = result.Data[i + 1] & 0xff;
-                    var steps = result.Data[i + 2] & 0xff;
-                    var heartrate = result.Data[i + 3];
-
-                    // Add the sample to the sample list
-                    _samples.Add(new ActivitySample(timeStamp, category, intensity, steps, heartrate, rawdata));
-
-                    i += 4;
-
-                    var d = DateTime.Now.AddMinutes(-1);
-                    d.AddSeconds(-d.Second);
-                    d.AddMilliseconds(-d.Millisecond);
-
-                    // Make sure we aren't getting samples from the future
-                    if (timeStamp == d)
+                    // Write 0x02 to tell the band to start the fetching process
+                    await _miBand3.GetCharacteristic(MiBand3Resource.GuidSamplesRequest).WriteWithoutResponse(new byte[] { 0x02 });
+                }
+                catch(Exception e)
+                {
+                    Trace.WriteLine("Could not start fetching: " + e);
+                }
+            }
+            else
+            {
+                //Continue fetching if more expected
+                try
+                {
+                    _expectedSamples = data[5] << 16 | data[4] << 8 | data[3];
+                    if(_expectedSamples == 0)
                     {
-                        Trace.WriteLine("Done Fetching");
-                        break;
+                        _finishedCallback(_samples);
                     }
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine("Could not calculate expected samples: " + e);
+                }
+            }
+        }
+        
+        private void CreateSamplesFromResponse(byte[] data)
+        {
+            var samplecount = _samplenumber;
+            _samplenumber++;
+            var i = 1;
+            while (i < data.Length)
+            {
+                int timeIndex = (samplecount) * 4 + (i - 1) / 4;
+                var timeStamp = _firstTimestamp.AddMinutes(timeIndex);
+                _lastTimestamp = timeStamp;
+
+                // Create a sample from the received bytes
+                byte[] rawdata = new byte[] { data[i], data[i + 1], data[i + 2], data[i + 3] };
+                var category = data[i] & 0xff;
+                var intensity = data[i + 1] & 0xff;
+                var steps = data[i + 2] & 0xff;
+                var heartrate = data[i + 3];
+
+                // Add the sample to the sample list
+                _samples.Add(new ActivitySample(timeStamp, category, intensity, steps, heartrate, rawdata));
+
+                //Callback for progress
+                if (_samples.Count % 250 == 0)
+                {
+                    CalculateExpectedSamples(timeStamp);
+                    _remainingSamplesCallback(_totalSamples);
+                }
+
+                i += 4;
+
+               
+                var d = DateTime.Now.AddMinutes(-1);
+                d.AddSeconds(-d.Second);
+                d.AddMilliseconds(-d.Millisecond);
+
+                // Make sure we aren't getting samples from the future
+                if (timeStamp == d)
+                {
+                    break;
                 }
             }
         }

@@ -82,7 +82,7 @@ namespace WindesHeartSDK
         public abstract Task<StepData> GetSteps();
         public abstract Task<BatteryData> GetBattery();
         public abstract void EnableSleepTracking(bool enable);
-        public abstract void GetSamples(DateTime startDate, Action<List<ActivitySample>> callback, Action<float> progressCallback);
+        public abstract void GetSamples(DateTime startDate, Action<List<ActivitySample>> finishedCallback, Action<int> remainingSamplesCallback);
 
         /// <summary>
         /// Get a certain characteristic with its UUID.
