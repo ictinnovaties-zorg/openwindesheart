@@ -73,17 +73,6 @@ namespace WindesHeartApp.Services
 
                 Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 Globals.SamplesService.StartFetching();
-
-
-                if (Windesheart.ConnectedDevice.Device.Uuid != Guid.Empty)
-                {
-                    if (App.Current.Properties.ContainsKey(_key))
-                    {
-                        App.Current.Properties.Remove(_key);
-                    }
-
-                    App.Current.Properties.Add(_key, Windesheart.ConnectedDevice.Device.Uuid);
-                }
             }
             else if (result == ConnectionResult.Failed)
             {

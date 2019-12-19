@@ -17,7 +17,6 @@ namespace WindesHeartApp.Services
         private readonly ISleepRepository _sleepRepository;
 
         private DateTime _fetchingStartDate;
-        private float _progressedSamples = 0f;
         private int _totalSamples = 0;
 
         public SamplesService(IHeartrateRepository heartrateRepository, IStepsRepository stepsRepository, ISleepRepository sleepRepository)
@@ -62,7 +61,7 @@ namespace WindesHeartApp.Services
         }
         private void FillDatabase(List<ActivitySample> samples)
         {
-            Debug.WriteLine("Filling DB with samples");
+            Debug.WriteLine("Filling DB with samples: "+samples.Count);
             Globals.Database.Instance.BeginTransaction();
             foreach (var sample in samples)
             {
