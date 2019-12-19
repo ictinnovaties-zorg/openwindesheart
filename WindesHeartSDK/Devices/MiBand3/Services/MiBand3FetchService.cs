@@ -45,9 +45,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             _expectedSamples = 0;
             _totalSamples = 0;
 
-            await InitiateFetching(date);
             _finishedCallback = finishedCallback;
             _remainingSamplesCallback = remainingSamplesCallback;
+            await InitiateFetching(date);
         }
 
         public void CalculateExpectedSamples(DateTime startDate)
@@ -121,7 +121,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         }
                         Trace.WriteLine("Expected Samples: " + _expectedSamples);
 
-                        if (result.Data.Length > 6) {
+                        if (result.Data.Length > 6)
+                        {
                             // Get the timestamp of the first sample
                             byte[] DateTimeBytes = new byte[8];
                             Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
@@ -135,55 +136,32 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         }
                     }
                 }
-
                 // Check if done fetching
                 else if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
                 {
                     Trace.WriteLine("Done Fetching: " + _samples.Count + " Samples");
 
-                // Get the timestamp of the first sample
-                byte[] DateTimeBytes = new byte[8];
-                Buffer.BlockCopy(result.Data, 7, DateTimeBytes, 0, 8);
-                _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
-
-                if(_totalSamples == 0)
-                {
-                    CalculateExpectedSamples(_firstTimestamp);
-                }
-
-                Trace.WriteLine("Fetching data from: " + _firstTimestamp.ToString());
-
-                // Write 0x02 to tell the band to start the fetching process
-                await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
-                Trace.WriteLine("Done writing 0x02");
-
-
-            }
-            // Check if done fetching
-            else if (responseByte.SequenceEqual(new byte[3] { 0x10, 0x02, 0x01 }))
-            {
-                Trace.WriteLine("Done Fetching: " + _samples.Count + " Samples");
-
-                Trace.WriteLine(_lastTimestamp >= DateTime.Now.AddMinutes(-1));
-                if (_lastTimestamp >= DateTime.Now.AddMinutes(-1))
-                {
-                    _finishedCallback(_samples);
-                    _charActivitySub?.Dispose();
-                    _charUnknownSub?.Dispose();
+                    Trace.WriteLine(_lastTimestamp >= DateTime.Now.AddMinutes(-1));
+                    if (_lastTimestamp >= DateTime.Now.AddMinutes(-1))
+                    {
+                        _finishedCallback(_samples);
+                        _charActivitySub?.Dispose();
+                        _charUnknownSub?.Dispose();
+                    }
+                    else
+                    {
+                        Trace.WriteLine("else-statement");
+                        await InitiateFetching(_lastTimestamp.AddMinutes(1));
+                    }
                 }
                 else
                 {
-                    Trace.WriteLine("else-statement");
-                    await InitiateFetching(_lastTimestamp.AddMinutes(1));
+                    Trace.WriteLine("Error while Fetching");
+                    _finishedCallback(_samples);
+                    // Error while fetching
+                    _charActivitySub?.Dispose();
+                    _charUnknownSub?.Dispose();
                 }
-            }
-            else
-            {
-                Trace.WriteLine("Error while Fetching");
-                _finishedCallback(_samples);
-                // Error while fetching
-                _charActivitySub?.Dispose();
-                _charUnknownSub?.Dispose();
             }
         }
 
