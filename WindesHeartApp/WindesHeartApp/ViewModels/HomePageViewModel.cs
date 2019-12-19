@@ -25,10 +25,10 @@ namespace WindesHeartApp.ViewModels
 
         public HomePageViewModel()
         {
-            if (Windesheart.ConnectedDevice != null)
+            if (Windesheart.PairedDevice != null)
             {
                 ReadCurrentBattery();
-                BandNameLabel = Windesheart.ConnectedDevice.Name;
+                BandNameLabel = Windesheart.PairedDevice.Name;
                 FetchProgressVisible = true;
             }
 
@@ -38,11 +38,11 @@ namespace WindesHeartApp.ViewModels
         public async Task ReadCurrentBattery()
         {
             //catch!!
-            var battery = await Windesheart.ConnectedDevice.GetBattery();
+            var battery = await Windesheart.PairedDevice.GetBattery();
             UpdateBattery(battery);
         }
 
-        public void UpdateBattery(Battery battery)
+        public void UpdateBattery(BatteryData battery)
         {
             Battery = battery.BatteryPercentage;
             if (battery.Status == StatusEnum.Charging)

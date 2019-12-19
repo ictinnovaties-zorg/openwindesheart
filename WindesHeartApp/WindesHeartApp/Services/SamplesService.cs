@@ -34,7 +34,7 @@ namespace WindesHeartApp.Services
                 Globals.HomePageViewModel.EnableDisableButtons(false);
             });
             _fetchingStartDate = GetLastAddedDateTime();
-            Windesheart.ConnectedDevice.FetchData(_fetchingStartDate, FillDatabase, ProgressCalculator);
+            Windesheart.PairedDevice.GetSamples(_fetchingStartDate, FillDatabase, ProgressCalculator);
 
         }
 

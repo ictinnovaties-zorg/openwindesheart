@@ -27,10 +27,10 @@ namespace WindesHeartApp.Pages
         protected override void OnAppearing()
         {
             App.RequestLocationPermission();
-            if (Windesheart.ConnectedDevice != null)
+            if (Windesheart.PairedDevice != null)
             {
                 Globals.HomePageViewModel.ReadCurrentBattery();
-                Globals.HomePageViewModel.BandNameLabel = Windesheart.ConnectedDevice.Name;
+                Globals.HomePageViewModel.BandNameLabel = Windesheart.PairedDevice.Name;
             }
         }
 

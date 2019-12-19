@@ -3,17 +3,17 @@ using WindesHeartSDK.Helpers;
 
 namespace WindesHeartSDK.Models
 {
-    public class StepInfo
+    public class StepData
     {
-        public byte[] RawData { get; set; }
-        public int StepCount { get; set; }
+        public byte[] RawData { get; }
+        public int StepCount { get; }
 
-        public StepInfo()
+        public StepData()
         {
 
         }
 
-        public StepInfo(byte[] rawData)
+        public StepData(byte[] rawData)
         {
             RawData = rawData;
             byte[] stepsValue = new byte[] { RawData[1], RawData[2] };

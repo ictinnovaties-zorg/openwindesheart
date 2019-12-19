@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK
@@ -140,11 +140,11 @@ namespace WindesHeartSDK
         {
             //Cancel the connection
             Console.WriteLine("Disconnecting device..");
-            Windesheart.ConnectedDevice?.DisposeDisposables();
+            Windesheart.PairedDevice?.DisposeDisposables();
             IDevice.CancelConnection();
             if (!rememberDevice)
             {
-                Windesheart.ConnectedDevice = null;
+                Windesheart.PairedDevice = null;
             }
         }
 
@@ -160,16 +160,16 @@ namespace WindesHeartSDK
                 if (status != AdapterStatus)
                 {
                     AdapterStatus = status;
-                    if (status == AdapterStatus.PoweredOff && Windesheart.ConnectedDevice != null)
+                    if (status == AdapterStatus.PoweredOff && Windesheart.PairedDevice != null)
                     {
-                        Windesheart.ConnectedDevice?.Disconnect();
+                        Windesheart.PairedDevice?.Disconnect();
                     }
 
-                    if (status == AdapterStatus.PoweredOn && Windesheart.ConnectedDevice != null && startListening)
+                    if (status == AdapterStatus.PoweredOn && Windesheart.PairedDevice != null && startListening)
                     {
-                        var tempConnectCallback = Windesheart.ConnectedDevice.ConnectionCallback;
-                        var DisconnectCallback = Windesheart.ConnectedDevice.DisconnectCallback;
-                        var device = await GetKnownDevice(Windesheart.ConnectedDevice.IDevice.Uuid);
+                        var tempConnectCallback = Windesheart.PairedDevice.ConnectionCallback;
+                        var DisconnectCallback = Windesheart.PairedDevice.DisconnectCallback;
+                        var device = await GetKnownDevice(Windesheart.PairedDevice.IDevice.Uuid);
 
                         if (DisconnectCallback != null)
                         {

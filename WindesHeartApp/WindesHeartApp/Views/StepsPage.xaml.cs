@@ -180,7 +180,7 @@ namespace WindesHeartApp.Pages
 
         private async void RefreshButtonClicked(object sender, EventArgs e)
         {
-            if (Windesheart.ConnectedDevice == null)
+            if (Windesheart.PairedDevice == null)
             {
                 await Application.Current.MainPage.DisplayAlert("Error while refreshing data",
                     "Can only refresh data when connected to a device!", "Ok");

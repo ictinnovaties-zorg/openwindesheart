@@ -64,10 +64,8 @@ namespace WindesHeartSDK
         }
 
         public abstract void DisposeDisposables();
-
         public abstract void OnConnect();
-
-        public abstract void SetFitnessGoal(int goal);
+        public abstract void SetStepGoal(int steps);
         public abstract void SubscribeToDisconnect(Action<object> disconnectCallback);
         public abstract void Connect(Action<ConnectionResult> connectCallback);
         public abstract void Disconnect(bool rememberDevice = true);
@@ -76,14 +74,15 @@ namespace WindesHeartSDK
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
         public abstract void SetLanguage(string localeString);
         public abstract bool SetTime(DateTime dateTime);
-        public abstract Task<StepInfo> GetSteps();
+
         public abstract void SetActivateOnLiftWrist(bool activate);
         public abstract void SetActivateOnLiftWrist(DateTime from, DateTime to);
-        public abstract void EnableRealTimeSteps(Action<StepInfo> OnStepsChanged);
+        public abstract void EnableRealTimeSteps(Action<StepData> OnStepsChanged);
         public abstract void DisableRealTimeSteps();
-        public abstract Task<Battery> GetBattery();
+        public abstract Task<StepData> GetSteps();
+        public abstract Task<BatteryData> GetBattery();
         public abstract void EnableSleepTracking(bool enable);
-        public abstract void FetchData(DateTime startDate, Action<List<ActivitySample>> callback, Action<float> progressCallback);
+        public abstract void GetSamples(DateTime startDate, Action<List<ActivitySample>> callback, Action<float> progressCallback);
 
         /// <summary>
         /// Get a certain characteristic with its UUID.
@@ -95,9 +94,9 @@ namespace WindesHeartSDK
             return Characteristics.Find(x => x.Uuid == uuid);
         }
 
-        public abstract void EnableRealTimeBattery(Action<Battery> getBatteryStatus);
+        public abstract void EnableRealTimeBattery(Action<BatteryData> getBatteryStatus);
         public abstract void DisableRealTimeBattery();
-        public abstract void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate);
+        public abstract void EnableRealTimeHeartrate(Action<HeartrateData> getHeartrate);
         public abstract void DisableRealTimeHeartrate();
         public abstract void SetHeartrateMeasurementInterval(int minutes);
     }

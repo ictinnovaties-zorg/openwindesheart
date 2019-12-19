@@ -26,14 +26,14 @@ namespace WindesHeartApp.ViewModels
         {
             if (DeviceList == null)
                 DeviceList = new ObservableCollection<BLEScanResult>();
-            if (Windesheart.ConnectedDevice == null)
+            if (Windesheart.PairedDevice == null)
                 StatusText = "Disconnected";
             ScanButtonText = "Scan for devices";
         }
         public void DisconnectButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
-            Windesheart.ConnectedDevice?.Disconnect();
+            Windesheart.PairedDevice?.Disconnect();
             IsLoading = false;
             StatusText = "Disconnected";
             Globals.HomePageViewModel.Heartrate = 0;

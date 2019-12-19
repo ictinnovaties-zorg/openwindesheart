@@ -7,7 +7,7 @@ namespace WindesHeartSDK.Models
         NotCharging
     }
 
-    public class Battery
+    public class BatteryData
     {
         public StatusEnum Status
         {

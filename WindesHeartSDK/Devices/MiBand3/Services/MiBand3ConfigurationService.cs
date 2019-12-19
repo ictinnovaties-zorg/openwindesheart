@@ -2,17 +2,18 @@
 using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Text;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 
 namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3ConfigurationService
     {
-        private readonly BLEDevice BLEDevice;
+        private readonly BLEDevice _miBand3;
 
-        public MiBand3ConfigurationService(BLEDevice device)
+        public MiBand3ConfigurationService(MiBand3 device)
         {
-            BLEDevice = device;
+            _miBand3 = device;
         }
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
             Buffer.BlockCopy(Encoding.ASCII.GetBytes(localeString), 0, LanguageBytes, 3, Encoding.ASCII.GetBytes(localeString).Length);
 
-            await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(LanguageBytes);
+            await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(LanguageBytes);
         }
 
         /// <summary>
@@ -36,11 +37,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             if (is24format)
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_TimeFomat_24hours);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_TimeFomat_24hours);
             }
             else
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_TimeFomat_12hours);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_TimeFomat_12hours);
             }
         }
 
@@ -52,12 +53,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             if (isdMY)
             {
-
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DateFormat_dd_MM_YYYY);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DateFormat_dd_MM_YYYY);
             }
             else
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DateFormat_MM_dd_YYYY);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DateFormat_MM_dd_YYYY);
             }
         }
 
@@ -65,7 +65,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// Set the step target on the Mi Band. Max value of 2 bytes (around 65.000)
         /// </summary>
         /// <param name="goal"></param>
-        public async void SetFitnessGoal(int goal)
+        public async void SetStepGoal(int goal)
         {
             var beginCommand = new byte[] { 0x10, 0x0, 0x0 };
             var endCommand = new byte[] { 0, 0 };
@@ -77,18 +77,18 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             Buffer.BlockCopy(goalBytes, 0, CommandBytes, beginCommand.Length, goalBytes.Length);
             Buffer.BlockCopy(endCommand, 0, CommandBytes, beginCommand.Length + goalBytes.Length, endCommand.Length);
 
-            await BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristic8UserInfo).Write(CommandBytes);
+            await _miBand3.GetCharacteristic(MiBand3Resource.GuidUserInfo).Write(CommandBytes);
         }
 
         public async void EnableStepGoalNotification(bool enable)
         {
             if (enable)
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableGoalNotification);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableGoalNotification);
             }
             else
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableGoalNotification);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableGoalNotification);
             }
         }
 
@@ -100,11 +100,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             if (activate)
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableActivateOnLiftWrist);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableActivateOnLiftWrist);
             }
             else
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableActivateOnLiftWrist);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableActivateOnLiftWrist);
             }
         }
 
@@ -123,7 +123,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             CommandByte[6] = Convert.ToByte(to.Hour);
             CommandByte[7] = Convert.ToByte(to.Minute);
 
-            await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(CommandByte);
+            await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(CommandByte);
         }
 
         /// <summary>
@@ -134,11 +134,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             if (enable)
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableSleepMeasurement);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_EnableSleepMeasurement);
             }
             else
             {
-                await BLEDevice.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableSleepMeasurement);
+                await _miBand3.GetCharacteristic(MiBand3Resource.GuidDeviceConfiguration).WriteWithoutResponse(MiBand3Resource.Byte_DisableSleepMeasurement);
 
             }
         }

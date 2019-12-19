@@ -4,13 +4,13 @@ namespace WindesHeartSDK.Models
 {
     public class ActivitySample
     {
-        public byte[] RawData { get; set; }
-        public DateTime Timestamp { get; set; }
-        public int UnixEpochTimestamp { get; set; }
-        public int Category { get; set; }
-        public int RawIntensity { get; set; }
-        public int Steps { get; set; }
-        public int HeartRate { get; set; }
+        public byte[] RawData { get; }
+        public DateTime Timestamp { get; }
+        public int UnixEpochTimestamp { get; }
+        public int Category { get; }
+        public int RawIntensity { get; }
+        public int Steps { get; }
+        public int HeartRate { get; }
 
         public ActivitySample(DateTime timestamp, int category, int intensity, int steps, int heartrate, byte[] rawdata = null)
         {

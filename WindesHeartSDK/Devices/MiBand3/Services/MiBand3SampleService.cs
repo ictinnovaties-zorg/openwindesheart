@@ -9,12 +9,13 @@ using WindesHeartSDK.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Helpers;
 using static WindesHeartSDK.Helpers.ConversionHelper;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 
 namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
-    class MiBand3FetchService
+    public class MiBand3SampleService
     {
-        private readonly MiBand3.Models.MiBand3 _miBand3;
+        private readonly MiBand3 _miBand3;
         private readonly List<ActivitySample> _samples = new List<ActivitySample>();
 
         private DateTime _firstTimestamp;
@@ -29,8 +30,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
         private int _expectedSamples;
 
-
-        public MiBand3FetchService(MiBand3.Models.MiBand3 device)
+        public MiBand3SampleService(MiBand3 device)
         {
             _miBand3 = device;
         }
@@ -60,7 +60,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
             // Subscribe to the unknown and activity characteristics
             _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(HandleUnknownChar);
-            _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(HandleActivityChar);
+            _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidActivityData).RegisterAndNotify().Subscribe(HandleActivityChar);
 
 
             // Write the date and time from which to receive samples to the Mi Band

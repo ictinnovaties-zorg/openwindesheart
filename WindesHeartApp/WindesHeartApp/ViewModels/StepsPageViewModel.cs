@@ -128,12 +128,12 @@ namespace WindesHeartApp.ViewModels
                 Console.WriteLine("Today selected!");
 
                 //If device is connected
-                if (Windesheart.ConnectedDevice != null && Windesheart.ConnectedDevice.IsConnected())
+                if (Windesheart.PairedDevice != null && Windesheart.PairedDevice.IsConnected())
                 {
                     //Read stepcount from device
                     try
                     {
-                        StepInfo currentSteps = await Windesheart.ConnectedDevice.GetSteps();
+                        StepData currentSteps = await Windesheart.PairedDevice.GetSteps();
                         return currentSteps.StepCount;
                     }
                     catch (Exception e)
@@ -153,9 +153,9 @@ namespace WindesHeartApp.ViewModels
             //Get stepcount for that day by adding them together
             int stepCount = 0;
 
-            if(SelectedDate == StartDate && Windesheart.ConnectedDevice != null)
+            if(SelectedDate == StartDate && Windesheart.PairedDevice != null)
             {
-                var todaySteps = await Windesheart.ConnectedDevice.GetSteps();
+                var todaySteps = await Windesheart.PairedDevice.GetSteps();
                 return todaySteps.StepCount;
             }
 
