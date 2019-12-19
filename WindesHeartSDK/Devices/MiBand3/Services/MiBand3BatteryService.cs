@@ -71,11 +71,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             if (rawData != null)
             {
                 var batteryPercentage = rawData[1];
-                StatusEnum status = StatusEnum.NotCharging;
+                BatteryStatus status = BatteryStatus.NotCharging;
 
                 if (rawData[2] == 1)
                 {
-                    status = StatusEnum.Charging;
+                    status = BatteryStatus.Charging;
                 }
 
                 var battery = new BatteryData

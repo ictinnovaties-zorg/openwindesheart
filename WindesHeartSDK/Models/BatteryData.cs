@@ -1,7 +1,7 @@
 ﻿using System;
 namespace WindesHeartSDK.Models
 {
-    public enum StatusEnum
+    public enum BatteryStatus
     {
         Charging,
         NotCharging
@@ -9,7 +9,7 @@ namespace WindesHeartSDK.Models
 
     public class BatteryData
     {
-        public StatusEnum Status
+        public BatteryStatus Status
         {
             get;
             set;
