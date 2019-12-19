@@ -69,7 +69,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             _charUnknownSub?.Dispose();
 
             // Subscribe to the unknown and activity characteristics
-            _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).RegisterAndNotify().Subscribe(HandleUnknownChar);
+            _charUnknownSub = _miBand3.GetCharacteristic(MiBand3Resource.GuidSamplesRequest).RegisterAndNotify().Subscribe(HandleUnknownChar);
             _charActivitySub = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic5ActivityData).RegisterAndNotify().Subscribe(HandleActivityChar);
 
             // Write the date and time from which to receive samples to the Mi Band
@@ -91,7 +91,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             Buffer.BlockCopy(Timebytes, 0, Fetchbytes, 2, 8);
 
             // Send the bytes to the device
-            await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(Fetchbytes);
+            await _miBand3.GetCharacteristic(MiBand3Resource.GuidSamplesRequest).WriteWithoutResponse(Fetchbytes);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     _firstTimestamp = RawBytesToCalendar(DateTimeBytes);
 
                     // Write 0x02 to tell the band to start the fetching process
-                    await _miBand3.GetCharacteristic(MiBand3Resource.GuidUnknownCharacteristic4).WriteWithoutResponse(new byte[] { 0x02 });
+                    await _miBand3.GetCharacteristic(MiBand3Resource.GuidSamplesRequest).WriteWithoutResponse(new byte[] { 0x02 });
                 }
                 catch(Exception e)
                 {
