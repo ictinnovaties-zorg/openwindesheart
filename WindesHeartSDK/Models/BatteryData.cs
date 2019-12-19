@@ -15,7 +15,7 @@ namespace WindesHeartSDK.Models
             set;
         }
 
-        public int BatteryPercentage
+        public int Percentage
         {
             get;
             set;

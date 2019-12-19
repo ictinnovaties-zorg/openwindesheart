@@ -44,26 +44,26 @@ namespace WindesHeartApp.ViewModels
 
         public void UpdateBattery(BatteryData battery)
         {
-            Battery = battery.BatteryPercentage;
+            Battery = battery.Percentage;
             if (battery.Status == StatusEnum.Charging)
             {
                 BatteryImage = "BatteryCharging.png";
                 return;
             }
 
-            if (battery.BatteryPercentage >= 0 && battery.BatteryPercentage < 26)
+            if (battery.Percentage >= 0 && battery.Percentage < 26)
             {
                 BatteryImage = "BatteryQuart.png";
             }
-            else if (battery.BatteryPercentage >= 26 && battery.BatteryPercentage < 51)
+            else if (battery.Percentage >= 26 && battery.Percentage < 51)
             {
                 BatteryImage = "BatteryHalf.png";
             }
-            else if (battery.BatteryPercentage >= 51 && battery.BatteryPercentage < 76)
+            else if (battery.Percentage >= 51 && battery.Percentage < 76)
             {
                 BatteryImage = "BatteryThreeQuarts.png";
             }
-            else if (battery.BatteryPercentage >= 76)
+            else if (battery.Percentage >= 76)
             {
                 BatteryImage = "BatteryFull.png";
             }

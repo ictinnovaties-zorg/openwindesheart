@@ -81,7 +81,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 var battery = new BatteryData
                 {
                     RawData = rawData,
-                    BatteryPercentage = batteryPercentage,
+                    Percentage = batteryPercentage,
                     Status = status
                 };
 
