@@ -36,13 +36,13 @@ namespace WindesHeartApp.Pages
             {
                 SetApplicationProperties();
             }
-            //} else
-            //{
-            //    if (App.Current.Properties.ContainsKey(_propertyKey))
-            //    {
-            //        HandleAutoConnect();
-            //    }
-            //}           
+            else
+            {
+                if (App.Current.Properties.ContainsKey(_propertyKey))
+                {
+                    HandleAutoConnect();
+                }
+            }
         }
 
         //Set UUID in App-properties
