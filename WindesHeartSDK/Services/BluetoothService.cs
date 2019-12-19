@@ -168,7 +168,7 @@ namespace WindesHeartSDK
                     if (status == AdapterStatus.PoweredOn && Windesheart.ConnectedDevice != null && startListening)
                     {
                         var tempConnectCallback = Windesheart.ConnectedDevice.ConnectionCallback;
-                        var DisconnectCallback = Windesheart.ConnectedDevice.DisconnectCallback;                       
+                        var DisconnectCallback = Windesheart.ConnectedDevice.DisconnectCallback;
                         var device = await GetKnownDevice(Windesheart.ConnectedDevice.IDevice.Uuid);
 
                         if (DisconnectCallback != null)
@@ -190,12 +190,14 @@ namespace WindesHeartSDK
         {
             var name = device.Name;
 
-            if (name.Equals("Mi Band 3") || name.Equals("Xiaomi Mi Band 3"))
+            switch (name)
             {
-                return new MiBand3(device);
-            }
+                case "Mi Band 3":
+                case "Xiaomi Mi Band 3":
+                    return new MiBand3(device);
 
-            //Create additional if-statements for devices other than Mi Band 3/Xiami Band 3.
+                    //Create additional cases for other devices.
+            }
             return null;
         }
     }
