@@ -140,11 +140,15 @@ namespace WindesHeartSDK
         {
             //Cancel the connection
             Console.WriteLine("Disconnecting device..");
-            Windesheart.PairedDevice?.DisposeDisposables();
-            IDevice.CancelConnection();
-            if (!rememberDevice)
+            if (Windesheart.PairedDevice != null)
             {
-                Windesheart.PairedDevice = null;
+                Windesheart.PairedDevice.Authenticated = false;
+                Windesheart.PairedDevice.DisposeDisposables();
+                IDevice.CancelConnection();
+                if (!rememberDevice)
+                {
+                    Windesheart.PairedDevice = null;
+                }
             }
         }
 

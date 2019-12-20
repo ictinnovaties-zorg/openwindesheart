@@ -9,16 +9,18 @@ namespace WindesHeartSDK
 {
     public abstract class BLEDevice
     {
-
-        public bool NeedsAuthentication = false;
         public string Name { get => IDevice.Name; }
         public ConnectionStatus Status { get => IDevice.Status; }
         public Guid Uuid { get => IDevice.Uuid; }
         public List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
         public readonly IDevice IDevice;
 
+
         protected readonly BluetoothService BluetoothService;
 
+
+        internal bool NeedsAuthentication = false;
+        public bool Authenticated = false;
         internal Action<ConnectionResult> ConnectionCallback;
         internal Action<object> DisconnectCallback;
         internal IDisposable ConnectionDisposable;
@@ -56,6 +58,11 @@ namespace WindesHeartSDK
         public bool IsDisconnected()
         {
             return IDevice.IsDisconnected();
+        }
+
+        public bool IsAuthenticated()
+        {
+            return (IsConnected() && Authenticated);
         }
 
         public bool IsPairingAvailable()

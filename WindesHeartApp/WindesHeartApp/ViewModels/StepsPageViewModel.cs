@@ -52,7 +52,9 @@ namespace WindesHeartApp.ViewModels
 
             //Update chart
             int stepCount = await GetCurrentSteps();
+            
             UpdateChart(stepCount);
+            
 
             //Init buttons on bottom
             List<Button> dayButtons = new List<Button>
@@ -128,7 +130,7 @@ namespace WindesHeartApp.ViewModels
                 Console.WriteLine("Today selected!");
 
                 //If device is connected
-                if (Windesheart.PairedDevice != null && Windesheart.PairedDevice.IsConnected())
+                if (Windesheart.PairedDevice != null && Windesheart.PairedDevice.IsAuthenticated())
                 {
                     //Read stepcount from device
                     try

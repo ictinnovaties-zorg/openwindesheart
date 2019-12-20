@@ -39,8 +39,15 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
         public async Task<StepData> GetSteps()
         {
-            var steps = await _miBand3.GetCharacteristic(MiBand3Resource.GuidStepsInfo).Read();
-            return new StepData(steps.Characteristic.Value);
+            if (_miBand3.IsAuthenticated())
+            {
+                var steps = await _miBand3.GetCharacteristic(MiBand3Resource.GuidStepsInfo).Read();
+                return new StepData(steps.Characteristic.Value);
+            }
+            else
+            {
+                return new StepData(new byte[] { 0, 0, 0 });
+            }
         }
     }
 }
