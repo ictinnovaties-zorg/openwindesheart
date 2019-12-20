@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
@@ -85,6 +84,7 @@ namespace WindesHeartApp.ViewModels
 
         private async void UpdateInfo()
         {
+            DateTime date = SelectedDate;
             if (SelectedDate == StartDate)
             {
                 StepsPage.CurrentDayLabel.Text = "Today";
@@ -100,7 +100,12 @@ namespace WindesHeartApp.ViewModels
 
             //Update chart
             int stepCount = await GetCurrentSteps();
-            UpdateChart(stepCount);
+
+            //Only update chart if selectedDate is still equal to the date requested (can be different due to await)
+            if (SelectedDate.Equals(date))
+            {
+                UpdateChart(stepCount);
+            }
         }
 
         public void OnStepsUpdated(int steps)
@@ -113,8 +118,8 @@ namespace WindesHeartApp.ViewModels
                 //Update the chart on main thread
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                //Update that info
-                Debug.WriteLine("Updating chart!!");
+                    //Update that info
+                    Debug.WriteLine("Updating chart!!");
                     UpdateChart(steps);
                 });
             }
@@ -153,7 +158,7 @@ namespace WindesHeartApp.ViewModels
             //Get stepcount for that day by adding them together
             int stepCount = 0;
 
-            if(SelectedDate == StartDate && Windesheart.PairedDevice != null)
+            if (SelectedDate == StartDate && Windesheart.PairedDevice != null)
             {
                 var todaySteps = await Windesheart.PairedDevice.GetSteps();
                 return todaySteps.StepCount;
@@ -173,8 +178,8 @@ namespace WindesHeartApp.ViewModels
             entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
             double kilometers = (double)stepCount / 1000;
 
-            if(StepsPage.CurrentStepsLabel != null)
-            { 
+            if (StepsPage.CurrentStepsLabel != null)
+            {
                 //Update labels
                 StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
 
@@ -184,7 +189,7 @@ namespace WindesHeartApp.ViewModels
                 double calories = stepCount * 0.04;
                 StepsPage.CaloriesLabel.Text = Math.Round(calories, 2) + " Calories";
             }
-            
+
             //If goal not reached, fill other part transparent
             if (percentageDone < 1)
             {
