@@ -1,3 +1,4 @@
+
 # How to add support for a new device
 
 This documentation offers a step by step guide on how to add support for a new device. We assume you have the WindesheartSDK project cloned and open in Visual Studio.
@@ -39,7 +40,7 @@ For example, if your device doesn't support sleep tracking, you do this:
 ## 4. Edit the GetDevice method
 The last step is to edit the GetDevice method inside of  `BluetoothService.cs`
 This method returns the correct BLEDevice dependent of it's name. Please note that `var name` is the Bluetooth device name. There might be two or more names for one device (in case of the Mi Band 3).
-![Alt text](https://i.imgur.com/MWUSSIN.png)
+![Alt text](https://i.imgur.com/wdEOTcZ.png)
 And that should be it! Now, when scanning for devices it should detect and return your device! Please make sure everything works as expected before submitting a pull request.
 
 

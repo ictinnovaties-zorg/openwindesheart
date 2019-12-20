@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
@@ -52,7 +51,9 @@ namespace WindesHeartApp.ViewModels
 
             //Update chart
             int stepCount = await GetCurrentSteps();
+            
             UpdateChart(stepCount);
+            
 
             //Init buttons on bottom
             List<Button> dayButtons = new List<Button>
@@ -85,6 +86,7 @@ namespace WindesHeartApp.ViewModels
 
         private async void UpdateInfo()
         {
+            DateTime date = SelectedDate;
             if (SelectedDate == StartDate)
             {
                 StepsPage.CurrentDayLabel.Text = "Today";
@@ -100,7 +102,12 @@ namespace WindesHeartApp.ViewModels
 
             //Update chart
             int stepCount = await GetCurrentSteps();
-            UpdateChart(stepCount);
+
+            //Only update chart if selectedDate is still equal to the date requested (can be different due to await)
+            if (SelectedDate.Equals(date))
+            {
+                UpdateChart(stepCount);
+            }
         }
 
         public void OnStepsUpdated(int steps)
@@ -113,8 +120,8 @@ namespace WindesHeartApp.ViewModels
                 //Update the chart on main thread
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                //Update that info
-                Debug.WriteLine("Updating chart!!");
+                    //Update that info
+                    Debug.WriteLine("Updating chart!!");
                     UpdateChart(steps);
                 });
             }
@@ -128,12 +135,12 @@ namespace WindesHeartApp.ViewModels
                 Console.WriteLine("Today selected!");
 
                 //If device is connected
-                if (Windesheart.ConnectedDevice != null && Windesheart.ConnectedDevice.isConnected())
+                if (Windesheart.PairedDevice != null && Windesheart.PairedDevice.IsAuthenticated())
                 {
                     //Read stepcount from device
                     try
                     {
-                        StepInfo currentSteps = await Windesheart.ConnectedDevice.GetSteps();
+                        StepData currentSteps = await Windesheart.PairedDevice.GetSteps();
                         return currentSteps.StepCount;
                     }
                     catch (Exception e)
@@ -153,9 +160,9 @@ namespace WindesHeartApp.ViewModels
             //Get stepcount for that day by adding them together
             int stepCount = 0;
 
-            if(SelectedDate == StartDate && Windesheart.ConnectedDevice != null)
+            if (SelectedDate == StartDate && Windesheart.PairedDevice != null)
             {
-                var todaySteps = await Windesheart.ConnectedDevice.GetSteps();
+                var todaySteps = await Windesheart.PairedDevice.GetSteps();
                 return todaySteps.StepCount;
             }
 
@@ -173,18 +180,18 @@ namespace WindesHeartApp.ViewModels
             entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
             double kilometers = (double)stepCount / 1000;
 
-            if(StepsPage.CurrentStepsLabel != null)
-            { 
+            if (StepsPage.CurrentStepsLabel != null)
+            {
                 //Update labels
                 StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
 
 
                 StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";
 
-                double calories = stepCount * 0.4;
+                double calories = stepCount * 0.04;
                 StepsPage.CaloriesLabel.Text = Math.Round(calories, 2) + " Calories";
             }
-            
+
             //If goal not reached, fill other part transparent
             if (percentageDone < 1)
             {

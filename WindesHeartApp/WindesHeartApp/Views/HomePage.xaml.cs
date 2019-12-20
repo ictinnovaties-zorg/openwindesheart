@@ -32,7 +32,7 @@ namespace WindesHeartApp.Pages
         protected override void OnAppearing()
         {
             App.RequestLocationPermission();
-            if (Windesheart.ConnectedDevice != null)
+            if (Windesheart.PairedDevice != null)
             {
                 SetApplicationProperties();
             }
@@ -48,9 +48,9 @@ namespace WindesHeartApp.Pages
         //Set UUID in App-properties
         private void SetApplicationProperties()
         {
-            if(Windesheart.ConnectedDevice != null)
+            if(Windesheart.PairedDevice != null)
             {
-                App.Current.Properties[_propertyKey] = Windesheart.ConnectedDevice.Device.Uuid;
+                App.Current.Properties[_propertyKey] = Windesheart.PairedDevice.Uuid;
             }
         }
 
@@ -87,7 +87,7 @@ namespace WindesHeartApp.Pages
             fetchProgressBar.SetBinding(ProgressBar.ProgressProperty, new Binding("FetchProgress"));
             fetchProgressBar.SetBinding(ProgressBar.IsVisibleProperty, new Binding("FetchProgressVisible"));
 
-            AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.15, 0.25, 0.95,-1));
+            AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.15, 0.25, 0.95, -1));
             AbsoluteLayout.SetLayoutFlags(fetchProgressBar, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
             
             absoluteLayout.Children.Add(fetchProgressBar);

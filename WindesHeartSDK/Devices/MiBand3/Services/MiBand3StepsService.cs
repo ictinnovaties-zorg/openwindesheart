@@ -2,6 +2,7 @@
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Models;
 
@@ -9,23 +10,23 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3StepsService
     {
-        private readonly MiBand3.Models.MiBand3 MiBand3;
+        private readonly MiBand3 _miBand3;
         public IDisposable realtimeDisposable;
 
-        public MiBand3StepsService(MiBand3.Models.MiBand3 device)
+        public MiBand3StepsService(MiBand3 device)
         {
-            MiBand3 = device;
+            _miBand3 = device;
         }
 
         /// <summary>
         /// Add a callback to run everytime the Mi Band updates its step count
         /// </summary>
         /// <param name="callback"></param>
-        public void EnableRealTimeSteps(Action<StepInfo> callback)
+        public void EnableRealTimeSteps(Action<StepData> callback)
         {
             realtimeDisposable?.Dispose();
-            realtimeDisposable = MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).RegisterAndNotify().Subscribe(
-                x => callback(new StepInfo(x.Characteristic.Value)));
+            realtimeDisposable = _miBand3.GetCharacteristic(MiBand3Resource.GuidStepsInfo).RegisterAndNotify().Subscribe(
+                x => callback(new StepData(x.Characteristic.Value)));
         }
 
         /// <summary>
@@ -36,10 +37,17 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             realtimeDisposable?.Dispose();
         }
 
-        public async Task<StepInfo> GetSteps()
+        public async Task<StepData> GetSteps()
         {
-            var steps = await MiBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristic7RealtimeSteps).Read();
-            return new StepInfo(steps.Characteristic.Value);
+            if (_miBand3.IsAuthenticated())
+            {
+                var steps = await _miBand3.GetCharacteristic(MiBand3Resource.GuidStepsInfo).Read();
+                return new StepData(steps.Characteristic.Value);
+            }
+            else
+            {
+                return new StepData(new byte[] { 0, 0, 0 });
+            }
         }
     }
 }

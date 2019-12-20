@@ -13,19 +13,19 @@ namespace WindesHeartApp.Services
     {
         private static readonly string _key = "LastConnectedDeviceGuid";
 
-        public static void OnHeartrateUpdated(WindesHeartSDK.Models.Heartrate heartrate)
+        public static void OnHeartrateUpdated(WindesHeartSDK.Models.HeartrateData heartrate)
         {
-            if (heartrate.HeartrateValue == 0)
+            if (heartrate.Heartrate == 0)
                 return;
-            Globals.HomePageViewModel.Heartrate = heartrate.HeartrateValue;
+            Globals.HomePageViewModel.Heartrate = heartrate.Heartrate;
         }
 
-        public static void OnBatteryUpdated(Battery battery)
+        public static void OnBatteryUpdated(BatteryData battery)
         {
             Globals.HomePageViewModel.UpdateBattery(battery);
         }
 
-        public static void OnStepsUpdated(StepInfo stepsInfo)
+        public static void OnStepsUpdated(StepData stepsInfo)
         {
             var count = stepsInfo.StepCount;
             Debug.WriteLine($"Stepcount updated: {count}");
@@ -40,36 +40,36 @@ namespace WindesHeartApp.Services
                 try
                 {
                     //Sync settings
-                    Windesheart.ConnectedDevice.SetTime(DateTime.Now);
-                    Windesheart.ConnectedDevice.SetDateDisplayFormat(DeviceSettings.DateFormatDMY);
-                    Windesheart.ConnectedDevice.SetLanguage(DeviceSettings.DeviceLanguage);
-                    Windesheart.ConnectedDevice.SetTimeDisplayFormat(DeviceSettings.TimeFormat24Hour);
-                    Windesheart.ConnectedDevice.SetActivateOnLiftWrist(DeviceSettings.WristRaiseDisplay);
-                    Windesheart.ConnectedDevice.SetFitnessGoal(DeviceSettings.DailyStepsGoal);
-                    Windesheart.ConnectedDevice.EnableFitnessGoalNotification(true);
-                    Windesheart.ConnectedDevice.EnableSleepTracking(true);
-                    Windesheart.ConnectedDevice.SetHeartrateMeasurementInterval(1);
+                    Windesheart.PairedDevice.SetTime(DateTime.Now);
+                    Windesheart.PairedDevice.SetDateDisplayFormat(DeviceSettings.DateFormatDMY);
+                    Windesheart.PairedDevice.SetLanguage(DeviceSettings.DeviceLanguage);
+                    Windesheart.PairedDevice.SetTimeDisplayFormat(DeviceSettings.TimeFormat24Hour);
+                    Windesheart.PairedDevice.SetActivateOnLiftWrist(DeviceSettings.WristRaiseDisplay);
+                    Windesheart.PairedDevice.SetStepGoal(DeviceSettings.DailyStepsGoal);
+                    Windesheart.PairedDevice.EnableFitnessGoalNotification(true);
+                    Windesheart.PairedDevice.EnableSleepTracking(true);
+                    Windesheart.PairedDevice.SetHeartrateMeasurementInterval(1);
 
                     //Callbacks
-                    Windesheart.ConnectedDevice.EnableRealTimeHeartrate(OnHeartrateUpdated);
-                    Windesheart.ConnectedDevice.EnableRealTimeBattery(OnBatteryUpdated);
-                    Windesheart.ConnectedDevice.EnableRealTimeSteps(OnStepsUpdated);
-                    Windesheart.ConnectedDevice.SubscribeToDisconnect(OnDisconnect);
+                    Windesheart.PairedDevice.EnableRealTimeHeartrate(OnHeartrateUpdated);
+                    Windesheart.PairedDevice.EnableRealTimeBattery(OnBatteryUpdated);
+                    Windesheart.PairedDevice.EnableRealTimeSteps(OnStepsUpdated);
+                    Windesheart.PairedDevice.SubscribeToDisconnect(OnDisconnect);
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
                     Debug.WriteLine("Something went wrong while connecting to device, disconnecting...");
-                    Windesheart.ConnectedDevice.Disconnect();
+                    Windesheart.PairedDevice.Disconnect();
                     Globals.DevicePageViewModel.IsLoading = false;
                 }
 
                 Globals.DevicePageViewModel.StatusText = "Connected";
-                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEDevice>();
+                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEScanResult>();
                 Globals.DevicePageViewModel.IsLoading = false;
 
                 Globals.HomePageViewModel.ReadCurrentBattery();
-                Globals.HomePageViewModel.BandNameLabel = Windesheart.ConnectedDevice.Device.Name;
+                Globals.HomePageViewModel.BandNameLabel = Windesheart.PairedDevice.Name;
 
                 Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 Globals.SamplesService.StartFetching();

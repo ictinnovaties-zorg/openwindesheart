@@ -3,6 +3,7 @@ using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3Device.Helpers;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Exceptions;
 
@@ -10,12 +11,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3AuthenticationService
     {
-        private static IGattCharacteristic authCharacteristic;
-        private readonly BLEDevice BLEDevice;
+        private static IGattCharacteristic _authCharacteristic;
+        private readonly MiBand3 _miBand3;
         public IDisposable AuthenticationDisposable;
-        public MiBand3AuthenticationService(BLEDevice device)
+        public MiBand3AuthenticationService(MiBand3 device)
         {
-            BLEDevice = device;
+            _miBand3 = device;
         }
 
         /// <summary>
@@ -25,17 +26,17 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <exception cref="ConnectionException">Throws exception if authentication went wrong.</exception>
         public async Task Authenticate()
         {
-            authCharacteristic = BLEDevice.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
-            if (authCharacteristic != null)
+            _authCharacteristic = _miBand3.GetCharacteristic(MiBand3Resource.GuidCharacteristicAuth);
+            if (_authCharacteristic != null)
             {
                 //Fired when Mi Band 3 is tapped
                 AuthenticationDisposable?.Dispose();
-                AuthenticationDisposable = authCharacteristic.RegisterAndNotify().Subscribe(async result =>
+                AuthenticationDisposable = _authCharacteristic.RegisterAndNotify().Subscribe(async result =>
                 {
                     var data = result.Data;
                     if (data == null)
                     {
-                        BLEDevice.ConnectionCallback(ConnectionResult.Failed);
+                        _miBand3.ConnectionCallback(ConnectionResult.Failed);
                         throw new NullReferenceException("No data found in authentication-result.");
                     }
 
@@ -53,20 +54,22 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         else if (data[1] == MiBand3Resource.AuthSendEncryptedAuthNumber)
                         {
                             Console.WriteLine("Authenticated & Connected!");
-                            BLEDevice.ConnectionCallback(ConnectionResult.Succeeded);
+                            _miBand3.Authenticated = true;
+                            _miBand3.ConnectionCallback(ConnectionResult.Succeeded);
                             AuthenticationDisposable.Dispose();
                             return;
                         }
                     }
                     else
                     {
-                        BLEDevice.ConnectionCallback(ConnectionResult.Failed);
+                        _miBand3.Authenticated = false;
+                        _miBand3.ConnectionCallback(ConnectionResult.Failed);
                         throw new ConnectionException("Authentication failed!");
                     }
                 },
                 exception =>
                 {
-                    BLEDevice.ConnectionCallback(ConnectionResult.Failed);
+                    _miBand3.ConnectionCallback(ConnectionResult.Failed);
                     throw new ConnectionException(exception.Message);
                 });
 
@@ -83,7 +86,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             }
             else
             {
-                BLEDevice.ConnectionCallback(ConnectionResult.Failed);
+                _miBand3.ConnectionCallback(ConnectionResult.Failed);
                 throw new NullReferenceException("AuthCharacteristic is null!");
             }
         }
@@ -92,19 +95,19 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             Console.WriteLine("Authenticating...");
             Console.WriteLine("Writing authentication-key..");
-            await authCharacteristic.WriteWithoutResponse(MiBand3Resource.AuthKey);
+            await _authCharacteristic.WriteWithoutResponse(MiBand3Resource.AuthKey);
         }
 
         private async Task RequestAuthorizationNumber()
         {
             Console.WriteLine("1.Requesting Authorization-number");
-            await authCharacteristic.WriteWithoutResponse(MiBand3Resource.RequestNumber);
+            await _authCharacteristic.WriteWithoutResponse(MiBand3Resource.RequestNumber);
         }
 
         private async Task RequestRandomEncryptionKey(byte[] data)
         {
             Console.WriteLine("2.Requesting random encryption key");
-            await authCharacteristic.WriteWithoutResponse(MiBand3ConversionHelper.CreateKey(data));
+            await _authCharacteristic.WriteWithoutResponse(MiBand3ConversionHelper.CreateKey(data));
         }
     }
 }

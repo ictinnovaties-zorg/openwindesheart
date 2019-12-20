@@ -15,7 +15,7 @@ namespace WindesHeartApp.Models
 
         public static string DeviceLanguage
         {
-            get => AppSettings.GetValueOrDefault(nameof(DeviceLanguage), "en_EN");
+            get => AppSettings.GetValueOrDefault(nameof(DeviceLanguage), "en-EN");
             set => AppSettings.AddOrUpdateValue(nameof(DeviceLanguage), value);
         }
 

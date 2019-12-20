@@ -46,7 +46,7 @@ namespace WindesHeartApp.Pages
                 };
 
                 Label label = new Label { FontAttributes = FontAttributes.Bold, VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center, FontSize = 12 };
-                label.SetBinding(Label.TextProperty, "Name");
+                label.SetBinding(Label.TextProperty, "Device.Name");
                 grid.Children.Add(label, 0, 0);
 
 

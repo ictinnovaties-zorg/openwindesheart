@@ -39,24 +39,24 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Resources
         public static byte[] Byte_DateFormat_MM_dd_YYYY = new byte[] { 0x06, 30, 0x00, Convert.ToByte('M'), Convert.ToByte('M'), Convert.ToByte('/'), Convert.ToByte('d'), Convert.ToByte('d'), Convert.ToByte('/'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y'), Convert.ToByte('y') };
 
         //User settings
-        public static Guid GuidCharacteristic8UserInfo = new Guid("00000008-0000-3512-2118-0009af100700");
+        public static Guid GuidUserInfo = new Guid("00000008-0000-3512-2118-0009af100700");
 
         //Battery Guid
-        public static Guid GuidCharacteristic6BatteryInfo = new Guid("00000006-0000-3512-2118-0009af100700");
+        public static Guid GuidBatteryInfo = new Guid("00000006-0000-3512-2118-0009af100700");
 
         //Current Time Guid
-        public static Guid GuidCharacteristicCurrentTime = new Guid("00002A2B-0000-1000-8000-00805f9b34fb");
+        public static Guid GuidCurrentTime = new Guid("00002A2B-0000-1000-8000-00805f9b34fb");
 
         //Heartrate Control Point Guid
-        public static Guid GuidCharacteristicHeartrateControl = new Guid("00002A39-0000-1000-8000-00805f9b34fb");
+        public static Guid GuidHeartRateControl = new Guid("00002A39-0000-1000-8000-00805f9b34fb");
 
         //Heartrate Realtime Guid
-        public static Guid GuidCharacteristicHeartrate = new Guid("00002A37-0000-1000-8000-00805f9b34fb");
+        public static Guid GuidHeartrate = new Guid("00002A37-0000-1000-8000-00805f9b34fb");
         
         //Samples Bytes and Guids
         public static Guid GuidSamplesRequest = new Guid("00000004-0000-3512-2118-0009af100700");
 
-        public static Guid GuidCharacteristic5ActivityData = new Guid("00000005-0000-3512-2118-0009af100700");
+        public static Guid GuidActivityData = new Guid("00000005-0000-3512-2118-0009af100700");
 
         public static byte Response = 0x10;
         public static byte CommandActivityDataStartDate = 0x01;
@@ -65,7 +65,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Resources
         public static byte[] ResponseActivityDataStartDateSuccess = { Response, CommandActivityDataStartDate, Success };
 
         //Steps Realtime Guid
-        public static Guid GuidCharacteristic7RealtimeSteps = new Guid("00000007-0000-3512-2118-0009af100700");
+        public static Guid GuidStepsInfo = new Guid("00000007-0000-3512-2118-0009af100700");
 
     }
 
