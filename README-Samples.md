@@ -46,3 +46,4 @@ private void FetchingFinished(List<ActivitySample> samples) {
 
 *The demo-application contains a working example of this in the directory 'Services' -> 'SamplesService.cs'*
 
+[<---- Back to mainpage](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/)

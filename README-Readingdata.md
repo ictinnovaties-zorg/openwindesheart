@@ -24,7 +24,7 @@ int percentage = battery.Percentage;
 
 
 ## Real time data
-There is also an option to continouesly get data from your device. This works by providing a callback method that will be run when the data has been updated.
+There is also an option to continuously get data from your device. This works by providing a callback method that will be run when the data has been updated.
 
 This works with:
 

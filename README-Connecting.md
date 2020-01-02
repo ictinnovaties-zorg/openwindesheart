@@ -40,3 +40,5 @@ This method disconnects the BLEDevice. There is an optional parameter called rem
 WindesHeart always saves your currently connected device to the `Windesheart.ConnectedDevice` field. if rememberDevice is true, it won't clear this field after disconnecting. If false is passed, `Windesheart.ConnectedDevice` will be set to null.
 
 The disconnect method is a void. You can assume that it always works.
+
+[<---- Back to mainpage](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/)

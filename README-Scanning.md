@@ -38,3 +38,4 @@ await Task.Delay(2000); //Wait 2 seconds
 Windesheart.StopScanning(); //Stop scanning
 ```
 
+[<---- Back to mainpage](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/)
