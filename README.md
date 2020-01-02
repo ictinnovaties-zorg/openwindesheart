@@ -41,11 +41,10 @@ The SDK is designed in a way that other devices can be added easily. If you want
 
 #### User docs:
 * [Scanning](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Scanning.md)  
-* [Connecting](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Connecting.md)  
+* [Connecting & Disconnecting](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Connecting.md)  
 * [Reading data](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Readingdata.md)
 * [Reading samples](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Samples.md)
 * [Supported settings](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Settings.md)
-* [Disconnecting](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Disconnecting.md)
 
 #### Contributor docs:
 * [How to add support for a new device](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-SupportNewDevice.md)

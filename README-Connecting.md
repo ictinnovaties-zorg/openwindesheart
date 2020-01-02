@@ -37,10 +37,6 @@ void OnConnectionFinished(ConnectionResult result){
 ## BLEDevice.Disconnect(rememberDevice = true)
 This method disconnects the BLEDevice. There is an optional parameter called rememberDevice that defaults to true.
 
-WindesHeart always saves your currently connected device to the `Windesheart.ConnectedDevice` field. if rememberDevice is true, it won't clear this field after disconnecting. If false is passed, `Windesheart.ConnectedDevice` will be set to null. 
-
-///WHAT DOES REMEMBERDEVICE DO?? KEVIN?
+WindesHeart always saves your currently connected device to the `Windesheart.ConnectedDevice` field. if rememberDevice is true, it won't clear this field after disconnecting. If false is passed, `Windesheart.ConnectedDevice` will be set to null.
 
 The disconnect method is a void. You can assume that it always works.
-
-
