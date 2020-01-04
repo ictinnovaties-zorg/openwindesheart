@@ -95,7 +95,7 @@ namespace WindesHeartApp.Droid
 				.SetContentTitle("BackgroundService")
 				.SetColor(Color.Red.ToAndroid())
 				.SetContentText("BackgroundService running")
-				.SetSmallIcon(Android.Resource.Drawable.abc_cab_background_top_material)
+				.SetSmallIcon(Droid.Resource.Drawable.abc_cab_background_top_material)
 				.SetContentIntent(BuildIntentToShowMainActivity())
 				.SetOngoing(true)
 				.AddAction(BuildStopServiceAction());
@@ -132,7 +132,7 @@ namespace WindesHeartApp.Droid
 			stopServiceIntent.SetAction(Constants.ACTION_STOP_SERVICE);
 			var stopServicePendingIntent = PendingIntent.GetService(this, 0, stopServiceIntent, 0);
 
-			var builder = new Notification.Action.Builder(Android.Resource.Drawable.abc_cab_background_top_material,
+			var builder = new Notification.Action.Builder(Droid.Resource.Drawable.abc_cab_background_top_material,
 														  "Stop Service",
 														  stopServicePendingIntent);
 			return builder.Build();
@@ -148,10 +148,10 @@ namespace WindesHeartApp.Droid
 					switch (isConnected)
 					{
 						case true:
-							_foregroundNotification.SetSmallIcon(Android.Resource.Drawable.abc_cab_background_top_material);
+							_foregroundNotification.SetSmallIcon(Droid.Resource.Drawable.abc_cab_background_top_material);
 							break;
 						case false:
-							_foregroundNotification.SetSmallIcon(Android.Resource.Drawable.abc_cab_background_top_material);
+							_foregroundNotification.SetSmallIcon(Droid.Resource.Drawable.abc_cab_background_top_material);
 							break;
 					}
 
