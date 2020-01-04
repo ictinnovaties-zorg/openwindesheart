@@ -4,7 +4,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 
-namespace WindesHeartApp.Droid
+namespace WindesHeartApp.Android
 {
     [Activity(Theme = "@style/MyTheme.Splash", MainLauncher = true, NoHistory = true)]
     public class SplashActivity : AppCompatActivity
