@@ -8,6 +8,7 @@ using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
+using WindesHeartSDK.Models;
 using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
@@ -16,23 +17,23 @@ namespace WindesHeartApp.ViewModels
     {
         private bool _isLoading;
         private string _statusText;
-        private BLEDevice _selectedDevice;
-        private ObservableCollection<BLEDevice> _deviceList;
+        private BLEScanResult _selectedDevice;
+        private ObservableCollection<BLEScanResult> _deviceList;
         private string _scanbuttonText;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public DevicePageViewModel()
         {
             if (DeviceList == null)
-                DeviceList = new ObservableCollection<BLEDevice>();
-            if (Windesheart.ConnectedDevice == null)
+                DeviceList = new ObservableCollection<BLEScanResult>();
+            if (Windesheart.PairedDevice == null)
                 StatusText = "Disconnected";
             ScanButtonText = "Scan for devices";
         }
         public void DisconnectButtonClicked(object sender, EventArgs args)
         {
             IsLoading = true;
-            Windesheart.ConnectedDevice?.Disconnect();
+            Windesheart.PairedDevice?.Disconnect();
             IsLoading = false;
             StatusText = "Disconnected";
             Globals.HomePageViewModel.Heartrate = 0;
@@ -42,7 +43,7 @@ namespace WindesHeartApp.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        public ObservableCollection<BLEDevice> DeviceList
+        public ObservableCollection<BLEScanResult> DeviceList
         {
             get { return _deviceList; }
             set
@@ -79,7 +80,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged();
             }
         }
-        public BLEDevice SelectedDevice
+        public BLEScanResult SelectedDevice
         {
             get { return _selectedDevice; }
             set
@@ -89,7 +90,7 @@ namespace WindesHeartApp.ViewModels
                 if (_selectedDevice == null)
                     return;
                 OnPropertyChanged();
-                DeviceSelected(_selectedDevice);
+                DeviceSelected(_selectedDevice.Device);
                 DevicePage.Devicelist.SelectedItem = null;
                 _selectedDevice = null;
 
@@ -98,7 +99,7 @@ namespace WindesHeartApp.ViewModels
 
         public async void ScanButtonClicked(object sender, EventArgs args)
         {
-            DeviceList = new ObservableCollection<BLEDevice>();
+            DeviceList = new ObservableCollection<BLEScanResult>();
             DisconnectButtonClicked(sender, EventArgs.Empty);
             try
             {
@@ -150,12 +151,12 @@ namespace WindesHeartApp.ViewModels
             IsLoading = false;
             StatusText = "";
             ScanButtonText = "Scan for devices";
-            DeviceList = new ObservableCollection<BLEDevice>();
+            DeviceList = new ObservableCollection<BLEScanResult>();
         }
 
-        private void OnDeviceFound(BLEDevice device)
+        private void OnDeviceFound(BLEScanResult result)
         {
-            DeviceList.Add(device);
+            DeviceList.Add(result);
         }
 
         private void DeviceSelected(BLEDevice device)

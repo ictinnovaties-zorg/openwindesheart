@@ -1,21 +1,21 @@
 ﻿using System;
 namespace WindesHeartSDK.Models
 {
-    public enum StatusEnum
+    public enum BatteryStatus
     {
         Charging,
         NotCharging
     }
 
-    public class Battery
+    public class BatteryData
     {
-        public StatusEnum Status
+        public BatteryStatus Status
         {
             get;
             set;
         }
 
-        public int BatteryPercentage
+        public int Percentage
         {
             get;
             set;

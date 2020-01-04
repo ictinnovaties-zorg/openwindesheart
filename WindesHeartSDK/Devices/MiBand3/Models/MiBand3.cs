@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WindesHeartSdk.Model;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Devices.MiBand3Device.Services;
 using WindesHeartSDK.Models;
 
-namespace WindesHeartSDK.Devices.MiBand3.Models
+namespace WindesHeartSDK.Devices.MiBand3Device.Models
 {
     public class MiBand3 : BLEDevice
     {
@@ -17,16 +16,16 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         private readonly MiBand3DateTimeService _dateTimeService;
         private readonly MiBand3StepsService _stepsService;
         private readonly MiBand3AuthenticationService _authenticationService;
-        private readonly MiBand3FetchService _fetchService;
+        private readonly MiBand3SampleService _fetchService;
         private readonly MiBand3ConfigurationService _configurationService;
 
-        public MiBand3(int rssi, IDevice device) : base(rssi, device)
+        public MiBand3(IDevice device) : base(device)
         {
             _batteryService = new MiBand3BatteryService(this);
             _heartrateService = new MiBand3HeartrateService(this);
             _dateTimeService = new MiBand3DateTimeService(this);
             _authenticationService = new MiBand3AuthenticationService(this);
-            _fetchService = new MiBand3FetchService(this);
+            _fetchService = new MiBand3SampleService(this);
             _stepsService = new MiBand3StepsService(this);
             _configurationService = new MiBand3ConfigurationService(this);
         }
@@ -42,10 +41,10 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             BluetoothService.Connect();
         }
 
-        public override void SubscribeToDisconnect(Action<Object> disconnectCallback)
+        public override void SubscribeToDisconnect(Action<object> disconnectCallback)
         {
             DisconnectCallback = disconnectCallback;
-            Device.WhenDisconnected().Subscribe(observer => DisconnectCallback(observer));
+            IDevice.WhenDisconnected().Subscribe(observer => DisconnectCallback(observer));
         }
 
         public override void Disconnect(bool rememberDevice = true)
@@ -58,9 +57,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             _configurationService.SetTimeDisplayUnit(is24Hours);
         }
 
-        public override void SetFitnessGoal(int goal)
+        public override void SetStepGoal(int steps)
         {
-            _configurationService.SetFitnessGoal(goal);
+            _configurationService.SetStepGoal(steps);
         }
 
         public override void EnableFitnessGoalNotification(bool enable)
@@ -98,17 +97,17 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             _configurationService.SetActivateOnWristLift(from, to);
         }
 
-        public override void EnableRealTimeBattery(Action<Battery> getBatteryStatus)
+        public override void EnableRealTimeBattery(Action<BatteryData> getBatteryStatus)
         {
             _batteryService.EnableRealTimeBattery(getBatteryStatus);
         }
 
-        public override Task<Battery> GetBattery()
+        public override Task<BatteryData> GetBattery()
         {
             return _batteryService.GetCurrentBatteryData();
         }
 
-        public override void EnableRealTimeHeartrate(Action<Heartrate> getHeartrate)
+        public override void EnableRealTimeHeartrate(Action<HeartrateData> getHeartrate)
         {
             _heartrateService.EnableRealTimeHeartrate(getHeartrate);
         }
@@ -118,7 +117,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             _heartrateService.SetMeasurementInterval(minutes);
         }
 
-        public override Task<StepInfo> GetSteps()
+        public override Task<StepData> GetSteps()
         {
             return _stepsService.GetSteps();
         }
@@ -128,7 +127,7 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             _stepsService.DisableRealTimeSteps();
         }
 
-        public override void EnableRealTimeSteps(Action<StepInfo> onStepsChanged)
+        public override void EnableRealTimeSteps(Action<StepData> onStepsChanged)
         {
             _stepsService.EnableRealTimeSteps(onStepsChanged);
         }
@@ -138,9 +137,9 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
             return _dateTimeService.SetTime(dateTime);
         }
 
-        public override void FetchData(DateTime startDate, Action<List<ActivitySample>> callback, Action<float> progressCallback)
+        public override void GetSamples(DateTime startDate, Action<List<ActivitySample>> finishedCallback, Action<int> remainingSamplesCallback)
         {
-            _fetchService.StartFetching(startDate, callback, progressCallback);
+            _fetchService.StartFetching(startDate, finishedCallback, remainingSamplesCallback);
         }
 
         public override void EnableSleepTracking(bool enable)
@@ -152,15 +151,16 @@ namespace WindesHeartSDK.Devices.MiBand3.Models
         {
             Console.WriteLine("Device Connected!");
 
-            Windesheart.ConnectedDevice = this;
+            Windesheart.PairedDevice = this;
 
             //Check if bluetooth-state changes to off and then on, to enable reconnection management
             BluetoothService.StartListeningForAdapterChanges();
 
             Characteristics?.Clear();
 
+            CharacteristicDisposable?.Dispose();
             //Find unique characteristics
-            CharacteristicDisposable = Device.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
+            CharacteristicDisposable = IDevice.WhenAnyCharacteristicDiscovered().Subscribe(async characteristic =>
             {
                 if (characteristic != null && !Characteristics.Contains(characteristic))
                 {

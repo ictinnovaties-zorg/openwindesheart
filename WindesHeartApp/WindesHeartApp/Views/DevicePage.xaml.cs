@@ -30,7 +30,7 @@ namespace WindesHeartApp.Pages
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
-
+            
             #region device ListView
             var deviceTemplate = new DataTemplate(() =>
             {
@@ -46,7 +46,7 @@ namespace WindesHeartApp.Pages
                 };
 
                 Label label = new Label { FontAttributes = FontAttributes.Bold, VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center, FontSize = 12 };
-                label.SetBinding(Label.TextProperty, "Name");
+                label.SetBinding(Label.TextProperty, "Device.Name");
                 grid.Children.Add(label, 0, 0);
 
 

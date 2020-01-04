@@ -4,6 +4,7 @@ using Plugin.BluetoothLE;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
 using WindesHeartSDK.Models;
 
@@ -11,12 +12,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
     public class MiBand3BatteryService
     {
-        private readonly MiBand3.Models.MiBand3 MiBand;
+        private readonly MiBand3 _miBand3;
         public IDisposable RealTimeDisposible;
 
-        public MiBand3BatteryService(MiBand3.Models.MiBand3 device)
+        public MiBand3BatteryService(MiBand3 device)
         {
-            MiBand = device;
+            _miBand3 = device;
         }
         /// <summary>
         /// Get Raw Battery data.
@@ -48,7 +49,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// </summary>
         /// <exception cref="NullReferenceException">Throws exception if rawData is null.</exception>
         /// <returns>Battery</returns>
-        public async Task<Battery> GetCurrentBatteryData()
+        public async Task<BatteryData> GetCurrentBatteryData()
         {
             var rawData = await GetRawBatteryData();
             if (rawData != null)
@@ -65,22 +66,22 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <param name="rawData"></param>
         /// <exception cref="NullReferenceException">Throws exception if rawData is null.</exception>
         /// <returns>Battery</returns>
-        private Battery CreateBatteryObject(byte[] rawData)
+        private BatteryData CreateBatteryObject(byte[] rawData)
         {
             if (rawData != null)
             {
                 var batteryPercentage = rawData[1];
-                StatusEnum status = StatusEnum.NotCharging;
+                BatteryStatus status = BatteryStatus.NotCharging;
 
                 if (rawData[2] == 1)
                 {
-                    status = StatusEnum.Charging;
+                    status = BatteryStatus.Charging;
                 }
 
-                var battery = new Battery
+                var battery = new BatteryData
                 {
                     RawData = rawData,
-                    BatteryPercentage = batteryPercentage,
+                    Percentage = batteryPercentage,
                     Status = status
                 };
 
@@ -93,10 +94,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <summary>
         /// Receive BatteryStatus-updates continuously.
         /// </summary>
-        public void EnableRealTimeBattery(Action<Battery> callback)
+        public void EnableRealTimeBattery(Action<BatteryData> callback)
         {
             RealTimeDisposible?.Dispose();
-            RealTimeDisposible = MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo).RegisterAndNotify().Subscribe(
+            RealTimeDisposible = _miBand3.GetCharacteristic(MiBand3Resource.GuidBatteryInfo).RegisterAndNotify().Subscribe(
                 x => callback(CreateBatteryObject(x.Characteristic.Value))
             );
         }
@@ -112,7 +113,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         /// <returns>IGattCharacteristic</returns>
         private IGattCharacteristic GetBatteryCharacteristic()
         {
-            return MiBand.GetCharacteristic(MiBand3Resource.GuidCharacteristic6BatteryInfo);
+            return _miBand3.GetCharacteristic(MiBand3Resource.GuidBatteryInfo);
         }
     }
 }

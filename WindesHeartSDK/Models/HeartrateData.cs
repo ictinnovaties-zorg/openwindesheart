@@ -3,13 +3,13 @@ using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK.Models
 {
-    public class Heartrate
+    public class HeartrateData
     {
-        public byte[] Rawdata { get; set; }
+        public byte[] Rawdata { get; }
 
-        public int HeartrateValue { get; set; }
+        public int Heartrate { get; }
 
-        public Heartrate(byte[] rawdata)
+        public HeartrateData(byte[] rawdata)
         {
             {
                 if (rawdata == null && rawdata[0] == 0)
@@ -18,7 +18,7 @@ namespace WindesHeartSDK.Models
                 }
 
                 Rawdata = rawdata;
-                HeartrateValue = rawdata[1];
+                Heartrate = rawdata[1];
             }
         }
     }

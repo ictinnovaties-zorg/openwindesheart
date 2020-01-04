@@ -1,6 +1,4 @@
-﻿using Plugin.Settings;
-using Plugin.Settings.Abstractions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WindesHeartApp.Data;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Services;
@@ -11,8 +9,6 @@ namespace WindesHeartApp.Resources
 {
     public static class Globals
     {
-        private static ISettings AppSettings => CrossSettings.Current;
-
         public static HeartRatePageViewModel HeartratePageViewModel;
         public static SamplesService SamplesService { get; private set; }
         public static DevicePageViewModel DevicePageViewModel;

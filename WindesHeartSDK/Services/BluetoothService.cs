@@ -1,11 +1,10 @@
 ﻿using Plugin.BluetoothLE;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Devices.MiBand3.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK
 {
@@ -13,12 +12,13 @@ namespace WindesHeartSDK
     {
         //Globals
         private readonly BLEDevice BLEDevice;
-        private IDevice IDevice => BLEDevice.Device;
+        private IDevice IDevice => BLEDevice.IDevice;
 
         public static AdapterStatus AdapterStatus;
 
-        public static IDisposable AdapterDisposable;
+        private static IDisposable AdapterReadyDisposable;
         private static IDisposable CurrentScan;
+        private static IDisposable AdapterChangedDisposable;
 
         public BluetoothService(BLEDevice device)
         {
@@ -39,7 +39,7 @@ namespace WindesHeartSDK
         /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
         /// <param name="callback"></param>
         /// <returns>Bool wheter scanning has started</returns>
-        public static bool StartScanning(Action<BLEDevice> callback)
+        public static bool StartScanning(Action<BLEScanResult> callback)
         {
             var uniqueGuids = new List<Guid>();
 
@@ -48,88 +48,53 @@ namespace WindesHeartSDK
             {
                 //Trigger event and add to devices list
                 Console.WriteLine("Started scanning");
-                CurrentScan = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
+                CurrentScan = CrossBleAdapter.Current.Scan().Subscribe(result =>
                 {
-                    if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && !uniqueGuids.Contains(scanResult.Device.Uuid))
+                    if (result.Device != null && !string.IsNullOrEmpty(result.Device.Name) && !uniqueGuids.Contains(result.Device.Uuid))
                     {
                         //Set device
-                        BLEDevice device = GetDevice(scanResult.Device, scanResult.Rssi);
+                        BLEDevice device = GetDevice(result.Device);
 
+                        BLEScanResult scanResult = new BLEScanResult(device, result.Rssi, result.AdvertisementData);
                         if (device != null)
                         {
                             device.NeedsAuthentication = true;
-                            callback(device);
+                            callback(scanResult);
                         }
-                        uniqueGuids.Add(scanResult.Device.Uuid);
+                        uniqueGuids.Add(result.Device.Uuid);
                     }
                 });
                 return true;
-
             }
             return false;
         }
 
         /// <summary>
-        /// Calls the callback method when bluetooth adapter state changes to ready
+        /// Calls the callback method when Bluetooth adapter state changes to ready
         /// </summary>
-        /// <param name="callback">Calls when adapter is ready</param>
+        /// <param name="callback">Called when adapter is ready</param>
         public static void WhenAdapterReady(Action callback)
         {
-            AdapterDisposable?.Dispose();
-            AdapterDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(adapter => { callback(); });
+            AdapterReadyDisposable?.Dispose();
+            AdapterReadyDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(adapter => callback());
         }
 
         /// <summary>
-        /// Scan for devices that are not yet connected.
+        /// Return whether device is currently scanning for devices.
         /// </summary>
-        /// <exception cref="System.Exception">Throws exception when trying to start scan when a scan is already running.</exception>
-        /// <param name="scanTimeInSeconds"></param>
-        /// <returns>List of devices found</returns>
-        public static async Task<ObservableCollection<BLEDevice>> ScanForUniqueDevicesAsync(int scanTimeInSeconds = 10)
+        public static bool IsScanning()
         {
-            var scanResults = new ObservableCollection<BLEDevice>();
-            var uniqueGuids = new List<Guid>();
+            return CrossBleAdapter.Current.IsScanning;
+        }
 
-            //Start scanning when adapter is powered on.
-            if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOn)
-            {
-                //Trigger event and add to devices list
-                Console.WriteLine("Started scanning");
-                var scanner = CrossBleAdapter.Current.Scan().Subscribe(scanResult =>
-                {
-                    if (scanResult.Device != null && !string.IsNullOrEmpty(scanResult.Device.Name) && !uniqueGuids.Contains(scanResult.Device.Uuid))
-                    {
-                        //Set device
-                        BLEDevice device = GetDevice(scanResult.Device, scanResult.Rssi);
-
-                        if (device != null)
-                        {
-                            device.NeedsAuthentication = true;
-                            scanResults.Add(device);
-                        }
-                        uniqueGuids.Add(scanResult.Device.Uuid);
-                    }
-                });
-
-                //Stop scanning after delayed time.
-                await Task.Delay(scanTimeInSeconds * 1000);
-                Console.WriteLine("Stopped scanning for devices... Amount of unique devices found: " + scanResults.Count);
-                scanner.Dispose();
-            }
-            else
-            {
-                Console.WriteLine("Bluetooth-Adapter state is: " + CrossBleAdapter.Current.Status + ". Trying again!");
-                await Task.Delay(2000);
-                return await ScanForUniqueDevicesAsync(scanTimeInSeconds);
-            }
-
-            //Order scanresults by descending signal strength
-            if (scanResults.Count > 1)
-            {
-                scanResults = new ObservableCollection<BLEDevice>(scanResults.OrderByDescending(x => x.Rssi).ToList());
-            }
-
-            return scanResults;
+        /// <summary>
+        /// Calls the callback method when Bluetooth adapter status changes
+        /// </summary>
+        /// <param name="callback">Called when status changed</param>
+        public static void OnAdapterChanged(Action callback)
+        {
+            AdapterChangedDisposable?.Dispose();
+            AdapterChangedDisposable = CrossBleAdapter.Current.WhenStatusChanged().Subscribe(adapter => callback());
         }
 
         /// <summary>
@@ -171,15 +136,19 @@ namespace WindesHeartSDK
         /// <summary>
         /// Disconnect current device.
         /// </summary>
-        public void Disconnect(bool rememberDevice)
+        public void Disconnect(bool rememberDevice = true)
         {
             //Cancel the connection
             Console.WriteLine("Disconnecting device..");
-            Windesheart.ConnectedDevice?.DisposeDisposables();
-            IDevice.CancelConnection();
-            if (!rememberDevice)
+            if (Windesheart.PairedDevice != null)
             {
-                Windesheart.ConnectedDevice = null;
+                Windesheart.PairedDevice.Authenticated = false;
+                Windesheart.PairedDevice.DisposeDisposables();
+                IDevice.CancelConnection();
+                if (!rememberDevice)
+                {
+                    Windesheart.PairedDevice = null;
+                }
             }
         }
 
@@ -189,21 +158,28 @@ namespace WindesHeartSDK
         public static void StartListeningForAdapterChanges()
         {
             bool startListening = false;
-            AdapterDisposable?.Dispose();
-            AdapterDisposable = CrossBleAdapter.Current.WhenStatusChanged().Subscribe(async status =>
+            AdapterReadyDisposable?.Dispose();
+            AdapterReadyDisposable = CrossBleAdapter.Current.WhenStatusChanged().Subscribe(async status =>
             {
                 if (status != AdapterStatus)
                 {
                     AdapterStatus = status;
-                    if (status == AdapterStatus.PoweredOff && Windesheart.ConnectedDevice != null)
+                    if (status == AdapterStatus.PoweredOff && Windesheart.PairedDevice != null)
                     {
-                        Windesheart.ConnectedDevice?.Disconnect();
+                        Windesheart.PairedDevice?.Disconnect();
                     }
 
-                    if (status == AdapterStatus.PoweredOn && Windesheart.ConnectedDevice != null && startListening)
+                    if (status == AdapterStatus.PoweredOn && Windesheart.PairedDevice != null && startListening)
                     {
-                        var device = await GetKnownDevice(Windesheart.ConnectedDevice.Device.Uuid);
-                        device?.Connect(Windesheart.ConnectedDevice?.ConnectionCallback);
+                        var tempConnectCallback = Windesheart.PairedDevice.ConnectionCallback;
+                        var DisconnectCallback = Windesheart.PairedDevice.DisconnectCallback;
+                        var device = await GetKnownDevice(Windesheart.PairedDevice.IDevice.Uuid);
+
+                        if (DisconnectCallback != null)
+                        {
+                            device?.SubscribeToDisconnect(DisconnectCallback);
+                        }
+                        device?.Connect(tempConnectCallback);
                     }
                     startListening = true;
                 }
@@ -214,16 +190,18 @@ namespace WindesHeartSDK
         /// <summary>
         /// Returns the right BLEDevice based on the ScanResult
         /// </summary>
-        private static BLEDevice GetDevice(IDevice device, int rssi = 0)
+        private static BLEDevice GetDevice(IDevice device)
         {
             var name = device.Name;
 
-            if (name.Equals("Mi Band 3") || name.Equals("Xiaomi Mi Band 3"))
+            switch (name)
             {
-                return new MiBand3(rssi, device);
-            }
+                case "Mi Band 3":
+                case "Xiaomi Mi Band 3":
+                    return new MiBand3(device);
 
-            //Create additional if-statements for devices other than Mi Band 3/Xiami Band 3.
+                    //Create additional cases for other devices.
+            }
             return null;
         }
     }

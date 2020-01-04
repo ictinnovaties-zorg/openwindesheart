@@ -1,13 +1,13 @@
 
 # WindesHeart SDK
 
-This project is an easy-to-use, cross-platform way of using a BluetoothLE device in your own mobile application.  
+This project is an easy-to-use, cross-platform way of using a BluetoothLE device in your own mobile application.
 
 ## Support
 
 This project has been created by students of Windesheim and does not guarantee any support in the future.  
 
-This SDK uses the [ACR Reactive BluetoothLE Plugin](https://github.com/aritchie/bluetoothle) to do anything BluetoothLE related. Our project only supports versions that are supported by this library, because we depend heavily upon it.
+This SDK uses the [ACR Reactive BluetoothLE Plugin](https://github.com/aritchie/bluetoothle) to do anything BluetoothLE related. Our project only supports versions that are supported by this library, because our project depends heavily upon it.
 
 The features have been tested with Android/iOS phones in combination with the Mi Band 3/Xiaomi Band 3.  
 
@@ -41,11 +41,10 @@ The SDK is designed in a way that other devices can be added easily. If you want
 
 #### User docs:
 * [Scanning](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Scanning.md)  
-* [Connecting](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Connecting.md)  
+* [Connecting & Disconnecting](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Connecting.md)  
 * [Reading data](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Readingdata.md)
 * [Reading samples](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Samples.md)
 * [Supported settings](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Settings.md)
-* [Disconnecting](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-Disconnecting.md)
 
 #### Contributor docs:
 * [How to add support for a new device](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-SupportNewDevice.md)
