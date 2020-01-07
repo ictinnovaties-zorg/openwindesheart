@@ -40,7 +40,7 @@ namespace WindesHeartApp.Pages
             {
                 if (App.Current.Properties.ContainsKey(_propertyKey))
                 {
-                    HandleAutoConnect();
+                    //HandleAutoConnect(); // Not in use due to instability
                 }
             }
         }
@@ -60,11 +60,6 @@ namespace WindesHeartApp.Pages
             var knownGuid = App.Current.Properties[_propertyKey].ToString();
             if (!string.IsNullOrEmpty(knownGuid))
             {
-                Device.BeginInvokeOnMainThread(delegate
-                {
-                    Globals.HomePageViewModel.IsLoading = true;
-                    Globals.HomePageViewModel.EnableDisableButtons(false);
-                });
                 var knownDevice = await Windesheart.GetKnownDevice(Guid.Parse(knownGuid));
                 knownDevice.Connect(CallbackHandler.OnConnect);
             }

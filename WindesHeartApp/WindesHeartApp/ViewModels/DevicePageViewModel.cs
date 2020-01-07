@@ -21,6 +21,7 @@ namespace WindesHeartApp.ViewModels
         private ObservableCollection<BLEScanResult> _deviceList;
         private string _scanbuttonText;
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly string _propertyKey = "LastConnectedDevice";
 
         public DevicePageViewModel()
         {
@@ -36,12 +37,24 @@ namespace WindesHeartApp.ViewModels
             Windesheart.PairedDevice?.Disconnect();
             IsLoading = false;
             StatusText = "Disconnected";
+            DeviceList = new ObservableCollection<BLEScanResult>();
             Globals.HomePageViewModel.Heartrate = 0;
             Globals.HomePageViewModel.Battery = 0;
         }
         private void OnPropertyChanged([CallerMemberName] string name = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            try
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
+            catch(Exception e)
+            {
+                if(e.InnerException != null)
+                {
+                    string err = e.InnerException.Message;
+                    Trace.WriteLine(err);
+                }
+            }
         }
         public ObservableCollection<BLEScanResult> DeviceList
         {
@@ -168,12 +181,28 @@ namespace WindesHeartApp.ViewModels
 
             try
             {
-                ScanButtonText = "Scan for devices";
                 Windesheart.StopScanning();
 
                 StatusText = "Connecting...";
                 IsLoading = true;
+
+                if (App.Current.Properties.ContainsKey(_propertyKey))
+                {
+                    var knownGuidString = App.Current.Properties[_propertyKey].ToString();
+
+                    if (!string.IsNullOrEmpty(knownGuidString))
+                    {
+                        var knownGuid = Guid.Parse(knownGuidString);
+                        if (device.IDevice.Uuid == knownGuid)
+                        {
+                            device.NeedsAuthentication = false;
+                        }
+                    }
+                }
                 device.Connect(CallbackHandler.OnConnect);
+
+
+                
             }
             catch (Exception e)
             {

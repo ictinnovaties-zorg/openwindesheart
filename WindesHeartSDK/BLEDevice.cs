@@ -16,7 +16,7 @@ namespace WindesHeartSDK
         public readonly IDevice IDevice;
         public bool Authenticated = false;
         protected readonly BluetoothService BluetoothService;
-        internal bool NeedsAuthentication = false;
+        public bool NeedsAuthentication = false;
 
         internal Action<ConnectionResult> ConnectionCallback;
         internal Action<object> DisconnectCallback;

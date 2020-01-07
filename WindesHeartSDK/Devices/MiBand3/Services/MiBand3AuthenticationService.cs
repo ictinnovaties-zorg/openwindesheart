@@ -73,7 +73,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     throw new ConnectionException(exception.Message);
                 });
 
-                if (/*BLEDevice.NeedsAuthentication*/ false)
+                if (_miBand3.NeedsAuthentication)
                 {
                     //Triggers vibration on device
                     await TriggerAuthentication();
