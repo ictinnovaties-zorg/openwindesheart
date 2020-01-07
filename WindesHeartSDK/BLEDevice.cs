@@ -34,11 +34,6 @@ namespace WindesHeartSDK
             ConnectionDisposable = IDevice.WhenConnected().Subscribe(x => OnConnect());
         }
 
-        public async Task<int> ReadRssi()
-        {
-            return await IDevice.ReadRssi();
-        }
-
         public bool IsConnected()
         {
             return IDevice.IsConnected();
