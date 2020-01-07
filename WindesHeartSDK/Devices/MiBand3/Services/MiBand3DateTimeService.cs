@@ -15,7 +15,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             _miBand3 = device;
         }
 
-        public bool SetTime(DateTime time)
+        public void SetTime(DateTime time)
         {
             //Convert time to bytes
             byte[] timeToSet = ConversionHelper.GetTimeBytes(time, ConversionHelper.TimeUnit.Seconds);
@@ -25,7 +25,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             {
                 Console.WriteLine("Time set to " + time.ToString());
             });
-            return true;
         }
     }
 }

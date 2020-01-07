@@ -64,7 +64,7 @@ namespace WindesHeartSDK
         public abstract void SetTimeDisplayFormat(bool is24hours);
         public abstract void SetDateDisplayFormat(bool isddMMYYYY);
         public abstract void SetLanguage(string localeString);
-        public abstract bool SetTime(DateTime dateTime);
+        public abstract void SetTime(DateTime dateTime);
 
         public abstract void SetActivateOnLiftWrist(bool activate);
         public abstract void SetActivateOnLiftWrist(DateTime from, DateTime to);

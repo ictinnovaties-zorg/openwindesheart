@@ -132,9 +132,9 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
             _stepsService.EnableRealTimeSteps(onStepsChanged);
         }
 
-        public override bool SetTime(DateTime dateTime)
+        public override void SetTime(DateTime dateTime)
         {
-            return _dateTimeService.SetTime(dateTime);
+            _dateTimeService.SetTime(dateTime);
         }
 
         public override void GetSamples(DateTime startDate, Action<List<ActivitySample>> finishedCallback, Action<int> remainingSamplesCallback)
