@@ -14,19 +14,14 @@ namespace WindesHeartSDK
         public Guid Uuid { get => IDevice.Uuid; }
         public List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
         public readonly IDevice IDevice;
-
-
-        protected readonly BluetoothService BluetoothService;
-
-
-        internal bool NeedsAuthentication = false;
         public bool Authenticated = false;
+        protected readonly BluetoothService BluetoothService;
+        internal bool NeedsAuthentication = false;
+
         internal Action<ConnectionResult> ConnectionCallback;
         internal Action<object> DisconnectCallback;
         internal IDisposable ConnectionDisposable;
         internal IDisposable CharacteristicDisposable;
-        internal IDisposable RssiDisposable;
-
 
         public BLEDevice()
         {
@@ -42,12 +37,6 @@ namespace WindesHeartSDK
         public async Task<int> ReadRssi()
         {
             return await IDevice.ReadRssi();
-        }
-
-        public void OnRssiUpdated(Action callback, TimeSpan? readInterval = null)
-        {
-            RssiDisposable?.Dispose();
-            RssiDisposable = IDevice.ReadRssiContinuously(readInterval).Subscribe(x => callback());
         }
 
         public bool IsConnected()
