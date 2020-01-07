@@ -10,19 +10,18 @@ namespace WindesHeartSDK
 {
     public class BluetoothService
     {
-        //Globals
-        private readonly BLEDevice BLEDevice;
-        private IDevice IDevice => BLEDevice.IDevice;
-
         public static AdapterStatus AdapterStatus;
 
-        private static IDisposable AdapterReadyDisposable;
-        private static IDisposable CurrentScan;
-        private static IDisposable AdapterChangedDisposable;
+        private static IDisposable _adapterReadyDisposable;
+        private static IDisposable _currentScan;
+        private static IDisposable _adapterChangedDisposable;
+
+        private readonly BLEDevice _bleDevice;
+
 
         public BluetoothService(BLEDevice device)
         {
-            BLEDevice = device;
+            _bleDevice = device;
         }
 
         /// <summary>
@@ -30,7 +29,7 @@ namespace WindesHeartSDK
         /// </summary>
         public static void StopScanning()
         {
-            CurrentScan?.Dispose();
+            _currentScan?.Dispose();
         }
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace WindesHeartSDK
             {
                 //Trigger event and add to devices list
                 Console.WriteLine("Started scanning");
-                CurrentScan = CrossBleAdapter.Current.Scan().Subscribe(result =>
+                _currentScan = CrossBleAdapter.Current.Scan().Subscribe(result =>
                 {
                     if (result.Device != null && !string.IsNullOrEmpty(result.Device.Name) && !uniqueGuids.Contains(result.Device.Uuid))
                     {
@@ -75,8 +74,8 @@ namespace WindesHeartSDK
         /// <param name="callback">Called when adapter is ready</param>
         public static void WhenAdapterReady(Action callback)
         {
-            AdapterReadyDisposable?.Dispose();
-            AdapterReadyDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(adapter => callback());
+            _adapterReadyDisposable?.Dispose();
+            _adapterReadyDisposable = CrossBleAdapter.Current.WhenReady().Subscribe(adapter => callback());
         }
 
         /// <summary>
@@ -93,8 +92,8 @@ namespace WindesHeartSDK
         /// <param name="callback">Called when status changed</param>
         public static void OnAdapterChanged(Action callback)
         {
-            AdapterChangedDisposable?.Dispose();
-            AdapterChangedDisposable = CrossBleAdapter.Current.WhenStatusChanged().Subscribe(adapter => callback());
+            _adapterChangedDisposable?.Dispose();
+            _adapterChangedDisposable = CrossBleAdapter.Current.WhenStatusChanged().Subscribe(adapter => callback());
         }
 
         /// <summary>
@@ -105,7 +104,7 @@ namespace WindesHeartSDK
             Console.WriteLine("Connecting started...");
 
             //Connect
-            IDevice.Connect(new ConnectionConfig
+            _bleDevice.IDevice.Connect(new ConnectionConfig
             {
                 AutoConnect = true,
                 AndroidConnectionPriority = ConnectionPriority.High
@@ -144,7 +143,7 @@ namespace WindesHeartSDK
             {
                 Windesheart.PairedDevice.Authenticated = false;
                 Windesheart.PairedDevice.DisposeDisposables();
-                IDevice.CancelConnection();
+                _bleDevice.IDevice.CancelConnection();
                 if (!rememberDevice)
                 {
                     Windesheart.PairedDevice = null;
@@ -158,8 +157,8 @@ namespace WindesHeartSDK
         public static void StartListeningForAdapterChanges()
         {
             bool startListening = false;
-            AdapterReadyDisposable?.Dispose();
-            AdapterReadyDisposable = CrossBleAdapter.Current.WhenStatusChanged().Subscribe(async status =>
+            _adapterReadyDisposable?.Dispose();
+            _adapterReadyDisposable = CrossBleAdapter.Current.WhenStatusChanged().Subscribe(async status =>
             {
                 if (status != AdapterStatus)
                 {
