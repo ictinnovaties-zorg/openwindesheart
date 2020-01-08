@@ -7,8 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
+using WindesHeartApp.Resources;
 using WindesHeartApp.Views;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
@@ -21,12 +21,11 @@ namespace WindesHeartApp.ViewModels
         public DateTime StartDate { get; }
         public DateTime SelectedDate;
         public event PropertyChangedEventHandler PropertyChanged;
- 
+
         public string AwakeColor = "#ffffff";
         public string LightColor = "#1281ff";
         public string DeepColor = "#002bba";
 
-        private ISleepRepository _sleepRepository;
         private ButtonRow _buttonRow;
         private Chart _chart;
         private bool _isLoading;
@@ -54,14 +53,11 @@ namespace WindesHeartApp.ViewModels
         public async void OnAppearing()
         {
             //Get all sleep data from DB
-            SleepInfo = _sleepRepository.GetAll();
+            SleepInfo = Globals.SleepRepository.GetAll();
 
-            if(SleepInfo.Count() == 0)
+            if (SleepInfo.Count() == 0)
             {
-                Device.BeginInvokeOnMainThread(async delegate
-                {
-                    await Application.Current.MainPage.DisplayAlert("No data", "Unfortunately, no sleep-data was found.", "Ok");
-                });
+                await Application.Current.MainPage.DisplayAlert("No data", "Unfortunately, no sleep-data was found.", "Ok");
             }
 
             //Init buttons on bottom
@@ -85,7 +81,8 @@ namespace WindesHeartApp.ViewModels
             await Task.Run(() =>
             {
                 var data = GetData();
-                Device.BeginInvokeOnMainThread(() => {
+                Device.BeginInvokeOnMainThread(() =>
+                {
                     UpdateChart(data);
                 });
             });
@@ -96,9 +93,8 @@ namespace WindesHeartApp.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public SleepPageViewModel(ISleepRepository sleepRepository)
+        public SleepPageViewModel()
         {
-            _sleepRepository = sleepRepository;
             StartDate = DateTime.Today;
             SelectedDate = StartDate;
         }
@@ -124,7 +120,8 @@ namespace WindesHeartApp.ViewModels
             await Task.Run(() =>
             {
                 var data = GetData();
-                Device.BeginInvokeOnMainThread(() => {
+                Device.BeginInvokeOnMainThread(() =>
+                {
                     UpdateChart(data);
                 });
             });

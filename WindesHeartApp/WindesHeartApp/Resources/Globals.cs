@@ -39,7 +39,7 @@ namespace WindesHeartApp.Resources
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsPageViewModel = new StepsPageViewModel();
             SettingsPageViewModel = new SettingsPageViewModel();
-            SleepPageViewModel = new SleepPageViewModel(sleepRepository);
+            SleepPageViewModel = new SleepPageViewModel();
             DevicePageViewModel = new DevicePageViewModel();
             HomePageViewModel = new HomePageViewModel();
 

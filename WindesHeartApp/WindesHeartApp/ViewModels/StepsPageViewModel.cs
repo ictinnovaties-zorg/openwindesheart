@@ -48,6 +48,10 @@ namespace WindesHeartApp.ViewModels
         {
             //Get all steps from DB
             StepInfo = Globals.StepsRepository.GetAll();
+            if (StepInfo.Count() == 0)
+            {
+                await Application.Current.MainPage.DisplayAlert("No data", "Unfortunately, no sleep-data was found.", "Ok");
+            }
 
             //Update chart
             int stepCount = await GetCurrentSteps();
