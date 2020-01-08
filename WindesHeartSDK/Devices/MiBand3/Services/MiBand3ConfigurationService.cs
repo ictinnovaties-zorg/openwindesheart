@@ -68,7 +68,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             var beginCommand = new byte[] { 0x10, 0x0, 0x0 };
             var endCommand = new byte[] { 0, 0 };
-            var goalBytes = BitConverter.GetBytes((ushort)goal);
+            var goalBytes = BitConverter.GetBytes((ushort) goal);
 
             byte[] CommandBytes = new byte[beginCommand.Length + endCommand.Length + goalBytes.Length];
 

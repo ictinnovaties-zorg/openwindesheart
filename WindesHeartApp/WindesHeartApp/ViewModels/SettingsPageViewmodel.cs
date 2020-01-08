@@ -58,10 +58,15 @@ namespace WindesHeartApp.ViewModels
 
                 try
                 {
-                    //Set on device
-                    Windesheart.PairedDevice?.SetDateDisplayFormat(isDMY);
-                    DeviceSettings.DateFormatDMY = isDMY;
-                    _dateIndex = picker.SelectedIndex;
+                    if (Windesheart.PairedDevice != null)
+                    {
+                        if (Windesheart.PairedDevice.IsConnected())
+                        {
+                            Windesheart.PairedDevice.SetDateDisplayFormat(isDMY);
+                            DeviceSettings.DateFormatDMY = isDMY;
+                            _dateIndex = picker.SelectedIndex;
+                        }
+                    }
                 }
                 catch (Exception)
                 {
@@ -82,10 +87,15 @@ namespace WindesHeartApp.ViewModels
 
                 try
                 {
-                    //Set on device
-                    Windesheart.PairedDevice?.SetTimeDisplayFormat(is24);
-                    DeviceSettings.TimeFormat24Hour = is24;
-                    _hourIndex = picker.SelectedIndex;
+                    if (Windesheart.PairedDevice != null)
+                    {
+                        if (Windesheart.PairedDevice.IsConnected())
+                        {
+                            Windesheart.PairedDevice.SetTimeDisplayFormat(is24);
+                            DeviceSettings.TimeFormat24Hour = is24;
+                            _hourIndex = picker.SelectedIndex;
+                        }
+                    }
                 }
                 catch (Exception)
                 {
@@ -107,10 +117,15 @@ namespace WindesHeartApp.ViewModels
 
                 try
                 {
-                    //Set on device
-                    Windesheart.PairedDevice?.SetLanguage(languageCode);
-                    DeviceSettings.DeviceLanguage = languageCode;
-                    _languageIndex = picker.SelectedIndex;
+                    if (Windesheart.PairedDevice != null)
+                    {
+                        if (Windesheart.PairedDevice.IsConnected())
+                        {
+                            Windesheart.PairedDevice.SetLanguage(languageCode);
+                            DeviceSettings.DeviceLanguage = languageCode;
+                            _languageIndex = picker.SelectedIndex;
+                        }
+                    }
                 }
                 catch (Exception)
                 {
@@ -129,10 +144,15 @@ namespace WindesHeartApp.ViewModels
                 int steps = int.Parse(picker.Items[picker.SelectedIndex]);
                 try
                 {
-                    //Set on device
-                    Windesheart.PairedDevice?.SetStepGoal(steps);
-                    DeviceSettings.DailyStepsGoal = steps;
-                    _stepIndex = picker.SelectedIndex;
+                    if (Windesheart.PairedDevice != null)
+                    {
+                        if (Windesheart.PairedDevice.IsConnected())
+                        {
+                            Windesheart.PairedDevice.SetStepGoal(steps);
+                            DeviceSettings.DailyStepsGoal = steps;
+                            _stepIndex = picker.SelectedIndex;
+                        }
+                    }
                 }
                 catch (Exception)
                 {
@@ -150,8 +170,14 @@ namespace WindesHeartApp.ViewModels
 
             try
             {
-                Windesheart.PairedDevice?.SetActivateOnLiftWrist(toggled);
-                DeviceSettings.WristRaiseDisplay = toggled;
+                if (Windesheart.PairedDevice != null)
+                {
+                    if (Windesheart.PairedDevice.IsConnected())
+                    {
+                        Windesheart.PairedDevice.SetActivateOnLiftWrist(toggled);
+                        DeviceSettings.WristRaiseDisplay = toggled;
+                    }
+                }
             }
             catch (Exception)
             {

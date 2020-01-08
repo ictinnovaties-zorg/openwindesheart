@@ -229,6 +229,11 @@ namespace WindesHeartApp.ViewModels
                 SelectedDate = SelectedDate.AddDays(1);
                 UpdateInfo();
             }
+            else
+            {
+                Application.Current.MainPage.DisplayAlert("Steps", "Unfortunately, you can't foresee the future.",
+                    "Ok");
+            }
         }
 
         public void TodayBtnClick(object sender, EventArgs args)
