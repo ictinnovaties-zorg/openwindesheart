@@ -45,7 +45,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     Trace.WriteLine("Data[1]:" + data[1]);
                     Trace.WriteLine("Data[2]:" + data[2]);
                     //Check if response is valid
-                    if (data[0] == MiBand3Resource.AuthResponse && (data[2] == MiBand3Resource.AuthSuccess || data[2] == 0x01))
+                    if (data[0] == MiBand3Resource.AuthResponse && data[2] == MiBand3Resource.AuthSuccess)
                     {
                         if (data[1] == MiBand3Resource.AuthSendKey)
                         {
@@ -77,7 +77,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     throw new ConnectionException(exception.Message);
                 });
 
-                if (_miBand3.NeedsAuthentication)
+                if (/*_miBand3.NeedsAuthentication*/false)
                 {
                     //Triggers vibration on device
                     await TriggerAuthentication();
