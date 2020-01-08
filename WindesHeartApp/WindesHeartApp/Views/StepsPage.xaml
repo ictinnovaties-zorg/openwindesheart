@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              mc:Ignorable="d"
-             x:Class="WindesHeartApp.Pages.StepsPage">
+             x:Class="WindesHeartApp.Views.StepsPage">
 
     <AbsoluteLayout x:Name="absoluteLayout">
 

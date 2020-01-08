@@ -28,7 +28,7 @@ namespace WindesHeartApp.Pages
             layout.Children.Add(textonlyImage);
         }
 
-        public static void AddReturnButton(AbsoluteLayout layout, object sender)
+        public static ImageButton AddReturnButton(AbsoluteLayout layout, object sender)
         {
             //added extra grid behind imagebutton to make it clickable easier.
             Grid returnGrid = new Grid();
@@ -44,9 +44,9 @@ namespace WindesHeartApp.Pages
             returnButton.Clicked += ReturnButton_Clicked;
             AbsoluteLayout.SetLayoutBounds(returnButton, new Rectangle(0.95, 0.95, Globals.ScreenHeight / 100 * 6, Globals.ScreenHeight / 100 * 6));
             AbsoluteLayout.SetLayoutFlags(returnButton, AbsoluteLayoutFlags.PositionProportional);
-
             layout.Children.Add(returnGrid);
             layout.Children.Add(returnButton);
+            return returnButton;
         }
 
         private static void ReturnButton_Clicked(object sender, EventArgs e)

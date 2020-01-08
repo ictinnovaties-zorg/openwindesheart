@@ -1,11 +1,11 @@
 ﻿using FormsControls.Base;
+using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
-using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Rectangle = Xamarin.Forms.Rectangle;
 
-namespace WindesHeartApp.Pages
+namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : ContentPage, IAnimationPage
@@ -20,7 +20,7 @@ namespace WindesHeartApp.Pages
         public SettingsPage()
         {
             BindingContext = Globals.SettingsPageViewModel;
-            InitializeComponent();   
+            InitializeComponent();
             BuildPage();
         }
 

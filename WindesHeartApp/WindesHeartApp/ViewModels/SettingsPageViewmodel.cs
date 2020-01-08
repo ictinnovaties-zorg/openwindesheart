@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using WindesHeartApp.Models;
-using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Views;
 using WindesHeartSDK;
 using Xamarin.Forms;
 

@@ -1,12 +1,13 @@
 ﻿using FormsControls.Base;
 using Microcharts.Forms;
 using System;
+using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace WindesHeartApp.Pages
+namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HeartratePage : ContentPage, IAnimationPage

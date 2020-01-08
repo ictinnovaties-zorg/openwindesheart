@@ -1,9 +1,11 @@
 ﻿using FormsControls.Base;
+using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
+using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace WindesHeartApp.Pages
+namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     [System.Runtime.InteropServices.Guid("A63B9823-FB43-4942-BAAA-5F02EAF86AC8")]
@@ -11,6 +13,8 @@ namespace WindesHeartApp.Pages
     {
         public static ListView Devicelist;
         public static Button ScanButton;
+        public static Button DisconnectButton;
+        public static ImageButton ReturnButton;
         public DevicePage()
         {
             InitializeComponent();
@@ -23,14 +27,14 @@ namespace WindesHeartApp.Pages
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
             PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.LightTextColor, "", 0);
-            PageBuilder.AddReturnButton(absoluteLayout, this);
+            ReturnButton = PageBuilder.AddReturnButton(absoluteLayout, this);
 
             ScanButton = PageBuilder.AddButton(absoluteLayout, "", Globals.DevicePageViewModel.ScanButtonClicked, 0.15, 0.25, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             ScanButton.SetBinding(Button.TextProperty, "ScanButtonText");
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
-            
+
             #region device ListView
             var deviceTemplate = new DataTemplate(() =>
             {
@@ -69,13 +73,31 @@ namespace WindesHeartApp.Pages
             #endregion
 
             #region disconnectButton
-            Button disconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", Globals.DevicePageViewModel.DisconnectButtonClicked, 0.15, 0.85, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            DisconnectButton = PageBuilder.AddButton(absoluteLayout, "Disconnect", Globals.DevicePageViewModel.DisconnectButtonClicked, 0.15, 0.85, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             #endregion
         }
 
         protected override void OnDisappearing()
         {
             Globals.DevicePageViewModel.OnDisappearing();
+        }
+        protected override void OnAppearing()
+        {
+            if (Windesheart.PairedDevice != null)
+            {
+                if (Windesheart.PairedDevice.IsConnected())
+                {
+                    DisconnectButton.IsEnabled = true;
+                }
+                else
+                {
+                    DisconnectButton.IsEnabled = false;
+                }
+            }
+            else
+            {
+                DisconnectButton.IsEnabled = false;
+            }
         }
 
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };

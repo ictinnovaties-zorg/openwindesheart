@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using WindesHeartApp.Models;
 using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Views;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;

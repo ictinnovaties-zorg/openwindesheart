@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
+using WindesHeartApp.Views;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -109,7 +109,6 @@ namespace WindesHeartApp.ViewModels
 
         public async void ScanButtonClicked(object sender, EventArgs args)
         {
-            DeviceList = new ObservableCollection<BLEScanResult>();
             DisconnectButtonClicked(sender, EventArgs.Empty);
             try
             {
@@ -171,6 +170,7 @@ namespace WindesHeartApp.ViewModels
 
         private void DeviceSelected(BLEDevice device)
         {
+            DevicePage.ReturnButton.IsVisible = false;
             if (device == null)
             {
                 return;
@@ -197,6 +197,10 @@ namespace WindesHeartApp.ViewModels
                     }
                 }
                 device.Connect(CallbackHandler.OnConnect);
+                Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
+                Globals.HomePageViewModel.EnableDisableButtons(false);
+                Globals.HomePageViewModel.IsLoading = true;
+                DeviceList = new ObservableCollection<BLEScanResult>();
                 SelectedDevice = null;
 
             }

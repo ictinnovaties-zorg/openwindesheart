@@ -1,11 +1,12 @@
 ﻿using FormsControls.Base;
 using System;
 using System.Diagnostics;
+using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace WindesHeartApp.Pages
+namespace WindesHeartApp.Views
 {
     public partial class AboutPage : ContentPage, IAnimationPage
     {
