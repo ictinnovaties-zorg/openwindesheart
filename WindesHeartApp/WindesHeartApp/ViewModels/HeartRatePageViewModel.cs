@@ -117,12 +117,12 @@ namespace WindesHeartApp.ViewModels
             {
                 var heartrates = _heartrates
                     .Where(x => x.DateTime >= _dateTime)
-                    .Where(x => x.DateTime <= _dateTime2);
+                    .Where(x => x.DateTime <= _dateTime2)
+                    .Where(x => x.HeartrateValue != 0);
 
                 if (Interval != 0 && Interval != 1)
                 {
                     heartrates = heartrates
-                        .Where(x => x.HeartrateValue != 0)
                         .Where((x, i) => i % Interval == 0);
                 }
 
