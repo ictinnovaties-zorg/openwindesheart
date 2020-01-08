@@ -1,8 +1,8 @@
 ﻿using FormsControls.Base;
 using System;
 using System.Diagnostics;
-using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 

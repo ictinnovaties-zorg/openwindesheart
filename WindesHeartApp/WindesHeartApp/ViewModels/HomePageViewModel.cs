@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Views;
 using WindesHeartSDK;

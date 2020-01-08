@@ -1,7 +1,6 @@
 ﻿using FormsControls.Base;
 using System;
 using System.Threading.Tasks;
-using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;

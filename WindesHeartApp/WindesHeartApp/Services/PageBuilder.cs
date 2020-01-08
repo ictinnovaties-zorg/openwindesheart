@@ -2,7 +2,7 @@
 using WindesHeartApp.Resources;
 using Xamarin.Forms;
 
-namespace WindesHeartApp.Pages
+namespace WindesHeartApp.Services
 {
     //Builds and adds certain recurrent views to any AbsoluteLayout 
     public static class PageBuilder
@@ -30,21 +30,10 @@ namespace WindesHeartApp.Pages
 
         public static ImageButton AddReturnButton(AbsoluteLayout layout, object sender)
         {
-            //added extra grid behind imagebutton to make it clickable easier.
-            Grid returnGrid = new Grid();
-            returnGrid.GestureRecognizers.Add(new TapGestureRecognizer
-            {
-                NumberOfTapsRequired = 1,
-                Command = new Command(execute: () => { ReturnButton_Clicked(sender, EventArgs.Empty); })
-            });
-            AbsoluteLayout.SetLayoutBounds(returnGrid, new Rectangle(0.95, 0.95, Globals.ScreenHeight / 100 * 8.5, Globals.ScreenHeight / 100 * 8.5));
-            AbsoluteLayout.SetLayoutFlags(returnGrid, AbsoluteLayoutFlags.PositionProportional);
-
             ImageButton returnButton = new ImageButton { Source = "GoBack.png", BackgroundColor = Color.Transparent };
             returnButton.Clicked += ReturnButton_Clicked;
             AbsoluteLayout.SetLayoutBounds(returnButton, new Rectangle(0.95, 0.95, Globals.ScreenHeight / 100 * 6, Globals.ScreenHeight / 100 * 6));
             AbsoluteLayout.SetLayoutFlags(returnButton, AbsoluteLayoutFlags.PositionProportional);
-            layout.Children.Add(returnGrid);
             layout.Children.Add(returnButton);
             return returnButton;
         }

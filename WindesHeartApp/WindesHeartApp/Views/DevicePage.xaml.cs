@@ -1,6 +1,6 @@
 ﻿using FormsControls.Base;
-using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Services;
 using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

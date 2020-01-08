@@ -3,8 +3,8 @@ using FormsControls.Base;
 using Microcharts.Forms;
 using System;
 using System.Globalization;
-using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Services;
 using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -15,7 +15,6 @@ namespace WindesHeartApp.Views
     public partial class SleepPage : ContentPage, IAnimationPage
     {
         public static Label CurrentDayLabel;
-
         public static Button Day1Button;
         public static Button Day2Button;
         public static Button Day3Button;

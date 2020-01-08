@@ -8,7 +8,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WindesHeartApp.Models;
-using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Views;
 using WindesHeartSDK;
@@ -52,9 +51,9 @@ namespace WindesHeartApp.ViewModels
 
             //Update chart
             int stepCount = await GetCurrentSteps();
-            
+
             UpdateChart(stepCount);
-            
+
 
             //Init buttons on bottom
             List<Button> dayButtons = new List<Button>
