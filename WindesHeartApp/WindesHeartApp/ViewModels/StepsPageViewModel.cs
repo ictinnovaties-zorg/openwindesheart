@@ -58,7 +58,6 @@ namespace WindesHeartApp.ViewModels
 
             UpdateChart(stepCount);
 
-
             //Init buttons on bottom
             List<Button> dayButtons = new List<Button>
             {

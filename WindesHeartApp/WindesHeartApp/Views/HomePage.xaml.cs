@@ -64,11 +64,12 @@ namespace WindesHeartApp.Views
             PageBuilder.AddLabel(absoluteLayout, "Home", 0.05, 0.10, Globals.LightTextColor, "", 30);
             PageBuilder.AddHeaderImages(absoluteLayout);
 
-            #region define fetch progressbar 
+            #region define fetch-progressbar 
+
             ProgressBar fetchProgressBar = new ProgressBar
             {
                 ProgressColor = Color.Red,
-                HeightRequest = 20
+                HeightRequest = 30
             };
 
             fetchProgressBar.SetBinding(ProgressBar.ProgressProperty, new Binding("FetchProgress"));
