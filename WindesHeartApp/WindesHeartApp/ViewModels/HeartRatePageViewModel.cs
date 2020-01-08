@@ -69,14 +69,17 @@ namespace WindesHeartApp.ViewModels
 
         private void DrawLabels()
         {
-            var heartrates = _heartrates
-                .Where(x => x.DateTime >= _dateTime)
-                .Where(x => x.DateTime <= _dateTime2)
-                .Where(x => x.HeartrateValue != 0);
-            if (heartrates.Count() != 0)
+            if (_heartrates != null)
             {
-                AverageHeartrate = Convert.ToInt32(heartrates?.Select(x => x.HeartrateValue).Average());
-                PeakHeartrate = Convert.ToInt32((heartrates?.Select(x => x.HeartrateValue).Max()));
+                var heartrates = _heartrates
+                    .Where(x => x.DateTime >= _dateTime)
+                    .Where(x => x.DateTime <= _dateTime2)
+                    .Where(x => x.HeartrateValue != 0);
+                if (heartrates.Count() != 0)
+                {
+                    AverageHeartrate = Convert.ToInt32(heartrates?.Select(x => x.HeartrateValue).Average());
+                    PeakHeartrate = Convert.ToInt32((heartrates?.Select(x => x.HeartrateValue).Max()));
+                }
             }
 
         }

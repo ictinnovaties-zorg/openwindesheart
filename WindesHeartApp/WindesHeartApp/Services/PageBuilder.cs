@@ -26,7 +26,6 @@ namespace WindesHeartApp.Pages
 
             layout.Children.Add(heartonlyImage);
             layout.Children.Add(textonlyImage);
-
         }
 
         public static void AddReturnButton(AbsoluteLayout layout, object sender)

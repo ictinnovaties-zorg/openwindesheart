@@ -4,8 +4,8 @@ using System.Diagnostics;
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
-using WindesHeartSDK.Models;
 using WindesHeartSDK;
+using WindesHeartSDK.Models;
 using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
@@ -28,22 +28,23 @@ namespace WindesHeartApp.Services
 
         public void StartFetching()
         {
+
             Device.BeginInvokeOnMainThread(delegate
             {
-               Globals.HomePageViewModel.IsLoading = true;
+                Globals.HomePageViewModel.FetchProgressVisible = true;
                 Globals.HomePageViewModel.EnableDisableButtons(false);
+                Globals.HomePageViewModel.IsLoading = true;
             });
             _fetchingStartDate = GetLastAddedDateTime();
             Windesheart.PairedDevice.GetSamples(_fetchingStartDate, FillDatabase, ProgressCalculator);
-
         }
 
         private void ProgressCalculator(int remainingSamples)
         {
-            if(_totalSamples == 0)
+            if (_totalSamples == 0)
             {
                 _totalSamples = remainingSamples;
-            } 
+            }
             //Calculates percentage of progression. -10f to leave some space for DB insertion progress indication.
             float calculatedProgress = ((float)_totalSamples - (float)remainingSamples) / (float)_totalSamples;
 
@@ -61,7 +62,7 @@ namespace WindesHeartApp.Services
         }
         private void FillDatabase(List<ActivitySample> samples)
         {
-            Debug.WriteLine("Filling DB with samples: "+samples.Count);
+            Debug.WriteLine("Filling DB with samples: " + samples.Count);
             Globals.Database.Instance.BeginTransaction();
             foreach (var sample in samples)
             {

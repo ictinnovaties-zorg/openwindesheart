@@ -1,6 +1,7 @@
 ﻿using FormsControls.Base;
 using System;
 using System.Threading.Tasks;
+using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
@@ -9,7 +10,7 @@ using Xamarin.Forms.Xaml;
 using Image = Xamarin.Forms.Image;
 using Label = Xamarin.Forms.Label;
 
-namespace WindesHeartApp.Pages
+namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage, IAnimationPage
@@ -31,24 +32,16 @@ namespace WindesHeartApp.Pages
 
         protected override void OnAppearing()
         {
+
             App.RequestLocationPermission();
-            if (Windesheart.PairedDevice != null)
-            {
-                SetApplicationProperties();
-            }
-            else
-            {
-                if (App.Current.Properties.ContainsKey(_propertyKey))
-                {
-                    //HandleAutoConnect(); // Not in use due to instability
-                }
-            }
+            if (Windesheart.PairedDevice == null)
+                return;
         }
 
         //Set UUID in App-properties
         private void SetApplicationProperties()
         {
-            if(Windesheart.PairedDevice != null)
+            if (Windesheart.PairedDevice != null)
             {
                 App.Current.Properties[_propertyKey] = Windesheart.PairedDevice.Uuid;
             }
@@ -82,9 +75,9 @@ namespace WindesHeartApp.Pages
             fetchProgressBar.SetBinding(ProgressBar.ProgressProperty, new Binding("FetchProgress"));
             fetchProgressBar.SetBinding(ProgressBar.IsVisibleProperty, new Binding("FetchProgressVisible"));
 
-            AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.15, 0.25, 0.95, -1));
+            AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.5, 0.25, 0.95, -1));
             AbsoluteLayout.SetLayoutFlags(fetchProgressBar, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
-            
+
             absoluteLayout.Children.Add(fetchProgressBar);
             #endregion
 

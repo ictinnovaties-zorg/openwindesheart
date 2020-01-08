@@ -29,7 +29,6 @@ namespace WindesHeartApp.ViewModels
             {
                 ReadCurrentBattery();
                 BandNameLabel = Windesheart.PairedDevice.Name;
-                FetchProgressVisible = true;
             }
 
             toggle = false;
@@ -44,6 +43,11 @@ namespace WindesHeartApp.ViewModels
 
         public void UpdateBattery(BatteryData battery)
         {
+            if (battery.Percentage == 0)
+            {
+                BatteryImage = "";
+                return;
+            };
             Battery = battery.Percentage;
             if (battery.Status == BatteryStatus.Charging)
             {

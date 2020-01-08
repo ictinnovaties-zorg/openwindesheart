@@ -47,9 +47,9 @@ namespace WindesHeartApp.ViewModels
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                if(e.InnerException != null)
+                if (e.InnerException != null)
                 {
                     string err = e.InnerException.Message;
                     Trace.WriteLine(err);
@@ -102,11 +102,8 @@ namespace WindesHeartApp.ViewModels
 
                 if (_selectedDevice == null)
                     return;
-                OnPropertyChanged();
                 DeviceSelected(_selectedDevice.Device);
                 DevicePage.Devicelist.SelectedItem = null;
-                _selectedDevice = null;
-
             }
         }
 
@@ -200,9 +197,8 @@ namespace WindesHeartApp.ViewModels
                     }
                 }
                 device.Connect(CallbackHandler.OnConnect);
+                SelectedDevice = null;
 
-
-                
             }
             catch (Exception e)
             {

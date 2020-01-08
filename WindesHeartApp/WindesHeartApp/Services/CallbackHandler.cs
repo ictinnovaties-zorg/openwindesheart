@@ -83,7 +83,9 @@ namespace WindesHeartApp.Services
 
         public static void OnDisconnect(Object obj)
         {
-            Globals.DevicePageViewModel.StatusText = "Disconnected";
+            Globals.DevicePageViewModel.StatusText = "Disconnected"; 
+            Globals.HomePageViewModel.BandNameLabel = "";
+            Globals.HomePageViewModel.BatteryImage = "";
         }
     }
 }

@@ -3,8 +3,8 @@ using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using WindesHeartApp.Data;
 using WindesHeartApp.Data.Repository;
-using WindesHeartApp.Pages;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Views;
 using Xamarin.Forms;
 
 namespace WindesHeartApp
@@ -16,7 +16,7 @@ namespace WindesHeartApp
             InitializeComponent();
             var database = new Database();
             Globals.BuildGlobals(new HeartrateRepository(database), new SleepRepository(database), new StepsRepository(database), database);
-            //database.EmptyDatabase();
+            database.EmptyDatabase();
             MainPage = new AnimationNavigationPage(new HomePage());
         }
 
