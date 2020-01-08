@@ -1,5 +1,6 @@
 ﻿using Plugin.BluetoothLE;
 using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3Device.Helpers;
@@ -40,8 +41,11 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         throw new NullReferenceException("No data found in authentication-result.");
                     }
 
+                    Trace.WriteLine("Data[0]:" + data[0]);
+                    Trace.WriteLine("Data[1]:" + data[1]);
+                    Trace.WriteLine("Data[2]:" + data[2]);
                     //Check if response is valid
-                    if (data[0] == MiBand3Resource.AuthResponse && data[2] == MiBand3Resource.AuthSuccess)
+                    if (data[0] == MiBand3Resource.AuthResponse && (data[2] == MiBand3Resource.AuthSuccess || data[2] == 0x01))
                     {
                         if (data[1] == MiBand3Resource.AuthSendKey)
                         {

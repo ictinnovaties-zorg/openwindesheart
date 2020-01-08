@@ -197,6 +197,7 @@ namespace WindesHeartSDK
             {
                 case "Mi Band 3":
                 case "Xiaomi Mi Band 3":
+                case "Mi Smart Band 4":
                     return new MiBand3(device);
 
                     //Create additional cases for other devices.

@@ -5,8 +5,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Resources
     {
         //Authentication
         public static Guid GuidCharacteristicAuth = new Guid("00000009-0000-3512-2118-0009af100700");
-        public static readonly byte[] AuthKey = { 0x01, 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45 };
-
+        public static readonly byte[] AuthKey = { 0x01, 0x00, 0xa3, 0x04, 0x6e, 0x3c, 0x39, 0x8c, 0x47, 0xe9, 0x8c, 0x89, 0xda, 0xfe, 0x35, 0xb7, 0x8c, 0xb1 };
         public static byte AuthResponse = 0x10;
 
         public static byte AuthSendKey = 0x01;
@@ -15,7 +14,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Resources
 
         public static byte AuthSendEncryptedAuthNumber = 0x03;
 
-        public static byte AuthSuccess = 0x01;
+        public static byte AuthSuccess = 0x81;
 
         //General Guid for device settings
         public static Guid GuidDeviceConfiguration = new Guid("00000003-0000-3512-2118-0009af100700");
