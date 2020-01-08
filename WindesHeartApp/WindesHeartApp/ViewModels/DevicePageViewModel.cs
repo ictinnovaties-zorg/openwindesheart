@@ -33,6 +33,7 @@ namespace WindesHeartApp.ViewModels
         }
         public void DisconnectButtonClicked(object sender, EventArgs args)
         {
+            DevicePage.DisconnectButton.IsEnabled = false;
             IsLoading = true;
             Windesheart.PairedDevice?.Disconnect();
             IsLoading = false;
@@ -171,6 +172,7 @@ namespace WindesHeartApp.ViewModels
         private void DeviceSelected(BLEDevice device)
         {
             DevicePage.ReturnButton.IsVisible = false;
+            DevicePage.ScanButton.IsEnabled = false;
             if (device == null)
             {
                 return;
@@ -197,7 +199,6 @@ namespace WindesHeartApp.ViewModels
                     }
                 }
                 device.Connect(CallbackHandler.OnConnect);
-                Device.BeginInvokeOnMainThread(delegate { Application.Current.MainPage.Navigation.PopAsync(); });
                 Globals.HomePageViewModel.EnableDisableButtons(false);
                 Globals.HomePageViewModel.IsLoading = true;
                 DeviceList = new ObservableCollection<BLEScanResult>();

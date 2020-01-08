@@ -31,6 +31,7 @@ namespace WindesHeartApp.Services
 
             Device.BeginInvokeOnMainThread(delegate
             {
+                Application.Current.MainPage.Navigation.PopAsync();
                 Globals.HomePageViewModel.FetchProgressVisible = true;
                 Globals.HomePageViewModel.EnableDisableButtons(false);
                 Globals.HomePageViewModel.IsLoading = true;

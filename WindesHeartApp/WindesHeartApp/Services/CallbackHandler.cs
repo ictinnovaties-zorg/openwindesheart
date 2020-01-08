@@ -5,7 +5,6 @@ using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
-using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -81,7 +80,7 @@ namespace WindesHeartApp.Services
 
         public static void OnDisconnect(Object obj)
         {
-            Globals.DevicePageViewModel.StatusText = "Disconnected"; 
+            Globals.DevicePageViewModel.StatusText = "Disconnected";
             Globals.HomePageViewModel.BandNameLabel = "";
             Globals.HomePageViewModel.BatteryImage = "";
         }
