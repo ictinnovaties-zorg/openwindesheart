@@ -28,7 +28,7 @@ namespace WindesHeartApp.Services
             layout.Children.Add(textonlyImage);
         }
 
-        public static ImageButton AddReturnButton(AbsoluteLayout layout, object sender)
+        public static ImageButton AddReturnButton(AbsoluteLayout layout)
         {
             ImageButton returnButton = new ImageButton { Source = "GoBack.png", BackgroundColor = Color.Transparent };
             returnButton.Clicked += ReturnButton_Clicked;

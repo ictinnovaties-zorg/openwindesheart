@@ -127,7 +127,7 @@ namespace WindesHeartApp.Views
             absoluteLayout.Children.Add(learnmoreButton);
             #endregion
 
-            PageBuilder.AddReturnButton(absoluteLayout, this);
+            PageBuilder.AddReturnButton(absoluteLayout);
 
         }
 

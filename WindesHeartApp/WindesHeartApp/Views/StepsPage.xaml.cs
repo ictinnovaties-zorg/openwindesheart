@@ -44,7 +44,7 @@ namespace WindesHeartApp.Views
             PageBuilder.AddHeaderImages(absoluteLayout);
 
             PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.LightTextColor, "", 0);
-            PageBuilder.AddReturnButton(absoluteLayout, this);
+            PageBuilder.AddReturnButton(absoluteLayout);
 
             ImageButton previousBtn = new ImageButton
             {

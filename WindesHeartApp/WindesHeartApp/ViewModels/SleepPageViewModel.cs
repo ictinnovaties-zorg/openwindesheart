@@ -175,8 +175,7 @@ namespace WindesHeartApp.ViewModels
                     }
                     else
                     {
-                        Entry entry = new Entry(1);
-                        entry.Color = SKColor.Parse(AwakeColor);
+                        Entry entry = new Entry(1) { Color = SKColor.Parse(AwakeColor) };
                         entries.Add(entry);
                     }
                 }

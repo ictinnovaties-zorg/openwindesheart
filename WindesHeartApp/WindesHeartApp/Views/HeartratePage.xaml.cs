@@ -33,7 +33,7 @@ namespace WindesHeartApp.Views
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
             PageBuilder.AddLabel(absoluteLayout, "Heartrate", 0.05, 0.10, Globals.LightTextColor, "", 0);
-            PageBuilder.AddReturnButton(absoluteLayout, this);
+            PageBuilder.AddReturnButton(absoluteLayout);
 
             ImageButton previousBtn = new ImageButton
             {
@@ -102,15 +102,17 @@ namespace WindesHeartApp.Views
             Grid grid = new Grid
             {
             };
-            Frame frame = new Frame();
-            frame.CornerRadius = 10;
-            frame.BorderColor = Color.White;
-            frame.BackgroundColor = Globals.SecondaryColor;
-            frame.HorizontalOptions = LayoutOptions.FillAndExpand;
-            frame.VerticalOptions = LayoutOptions.FillAndExpand;
+            Frame frame = new Frame
+            {
+                CornerRadius = 10,
+                BorderColor = Color.White,
+                BackgroundColor = Globals.SecondaryColor,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HasShadow = true
+            };
 
 
-            frame.HasShadow = true;
 
             grid.GestureRecognizers.Add(new TapGestureRecognizer
             {
@@ -126,14 +128,21 @@ namespace WindesHeartApp.Views
                 HorizontalOptions = LayoutOptions.Start,
                 HeightRequest = Globals.ScreenHeight / 100 * 4.5,
                 BackgroundColor = Color.Transparent,
+                Margin = new Thickness(2, 0, 0, 0),
             };
-            RefreshButton.Margin = new Thickness(2, 0, 0, 0);
             RefreshButton.Clicked += RefreshButtonClicked;
             grid.Children.Add(frame);
             grid.Children.Add(RefreshButton); ;
 
-            Label RefreshLabel = new Label() { Text = "data", VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.End, FontSize = 20, FontAttributes = FontAttributes.Italic };
-            RefreshLabel.Margin = new Thickness(0, 0, 2, 0);
+            Label RefreshLabel = new Label
+            {
+                Text = "data",
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.End,
+                FontSize = 20,
+                FontAttributes = FontAttributes.Italic,
+                Margin = new Thickness(0, 0, 2, 0)
+            };
             grid.Children.Add(RefreshLabel);
 
             RefreshLabel.GestureRecognizers.Add(new TapGestureRecognizer

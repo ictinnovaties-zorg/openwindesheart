@@ -43,7 +43,7 @@ namespace WindesHeartApp.Views
             PageBuilder.AddHeaderImages(absoluteLayout);
 
             PageBuilder.AddLabel(absoluteLayout, "Sleep", 0.09, 0.10, Globals.LightTextColor, "", 0);
-            PageBuilder.AddReturnButton(absoluteLayout, this);
+            PageBuilder.AddReturnButton(absoluteLayout);
 
             ImageButton previousBtn = new ImageButton
             {
@@ -68,8 +68,7 @@ namespace WindesHeartApp.Views
             CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.19, Color.Black, "", 0);
             CurrentDayLabel.FontSize = 16;
 
-            BoxView awakeRectangle = new BoxView();
-            awakeRectangle.Color = Color.FromHex(Globals.SleepPageViewModel.AwakeColor);
+            BoxView awakeRectangle = new BoxView { Color = Color.FromHex(Globals.SleepPageViewModel.AwakeColor) };
             AbsoluteLayout.SetLayoutFlags(awakeRectangle, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(awakeRectangle, new Rectangle(0.1, 0.3, 20, 20));
             absoluteLayout.Children.Add(awakeRectangle);
@@ -77,16 +76,14 @@ namespace WindesHeartApp.Views
             PageBuilder.AddLabel(absoluteLayout, "Awake", 0.2, 0.3, Color.Black, "", 14);
 
 
-            BoxView lightRectangle = new BoxView();
-            lightRectangle.Color = Color.FromHex(Globals.SleepPageViewModel.LightColor);
+            BoxView lightRectangle = new BoxView { Color = Color.FromHex(Globals.SleepPageViewModel.LightColor) };
             AbsoluteLayout.SetLayoutFlags(lightRectangle, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(lightRectangle, new Rectangle(0.37, 0.3, 20, 20));
             absoluteLayout.Children.Add(lightRectangle);
 
             PageBuilder.AddLabel(absoluteLayout, "Light sleep", 0.53, 0.3, Color.Black, "", 14);
 
-            BoxView deepRectangle = new BoxView();
-            deepRectangle.Color = Color.FromHex(Globals.SleepPageViewModel.DeepColor);
+            BoxView deepRectangle = new BoxView { Color = Color.FromHex(Globals.SleepPageViewModel.DeepColor) };
             AbsoluteLayout.SetLayoutFlags(deepRectangle, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(deepRectangle, new Rectangle(0.7, 0.3, 20, 20));
             absoluteLayout.Children.Add(deepRectangle);
@@ -117,15 +114,17 @@ namespace WindesHeartApp.Views
             Grid grid = new Grid
             {
             };
-            Frame frame = new Frame();
-            frame.CornerRadius = 10;
-            frame.BorderColor = Color.White;
-            frame.BackgroundColor = Globals.SecondaryColor;
-            frame.HorizontalOptions = LayoutOptions.FillAndExpand;
-            frame.VerticalOptions = LayoutOptions.FillAndExpand;
+            Frame frame = new Frame
+            {
+                CornerRadius = 10,
+                BorderColor = Color.White,
+                BackgroundColor = Globals.SecondaryColor,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                HasShadow = true
+            };
 
 
-            frame.HasShadow = true;
 
             grid.GestureRecognizers.Add(new TapGestureRecognizer
             {
