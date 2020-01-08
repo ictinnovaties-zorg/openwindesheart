@@ -187,7 +187,7 @@ namespace WindesHeartApp.Views
                     "Can only refresh data when connected to a device!", "Ok");
                 return;
             }
-            Application.Current.MainPage.Navigation.PopAsync();
+            await Application.Current.MainPage.Navigation.PopAsync();
             Globals.SamplesService.StartFetching();
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Views;
@@ -8,18 +7,12 @@ using Xamarin.Forms;
 
 namespace WindesHeartApp.ViewModels
 {
-    public class SettingsPageViewModel : INotifyPropertyChanged
+    public class SettingsPageViewModel
     {
         private int _languageIndex = 0;
         private int _hourIndex = 0;
         private int _dateIndex = 0;
         private int _stepIndex = 0;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public SettingsPageViewModel()
-        {
-        }
 
         public void OnAppearing()
         {

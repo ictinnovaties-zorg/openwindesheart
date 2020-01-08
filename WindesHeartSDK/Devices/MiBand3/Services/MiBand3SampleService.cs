@@ -5,11 +5,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using WindesHeartSDK.Models;
-using WindesHeartSDK.Devices.MiBand3Device.Resources;
-using WindesHeartSDK.Helpers;
-using static WindesHeartSDK.Helpers.ConversionHelper;
 using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Devices.MiBand3Device.Resources;
+using WindesHeartSDK.Models;
+using static WindesHeartSDK.Helpers.ConversionHelper;
 
 namespace WindesHeartSDK.Devices.MiBand3Device.Services
 {
@@ -130,7 +129,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 }
             }
 
-            Trace.WriteLine("No more samples could be fetched, samples returned: "+_samples.Count);
+            Trace.WriteLine("No more samples could be fetched, samples returned: " + _samples.Count);
             _finishedCallback(_samples);
             _charActivitySub?.Dispose();
             _charUnknownSub?.Dispose();
@@ -156,7 +155,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
         private async Task HandleResponse(byte[] data)
         {
-            if(data.Length > 6)
+            if (data.Length > 6)
             {
                 //Start fetching
                 try
@@ -169,7 +168,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     // Write 0x02 to tell the band to start the fetching process
                     await _miBand3.GetCharacteristic(MiBand3Resource.GuidSamplesRequest).WriteWithoutResponse(new byte[] { 0x02 });
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Trace.WriteLine("Could not start fetching: " + e);
                 }
@@ -180,7 +179,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 try
                 {
                     _expectedSamples = data[5] << 16 | data[4] << 8 | data[3];
-                    if(_expectedSamples == 0)
+                    if (_expectedSamples == 0)
                     {
                         _finishedCallback(_samples);
                     }
@@ -191,7 +190,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                 }
             }
         }
-        
+
         private void CreateSamplesFromResponse(byte[] data)
         {
             var samplecount = _samplenumber;
@@ -222,7 +221,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
                 i += 4;
 
-               
+
                 var d = DateTime.Now.AddMinutes(-1);
                 d.AddSeconds(-d.Second);
                 d.AddMilliseconds(-d.Millisecond);

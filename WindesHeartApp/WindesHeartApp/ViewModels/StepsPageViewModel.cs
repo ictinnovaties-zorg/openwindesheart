@@ -170,7 +170,7 @@ namespace WindesHeartApp.ViewModels
             return stepCount;
         }
 
-        public async void UpdateChart(float stepCount)
+        public void UpdateChart(float stepCount)
         {
             List<Entry> entries = new List<Entry>();
 
