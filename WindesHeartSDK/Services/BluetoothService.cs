@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3Device.Models;
+using WindesHeartSDK.Devices.MiBand4Device.Models;
 using WindesHeartSDK.Models;
 
 namespace WindesHeartSDK
@@ -197,8 +198,9 @@ namespace WindesHeartSDK
             {
                 case "Mi Band 3":
                 case "Xiaomi Mi Band 3":
-                case "Mi Smart Band 4":
                     return new MiBand3(device);
+                case "Mi Smart Band 4":
+                    return new MiBand4(device);
 
                     //Create additional cases for other devices.
             }

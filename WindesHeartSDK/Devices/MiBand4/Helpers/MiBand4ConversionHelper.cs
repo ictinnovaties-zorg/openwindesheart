@@ -2,15 +2,15 @@
 using System.Security.Cryptography;
 using WindesHeartSDK.Helpers;
 
-namespace WindesHeartSDK.Devices.MiBand3Device.Helpers
+namespace WindesHeartSDK.Devices.MiBand4Device.Helpers
 {
-    public static class MiBand3ConversionHelper
+    public static class MiBand4ConversionHelper
     {
 
         public static byte[] CreateKey(byte[] value)
         {
             byte[] bytes = { 0x03, 0x00 };
-            byte[] secretKey = { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45 };
+            byte[] secretKey = { 0xa3, 0x04, 0x6e, 0x3c, 0x39, 0x8c, 0x47, 0xe9, 0x8c, 0x89, 0xda, 0xfe, 0x35, 0xb7, 0x8c, 0xb1 }; // Your key here, See docs for more info
 
             value = ConversionHelper.CopyOfRange(value, 3, 19);
             byte[] buffer = EncryptBuff(secretKey, value);
