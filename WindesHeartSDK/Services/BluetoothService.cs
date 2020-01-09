@@ -172,12 +172,14 @@ namespace WindesHeartSDK
                     {
                         var tempConnectCallback = Windesheart.PairedDevice.ConnectionCallback;
                         var DisconnectCallback = Windesheart.PairedDevice.DisconnectCallback;
+                        var secretKey = Windesheart.PairedDevice.SecretKey;
                         var device = await GetKnownDevice(Windesheart.PairedDevice.IDevice.Uuid);
 
                         if (DisconnectCallback != null)
                         {
                             device?.SubscribeToDisconnect(DisconnectCallback);
                         }
+                        device.SecretKey = secretKey;
                         device?.Connect(tempConnectCallback);
                     }
                     startListening = true;
