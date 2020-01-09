@@ -179,8 +179,7 @@ namespace WindesHeartSDK
                         {
                             device?.SubscribeToDisconnect(DisconnectCallback);
                         }
-                        device.SecretKey = secretKey;
-                        device?.Connect(tempConnectCallback);
+                        device?.Connect(tempConnectCallback, secretKey);
                     }
                     startListening = true;
                 }
