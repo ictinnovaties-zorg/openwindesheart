@@ -186,14 +186,16 @@ namespace WindesHeartApp.ViewModels
                 StatusText = "Connecting...";
                 IsLoading = true;
 
-                if (Application.Current.Properties.ContainsKey("GuidList"))
+                if (Application.Current.Properties.ContainsKey(device.IDevice.Uuid.ToString()))
                 {
-                    List<string> list = JsonConvert.DeserializeObject<List<string>>(Application.Current.Properties["GuidList"].ToString());
-
-                    if (list.Contains(device.IDevice.Uuid.ToString()))
-                        device.NeedsAuthentication = false;
+                    byte[] SecretKey = (byte[]) Application.Current.Properties[device.IDevice.Uuid.ToString()];
+                    device.Connect(CallbackHandler.OnConnect, SecretKey);
                 }
-                device.Connect(CallbackHandler.OnConnect);
+                else
+                {
+                    device.Connect(CallbackHandler.OnConnect);
+                }
+                
                 Globals.HomePageViewModel.EnableDisableButtons(false);
                 Globals.HomePageViewModel.IsLoading = true;
                 DeviceList = new ObservableCollection<BLEScanResult>();

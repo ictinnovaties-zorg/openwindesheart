@@ -35,9 +35,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Models
 
         }
 
-        public override void Connect(Action<ConnectionResult> connectCallback)
+        public override void Connect(Action<ConnectionResult> connectCallback, byte[] secretKey = null)
         {
             ConnectionCallback = connectCallback;
+            SecretKey = secretKey;
             BluetoothService.Connect();
         }
 

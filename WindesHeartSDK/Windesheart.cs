@@ -6,7 +6,7 @@ namespace WindesHeartSDK
 {
     public static class Windesheart
     {
-        public static BLEDevice PairedDevice;
+       public static BLEDevice PairedDevice;
 
         /// <summary>
         /// Scan for BLEDevices that are not yet connected.
@@ -37,6 +37,7 @@ namespace WindesHeartSDK
             return await BluetoothService.GetKnownDevice(uuid);
         }
 
+        
         /// <summary>
         /// Calls the callback method when Bluetooth adapter state changes to ready
         /// </summary>

@@ -75,7 +75,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     throw new ConnectionException(exception.Message);
                 });
 
-                if (_miBand3.NeedsAuthentication)
+                if (_miBand3.SecretKey == null)
                 {
                     //Triggers vibration on device
                     await TriggerAuthentication();
@@ -95,9 +95,15 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
         private async Task TriggerAuthentication()
         {
-            Trace.WriteLine("Authenticating...");
             Trace.WriteLine("Writing authentication-key..");
-            await _authCharacteristic.WriteWithoutResponse(MiBand3Resource.AuthKey);
+            byte[] KeyBytes = new byte[18];
+            byte[] AuthKey = MiBand3ConversionHelper.GenerateAuthKey(); // Key needs to be saved somewhere (BLEDevice or Something)
+            _miBand3.SecretKey = AuthKey;
+            KeyBytes[0] = 0x01;
+            KeyBytes[1] = 0x00;
+            Buffer.BlockCopy(AuthKey, 0, KeyBytes, 2, 16);
+
+            await _authCharacteristic.WriteWithoutResponse(KeyBytes);
         }
 
         private async Task RequestAuthorizationNumber()
@@ -109,7 +115,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         private async Task RequestRandomEncryptionKey(byte[] data)
         {
             Trace.WriteLine("2.Requesting random encryption key");
-            await _authCharacteristic.WriteWithoutResponse(MiBand3ConversionHelper.CreateKey(data));
+            await _authCharacteristic.WriteWithoutResponse(MiBand3ConversionHelper.CreateKey(data, _miBand3.SecretKey));
         }
     }
 }

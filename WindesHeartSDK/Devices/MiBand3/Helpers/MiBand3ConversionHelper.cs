@@ -6,11 +6,26 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Helpers
 {
     public static class MiBand3ConversionHelper
     {
+        /// <summary>
+        /// This generates a new secret key for authenticating a new device
+        /// </summary>
+        /// <returns></returns>
+        public static byte[] GenerateAuthKey()
+        {
+            Random random = new Random();
+            byte[] SecretKey = new byte[16];
+            for (var i = 0; i < 16; i++)
+            {
+                int keyNumber = random.Next(1, 255);
+                SecretKey[i] = Convert.ToByte(keyNumber);
+            }
+            return SecretKey;
+        }
 
-        public static byte[] CreateKey(byte[] value)
+        public static byte[] CreateKey(byte[] value, byte[] key)
         {
             byte[] bytes = { 0x03, 0x00 };
-            byte[] secretKey = { 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45 };
+            byte[] secretKey = key;
 
             value = ConversionHelper.CopyOfRange(value, 3, 19);
             byte[] buffer = EncryptBuff(secretKey, value);

@@ -96,20 +96,9 @@ namespace WindesHeartApp.Services
 
         public static void SaveGuid()
         {
-            if (!Application.Current.Properties.ContainsKey("GuidList"))
+            if (!Application.Current.Properties.ContainsKey(Windesheart.PairedDevice.IDevice.Uuid.ToString()))
             {
-                var jsonlist = JsonConvert.SerializeObject(new List<string> { $"{Windesheart.PairedDevice.IDevice.Uuid.ToString()}" });
-                Application.Current.Properties.Add("GuidList", jsonlist);
-                Application.Current.SavePropertiesAsync();
-            }
-            else
-            {
-                List<string> list = JsonConvert.DeserializeObject<List<string>>(Application.Current.Properties["GuidList"].ToString());
-                if (list.Contains(Windesheart.PairedDevice.IDevice.Uuid.ToString()))
-                    return;
-
-                list.Add($"{Windesheart.PairedDevice.IDevice.Uuid.ToString()}");
-                Application.Current.Properties["GuidList"] = JsonConvert.SerializeObject(list);
+                Application.Current.Properties.Add(Windesheart.PairedDevice.IDevice.Uuid.ToString(), Windesheart.PairedDevice.SecretKey);
                 Application.Current.SavePropertiesAsync();
             }
         }
