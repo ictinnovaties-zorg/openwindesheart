@@ -100,7 +100,7 @@ namespace WindesHeartApp.Services
                     return;
 
                 list.Add($"{Windesheart.PairedDevice.IDevice.Uuid.ToString()}");
-                Application.Current.Properties["Guidlist"] = JsonConvert.SerializeObject(list);
+                Application.Current.Properties["GuidList"] = JsonConvert.SerializeObject(list);
                 Application.Current.SavePropertiesAsync();
             }
         }
