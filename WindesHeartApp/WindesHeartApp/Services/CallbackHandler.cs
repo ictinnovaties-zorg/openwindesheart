@@ -40,11 +40,7 @@ namespace WindesHeartApp.Services
                 try
                 {
 
-                    //Callbacks
-                    Windesheart.PairedDevice.EnableRealTimeHeartrate(OnHeartrateUpdated);
-                    Windesheart.PairedDevice.EnableRealTimeBattery(OnBatteryUpdated);
-                    Windesheart.PairedDevice.EnableRealTimeSteps(OnStepsUpdated);
-                    Windesheart.PairedDevice.SubscribeToDisconnect(OnDisconnect);
+
 
                     //Sync settings
                     Windesheart.PairedDevice.SetTime(DateTime.Now);
@@ -56,6 +52,13 @@ namespace WindesHeartApp.Services
                     Windesheart.PairedDevice.EnableFitnessGoalNotification(true);
                     Windesheart.PairedDevice.EnableSleepTracking(true);
                     Windesheart.PairedDevice.SetHeartrateMeasurementInterval(1);
+
+                    //Callbacks
+                    Windesheart.PairedDevice.EnableRealTimeHeartrate(OnHeartrateUpdated);
+                    Windesheart.PairedDevice.EnableRealTimeBattery(OnBatteryUpdated);
+                    Windesheart.PairedDevice.EnableRealTimeSteps(OnStepsUpdated);
+                    Windesheart.PairedDevice.SubscribeToDisconnect(OnDisconnect);
+
                     Globals.DevicePageViewModel.StatusText = "Connected";
                     Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEScanResult>();
                     Globals.DevicePageViewModel.IsLoading = false;
