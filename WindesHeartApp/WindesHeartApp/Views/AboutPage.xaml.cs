@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace WindesHeartApp.Views
 {
-    public partial class AboutPage : ContentPage, IAnimationPage
+    public partial class AboutPage : IAnimationPage
     {
         public AboutPage()
         {

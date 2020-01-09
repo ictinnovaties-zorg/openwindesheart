@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HeartratePage : ContentPage, IAnimationPage
+    public partial class HeartratePage : IAnimationPage
     {
         public Button interval15Button;
         public Button interval10Button;

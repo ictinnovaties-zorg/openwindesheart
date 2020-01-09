@@ -11,7 +11,7 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class StepsPage : ContentPage, IAnimationPage
+    public partial class StepsPage : IAnimationPage
     {
         public static Label CurrentStepsLabel;
         public static Label CurrentDayLabel;

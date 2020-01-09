@@ -12,7 +12,7 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SleepPage : ContentPage, IAnimationPage
+    public partial class SleepPage : IAnimationPage
     {
         public static Label CurrentDayLabel;
         public static Button Day1Button;

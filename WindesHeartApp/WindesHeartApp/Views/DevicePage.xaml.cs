@@ -8,8 +8,7 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    [System.Runtime.InteropServices.Guid("A63B9823-FB43-4942-BAAA-5F02EAF86AC8")]
-    public partial class DevicePage : ContentPage, IAnimationPage
+    public partial class DevicePage : IAnimationPage
     {
         public static ListView Devicelist;
         public static Button ScanButton;

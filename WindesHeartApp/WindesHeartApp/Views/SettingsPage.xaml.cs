@@ -8,7 +8,7 @@ using Rectangle = Xamarin.Forms.Rectangle;
 namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SettingsPage : ContentPage, IAnimationPage
+    public partial class SettingsPage : IAnimationPage
     {
 
         public static Picker DatePicker;

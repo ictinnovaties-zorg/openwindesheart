@@ -9,7 +9,7 @@ using Label = Xamarin.Forms.Label;
 namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HomePage : ContentPage, IAnimationPage
+    public partial class HomePage : IAnimationPage
     {
         public static Button AboutButton;
         public static Button DeviceButton;
