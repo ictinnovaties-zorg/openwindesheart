@@ -79,6 +79,7 @@ namespace WindesHeartApp.Services
                 Globals.HomePageViewModel.IsLoading = false;
                 Globals.HomePageViewModel.EnableDisableButtons(true);
                 Globals.HomePageViewModel.ShowFetchProgress(1f);
+
             });
         }
 

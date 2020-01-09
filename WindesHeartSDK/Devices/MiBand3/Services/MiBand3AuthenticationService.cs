@@ -1,5 +1,6 @@
 ﻿using Plugin.BluetoothLE;
 using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using WindesHeartSDK.Devices.MiBand3Device.Helpers;
@@ -53,7 +54,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         }
                         else if (data[1] == MiBand3Resource.AuthSendEncryptedAuthNumber)
                         {
-                            Console.WriteLine("Authenticated & Connected!");
+                            Trace.WriteLine("Authenticated & Connected!");
                             _miBand3.Authenticated = true;
                             _miBand3.ConnectionCallback(ConnectionResult.Succeeded);
                             AuthenticationDisposable.Dispose();
@@ -64,7 +65,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     {
                         _miBand3.Authenticated = false;
                         _miBand3.ConnectionCallback(ConnectionResult.Failed);
-                        throw new ConnectionException("Authentication failed!");
+                        _miBand3.Disconnect();
+                        //throw new ConnectionException("Authentication failed!");
                     }
                 },
                 exception =>
@@ -93,20 +95,20 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
 
         private async Task TriggerAuthentication()
         {
-            Console.WriteLine("Authenticating...");
-            Console.WriteLine("Writing authentication-key..");
+            Trace.WriteLine("Authenticating...");
+            Trace.WriteLine("Writing authentication-key..");
             await _authCharacteristic.WriteWithoutResponse(MiBand3Resource.AuthKey);
         }
 
         private async Task RequestAuthorizationNumber()
         {
-            Console.WriteLine("1.Requesting Authorization-number");
+            Trace.WriteLine("1.Requesting Authorization-number");
             await _authCharacteristic.WriteWithoutResponse(MiBand3Resource.RequestNumber);
         }
 
         private async Task RequestRandomEncryptionKey(byte[] data)
         {
-            Console.WriteLine("2.Requesting random encryption key");
+            Trace.WriteLine("2.Requesting random encryption key");
             await _authCharacteristic.WriteWithoutResponse(MiBand3ConversionHelper.CreateKey(data));
         }
     }

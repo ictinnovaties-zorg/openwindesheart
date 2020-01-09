@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
+using WindesHeartApp.Views;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
 using Xamarin.Forms;
@@ -39,9 +40,6 @@ namespace WindesHeartApp.Services
             {
                 try
                 {
-
-
-
                     //Sync settings
                     Windesheart.PairedDevice.SetTime(DateTime.Now);
                     Windesheart.PairedDevice.SetDateDisplayFormat(DeviceSettings.DateFormatDMY);
@@ -79,7 +77,18 @@ namespace WindesHeartApp.Services
             }
             else if (result == ConnectionResult.Failed)
             {
-                Debug.WriteLine("FAIL");
+                Debug.WriteLine("Connection failed");
+                Globals.DevicePageViewModel.StatusText = "Disconnected";
+                Device.BeginInvokeOnMainThread(delegate
+                {
+                    DevicePage.DisconnectButton.IsEnabled = true;
+                    Globals.HomePageViewModel.IsLoading = false;
+                    Globals.HomePageViewModel.EnableDisableButtons(true);
+                    Globals.DevicePageViewModel.ScanButtonText = "Scan for devices";
+                    DevicePage.ScanButton.IsEnabled = true;
+                    DevicePage.ReturnButton.IsVisible = true;
+                });
+                Globals.DevicePageViewModel.IsLoading = false;
                 return;
             }
         }
