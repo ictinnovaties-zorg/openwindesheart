@@ -1,6 +1,4 @@
 ﻿using FormsControls.Base;
-using System;
-using System.Threading.Tasks;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
 using WindesHeartSDK;
@@ -35,26 +33,6 @@ namespace WindesHeartApp.Views
             App.RequestLocationPermission();
             if (Windesheart.PairedDevice == null)
                 return;
-        }
-
-        //Set UUID in App-properties
-        private void SetApplicationProperties()
-        {
-            if (Windesheart.PairedDevice != null)
-            {
-                App.Current.Properties[_propertyKey] = Windesheart.PairedDevice.Uuid;
-            }
-        }
-
-        //Handle Auto-connect to the last connected device with App-properties
-        private async Task HandleAutoConnect()
-        {
-            var knownGuid = App.Current.Properties[_propertyKey].ToString();
-            if (!string.IsNullOrEmpty(knownGuid))
-            {
-                var knownDevice = await Windesheart.GetKnownDevice(Guid.Parse(knownGuid));
-                knownDevice.Connect(CallbackHandler.OnConnect);
-            }
         }
 
         private void BuildPage()

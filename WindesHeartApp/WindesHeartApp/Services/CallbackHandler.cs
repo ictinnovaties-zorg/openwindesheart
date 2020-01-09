@@ -13,8 +13,6 @@ namespace WindesHeartApp.Services
 {
     public static class CallbackHandler
     {
-        private static readonly string _key = "LastConnectedDeviceGuid";
-
         public static void OnHeartrateUpdated(WindesHeartSDK.Models.HeartrateData heartrate)
         {
             if (heartrate.Heartrate == 0)
@@ -41,6 +39,13 @@ namespace WindesHeartApp.Services
             {
                 try
                 {
+
+                    //Callbacks
+                    Windesheart.PairedDevice.EnableRealTimeHeartrate(OnHeartrateUpdated);
+                    Windesheart.PairedDevice.EnableRealTimeBattery(OnBatteryUpdated);
+                    Windesheart.PairedDevice.EnableRealTimeSteps(OnStepsUpdated);
+                    Windesheart.PairedDevice.SubscribeToDisconnect(OnDisconnect);
+
                     //Sync settings
                     Windesheart.PairedDevice.SetTime(DateTime.Now);
                     Windesheart.PairedDevice.SetDateDisplayFormat(DeviceSettings.DateFormatDMY);
@@ -51,28 +56,13 @@ namespace WindesHeartApp.Services
                     Windesheart.PairedDevice.EnableFitnessGoalNotification(true);
                     Windesheart.PairedDevice.EnableSleepTracking(true);
                     Windesheart.PairedDevice.SetHeartrateMeasurementInterval(1);
-
-                    //Callbacks
-                    Windesheart.PairedDevice.EnableRealTimeHeartrate(OnHeartrateUpdated);
-                    Windesheart.PairedDevice.EnableRealTimeBattery(OnBatteryUpdated);
-                    Windesheart.PairedDevice.EnableRealTimeSteps(OnStepsUpdated);
-                    Windesheart.PairedDevice.SubscribeToDisconnect(OnDisconnect);
-
-                    if (!Application.Current.Properties.ContainsKey("GuidList"))
-                    {
-                        var jsonlist = JsonConvert.SerializeObject(new List<string> { $"{Windesheart.PairedDevice.Uuid.ToString()}" });
-                        Application.Current.Properties.Add("GuidList", jsonlist);
-                        Application.Current.SavePropertiesAsync();
-                    }
-                    else
-                    {
-                        List<string> list = JsonConvert.DeserializeObject<List<string>>(Application.Current.Properties["GuidList"].ToString());
-                        if (list.Contains($"{Windesheart.PairedDevice.Uuid.ToString()}"))
-                            return;
-                        list.Add(Windesheart.PairedDevice.Uuid.ToString());
-                        Application.Current.Properties.Add("GuidList", JsonConvert.SerializeObject(list));
-                        Application.Current.SavePropertiesAsync();
-                    }
+                    Globals.DevicePageViewModel.StatusText = "Connected";
+                    Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEScanResult>();
+                    Globals.DevicePageViewModel.IsLoading = false;
+                    Globals.HomePageViewModel.ReadCurrentBattery();
+                    Globals.HomePageViewModel.BandNameLabel = Windesheart.PairedDevice.Name;
+                    Globals.SamplesService.StartFetching();
+                    SaveGuid();
                 }
                 catch (Exception e)
                 {
@@ -82,13 +72,7 @@ namespace WindesHeartApp.Services
                     Globals.DevicePageViewModel.IsLoading = false;
                 }
 
-                Globals.DevicePageViewModel.StatusText = "Connected";
-                Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEScanResult>();
-                Globals.DevicePageViewModel.IsLoading = false;
 
-                Globals.HomePageViewModel.ReadCurrentBattery();
-                Globals.HomePageViewModel.BandNameLabel = Windesheart.PairedDevice.Name;
-                Globals.SamplesService.StartFetching();
             }
             else if (result == ConnectionResult.Failed)
             {
@@ -97,6 +81,25 @@ namespace WindesHeartApp.Services
             }
         }
 
+
+        public static void SaveGuid()
+        {
+            if (!Application.Current.Properties.ContainsKey("GuidList"))
+            {
+                var jsonlist = JsonConvert.SerializeObject(new List<string> { $"{Windesheart.PairedDevice.Uuid.ToString()}" });
+                Application.Current.Properties.Add("GuidList", jsonlist);
+                Application.Current.SavePropertiesAsync();
+            }
+            else
+            {
+                List<string> list = JsonConvert.DeserializeObject<List<string>>(Application.Current.Properties["GuidList"].ToString());
+                if (list.Contains($"{Windesheart.PairedDevice.Uuid.ToString()}"))
+                    return;
+                list.Add(Windesheart.PairedDevice.Uuid.ToString());
+                Application.Current.Properties.Add("GuidList", JsonConvert.SerializeObject(list));
+                Application.Current.SavePropertiesAsync();
+            }
+        }
         public static void OnDisconnect(Object obj)
         {
             Globals.DevicePageViewModel.StatusText = "Disconnected";

@@ -28,7 +28,6 @@ namespace WindesHeartApp.Services
 
         public void StartFetching()
         {
-
             Device.BeginInvokeOnMainThread(delegate
             {
                 Application.Current.MainPage.Navigation.PopAsync();

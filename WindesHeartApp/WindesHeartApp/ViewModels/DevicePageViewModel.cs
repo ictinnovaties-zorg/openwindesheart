@@ -23,7 +23,6 @@ namespace WindesHeartApp.ViewModels
         private ObservableCollection<BLEScanResult> _deviceList;
         private string _scanbuttonText;
         public event PropertyChangedEventHandler PropertyChanged;
-        private readonly string _propertyKey = "LastConnectedDevice";
 
         public DevicePageViewModel()
         {
