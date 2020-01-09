@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
 using WindesHeartSDK;
 using WindesHeartSDK.Models;
+using Xamarin.Forms;
 
 namespace WindesHeartApp.Services
 {
@@ -54,6 +57,22 @@ namespace WindesHeartApp.Services
                     Windesheart.PairedDevice.EnableRealTimeBattery(OnBatteryUpdated);
                     Windesheart.PairedDevice.EnableRealTimeSteps(OnStepsUpdated);
                     Windesheart.PairedDevice.SubscribeToDisconnect(OnDisconnect);
+
+                    if (!Application.Current.Properties.ContainsKey("GuidList"))
+                    {
+                        var jsonlist = JsonConvert.SerializeObject(new List<string> { $"{Windesheart.PairedDevice.Uuid.ToString()}" });
+                        Application.Current.Properties.Add("GuidList", jsonlist);
+                        Application.Current.SavePropertiesAsync();
+                    }
+                    else
+                    {
+                        List<string> list = JsonConvert.DeserializeObject<List<string>>(Application.Current.Properties["GuidList"].ToString());
+                        if (list.Contains($"{Windesheart.PairedDevice.Uuid.ToString()}"))
+                            return;
+                        list.Add(Windesheart.PairedDevice.Uuid.ToString());
+                        Application.Current.Properties.Add("GuidList", JsonConvert.SerializeObject(list));
+                        Application.Current.SavePropertiesAsync();
+                    }
                 }
                 catch (Exception e)
                 {

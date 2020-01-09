@@ -1,5 +1,7 @@
-﻿using Plugin.BluetoothLE;
+﻿using Newtonsoft.Json;
+using Plugin.BluetoothLE;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -185,18 +187,12 @@ namespace WindesHeartApp.ViewModels
                 StatusText = "Connecting...";
                 IsLoading = true;
 
-                if (App.Current.Properties.ContainsKey(_propertyKey))
+                if (Application.Current.Properties.ContainsKey("GuidList"))
                 {
-                    var knownGuidString = App.Current.Properties[_propertyKey].ToString();
+                    List<string> list = JsonConvert.DeserializeObject<List<string>>(Application.Current.Properties["GuidList"].ToString());
 
-                    if (!string.IsNullOrEmpty(knownGuidString))
-                    {
-                        var knownGuid = Guid.Parse(knownGuidString);
-                        if (device.IDevice.Uuid == knownGuid)
-                        {
-                            device.NeedsAuthentication = false;
-                        }
-                    }
+                    if (list.Contains(device.IDevice.Uuid.ToString()))
+                        device.NeedsAuthentication = false;
                 }
                 device.Connect(CallbackHandler.OnConnect);
                 Globals.HomePageViewModel.EnableDisableButtons(false);
