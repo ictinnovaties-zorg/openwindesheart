@@ -108,6 +108,7 @@ namespace WindesHeartApp.Services
         {
             Globals.DevicePageViewModel.StatusText = "Disconnected";
             Globals.HomePageViewModel.BandNameLabel = "";
+            Globals.HomePageViewModel.Battery = 0;
             Globals.HomePageViewModel.BatteryImage = "";
         }
     }
