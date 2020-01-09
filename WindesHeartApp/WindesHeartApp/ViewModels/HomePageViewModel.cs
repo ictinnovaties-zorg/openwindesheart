@@ -26,8 +26,11 @@ namespace WindesHeartApp.ViewModels
         {
             if (Windesheart.PairedDevice != null)
             {
-                ReadCurrentBattery();
-                BandNameLabel = Windesheart.PairedDevice.Name;
+                if (Windesheart.PairedDevice.IsConnected())
+                {
+                    ReadCurrentBattery();
+                    BandNameLabel = Windesheart.PairedDevice.Name;
+                }
             }
 
             toggle = false;
