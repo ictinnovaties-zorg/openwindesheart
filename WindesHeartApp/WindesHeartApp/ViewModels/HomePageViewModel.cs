@@ -16,7 +16,6 @@ namespace WindesHeartApp.ViewModels
         private int _heartrate;
         private string _batteryImage = "";
         private bool _isLoading;
-        public bool toggle;
         private string _bandnameLabel;
         private float _fetchProgress;
         private bool _fetchProgressVisible;
@@ -32,8 +31,6 @@ namespace WindesHeartApp.ViewModels
                     BandNameLabel = Windesheart.PairedDevice.Name;
                 }
             }
-
-            toggle = false;
         }
 
         public async Task ReadCurrentBattery()
