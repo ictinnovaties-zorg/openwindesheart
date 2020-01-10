@@ -101,7 +101,7 @@ namespace WindesHeartApp.Views
             interval15Button.BorderColor = Color.White;
             #endregion
 
-            #region refreshbutton
+            #region RFbutton
             Grid grid = new Grid
             {
             };
