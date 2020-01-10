@@ -17,9 +17,9 @@ namespace WindesHeartSDK
         public bool Authenticated = false;
         protected readonly BluetoothService BluetoothService;
         public bool NeedsAuthentication = false;
-        internal byte[] SecretKey;
+        public byte[] SecretKey;
 
-        internal Action<ConnectionResult, byte[]> ConnectionCallback;
+        public Action<ConnectionResult, byte[]> ConnectionCallback;
         internal Action<object> DisconnectCallback;
         internal IDisposable ConnectionDisposable;
         internal IDisposable CharacteristicDisposable;

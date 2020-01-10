@@ -70,6 +70,11 @@ namespace WindesHeartApp.Services
                     Debug.WriteLine(e.Message);
                     Debug.WriteLine("Something went wrong while connecting to device, disconnecting...");
                     Windesheart.PairedDevice.Disconnect();
+                    if(Windesheart.PairedDevice.SecretKey != null && Application.Current.Properties.ContainsKey(Windesheart.PairedDevice.IDevice.Uuid.ToString()))
+                    {
+                        Application.Current.Properties.Remove(Windesheart.PairedDevice.IDevice.Uuid.ToString());
+                        Windesheart.PairedDevice.Connect(Windesheart.PairedDevice.ConnectionCallback);
+                    }
                     Globals.DevicePageViewModel.IsLoading = false;
                 }
 
