@@ -12,7 +12,7 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SleepPage : ContentPage, IAnimationPage
+    public partial class SleepPage : IAnimationPage
     {
         public static Label CurrentDayLabel;
         public static Button Day1Button;
@@ -202,7 +202,7 @@ namespace WindesHeartApp.Views
 
         private async void RefreshButtonClicked(object sender, EventArgs e)
         {
-            if (Windesheart.PairedDevice == null)
+            if (Windesheart.PairedDevice == null || !Windesheart.PairedDevice.IsConnected())
             {
                 await Application.Current.MainPage.DisplayAlert("Error while refreshing data",
                     "Can only refresh data when connected to a device!", "Ok");
