@@ -1,5 +1,4 @@
-﻿using System;
-namespace WindesHeartSDK.Models
+﻿namespace WindesHeartSDK.Models
 {
     public enum BatteryStatus
     {

@@ -1,7 +1,5 @@
 ﻿using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WindesHeartApp.Models
 {
@@ -15,7 +13,8 @@ namespace WindesHeartApp.Models
     [Table("Sleep")]
     public class Sleep
     {
-        public Sleep() { }
+        public Sleep() { } //Needed for DB
+
         public Sleep(DateTime datetime, SleepType sleepType)
         {
             this.DateTime = datetime;

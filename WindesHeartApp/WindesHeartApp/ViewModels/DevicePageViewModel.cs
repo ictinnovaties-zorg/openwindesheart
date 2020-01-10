@@ -32,6 +32,7 @@ namespace WindesHeartApp.ViewModels
                 StatusText = "Disconnected";
             ScanButtonText = "Scan for devices";
         }
+
         public void DisconnectButtonClicked(object sender, EventArgs args)
         {
             DevicePage.DisconnectButton.IsEnabled = false;
@@ -43,6 +44,7 @@ namespace WindesHeartApp.ViewModels
             Globals.HomePageViewModel.Heartrate = 0;
             Globals.HomePageViewModel.Battery = 0;
         }
+
         private void OnPropertyChanged([CallerMemberName] string name = "")
         {
             try
@@ -58,6 +60,7 @@ namespace WindesHeartApp.ViewModels
                 }
             }
         }
+
         public ObservableCollection<BLEScanResult> DeviceList
         {
             get { return _deviceList; }
@@ -67,6 +70,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged();
             }
         }
+
         public string StatusText
         {
             get { return _statusText; }
@@ -86,6 +90,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged();
             }
         }
+
         public bool IsLoading
         {
             get { return _isLoading; }
@@ -95,6 +100,7 @@ namespace WindesHeartApp.ViewModels
                 OnPropertyChanged();
             }
         }
+
         public BLEScanResult SelectedDevice
         {
             get { return _selectedDevice; }
@@ -123,7 +129,6 @@ namespace WindesHeartApp.ViewModels
                 }
                 else
                 {
-
                     if (CrossBleAdapter.Current.Status == AdapterStatus.PoweredOff)
                     {
                         await Application.Current.MainPage.DisplayAlert("Bluetooth turned off",
@@ -200,13 +205,11 @@ namespace WindesHeartApp.ViewModels
                 Globals.HomePageViewModel.IsLoading = true;
                 DeviceList = new ObservableCollection<BLEScanResult>();
                 SelectedDevice = null;
-
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
         }
-
     }
 }

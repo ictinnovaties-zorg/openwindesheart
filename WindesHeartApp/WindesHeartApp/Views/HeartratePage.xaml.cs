@@ -29,12 +29,15 @@ namespace WindesHeartApp.Views
 
         private void BuildPage()
         {
+            #region absoluteLayout
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
             PageBuilder.AddLabel(absoluteLayout, "Heartrate", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout);
+            #endregion
 
+            #region previousButton
             ImageButton previousBtn = new ImageButton
             {
                 Source = "arrow_left.png",
@@ -45,7 +48,9 @@ namespace WindesHeartApp.Views
             previousBtn.SetBinding(Button.CommandProperty, new Binding() { Path = "PreviousDayBinding" });
             previousBtn.Clicked += Globals.HeartratePageViewModel.PreviousDayBtnClick;
             absoluteLayout.Children.Add(previousBtn);
+            #endregion
 
+            #region nextButton
             ImageButton nextBtn = new ImageButton
             {
                 Source = "arrow_right.png",
@@ -55,9 +60,10 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutBounds(nextBtn, new Rectangle(0.7, 0.135, 0.1, 0.1));
             nextBtn.Clicked += Globals.HeartratePageViewModel.NextDayBtnClick;
             absoluteLayout.Children.Add(nextBtn);
+            #endregion
 
+            #region chart & labels
             PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.20, Color.Black, "DayLabelText", 12);
-
             ChartView chart = new ChartView { BackgroundColor = Globals.PrimaryColor };
             //chart.Chart.BackgroundColor = Globals.PrimaryColor.ToSKColor();
 
@@ -66,10 +72,9 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutFlags(chart, AbsoluteLayoutFlags.All);
 
             absoluteLayout.Children.Add(chart);
-
             PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.65, Color.Black, "AverageLabelText", 16);
-
             PageBuilder.AddLabel(absoluteLayout, "", 0.5, 0.70, Color.Black, "PeakHeartrateText", 16);
+            #endregion
 
             #region heartrateinterval selector
             Image heartonlyImage2 = new Image { Source = "HeartOnlyTransparent.png" };
@@ -95,8 +100,6 @@ namespace WindesHeartApp.Views
             interval15Button.BorderWidth = 1;
             interval15Button.BorderColor = Color.White;
             #endregion
-
-
 
             #region refreshbutton
             Grid grid = new Grid
@@ -163,7 +166,7 @@ namespace WindesHeartApp.Views
                     "Can only refresh data when connected to a device!", "Ok");
                 return;
             }
-            Application.Current.MainPage.Navigation.PopAsync();
+            await Application.Current.MainPage.Navigation.PopAsync();
             Globals.SamplesService.StartFetching();
         }
 
@@ -181,6 +184,7 @@ namespace WindesHeartApp.Views
             Globals.HeartratePageViewModel.UpdateInterval(interval);
         }
 
+        #region pageAnimation
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation
         { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
@@ -193,6 +197,7 @@ namespace WindesHeartApp.Views
         {
             // Put your code here but leaving empty works just fine
         }
+        #endregion
     }
 }
 

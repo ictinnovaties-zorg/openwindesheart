@@ -33,10 +33,12 @@ namespace WindesHeartApp.Views
 
         private void BuildPage()
         {
+            #region absoluteLayout
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddLabel(absoluteLayout, "Home", 0.05, 0.10, Globals.LightTextColor, "", 30);
             PageBuilder.AddHeaderImages(absoluteLayout);
+            #endregion
 
             #region define fetch-progressbar 
 
@@ -78,6 +80,7 @@ namespace WindesHeartApp.Views
 
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.65, 80, 80, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
 
+            #region pageButtons
             int buttonSize = (int)(Globals.ScreenHeight / 100 * 8.5);
             AboutButton = PageBuilder.AddButton(absoluteLayout, "About", Globals.HomePageViewModel.AboutButtonClicked, 0.80, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             DeviceButton = PageBuilder.AddButton(absoluteLayout, "Device", Globals.HomePageViewModel.DeviceButtonClicked, 0.80, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
@@ -85,9 +88,10 @@ namespace WindesHeartApp.Views
             StepsButton = PageBuilder.AddButton(absoluteLayout, "Steps", Globals.HomePageViewModel.StepsButtonClicked, 0.90, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             SettingsButton = PageBuilder.AddButton(absoluteLayout, "Settings", Globals.HomePageViewModel.SettingsButtonClicked, 0.20, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             SleepButton = PageBuilder.AddButton(absoluteLayout, "Sleep", Globals.HomePageViewModel.SleepButtonClicked, 0.10, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-
+            #endregion
         }
 
+        #region pageAnimation
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
@@ -99,5 +103,6 @@ namespace WindesHeartApp.Views
         {
             // Put your code here but leaving empty works just fine
         }
+        #endregion
     }
 }

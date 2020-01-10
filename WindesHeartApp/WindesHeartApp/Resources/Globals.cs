@@ -7,6 +7,7 @@ using Xamarin.Forms;
 
 namespace WindesHeartApp.Resources
 {
+    //General class for the App
     public static class Globals
     {
         public static HeartRatePageViewModel HeartratePageViewModel;
@@ -25,7 +26,6 @@ namespace WindesHeartApp.Resources
         public static IStepsRepository StepsRepository { get; set; }
         public static ISleepRepository SleepRepository { get; set; }
         public static IHeartrateRepository HeartrateRepository { get; set; }
-        public static Dictionary<string, string> FormatDictionary;
         public static Dictionary<string, string> LanguageDictionary;
         public static Database Database;
 
@@ -35,6 +35,7 @@ namespace WindesHeartApp.Resources
             SleepRepository = sleepRepository;
             HeartrateRepository = heartrateRepository;
             Database = database;
+
             HeartratePageViewModel = new HeartRatePageViewModel(HeartrateRepository);
             SamplesService = new SamplesService(HeartrateRepository, StepsRepository, SleepRepository);
             StepsPageViewModel = new StepsPageViewModel();

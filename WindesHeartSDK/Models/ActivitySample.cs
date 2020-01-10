@@ -21,11 +21,6 @@ namespace WindesHeartSDK.Models
             this.RawIntensity = intensity;
             this.Steps = steps;
             this.HeartRate = heartrate;
-        }
-
-        public override string ToString()
-        {
-            return "Date = " + Timestamp + " Category = " + Category + " Intensity = " + RawIntensity + " Steps = " + Steps + " Heartrate = " + HeartRate;
-        }
+        }      
     }
 }

@@ -52,17 +52,18 @@ namespace WindesHeartApp.Services
                     Windesheart.PairedDevice.EnableSleepTracking(true);
                     Windesheart.PairedDevice.SetHeartrateMeasurementInterval(1);
 
+                    Globals.HomePageViewModel.ReadCurrentBattery();
+                    Globals.HomePageViewModel.BandNameLabel = Windesheart.PairedDevice.Name;
+
                     //Callbacks
                     Windesheart.PairedDevice.EnableRealTimeHeartrate(OnHeartrateUpdated);
                     Windesheart.PairedDevice.EnableRealTimeBattery(OnBatteryUpdated);
-                    Globals.HomePageViewModel.ReadCurrentBattery();
                     Windesheart.PairedDevice.EnableRealTimeSteps(OnStepsUpdated);
                     Windesheart.PairedDevice.SubscribeToDisconnect(OnDisconnect);
 
                     Globals.DevicePageViewModel.StatusText = "Connected";
                     Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEScanResult>();
                     Globals.DevicePageViewModel.IsLoading = false;
-                    Globals.HomePageViewModel.BandNameLabel = Windesheart.PairedDevice.Name;
                     Globals.SamplesService.StartFetching();
                     SaveGuid(secretKey);
                 }
@@ -73,8 +74,6 @@ namespace WindesHeartApp.Services
                     Windesheart.PairedDevice?.Disconnect();
                     Globals.DevicePageViewModel.IsLoading = false;
                 }
-
-
             }
             else if (result == ConnectionResult.Failed)
             {
@@ -112,6 +111,7 @@ namespace WindesHeartApp.Services
                 Application.Current.SavePropertiesAsync();
             }
         }
+
         public static void OnDisconnect(Object obj)
         {
             Globals.DevicePageViewModel.StatusText = "Disconnected";

@@ -19,7 +19,6 @@ namespace WindesHeartApp.Views
         private void BuildPage()
         {
             absoluteLayout = new AbsoluteLayout();
-
             PageBuilder.BuildPageBasics(absoluteLayout, this);
 
             #region define Image 
@@ -128,15 +127,12 @@ namespace WindesHeartApp.Views
             #endregion
 
             PageBuilder.AddReturnButton(absoluteLayout);
-
         }
 
         private void LearnmoreButton_Clicked(object sender, EventArgs e)
         {
             Debug.WriteLine("OPEN GITHUB PAGE?? ");
         }
-
-
 
         private void Logo_Clicked(object sender, EventArgs e)
         {
@@ -145,11 +141,14 @@ namespace WindesHeartApp.Views
             Vibration.Vibrate(4200);
         }
 
+        //Needs link to website or Git-repository
         private void LearnMore_Clicked(object sender, EventArgs e)
         {
             Debug.WriteLine("Learn More - Clicked.");
             Vibration.Vibrate(4200);
         }
+
+        #region pageAnimation
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
@@ -161,5 +160,6 @@ namespace WindesHeartApp.Views
         {
             // Put your code here but leaving empty works just fine
         }
+        #endregion
     }
 }

@@ -6,6 +6,13 @@ namespace WindesHeartApp.Models
     [Table("Steps")]
     public class Step
     {
+        public Step() { } //Needed for DB
+
+        public Step(DateTime datetime, int stepCount)
+        {
+            DateTime = datetime;
+            StepCount = stepCount;
+        }
         [PrimaryKey, AutoIncrement, Column("Id")]
         public int Id { get; set; }
 
@@ -14,12 +21,5 @@ namespace WindesHeartApp.Models
 
         [Column("StepCount")]
         public int StepCount { get; set; }
-
-        public Step() { }
-        public Step(DateTime datetime, int stepCount)
-        {
-            DateTime = datetime;
-            StepCount = stepCount;
-        }
     }
 }

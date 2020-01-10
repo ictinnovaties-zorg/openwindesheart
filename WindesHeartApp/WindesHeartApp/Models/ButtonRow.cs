@@ -5,7 +5,6 @@ namespace WindesHeartApp.Models
 {
     public class ButtonRow
     {
-
         private List<Button> _buttons;
         private int _selectedIndex;
 

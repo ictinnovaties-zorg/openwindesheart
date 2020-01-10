@@ -15,6 +15,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         private static IGattCharacteristic _authCharacteristic;
         private readonly MiBand3 _miBand3;
         public IDisposable AuthenticationDisposable;
+
         public MiBand3AuthenticationService(MiBand3 device)
         {
             _miBand3 = device;
@@ -66,7 +67,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         _miBand3.Authenticated = false;
                         _miBand3.ConnectionCallback(ConnectionResult.Failed, null);
                         _miBand3.Disconnect();
-                        //throw new ConnectionException("Authentication failed!");
                     }
                 },
                 exception =>

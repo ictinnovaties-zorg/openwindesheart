@@ -46,7 +46,5 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Helpers
             ICryptoTransform encryptor = myAes.CreateEncryptor();
             return encryptor.TransformFinalBlock(buffer, 0, buffer.Length);
         }
-
-
     }
 }

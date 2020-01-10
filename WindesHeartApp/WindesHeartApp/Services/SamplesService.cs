@@ -15,7 +15,6 @@ namespace WindesHeartApp.Services
         private readonly IHeartrateRepository _heartrateRepository;
         private readonly IStepsRepository _stepsRepository;
         private readonly ISleepRepository _sleepRepository;
-
         private DateTime _fetchingStartDate;
         private int _totalSamples = 0;
 
@@ -60,6 +59,7 @@ namespace WindesHeartApp.Services
                 Globals.HomePageViewModel.ShowFetchProgress(calculatedProgress);
             });
         }
+
         private void FillDatabase(List<ActivitySample> samples)
         {
             Debug.WriteLine("Filling DB with samples: " + samples.Count);
