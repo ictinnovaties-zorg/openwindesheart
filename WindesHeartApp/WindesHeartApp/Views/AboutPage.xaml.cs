@@ -64,7 +64,7 @@ namespace WindesHeartApp.Views
             var formattedText = new FormattedString();
             formattedText.Spans.Add(new Span
             {
-                Text = "This app is written by Windesheim-students.\nIt's",
+                Text = "This app is written by Windesheim-students.\nIts",
                 FontSize = Globals.ScreenHeight / 100 * 2.5
             });
             formattedText.Spans.Add(new Span
@@ -82,7 +82,7 @@ namespace WindesHeartApp.Views
             { Text = " demo", FontAttributes = FontAttributes.Bold, FontSize = Globals.ScreenHeight / 100 * 2.5 });
             formattedText.Spans.Add(new Span
             {
-                Text = " the open source ",
+                Text = " the open-source ",
                 FontSize = Globals.ScreenHeight / 100 * 2.5
             });
             formattedText.Spans.Add(new Span
