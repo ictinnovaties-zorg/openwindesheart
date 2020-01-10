@@ -92,8 +92,15 @@ namespace WindesHeartApp.Views
                 {
                     DisconnectButton.IsEnabled = true;
                 }
+                else
+                {
+                    DisconnectButton.IsEnabled = false;
+                }
             }
-            DisconnectButton.IsEnabled = false;
+            else
+            {
+                DisconnectButton.IsEnabled = false;
+            }
         }
 
         #region pageAnimation

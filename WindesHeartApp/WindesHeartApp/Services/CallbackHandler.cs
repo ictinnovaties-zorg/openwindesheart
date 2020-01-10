@@ -63,6 +63,10 @@ namespace WindesHeartApp.Services
 
                     Globals.DevicePageViewModel.StatusText = "Connected";
                     Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEScanResult>();
+                    Device.BeginInvokeOnMainThread(delegate 
+                    {
+                        DevicePage.DisconnectButton.IsEnabled = true;
+                    });
                     Globals.DevicePageViewModel.IsLoading = false;
                     Globals.SamplesService.StartFetching();
                     SaveGuid(secretKey);
