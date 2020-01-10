@@ -1,7 +1,6 @@
 ﻿using FormsControls.Base;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Services;
-using WindesHeartSDK;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Image = Xamarin.Forms.Image;
@@ -10,7 +9,7 @@ using Label = Xamarin.Forms.Label;
 namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HomePage : ContentPage, IAnimationPage
+    public partial class HomePage : IAnimationPage
     {
         public static Button AboutButton;
         public static Button DeviceButton;
@@ -19,7 +18,6 @@ namespace WindesHeartApp.Views
         public static Button HeartrateButton;
         public static Button SettingsButton;
 
-        private readonly string _propertyKey = "LastConnectedDevice";
         public HomePage()
         {
             InitializeComponent();
@@ -31,8 +29,6 @@ namespace WindesHeartApp.Views
         {
 
             App.RequestLocationPermission();
-            if (Windesheart.PairedDevice == null)
-                return;
         }
 
         private void BuildPage()

@@ -37,7 +37,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     var data = result.Data;
                     if (data == null)
                     {
-                        _miBand3.ConnectionCallback(ConnectionResult.Failed);
+                        _miBand3.ConnectionCallback(ConnectionResult.Failed, null);
                         throw new NullReferenceException("No data found in authentication-result.");
                     }
 
@@ -56,7 +56,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                         {
                             Trace.WriteLine("Authenticated & Connected!");
                             _miBand3.Authenticated = true;
-                            _miBand3.ConnectionCallback(ConnectionResult.Succeeded);
+                            _miBand3.ConnectionCallback(ConnectionResult.Succeeded, _miBand3.SecretKey);
                             AuthenticationDisposable.Dispose();
                             return;
                         }
@@ -64,14 +64,14 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     else
                     {
                         _miBand3.Authenticated = false;
-                        _miBand3.ConnectionCallback(ConnectionResult.Failed);
+                        _miBand3.ConnectionCallback(ConnectionResult.Failed, null);
                         _miBand3.Disconnect();
                         //throw new ConnectionException("Authentication failed!");
                     }
                 },
                 exception =>
                 {
-                    _miBand3.ConnectionCallback(ConnectionResult.Failed);
+                    _miBand3.ConnectionCallback(ConnectionResult.Failed, null);
                     throw new ConnectionException(exception.Message);
                 });
 
@@ -88,7 +88,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             }
             else
             {
-                _miBand3.ConnectionCallback(ConnectionResult.Failed);
+                _miBand3.ConnectionCallback(ConnectionResult.Failed, null);
                 throw new NullReferenceException("AuthCharacteristic is null!");
             }
         }

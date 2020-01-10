@@ -17,9 +17,9 @@ namespace WindesHeartSDK
         public bool Authenticated = false;
         protected readonly BluetoothService BluetoothService;
         public bool NeedsAuthentication = false;
-        public byte[] SecretKey;
+        internal byte[] SecretKey;
 
-        internal Action<ConnectionResult> ConnectionCallback;
+        internal Action<ConnectionResult, byte[]> ConnectionCallback;
         internal Action<object> DisconnectCallback;
         internal IDisposable ConnectionDisposable;
         internal IDisposable CharacteristicDisposable;
@@ -59,7 +59,7 @@ namespace WindesHeartSDK
         public abstract void OnConnect();
         public abstract void SetStepGoal(int steps);
         public abstract void SubscribeToDisconnect(Action<object> disconnectCallback);
-        public abstract void Connect(Action<ConnectionResult> connectCallback, byte[] secretKey = null);
+        public abstract void Connect(Action<ConnectionResult, byte[]> connectCallback, byte[] secretKey = null);
         public abstract void Disconnect(bool rememberDevice = true);
         public abstract void EnableFitnessGoalNotification(bool enable);
         public abstract void SetTimeDisplayFormat(bool is24hours);

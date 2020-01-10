@@ -11,7 +11,7 @@ using Xamarin.Forms.Xaml;
 namespace WindesHeartApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class StepsPage : ContentPage, IAnimationPage
+    public partial class StepsPage : IAnimationPage
     {
         public static Label CurrentStepsLabel;
         public static Label CurrentDayLabel;
@@ -181,7 +181,7 @@ namespace WindesHeartApp.Views
 
         private async void RefreshButtonClicked(object sender, EventArgs e)
         {
-            if (Windesheart.PairedDevice == null)
+            if (Windesheart.PairedDevice == null || !Windesheart.PairedDevice.IsConnected())
             {
                 await Application.Current.MainPage.DisplayAlert("Error while refreshing data",
                     "Can only refresh data when connected to a device!", "Ok");
