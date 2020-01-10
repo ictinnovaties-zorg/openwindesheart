@@ -134,15 +134,16 @@ namespace WindesHeartApp.Views
             grid.Children.Add(frame);
             grid.Children.Add(RefreshButton); ;
 
-            Label RefreshLabel = new Label
+            var RefreshLabel = new Label
             {
-                Text = "data",
+                Text = "Data",
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.End,
-                FontSize = 20,
+                FontSize = 15,
                 FontAttributes = FontAttributes.Italic,
                 Margin = new Thickness(0, 0, 2, 0)
             };
+
             grid.Children.Add(RefreshLabel);
 
             RefreshLabel.GestureRecognizers.Add(new TapGestureRecognizer
