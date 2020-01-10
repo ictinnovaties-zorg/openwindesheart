@@ -11,13 +11,12 @@ namespace WindesHeartSDK
     public class BluetoothService
     {
         public static AdapterStatus AdapterStatus;
+        private readonly BLEDevice _bleDevice;
 
+        //Disposables
         private static IDisposable _adapterReadyDisposable;
         private static IDisposable _currentScan;
         private static IDisposable _adapterChangedDisposable;
-
-        private readonly BLEDevice _bleDevice;
-
 
         public BluetoothService(BLEDevice device)
         {
@@ -53,7 +52,6 @@ namespace WindesHeartSDK
                     {
                         //Set device
                         BLEDevice device = GetDevice(result.Device);
-
                         BLEScanResult scanResult = new BLEScanResult(device, result.Rssi, result.AdvertisementData);
                         if (device != null)
                         {
@@ -121,7 +119,6 @@ namespace WindesHeartSDK
             if (uuid != Guid.Empty)
             {
                 var knownDevice = await CrossBleAdapter.Current.GetKnownDevice(uuid);
-
                 if (knownDevice != null)
                 {
                     var bleDevice = GetDevice(knownDevice);
@@ -192,7 +189,6 @@ namespace WindesHeartSDK
         private static BLEDevice GetDevice(IDevice device)
         {
             var name = device.Name;
-
             switch (name)
             {
                 case "Mi Band 3":

@@ -52,6 +52,7 @@ namespace WindesHeartApp.Services
             layout.Children.Add(indicator);
             return indicator;
         }
+
         public static Label AddLabel(AbsoluteLayout absoluteLayout, string text, double x, double y, Color color, string bindingPath, int fontSize)
         {
             Label label = new Label

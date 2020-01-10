@@ -1,4 +1,3 @@
-using System;
 using WindesHeartSDK.Exceptions;
 
 namespace WindesHeartSDK.Models

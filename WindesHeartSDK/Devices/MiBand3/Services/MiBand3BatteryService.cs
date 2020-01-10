@@ -1,6 +1,4 @@
-﻿
-
-using Plugin.BluetoothLE;
+﻿using Plugin.BluetoothLE;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -19,6 +17,7 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         {
             _miBand3 = device;
         }
+
         /// <summary>
         /// Get Raw Battery data.
         /// </summary>
@@ -36,13 +35,10 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     var rawData = gattResult.Characteristic.Value;
                     return rawData;
                 }
-
                 throw new NullReferenceException("BatteryCharacteristic value is null!");
             }
-
             throw new NullReferenceException("BatteryCharacteristic could not be found!");
         }
-
 
         /// <summary>
         /// Get Battery-object from raw data.
@@ -56,7 +52,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             {
                 return CreateBatteryObject(rawData);
             }
-
             throw new NullReferenceException("Rawdata is null!");
         }
 
@@ -84,10 +79,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     Percentage = batteryPercentage,
                     Status = status
                 };
-
                 return battery;
             }
-
             throw new NullReferenceException("Rawdata of battery is null!");
         }
 

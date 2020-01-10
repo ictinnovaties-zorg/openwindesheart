@@ -1,8 +1,5 @@
 ﻿using SQLite;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
 

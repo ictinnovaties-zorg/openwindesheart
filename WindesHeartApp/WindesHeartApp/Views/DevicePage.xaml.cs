@@ -14,6 +14,7 @@ namespace WindesHeartApp.Views
         public static Button ScanButton;
         public static Button DisconnectButton;
         public static ImageButton ReturnButton;
+
         public DevicePage()
         {
             InitializeComponent();
@@ -22,17 +23,19 @@ namespace WindesHeartApp.Views
 
         private void BuildPage()
         {
+            #region absoluteLayout 
             absoluteLayout = new AbsoluteLayout();
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
             PageBuilder.AddLabel(absoluteLayout, "Device", 0.05, 0.10, Globals.LightTextColor, "", 0);
             ReturnButton = PageBuilder.AddReturnButton(absoluteLayout);
-
+            
             ScanButton = PageBuilder.AddButton(absoluteLayout, "", Globals.DevicePageViewModel.ScanButtonClicked, 0.15, 0.25, 120, 50, 14, 12, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             ScanButton.SetBinding(Button.TextProperty, "ScanButtonText");
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.25, 50, 50, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
             PageBuilder.AddLabel(absoluteLayout, "", 0.80, 0.25, Globals.LightTextColor, "StatusText", 14);
+            #endregion
 
             #region device ListView
             var deviceTemplate = new DataTemplate(() =>
@@ -80,6 +83,7 @@ namespace WindesHeartApp.Views
         {
             Globals.DevicePageViewModel.OnDisappearing();
         }
+
         protected override void OnAppearing()
         {
             if (Windesheart.PairedDevice != null)
@@ -88,17 +92,11 @@ namespace WindesHeartApp.Views
                 {
                     DisconnectButton.IsEnabled = true;
                 }
-                else
-                {
-                    DisconnectButton.IsEnabled = false;
-                }
             }
-            else
-            {
-                DisconnectButton.IsEnabled = false;
-            }
+            DisconnectButton.IsEnabled = false;
         }
 
+        #region pageAnimation
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
@@ -110,6 +108,7 @@ namespace WindesHeartApp.Views
         {
             // Put your code here but leaving empty works just fine
         }
+        #endregion
     }
 }
 

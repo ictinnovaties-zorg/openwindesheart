@@ -6,16 +6,12 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Resources
         //Authentication
         public static Guid GuidCharacteristicAuth = new Guid("00000009-0000-3512-2118-0009af100700");
         public static readonly byte[] AuthKey = { 0x01, 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45 };
-
         public static byte AuthResponse = 0x10;
-
         public static byte AuthSendKey = 0x01;
-        public static readonly byte[] RequestNumber = { 0x02, 0x00 };
         public static byte AuthRequestRandomAuthNumber = 0x02;
-
         public static byte AuthSendEncryptedAuthNumber = 0x03;
-
         public static byte AuthSuccess = 0x01;
+        public static readonly byte[] RequestNumber = { 0x02, 0x00 };
 
         //General Guid for device settings
         public static Guid GuidDeviceConfiguration = new Guid("00000003-0000-3512-2118-0009af100700");
@@ -53,9 +49,8 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Resources
         //Heartrate Realtime Guid
         public static Guid GuidHeartrate = new Guid("00002A37-0000-1000-8000-00805f9b34fb");
         
-        //Samples Bytes and Guids
+        //Request & get samples
         public static Guid GuidSamplesRequest = new Guid("00000004-0000-3512-2118-0009af100700");
-
         public static Guid GuidActivityData = new Guid("00000005-0000-3512-2118-0009af100700");
 
         public static byte Response = 0x10;
@@ -66,7 +61,5 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Resources
 
         //Steps Realtime Guid
         public static Guid GuidStepsInfo = new Guid("00000007-0000-3512-2118-0009af100700");
-
     }
-
 }

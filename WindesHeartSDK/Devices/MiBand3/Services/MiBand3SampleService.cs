@@ -17,16 +17,20 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
         private readonly MiBand3 _miBand3;
         private readonly List<ActivitySample> _samples = new List<ActivitySample>();
 
+        //Timestamps
         private DateTime _firstTimestamp;
         private DateTime _lastTimestamp;
-        private int _samplenumber = 0;
 
+        //Disposables
         private IDisposable _charUnknownSub;
         private IDisposable _charActivitySub;
 
+        //Callbacks
         private Action<List<ActivitySample>> _finishedCallback;
         private Action<int> _remainingSamplesCallback;
 
+        //Samplecounters
+        private int _samplenumber = 0;
         private int _expectedSamples;
         private int _totalSamples;
 
@@ -43,7 +47,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             _samples.Clear();
             _expectedSamples = 0;
             _totalSamples = 0;
-
             _finishedCallback = finishedCallback;
             _remainingSamplesCallback = remainingSamplesCallback;
             await InitiateFetching(date);
@@ -54,7 +57,6 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
             TimeSpan timespan = DateTime.Now - startDate;
             _totalSamples = (int)timespan.TotalMinutes;
         }
-
 
         /// <summary>
         /// Setup the disposables for the fetch operation
@@ -218,15 +220,13 @@ namespace WindesHeartSDK.Devices.MiBand3Device.Services
                     CalculateExpectedSamples(timeStamp);
                     _remainingSamplesCallback(_totalSamples);
                 }
-
                 i += 4;
 
-
+                // Make sure we aren't getting samples from the future
                 var d = DateTime.Now.AddMinutes(-1);
                 d.AddSeconds(-d.Second);
                 d.AddMilliseconds(-d.Millisecond);
 
-                // Make sure we aren't getting samples from the future
                 if (timeStamp == d)
                 {
                     break;

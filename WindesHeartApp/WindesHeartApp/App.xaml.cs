@@ -22,7 +22,7 @@ namespace WindesHeartApp
 
         protected override void OnStart()
         {
-
+            //Handle when your app starts
         }
 
         protected override void OnSleep()
@@ -42,11 +42,6 @@ namespace WindesHeartApp
             {
                 await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
             }
-        }
-
-        public void CreateDatabase()
-        {
-
         }
     }
 }

@@ -10,7 +10,6 @@ namespace WindesHeartApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : IAnimationPage
     {
-
         public static Picker DatePicker;
         public static Picker HourPicker;
         public static Switch WristSwitch;
@@ -31,12 +30,14 @@ namespace WindesHeartApp.Views
 
         private void BuildPage()
         {
+            #region absoluteLayout
             AbsoluteLayout absoluteLayout = new AbsoluteLayout();
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
             PageBuilder.AddHeaderImages(absoluteLayout);
             PageBuilder.AddLabel(absoluteLayout, "Settings", 0.05, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout);
+            #endregion
 
             #region Datetime format
             Label dateLabel = new Label { Text = "Date Format", TextColor = Color.Black, FontSize = Globals.ScreenHeight / 100 * 2.5, HorizontalTextAlignment = TextAlignment.Center };
@@ -109,6 +110,7 @@ namespace WindesHeartApp.Views
             #endregion
         }
 
+        #region pageAnimation
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
@@ -120,5 +122,6 @@ namespace WindesHeartApp.Views
         {
             // Put your code here but leaving empty works just fine
         }
+        #endregion
     }
 }

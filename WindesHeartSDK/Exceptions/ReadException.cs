@@ -4,14 +4,8 @@ namespace WindesHeartSDK.Exceptions
 {
     class ReadException : Exception
     {
-        public ReadException()
-        {
+        public ReadException() { }
 
-        }
-
-        public ReadException(string message) : base(message)
-        {
-
-        }
+        public ReadException(string message) : base(message) { }
     }
 }

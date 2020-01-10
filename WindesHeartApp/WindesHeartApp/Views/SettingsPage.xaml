@@ -5,5 +5,4 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="WindesHeartApp.Views.SettingsPage">
-    
 </ContentPage>

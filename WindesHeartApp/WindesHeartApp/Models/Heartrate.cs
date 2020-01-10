@@ -1,14 +1,12 @@
 ﻿using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WindesHeartApp.Models
 {
     [Table("Heartrates")]
     public class Heartrate
     {
-        public Heartrate() { }
+        public Heartrate() { } //Needed for DB
 
         public Heartrate(DateTime datetime, int heartRateValue)
         {

@@ -14,10 +14,11 @@ namespace WindesHeartSDK
         public Guid Uuid { get => IDevice.Uuid; }
         public List<IGattCharacteristic> Characteristics = new List<IGattCharacteristic>();
         public readonly IDevice IDevice;
-        public bool Authenticated = false;
         protected readonly BluetoothService BluetoothService;
+        public bool Authenticated = false;
         public bool NeedsAuthentication = false;
 
+        //Callbacks & Disposables
         internal Action<ConnectionResult> ConnectionCallback;
         internal Action<object> DisconnectCallback;
         internal IDisposable ConnectionDisposable;

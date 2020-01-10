@@ -2,7 +2,6 @@
 using WindesHeartApp.Data.Interfaces;
 using WindesHeartApp.Models;
 
-
 namespace WindesHeartApp.Data.Repository
 {
     public class SleepRepository : ISleepRepository

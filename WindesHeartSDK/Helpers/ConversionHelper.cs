@@ -97,25 +97,8 @@ namespace WindesHeartSDK.Helpers
                         value[5] & 0xff,
                         value[6] & 0xff
                 );
-                /*if (value.Length > 7)
-                {
-                    TimeZoneInfo timeZone = TimeZoneInfo.Local;
-                    timeZone.setRawOffset(value[7] * 15 * 60 * 1000);
-                    timestamp.;
-                }*/
-
-                /*if (honorDeviceTimeOffset)
-                {
-                    int offsetInHours = MiBandCoordinator.getDeviceTimeOffsetHours();
-                    if (offsetInHours != 0)
-                    {
-                        timestamp.add(Calendar.HOUR_OF_DAY, -offsetInHours);
-                    }
-                }*/
-
                 return timestamp;
             }
-
             return new DateTime();
         }
 

@@ -25,6 +25,7 @@ namespace WindesHeartApp.Views
         public static Button Day5Button;
         public static Button Day6Button;
         public static Button TodayButton;
+
         public StepsPage()
         {
             InitializeComponent();
@@ -38,6 +39,7 @@ namespace WindesHeartApp.Views
 
         private void BuildPage()
         {
+            #region absoluteLayout
             absoluteLayout = new AbsoluteLayout();
 
             PageBuilder.BuildPageBasics(absoluteLayout, this);
@@ -45,7 +47,9 @@ namespace WindesHeartApp.Views
 
             PageBuilder.AddLabel(absoluteLayout, "Steps", 0.10, 0.10, Globals.LightTextColor, "", 0);
             PageBuilder.AddReturnButton(absoluteLayout);
+            #endregion
 
+            #region previousButton
             ImageButton previousBtn = new ImageButton
             {
                 Source = "arrow_left.png",
@@ -55,7 +59,9 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutBounds(previousBtn, new Rectangle(0.3, 0.135, 0.1, 0.1));
             previousBtn.Clicked += Globals.StepsPageViewModel.PreviousDayBtnClick;
             absoluteLayout.Children.Add(previousBtn);
+            #endregion
 
+            #region nextButton
             ImageButton nextBtn = new ImageButton
             {
                 Source = "arrow_right.png",
@@ -65,7 +71,9 @@ namespace WindesHeartApp.Views
             AbsoluteLayout.SetLayoutBounds(nextBtn, new Rectangle(0.7, 0.135, 0.1, 0.1));
             nextBtn.Clicked += Globals.StepsPageViewModel.NextDayBtnClick;
             absoluteLayout.Children.Add(nextBtn);
+            #endregion
 
+            #region default labels
             CurrentDayLabel = PageBuilder.AddLabel(absoluteLayout, "Today", 0.5, 0.16, Color.Black, "", 15);
 
             CurrentStepsLabel = PageBuilder.AddLabel(absoluteLayout, "0", 0.5, 0.37, Color.Black, "", 0);
@@ -74,7 +82,9 @@ namespace WindesHeartApp.Views
 
             var label = PageBuilder.AddLabel(absoluteLayout, "STEPS", 0.5, 0.45, Color.Black, "", 0);
             label.FontSize = 20;
+            #endregion
 
+            #region chart with labels
             ChartView chart = new ChartView
             {
                 Rotation = 180
@@ -91,6 +101,7 @@ namespace WindesHeartApp.Views
             KilometersLabel.FontSize = 20;
 
             AddDayButtons(absoluteLayout);
+            #endregion
 
             #region refreshbutton
             Grid grid = new Grid
@@ -142,10 +153,8 @@ namespace WindesHeartApp.Views
         private void AddDayButtons(AbsoluteLayout absoluteLayout)
         {
             var culture = CultureInfo.CurrentCulture;
-
             int fontsize = 8;
             float height = 0.84f;
-
             DateTime today = DateTime.Now;
 
             int size = (int)(Globals.ScreenHeight / 100 * 8.0);
@@ -176,7 +185,6 @@ namespace WindesHeartApp.Views
             TodayButton = PageBuilder.AddButton(absoluteLayout, culture.DateTimeFormat.GetAbbreviatedDayName(today.DayOfWeek), Globals.StepsPageViewModel.TodayBtnClick, 0.95, height, size, size, size / 2, fontsize, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             TodayButton.BorderColor = Color.Black;
             TodayButton.BorderWidth = 2;
-
         }
 
         private async void RefreshButtonClicked(object sender, EventArgs e)
@@ -187,10 +195,11 @@ namespace WindesHeartApp.Views
                     "Can only refresh data when connected to a device!", "Ok");
                 return;
             }
-            Application.Current.MainPage.Navigation.PopAsync();
+            await Application.Current.MainPage.Navigation.PopAsync();
             Globals.SamplesService.StartFetching();
         }
 
+        #region pageAnimation
         public IPageAnimation PageAnimation { get; } = new SlidePageAnimation { Duration = AnimationDuration.Short, Subtype = AnimationSubtype.FromTop };
 
         public void OnAnimationStarted(bool isPopAnimation)
@@ -202,5 +211,6 @@ namespace WindesHeartApp.Views
         {
             // Put your code here but leaving empty works just fine
         }
+        #endregion
     }
 }
