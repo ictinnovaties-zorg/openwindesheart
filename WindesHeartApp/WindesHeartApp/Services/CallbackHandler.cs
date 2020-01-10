@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using WindesHeartApp.Models;
 using WindesHeartApp.Resources;
 using WindesHeartApp.Views;
@@ -34,7 +35,7 @@ namespace WindesHeartApp.Services
 
         }
 
-        public static void OnConnect(ConnectionResult result, byte[] secretKey)
+        public static async void OnConnect(ConnectionResult result, byte[] secretKey)
         {
             if (result == ConnectionResult.Succeeded)
             {
@@ -69,12 +70,7 @@ namespace WindesHeartApp.Services
                 {
                     Debug.WriteLine(e.Message);
                     Debug.WriteLine("Something went wrong while connecting to device, disconnecting...");
-                    Windesheart.PairedDevice.Disconnect();
-                    if(Windesheart.PairedDevice.SecretKey != null && Application.Current.Properties.ContainsKey(Windesheart.PairedDevice.IDevice.Uuid.ToString()))
-                    {
-                        Application.Current.Properties.Remove(Windesheart.PairedDevice.IDevice.Uuid.ToString());
-                        Windesheart.PairedDevice.Connect(Windesheart.PairedDevice.ConnectionCallback);
-                    }
+                    Windesheart.PairedDevice?.Disconnect();
                     Globals.DevicePageViewModel.IsLoading = false;
                 }
 
@@ -83,6 +79,15 @@ namespace WindesHeartApp.Services
             else if (result == ConnectionResult.Failed)
             {
                 Debug.WriteLine("Connection failed");
+                if (Windesheart.PairedDevice.SecretKey != null && Application.Current.Properties.ContainsKey(Windesheart.PairedDevice.IDevice.Uuid.ToString()))
+                {
+                    Application.Current.Properties.Remove(Windesheart.PairedDevice.IDevice.Uuid.ToString());
+                    Device.BeginInvokeOnMainThread(delegate
+                    {
+                        Application.Current.MainPage.DisplayAlert("Connecting failed, Please try again", "The secret key of this device has changed since the last time it was connected to this phone. Please try connecting to this device again or try to factory reset the device!", "OK");
+                    });
+                }
+                Windesheart.PairedDevice?.Disconnect();
                 Globals.DevicePageViewModel.StatusText = "Disconnected";
                 Device.BeginInvokeOnMainThread(delegate
                 {
