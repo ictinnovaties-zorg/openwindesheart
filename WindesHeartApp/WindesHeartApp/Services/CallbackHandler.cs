@@ -34,7 +34,7 @@ namespace WindesHeartApp.Services
 
         }
 
-        public static void OnConnect(ConnectionResult result)
+        public static void OnConnect(ConnectionResult result, byte[] secretKey)
         {
             if (result == ConnectionResult.Succeeded)
             {
@@ -54,16 +54,16 @@ namespace WindesHeartApp.Services
                     //Callbacks
                     Windesheart.PairedDevice.EnableRealTimeHeartrate(OnHeartrateUpdated);
                     Windesheart.PairedDevice.EnableRealTimeBattery(OnBatteryUpdated);
+                    Globals.HomePageViewModel.ReadCurrentBattery();
                     Windesheart.PairedDevice.EnableRealTimeSteps(OnStepsUpdated);
                     Windesheart.PairedDevice.SubscribeToDisconnect(OnDisconnect);
 
                     Globals.DevicePageViewModel.StatusText = "Connected";
                     Globals.DevicePageViewModel.DeviceList = new ObservableCollection<BLEScanResult>();
                     Globals.DevicePageViewModel.IsLoading = false;
-                    Globals.HomePageViewModel.ReadCurrentBattery();
                     Globals.HomePageViewModel.BandNameLabel = Windesheart.PairedDevice.Name;
                     Globals.SamplesService.StartFetching();
-                    SaveGuid();
+                    SaveGuid(secretKey);
                 }
                 catch (Exception e)
                 {
@@ -94,11 +94,11 @@ namespace WindesHeartApp.Services
         }
 
 
-        public static void SaveGuid()
+        public static void SaveGuid(byte[] secretKey)
         {
             if (!Application.Current.Properties.ContainsKey(Windesheart.PairedDevice.IDevice.Uuid.ToString()))
             {
-                Application.Current.Properties.Add(Windesheart.PairedDevice.IDevice.Uuid.ToString(), Windesheart.PairedDevice.SecretKey);
+                Application.Current.Properties.Add(Windesheart.PairedDevice.IDevice.Uuid.ToString(), secretKey);
                 Application.Current.SavePropertiesAsync();
             }
         }
