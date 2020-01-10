@@ -171,7 +171,7 @@ namespace WindesHeartApp.Views
         private void AddDayButtons(AbsoluteLayout absoluteLayout)
         {
             var culture = CultureInfo.CurrentCulture;
-            int fontsize = 8;
+            int fontsize = 10;
             float height = 0.84f;
             DateTime today = DateTime.Now;
 
