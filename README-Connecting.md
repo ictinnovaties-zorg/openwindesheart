@@ -3,9 +3,11 @@ This documentation explains and demonstrates how to connect with a Bluetooth dev
 
 **Please note:** The SDK only supports one device to be connected at a time.
 
-## BLEDevice.Connect(callback)
+## BLEDevice.Connect(callback, secretkey)
 This method attempts to connect with your device. The callback parameter will be called when the connection process has finished. **This doesn't mean that it's always successful!**
 The callback returns a `ConnectionResult` enum. This enum can be either `Succeeded`, or `Failed`.
+
+You can also give this method the secretkey of the device you're trying to connect with. If you don't give a key to the connect method, It will generate a new key. This key will be returned in the connection callback. It is important you keep this key saved with the guid of the device. This key is needed to reconnect without losing data!
 
 Example:
 ```
