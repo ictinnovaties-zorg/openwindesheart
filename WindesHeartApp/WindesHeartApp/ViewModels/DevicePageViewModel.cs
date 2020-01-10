@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using Plugin.BluetoothLE;
+﻿using Plugin.BluetoothLE;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -193,14 +191,14 @@ namespace WindesHeartApp.ViewModels
 
                 if (Application.Current.Properties.ContainsKey(device.IDevice.Uuid.ToString()))
                 {
-                    byte[] SecretKey = (byte[]) Application.Current.Properties[device.IDevice.Uuid.ToString()];
+                    byte[] SecretKey = (byte[])Application.Current.Properties[device.IDevice.Uuid.ToString()];
                     device.Connect(CallbackHandler.OnConnect, SecretKey);
                 }
                 else
                 {
                     device.Connect(CallbackHandler.OnConnect);
                 }
-                
+
                 Globals.HomePageViewModel.EnableDisableButtons(false);
                 Globals.HomePageViewModel.IsLoading = true;
                 DeviceList = new ObservableCollection<BLEScanResult>();

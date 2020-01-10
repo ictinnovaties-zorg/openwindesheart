@@ -103,7 +103,7 @@ namespace WindesHeartApp.Views
             AddDayButtons(absoluteLayout);
             #endregion
 
-            #region refreshbutton
+            #region RFbutton
             Grid grid = new Grid
             {
             };
