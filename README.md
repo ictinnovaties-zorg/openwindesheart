@@ -57,9 +57,7 @@ The SDK is designed in a way that other devices can be added easily. If you want
 
 ## Credits
 
-We would like to thank Hogeschool Windesheim and the lecturate for ICT Innovations in healthcare for giving us this assignment.  
-
-Further we would like to thank Allan Ritchie for creating the [ACR Reactive BluetoothLE Plugin](https://github.com/aritchie/bluetoothle). Without this open-source library our project would not have been finished within the specified amount of time.
+We would like to thank Allan Ritchie for creating the [ACR Reactive BluetoothLE Plugin](https://github.com/aritchie/bluetoothle). Without this open-source library our project would not have been finished within the specified amount of time.
 
 ## Contributions
 
