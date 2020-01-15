@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright 2020 Research group ICT innovations 
+// in Health Care, Windesheim University of Applied Sciences
+
+using System;
 namespace WindesHeartSDK.Devices.MiBand3Device.Resources
 {
     public static class MiBand3Resource

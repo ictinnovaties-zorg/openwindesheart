@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright 2020 Research group ICT innovations 
+// in Health Care, Windesheim University of Applied Sciences
+
+using System;
 using System.Reactive.Linq;
 using WindesHeartSDK.Devices.MiBand3Device.Models;
 using WindesHeartSDK.Devices.MiBand3Device.Resources;
