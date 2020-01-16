@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenWindesheartDemoApp", "O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWindesheartDemoApp.Android", "OpenWindesheartDemoApp.Android\OpenWindesheartDemoApp.Android.csproj", "{2BE48D1F-0BF0-45F7-AC0A-FF391343B2BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindesHeartApp.iOS", "OpenWindesheartDemoApp.iOS\WindesHeartApp.iOS.csproj", "{6A04A35D-6594-4DF4-821C-47410305AC43}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenWindesheartDemoApp.IOS", "OpenWindesheartDemoApp.iOS\OpenWindesheartDemoApp.IOS.csproj", "{6A04A35D-6594-4DF4-821C-47410305AC43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

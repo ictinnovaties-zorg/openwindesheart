@@ -24,15 +24,8 @@ namespace OpenWindesheart.Models
 
         public HeartrateData(byte[] rawdata)
         {
-            {
-                if (rawdata == null || rawdata[0] == 0)
-                {
-                    throw new ReadException("Error while reading raw heartrate data");
-                }
-
-                Rawdata = rawdata;
-                Heartrate = rawdata[1];
-            }
+            Rawdata = rawdata;
+            Heartrate = rawdata[1];
         }
     }
 }

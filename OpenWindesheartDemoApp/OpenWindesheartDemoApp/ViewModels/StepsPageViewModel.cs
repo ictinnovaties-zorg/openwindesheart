@@ -181,7 +181,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
             //Add part done
             entries.Add(new Entry(percentageDone) { Color = SKColors.Black });
-            double kilometers = (double)stepCount / 1000;
+            double kilometers = (double)stepCount / 1500;
 
             if (StepsPage.CurrentStepsLabel != null)
             {
