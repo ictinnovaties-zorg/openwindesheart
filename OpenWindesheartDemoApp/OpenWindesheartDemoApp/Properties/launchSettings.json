@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OpenWindesheartDemoApp": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
