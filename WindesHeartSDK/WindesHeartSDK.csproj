@@ -6,6 +6,8 @@
     <Version>2.0.0</Version>
     <Authors>K. van Sloten, R. Brokking, H. van der Gugten, T.C. Marschalk</Authors>
     <Company>Windesheim - Lectoraat ICT-innovaties in de zorg</Company>
+    <Description>The open-source WindesHeartSDK is an SDK used for scanning, connecting and getting data from activity-trackers using bluetooth. 
+Current support: - Mi Band 3 -</Description>
   </PropertyGroup>
 
   <ItemGroup>
