@@ -5,9 +5,10 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>2.0.2</Version>
     <Authors>K. van Sloten, R. Brokking, H. van der Gugten, T.C. Marschalk</Authors>
-    <Company>Windesheim - Lectoraat ICT-innovaties in de zorg</Company>
+    <Company>Research group ICT innovations in Health Care - Windesheim University of Applied Sciences</Company>
     <Description>The open-source OpenWindesheart is an SDK used for scanning, connecting and getting data from activity-trackers using bluetooth. 
 Current support: - Mi Band 3 -</Description>
+    <Copyright>Copyright 2020 Research group ICT innovations in Health Care, Windesheim University of Applied Sciences</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
