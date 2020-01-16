@@ -50,7 +50,6 @@ The SDK is designed in a way that other devices can be added easily. If you want
 * [How to add support for a new device](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/README-SupportNewDevice.md)
 
 ## SETUP  
-
 1.  Clone this repository into your solution and manage a dependency from your mobile-project to this one.  
 2.  Carefully read the docs for implementation of different features. For a working example, have a look at the Xamarin Forms project on this page.
 3.  Implement the features in your mobile-application the way you want them!
@@ -62,3 +61,7 @@ We would like to thank Allan Ritchie for creating the [ACR Reactive BluetoothLE 
 ## Contributions
 
 To make contributions to this project, please open up a [pull request](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/pull-requests/new).
+
+## Copyright
+
+Copyright 2020 Research group ICT innovations in Health Care, Windesheim University of Applied Sciences.
