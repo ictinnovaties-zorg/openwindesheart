@@ -54,7 +54,7 @@ namespace OpenWindesheartDemoApp.ViewModels
                 if (e.InnerException != null)
                 {
                     string err = e.InnerException.Message;
-                    Trace.WriteLine(err);
+                    Debug.WriteLine(err);
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace OpenWindesheartDemoApp.ViewModels
         /// </summary>
         public void OnDisappearing()
         {
-            Console.WriteLine("Stopping scanning...");
+            Debug.WriteLine("Stopping scanning...");
             Windesheart.StopScanning();
             IsLoading = false;
             StatusText = "";

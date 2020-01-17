@@ -136,7 +136,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             //If looking at today
             if (SelectedDate.Equals(DateTime.Today))
             {
-                Console.WriteLine("Today selected!");
+                Debug.WriteLine("Today selected!");
 
                 //If device is connected
                 if (Windesheart.PairedDevice != null && Windesheart.PairedDevice.IsAuthenticated())
@@ -213,7 +213,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public void PreviousDayBtnClick(object sender, EventArgs args)
         {
-            Console.WriteLine("Previous day clicked!");
+            Debug.WriteLine("Previous day clicked!");
 
             //You can always go back
             _buttonRow.ToPrevious();

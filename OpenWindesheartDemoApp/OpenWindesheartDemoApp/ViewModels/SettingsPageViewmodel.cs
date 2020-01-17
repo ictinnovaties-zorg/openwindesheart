@@ -3,7 +3,9 @@ using OpenWindesheartDemoApp.Models;
 using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Views;
 using System;
+using System.Diagnostics;
 using Xamarin.Forms;
+using Switch = Xamarin.Forms.Switch;
 
 namespace OpenWindesheartDemoApp.ViewModels
 {
@@ -68,7 +70,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             {
                 //Set picker index back to old value
                 picker.SelectedIndex = _dateIndex;
-                Console.WriteLine("Something went wrong!");
+                Debug.WriteLine("Something went wrong!");
             }
         }
 
@@ -94,7 +96,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             {
                 //Set picker index back to old value
                 picker.SelectedIndex = _hourIndex;
-                Console.WriteLine("Something went wrong!");
+                Debug.WriteLine("Something went wrong!");
             }
         }
 
@@ -121,7 +123,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             {
                 //Set picker index back to old value
                 picker.SelectedIndex = _languageIndex;
-                Console.WriteLine("Something went wrong!");
+                Debug.WriteLine("Something went wrong!");
             }
         }
 
@@ -145,7 +147,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             {
                 //Set picker index back to old value
                 picker.SelectedIndex = _stepIndex;
-                Console.WriteLine("Something went wrong!");
+                Debug.WriteLine("Something went wrong!");
             }
         }
 
@@ -165,7 +167,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             {
                 //toggle back the switch
                 SettingsPage.WristSwitch.IsToggled = !toggled;
-                Console.WriteLine("Something went wrong!");
+                Debug.WriteLine("Something went wrong!");
             }
         }
     }

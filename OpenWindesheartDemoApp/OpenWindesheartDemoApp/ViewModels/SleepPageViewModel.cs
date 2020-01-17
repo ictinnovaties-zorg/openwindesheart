@@ -193,7 +193,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public async void PreviousDayBtnClick(object sender, EventArgs args)
         {
-            Trace.WriteLine("Previous day clicked!");
+            Debug.WriteLine("Previous day clicked!");
 
             //You can always go back
             _buttonRow.ToPrevious();

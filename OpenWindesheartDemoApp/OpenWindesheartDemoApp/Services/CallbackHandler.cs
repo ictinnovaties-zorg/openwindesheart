@@ -27,9 +27,7 @@ namespace OpenWindesheartDemoApp.Services
         public static void OnStepsUpdated(StepData stepsInfo)
         {
             var count = stepsInfo.StepCount;
-            Debug.WriteLine($"Stepcount updated: {count}");
             Globals.StepsPageViewModel.OnStepsUpdated(count);
-
         }
 
         public static async void OnConnect(ConnectionResult result, byte[] secretKey)

@@ -2,7 +2,6 @@
 using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Services;
 using System;
-using System.Diagnostics;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -136,7 +135,6 @@ namespace OpenWindesheartDemoApp.Views
 
         private void Logo_Clicked(object sender, EventArgs e)
         {
-            Debug.WriteLine("Logo - Clicked.");
             Navigation.PopAsync();
             Vibration.Vibrate(4200);
         }
