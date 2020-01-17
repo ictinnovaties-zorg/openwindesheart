@@ -3,8 +3,6 @@ using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Image = Xamarin.Forms.Image;
-using Label = Xamarin.Forms.Label;
 
 namespace OpenWindesheartDemoApp.Views
 {
@@ -49,7 +47,7 @@ namespace OpenWindesheartDemoApp.Views
             };
 
             fetchProgressBar.SetBinding(ProgressBar.ProgressProperty, new Binding("FetchProgress"));
-            fetchProgressBar.SetBinding(ProgressBar.IsVisibleProperty, new Binding("FetchProgressVisible"));
+            fetchProgressBar.SetBinding(IsVisibleProperty, new Binding("FetchProgressVisible"));
 
             AbsoluteLayout.SetLayoutBounds(fetchProgressBar, new Rectangle(0.5, 0.25, 0.95, -1));
             AbsoluteLayout.SetLayoutFlags(fetchProgressBar, AbsoluteLayoutFlags.PositionProportional | AbsoluteLayoutFlags.WidthProportional);
@@ -81,13 +79,13 @@ namespace OpenWindesheartDemoApp.Views
             PageBuilder.AddActivityIndicator(absoluteLayout, "IsLoading", 0.50, 0.65, 80, 80, AbsoluteLayoutFlags.PositionProportional, Globals.LightTextColor);
 
             #region pageButtons
-            int buttonSize = (int)(Globals.ScreenHeight / 100 * 8.5);
-            AboutButton = PageBuilder.AddButton(absoluteLayout, "About", Globals.HomePageViewModel.AboutButtonClicked, 0.80, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            DeviceButton = PageBuilder.AddButton(absoluteLayout, "Device", Globals.HomePageViewModel.DeviceButtonClicked, 0.80, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            HeartrateButton = PageBuilder.AddButton(absoluteLayout, "Heartrate", Globals.HomePageViewModel.HeartrateButtonClicked, 0.20, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            StepsButton = PageBuilder.AddButton(absoluteLayout, "Steps", Globals.HomePageViewModel.StepsButtonClicked, 0.90, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            SettingsButton = PageBuilder.AddButton(absoluteLayout, "Settings", Globals.HomePageViewModel.SettingsButtonClicked, 0.20, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            SleepButton = PageBuilder.AddButton(absoluteLayout, "Sleep", Globals.HomePageViewModel.SleepButtonClicked, 0.10, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, (int)(buttonSize / 5), AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            var buttonSize = (int)(Globals.ScreenHeight / 100 * 8.5);
+            AboutButton = PageBuilder.AddButton(absoluteLayout, "About", Globals.HomePageViewModel.AboutButtonClicked, 0.80, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, buttonSize / 5, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            DeviceButton = PageBuilder.AddButton(absoluteLayout, "Device", Globals.HomePageViewModel.DeviceButtonClicked, 0.80, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, buttonSize / 5, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            HeartrateButton = PageBuilder.AddButton(absoluteLayout, "Heartrate", Globals.HomePageViewModel.HeartrateButtonClicked, 0.20, 0.40, buttonSize * 2, buttonSize * 2, buttonSize, buttonSize / 5, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            StepsButton = PageBuilder.AddButton(absoluteLayout, "Steps", Globals.HomePageViewModel.StepsButtonClicked, 0.90, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, buttonSize / 5, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            SettingsButton = PageBuilder.AddButton(absoluteLayout, "Settings", Globals.HomePageViewModel.SettingsButtonClicked, 0.20, 0.90, buttonSize * 2, buttonSize * 2, buttonSize, buttonSize / 5, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            SleepButton = PageBuilder.AddButton(absoluteLayout, "Sleep", Globals.HomePageViewModel.SleepButtonClicked, 0.10, 0.65, buttonSize * 2, buttonSize * 2, buttonSize, buttonSize / 5, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
             #endregion
         }
 

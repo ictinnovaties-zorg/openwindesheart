@@ -1,8 +1,8 @@
 ﻿using FormsControls.Base;
-using System;
-using System.Diagnostics;
 using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Services;
+using System;
+using System.Diagnostics;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -131,20 +131,13 @@ namespace OpenWindesheartDemoApp.Views
 
         private void LearnmoreButton_Clicked(object sender, EventArgs e)
         {
-            Debug.WriteLine("OPEN GITHUB PAGE?? ");
+            Device.OpenUri(new Uri("https://github.com/ictinnovaties-zorg/openwindesheart"));
         }
 
         private void Logo_Clicked(object sender, EventArgs e)
         {
             Debug.WriteLine("Logo - Clicked.");
             Navigation.PopAsync();
-            Vibration.Vibrate(4200);
-        }
-
-        //Needs link to website or Git-repository
-        private void LearnMore_Clicked(object sender, EventArgs e)
-        {
-            Debug.WriteLine("Learn More - Clicked.");
             Vibration.Vibrate(4200);
         }
 

@@ -1,9 +1,9 @@
 ﻿using FormsControls.Base;
 using Microcharts.Forms;
-using System;
 using OpenWindesheart;
 using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Services;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,10 +12,10 @@ namespace OpenWindesheartDemoApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HeartratePage : IAnimationPage
     {
-        public Button interval15Button;
-        public Button interval10Button;
-        public Button interval5Button;
-        public Button intervaldefaultButton;
+        private Button _interval15Button;
+        private Button _interval10Button;
+        private Button _interval5Button;
+        private Button _intervaldefaultButton;
         public HeartratePage()
         {
             InitializeComponent();
@@ -81,30 +81,29 @@ namespace OpenWindesheartDemoApp.Views
             AbsoluteLayout.SetLayoutFlags(heartonlyImage2, AbsoluteLayoutFlags.PositionProportional);
             AbsoluteLayout.SetLayoutBounds(heartonlyImage2, new Rectangle(0.05, 0.85, 40, 40));
             absoluteLayout.Children.Add(heartonlyImage2);
-            var itnervallabel = PageBuilder.AddLabel(absoluteLayout, "Interval:", 0.22, 0.84, Color.Black, "", 13);
+            PageBuilder.AddLabel(absoluteLayout, "Interval:", 0.22, 0.84, Color.Black, "", 13);
 
-            intervaldefaultButton = PageBuilder.AddButton(absoluteLayout, "1", OnIntervalLabelClicked, 0.50, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            intervaldefaultButton.BorderWidth = 1;
-            intervaldefaultButton.BorderColor = Color.White;
+            _intervaldefaultButton = PageBuilder.AddButton(absoluteLayout, "1", OnIntervalLabelClicked, 0.50, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            _intervaldefaultButton.BorderWidth = 1;
+            _intervaldefaultButton.BorderColor = Color.White;
 
 
-            interval5Button = PageBuilder.AddButton(absoluteLayout, "5", OnIntervalLabelClicked, 0.65, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            interval5Button.BorderWidth = 1;
-            interval5Button.BorderColor = Color.Black;
+            _interval5Button = PageBuilder.AddButton(absoluteLayout, "5", OnIntervalLabelClicked, 0.65, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            _interval5Button.BorderWidth = 1;
+            _interval5Button.BorderColor = Color.Black;
 
-            interval10Button = PageBuilder.AddButton(absoluteLayout, "10", OnIntervalLabelClicked, 0.80, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            interval10Button.BorderWidth = 1;
-            interval10Button.BorderColor = Color.White;
+            _interval10Button = PageBuilder.AddButton(absoluteLayout, "10", OnIntervalLabelClicked, 0.80, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            _interval10Button.BorderWidth = 1;
+            _interval10Button.BorderColor = Color.White;
 
-            interval15Button = PageBuilder.AddButton(absoluteLayout, "15", OnIntervalLabelClicked, 0.95, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
-            interval15Button.BorderWidth = 1;
-            interval15Button.BorderColor = Color.White;
+            _interval15Button = PageBuilder.AddButton(absoluteLayout, "15", OnIntervalLabelClicked, 0.95, 0.85, 40, 40, 25, 0, AbsoluteLayoutFlags.PositionProportional, Globals.SecondaryColor);
+            _interval15Button.BorderWidth = 1;
+            _interval15Button.BorderColor = Color.White;
             #endregion
 
             #region RFbutton
-            Grid grid = new Grid
-            {
-            };
+
+            Grid grid = new Grid();
             Frame frame = new Frame
             {
                 CornerRadius = 10,
@@ -125,7 +124,7 @@ namespace OpenWindesheartDemoApp.Views
             grid.Opacity = 20;
             AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(0.15, 0.95, Globals.ScreenHeight / 100 * 10, Globals.ScreenHeight / 100 * 6));
             AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.PositionProportional);
-            ImageButton RefreshButton = new ImageButton
+            ImageButton refreshButton = new ImageButton
             {
                 Source = "Refresh.png",
                 HorizontalOptions = LayoutOptions.Start,
@@ -133,11 +132,11 @@ namespace OpenWindesheartDemoApp.Views
                 BackgroundColor = Color.Transparent,
                 Margin = new Thickness(2, 0, 0, 0),
             };
-            RefreshButton.Clicked += RefreshButtonClicked;
+            refreshButton.Clicked += RefreshButtonClicked;
             grid.Children.Add(frame);
-            grid.Children.Add(RefreshButton); ;
+            grid.Children.Add(refreshButton);
 
-            var RefreshLabel = new Label
+            var refreshLabel = new Label
             {
                 Text = "Data",
                 VerticalOptions = LayoutOptions.CenterAndExpand,
@@ -147,9 +146,9 @@ namespace OpenWindesheartDemoApp.Views
                 Margin = new Thickness(0, 0, 2, 0)
             };
 
-            grid.Children.Add(RefreshLabel);
+            grid.Children.Add(refreshLabel);
 
-            RefreshLabel.GestureRecognizers.Add(new TapGestureRecognizer
+            refreshLabel.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 NumberOfTapsRequired = 1,
                 Command = new Command(execute: () => { RefreshButtonClicked(this, EventArgs.Empty); }),
@@ -174,10 +173,11 @@ namespace OpenWindesheartDemoApp.Views
         {
             var intervalButton = sender as Button;
 
-            intervaldefaultButton.BorderColor = Color.White;
-            interval5Button.BorderColor = Color.White;
-            interval15Button.BorderColor = Color.White;
-            interval10Button.BorderColor = Color.White;
+            _intervaldefaultButton.BorderColor = Color.White;
+            _interval5Button.BorderColor = Color.White;
+            _interval15Button.BorderColor = Color.White;
+            _interval10Button.BorderColor = Color.White;
+            if (intervalButton == null) return;
             intervalButton.BorderColor = Color.Black;
 
             var interval = Convert.ToInt32(intervalButton.Text);

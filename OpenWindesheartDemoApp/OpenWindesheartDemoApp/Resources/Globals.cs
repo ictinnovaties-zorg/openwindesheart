@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using OpenWindesheartDemoApp.Data;
+﻿using OpenWindesheartDemoApp.Data;
 using OpenWindesheartDemoApp.Data.Interfaces;
 using OpenWindesheartDemoApp.Services;
 using OpenWindesheartDemoApp.ViewModels;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace OpenWindesheartDemoApp.Resources

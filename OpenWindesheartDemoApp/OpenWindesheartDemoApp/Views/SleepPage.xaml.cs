@@ -1,11 +1,11 @@
 ﻿
 using FormsControls.Base;
 using Microcharts.Forms;
+using OpenWindesheart;
 using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Services;
 using System;
 using System.Globalization;
-using OpenWindesheart;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -116,13 +116,11 @@ namespace OpenWindesheartDemoApp.Views
                 PageBuilder.AddLabel(absoluteLayout, hour.ToString(), 0.022 + 0.059 * (i - starthour), 0.65, Color.Black, "", 17);
 
             }
-            AddDayButtons(absoluteLayout);
+            AddDayButtons();
             #endregion
 
             #region RFbutton
-            Grid grid = new Grid
-            {
-            };
+            Grid grid = new Grid();
             Frame frame = new Frame
             {
                 CornerRadius = 10,
@@ -143,23 +141,23 @@ namespace OpenWindesheartDemoApp.Views
             grid.Opacity = 20;
             AbsoluteLayout.SetLayoutBounds(grid, new Rectangle(0.15, 0.95, Globals.ScreenHeight / 100 * 10, Globals.ScreenHeight / 100 * 6));
             AbsoluteLayout.SetLayoutFlags(grid, AbsoluteLayoutFlags.PositionProportional);
-            ImageButton RefreshButton = new ImageButton
+            ImageButton refreshButton = new ImageButton
             {
                 Source = "Refresh.png",
                 HorizontalOptions = LayoutOptions.Start,
                 HeightRequest = Globals.ScreenHeight / 100 * 4.5,
                 BackgroundColor = Color.Transparent,
+                Margin = new Thickness(2, 0, 0, 0),
             };
-            RefreshButton.Margin = new Thickness(2, 0, 0, 0);
-            RefreshButton.Clicked += RefreshButtonClicked;
+            refreshButton.Clicked += RefreshButtonClicked;
             grid.Children.Add(frame);
-            grid.Children.Add(RefreshButton); ;
+            grid.Children.Add(refreshButton);
 
-            Label RefreshLabel = new Label() { Text = "Data", VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.End, FontSize = 15, FontAttributes = FontAttributes.Italic };
-            RefreshLabel.Margin = new Thickness(0, 0, 2, 0);
-            grid.Children.Add(RefreshLabel);
+            Label refreshLabel = new Label() { Text = "Data", VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.End, FontSize = 15, FontAttributes = FontAttributes.Italic };
+            refreshLabel.Margin = new Thickness(0, 0, 2, 0);
+            grid.Children.Add(refreshLabel);
 
-            RefreshLabel.GestureRecognizers.Add(new TapGestureRecognizer
+            refreshLabel.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 NumberOfTapsRequired = 1,
                 Command = new Command(execute: () => { RefreshButtonClicked(this, EventArgs.Empty); }),
@@ -168,7 +166,7 @@ namespace OpenWindesheartDemoApp.Views
             #endregion
         }
 
-        private void AddDayButtons(AbsoluteLayout absoluteLayout)
+        private void AddDayButtons()
         {
             var culture = CultureInfo.CurrentCulture;
             int fontsize = 10;

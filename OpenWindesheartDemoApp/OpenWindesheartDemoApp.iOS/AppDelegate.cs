@@ -1,11 +1,7 @@
 ﻿
 using Foundation;
-using System;
-using System.IO;
-using UIKit;
-using OpenWindesheartDemoApp.Data;
-using OpenWindesheartDemoApp.Data.Repository;
 using OpenWindesheartDemoApp.Resources;
+using UIKit;
 
 namespace OpenWindesheartDemoApp.iOS
 {

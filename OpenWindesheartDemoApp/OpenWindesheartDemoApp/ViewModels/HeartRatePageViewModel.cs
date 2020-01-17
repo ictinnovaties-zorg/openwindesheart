@@ -1,4 +1,7 @@
 ﻿using Microcharts;
+using OpenWindesheartDemoApp.Data.Interfaces;
+using OpenWindesheartDemoApp.Models;
+using OpenWindesheartDemoApp.Resources;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using System;
@@ -6,9 +9,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using OpenWindesheartDemoApp.Data.Interfaces;
-using OpenWindesheartDemoApp.Models;
-using OpenWindesheartDemoApp.Resources;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 

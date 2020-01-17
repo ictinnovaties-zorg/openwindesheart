@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using OpenWindesheartDemoApp.Models;
+﻿using OpenWindesheartDemoApp.Models;
+using System.Collections.Generic;
 
 namespace OpenWindesheartDemoApp.Data.Interfaces
 {

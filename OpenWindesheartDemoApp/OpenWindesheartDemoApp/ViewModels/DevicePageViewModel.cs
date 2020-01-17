@@ -191,8 +191,8 @@ namespace OpenWindesheartDemoApp.ViewModels
 
                 if (Application.Current.Properties.ContainsKey(device.IDevice.Uuid.ToString()))
                 {
-                    byte[] SecretKey = (byte[])Application.Current.Properties[device.IDevice.Uuid.ToString()];
-                    device.Connect(CallbackHandler.OnConnect, SecretKey);
+                    byte[] secretKey = (byte[])Application.Current.Properties[device.IDevice.Uuid.ToString()];
+                    device.Connect(CallbackHandler.OnConnect, secretKey);
                 }
                 else
                 {

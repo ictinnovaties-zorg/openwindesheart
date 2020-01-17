@@ -1,11 +1,11 @@
-﻿using OpenWindesheartDemoApp.Models;
+﻿using OpenWindesheart;
+using OpenWindesheart.Models;
+using OpenWindesheartDemoApp.Models;
 using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using OpenWindesheart;
-using OpenWindesheart.Models;
 using Xamarin.Forms;
 
 namespace OpenWindesheartDemoApp.Services
@@ -99,7 +99,6 @@ namespace OpenWindesheartDemoApp.Services
                     DevicePage.ReturnButton.IsVisible = true;
                 });
                 Globals.DevicePageViewModel.IsLoading = false;
-                return;
             }
         }
 

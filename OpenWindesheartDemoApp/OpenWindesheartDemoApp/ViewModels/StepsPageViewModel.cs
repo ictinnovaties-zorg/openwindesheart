@@ -1,4 +1,6 @@
 ﻿using Microcharts;
+using OpenWindesheart;
+using OpenWindesheart.Models;
 using OpenWindesheartDemoApp.Models;
 using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Views;
@@ -7,11 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using OpenWindesheart;
-using OpenWindesheart.Models;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -186,7 +187,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             if (StepsPage.CurrentStepsLabel != null)
             {
                 //Update labels
-                StepsPage.CurrentStepsLabel.Text = stepCount.ToString();
+                StepsPage.CurrentStepsLabel.Text = stepCount.ToString(CultureInfo.InvariantCulture);
 
 
                 StepsPage.KilometersLabel.Text = Math.Floor(kilometers * 10) / 10 + " Kilometers";

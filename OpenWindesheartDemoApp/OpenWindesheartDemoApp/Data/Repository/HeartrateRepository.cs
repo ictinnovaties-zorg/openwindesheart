@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using OpenWindesheartDemoApp.Data.Interfaces;
+﻿using OpenWindesheartDemoApp.Data.Interfaces;
 using OpenWindesheartDemoApp.Models;
+using System.Collections.Generic;
 
 namespace OpenWindesheartDemoApp.Data.Repository
 {

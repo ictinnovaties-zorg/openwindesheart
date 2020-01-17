@@ -5,11 +5,10 @@ using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Views;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
-using Xamarin.Forms;
 
 namespace OpenWindesheartDemoApp
 {
-    public partial class App : Application
+    public partial class App
     {
         public App()
         {

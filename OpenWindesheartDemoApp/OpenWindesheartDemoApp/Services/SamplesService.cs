@@ -1,11 +1,11 @@
-﻿using OpenWindesheartDemoApp.Data.Interfaces;
+﻿using OpenWindesheart;
+using OpenWindesheart.Models;
+using OpenWindesheartDemoApp.Data.Interfaces;
 using OpenWindesheartDemoApp.Models;
 using OpenWindesheartDemoApp.Resources;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using OpenWindesheart;
-using OpenWindesheart.Models;
 using Xamarin.Forms;
 
 namespace OpenWindesheartDemoApp.Services
@@ -90,7 +90,7 @@ namespace OpenWindesheartDemoApp.Services
 
         private void AddHeartrate(DateTime datetime, ActivitySample sample)
         {
-            var heartRate = new OpenWindesheartDemoApp.Models.Heartrate(datetime, sample.HeartRate != 255 ? sample.HeartRate : 0);
+            var heartRate = new Heartrate(datetime, sample.HeartRate != 255 ? sample.HeartRate : 0);
             _heartrateRepository.Add(heartRate);
         }
 

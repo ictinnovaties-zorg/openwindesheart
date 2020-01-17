@@ -1,5 +1,5 @@
-﻿using System;
-using OpenWindesheartDemoApp.Resources;
+﻿using OpenWindesheartDemoApp.Resources;
+using System;
 using Xamarin.Forms;
 
 namespace OpenWindesheartDemoApp.Services

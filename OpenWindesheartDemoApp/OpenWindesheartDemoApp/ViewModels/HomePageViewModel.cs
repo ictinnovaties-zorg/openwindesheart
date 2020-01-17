@@ -46,7 +46,8 @@ namespace OpenWindesheartDemoApp.ViewModels
             {
                 BatteryImage = "";
                 return;
-            };
+            }
+
             Battery = battery.Percentage;
             if (battery.Status == BatteryStatus.Charging)
             {
@@ -247,14 +248,7 @@ namespace OpenWindesheartDemoApp.ViewModels
         public void ShowFetchProgress(float progress)
         {
             FetchProgress = progress;
-            if (progress == 1f)
-            {
-                FetchProgressVisible = false;
-            }
-            else
-            {
-                FetchProgressVisible = true;
-            }
+            FetchProgressVisible = progress != 1f;
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using SQLite;
-using System.IO;
-using OpenWindesheartDemoApp.Models;
+﻿using OpenWindesheartDemoApp.Models;
 using OpenWindesheartDemoApp.Resources;
+using SQLite;
+using System.IO;
 
 namespace OpenWindesheartDemoApp.Data
 {

@@ -1,8 +1,8 @@
+using OpenWindesheartDemoApp.Data.Interfaces;
+using OpenWindesheartDemoApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenWindesheartDemoApp.Data.Interfaces;
-using OpenWindesheartDemoApp.Models;
 
 namespace OpenWindesheartDemoApp.Data.Repository
 {
@@ -29,13 +29,8 @@ namespace OpenWindesheartDemoApp.Data.Repository
 
         public DateTime LastAddedDatetime()
         {
-            var steps = this.GetAll();
-            if (steps.Count() > 0)
-            {
-                return steps.Last().DateTime.AddMinutes(1);
-            }
-
-            return DateTime.Now.AddYears(-2);
+            var steps = this.GetAll().ToArray();
+            return steps.Any() ? steps.Last().DateTime.AddMinutes(1) : DateTime.Now.AddYears(-2);
         }
 
         public void RemoveAll()

@@ -1,8 +1,8 @@
-﻿using OpenWindesheartDemoApp.Models;
+﻿using OpenWindesheart;
+using OpenWindesheartDemoApp.Models;
 using OpenWindesheartDemoApp.Resources;
 using OpenWindesheartDemoApp.Views;
 using System;
-using OpenWindesheart;
 using Xamarin.Forms;
 
 namespace OpenWindesheartDemoApp.ViewModels
@@ -20,8 +20,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             if (DeviceSettings.TimeFormat24Hour) SettingsPage.HourPicker.SelectedIndex = 0;
             else SettingsPage.HourPicker.SelectedIndex = 1;
 
-            if (DeviceSettings.DateFormatDMY) SettingsPage.DatePicker.SelectedIndex = 0;
-            else SettingsPage.DatePicker.SelectedIndex = 1;
+            SettingsPage.DatePicker.SelectedIndex = DeviceSettings.DateFormatDMY ? 0 : 1;
 
             SettingsPage.WristSwitch.IsToggled = DeviceSettings.WristRaiseDisplay;
 
@@ -50,116 +49,104 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public void DateIndexChanged(object sender, EventArgs args)
         {
-            Picker picker = sender as Picker;
-            if (picker.SelectedIndex != -1)
-            {
-                string format = picker.Items[picker.SelectedIndex];
-                bool isDMY = format.Equals("DD/MM/YYYY");
+            if (!(sender is Picker picker) || picker.SelectedIndex == -1) return;
+            string format = picker.Items[picker.SelectedIndex];
+            bool isDMY = format.Equals("DD/MM/YYYY");
 
-                try
+            try
+            {
+                if (Windesheart.PairedDevice != null)
                 {
-                    if (Windesheart.PairedDevice != null)
+                    if (Windesheart.PairedDevice.IsConnected())
                     {
-                        if (Windesheart.PairedDevice.IsConnected())
-                        {
-                            Windesheart.PairedDevice.SetDateDisplayFormat(isDMY);
-                            DeviceSettings.DateFormatDMY = isDMY;
-                            _dateIndex = picker.SelectedIndex;
-                        }
+                        Windesheart.PairedDevice.SetDateDisplayFormat(isDMY);
+                        DeviceSettings.DateFormatDMY = isDMY;
+                        _dateIndex = picker.SelectedIndex;
                     }
                 }
-                catch (Exception)
-                {
-                    //Set picker index back to old value
-                    picker.SelectedIndex = _dateIndex;
-                    Console.WriteLine("Something went wrong!");
-                }
+            }
+            catch (Exception)
+            {
+                //Set picker index back to old value
+                picker.SelectedIndex = _dateIndex;
+                Console.WriteLine("Something went wrong!");
             }
         }
 
         public void HourIndexChanged(object sender, EventArgs e)
         {
-            Picker picker = sender as Picker;
-            if (picker.SelectedIndex != -1)
-            {
-                string format = picker.Items[picker.SelectedIndex];
-                bool is24 = format.Equals("24 hour");
+            if (!(sender is Picker picker) || picker.SelectedIndex == -1) return;
+            string format = picker.Items[picker.SelectedIndex];
+            bool is24 = format.Equals("24 hour");
 
-                try
+            try
+            {
+                if (Windesheart.PairedDevice != null)
                 {
-                    if (Windesheart.PairedDevice != null)
+                    if (Windesheart.PairedDevice.IsConnected())
                     {
-                        if (Windesheart.PairedDevice.IsConnected())
-                        {
-                            Windesheart.PairedDevice.SetTimeDisplayFormat(is24);
-                            DeviceSettings.TimeFormat24Hour = is24;
-                            _hourIndex = picker.SelectedIndex;
-                        }
+                        Windesheart.PairedDevice.SetTimeDisplayFormat(is24);
+                        DeviceSettings.TimeFormat24Hour = is24;
+                        _hourIndex = picker.SelectedIndex;
                     }
                 }
-                catch (Exception)
-                {
-                    //Set picker index back to old value
-                    picker.SelectedIndex = _hourIndex;
-                    Console.WriteLine("Something went wrong!");
-                }
+            }
+            catch (Exception)
+            {
+                //Set picker index back to old value
+                picker.SelectedIndex = _hourIndex;
+                Console.WriteLine("Something went wrong!");
             }
         }
 
         public void LanguageIndexChanged(object sender, EventArgs e)
         {
-            Picker picker = sender as Picker;
-            if (picker.SelectedIndex != -1)
-            {
-                //Get language code
-                string language = picker.Items[picker.SelectedIndex];
-                Globals.LanguageDictionary.TryGetValue(language, out string languageCode);
+            if (!(sender is Picker picker) || picker.SelectedIndex == -1) return;
+            //Get language code
+            string language = picker.Items[picker.SelectedIndex];
+            Globals.LanguageDictionary.TryGetValue(language, out string languageCode);
 
-                try
+            try
+            {
+                if (Windesheart.PairedDevice != null)
                 {
-                    if (Windesheart.PairedDevice != null)
+                    if (Windesheart.PairedDevice.IsConnected())
                     {
-                        if (Windesheart.PairedDevice.IsConnected())
-                        {
-                            Windesheart.PairedDevice.SetLanguage(languageCode);
-                            DeviceSettings.DeviceLanguage = languageCode;
-                            _languageIndex = picker.SelectedIndex;
-                        }
+                        Windesheart.PairedDevice.SetLanguage(languageCode);
+                        DeviceSettings.DeviceLanguage = languageCode;
+                        _languageIndex = picker.SelectedIndex;
                     }
                 }
-                catch (Exception)
-                {
-                    //Set picker index back to old value
-                    picker.SelectedIndex = _languageIndex;
-                    Console.WriteLine("Something went wrong!");
-                }
+            }
+            catch (Exception)
+            {
+                //Set picker index back to old value
+                picker.SelectedIndex = _languageIndex;
+                Console.WriteLine("Something went wrong!");
             }
         }
 
         public void StepsIndexChanged(object sender, EventArgs e)
         {
-            Picker picker = sender as Picker;
-            if (picker.SelectedIndex != -1)
+            if (!(sender is Picker picker) || picker.SelectedIndex == -1) return;
+            int steps = int.Parse(picker.Items[picker.SelectedIndex]);
+            try
             {
-                int steps = int.Parse(picker.Items[picker.SelectedIndex]);
-                try
+                if (Windesheart.PairedDevice != null)
                 {
-                    if (Windesheart.PairedDevice != null)
+                    if (Windesheart.PairedDevice.IsConnected())
                     {
-                        if (Windesheart.PairedDevice.IsConnected())
-                        {
-                            Windesheart.PairedDevice.SetStepGoal(steps);
-                            DeviceSettings.DailyStepsGoal = steps;
-                            _stepIndex = picker.SelectedIndex;
-                        }
+                        Windesheart.PairedDevice.SetStepGoal(steps);
+                        DeviceSettings.DailyStepsGoal = steps;
+                        _stepIndex = picker.SelectedIndex;
                     }
                 }
-                catch (Exception)
-                {
-                    //Set picker index back to old value
-                    picker.SelectedIndex = _stepIndex;
-                    Console.WriteLine("Something went wrong!");
-                }
+            }
+            catch (Exception)
+            {
+                //Set picker index back to old value
+                picker.SelectedIndex = _stepIndex;
+                Console.WriteLine("Something went wrong!");
             }
         }
 
@@ -170,14 +157,10 @@ namespace OpenWindesheartDemoApp.ViewModels
 
             try
             {
-                if (Windesheart.PairedDevice != null)
-                {
-                    if (Windesheart.PairedDevice.IsConnected())
-                    {
-                        Windesheart.PairedDevice.SetActivateOnLiftWrist(toggled);
-                        DeviceSettings.WristRaiseDisplay = toggled;
-                    }
-                }
+                if (Windesheart.PairedDevice == null) return;
+                if (!Windesheart.PairedDevice.IsConnected()) return;
+                Windesheart.PairedDevice.SetActivateOnLiftWrist(toggled);
+                DeviceSettings.WristRaiseDisplay = toggled;
             }
             catch (Exception)
             {

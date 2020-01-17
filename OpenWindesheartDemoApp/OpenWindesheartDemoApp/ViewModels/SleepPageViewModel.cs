@@ -55,7 +55,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             //Get all sleep data from DB
             SleepInfo = Globals.SleepRepository.GetAll();
 
-            if (SleepInfo.Count() == 0)
+            if (!SleepInfo.Any())
             {
                 await Application.Current.MainPage.DisplayAlert("No data", "Unfortunately, no sleep-data was found.", "Ok");
             }
