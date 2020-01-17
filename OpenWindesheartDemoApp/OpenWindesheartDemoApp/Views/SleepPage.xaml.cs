@@ -153,8 +153,15 @@ namespace OpenWindesheartDemoApp.Views
             grid.Children.Add(frame);
             grid.Children.Add(refreshButton);
 
-            Label refreshLabel = new Label() { Text = "Data", VerticalOptions = LayoutOptions.CenterAndExpand, HorizontalOptions = LayoutOptions.End, FontSize = 15, FontAttributes = FontAttributes.Italic };
-            refreshLabel.Margin = new Thickness(0, 0, 2, 0);
+            Label refreshLabel = new Label
+            {
+                Text = "Data",
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.End,
+                FontSize = 15,
+                FontAttributes = FontAttributes.Italic,
+                Margin = new Thickness(0, 0, 2, 0)
+            };
             grid.Children.Add(refreshLabel);
 
             refreshLabel.GestureRecognizers.Add(new TapGestureRecognizer

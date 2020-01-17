@@ -15,7 +15,7 @@ namespace OpenWindesheartDemoApp.Data.Repository
         public void Add(Heartrate heartrate)
         {
             var query = "INSERT INTO Heartrates(DateTime, HeartrateValue) VALUES(?,?)";
-            var command = _database.Instance.CreateCommand(query, new object[] { heartrate.DateTime, heartrate.HeartrateValue });
+            var command = _database.Instance.CreateCommand(query, heartrate.DateTime, heartrate.HeartrateValue);
             command.ExecuteNonQuery();
         }
 
@@ -26,11 +26,11 @@ namespace OpenWindesheartDemoApp.Data.Repository
 
         public void RemoveAll()
         {
-            var heartrates = this.GetAll();
+            var heartrates = GetAll();
             foreach (var heartrate in heartrates)
             {
                 var query = "DELETE FROM Heartrates WHERE Id = ?";
-                var command = _database.Instance.CreateCommand(query, new object[] { heartrate.Id });
+                var command = _database.Instance.CreateCommand(query, heartrate.Id);
                 command.ExecuteNonQuery();
             }
         }

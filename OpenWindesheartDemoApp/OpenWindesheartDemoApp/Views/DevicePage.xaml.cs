@@ -88,14 +88,7 @@ namespace OpenWindesheartDemoApp.Views
         {
             if (Windesheart.PairedDevice != null)
             {
-                if (Windesheart.PairedDevice.IsConnected())
-                {
-                    DisconnectButton.IsEnabled = true;
-                }
-                else
-                {
-                    DisconnectButton.IsEnabled = false;
-                }
+                DisconnectButton.IsEnabled = Windesheart.PairedDevice.IsConnected();
             }
             else
             {

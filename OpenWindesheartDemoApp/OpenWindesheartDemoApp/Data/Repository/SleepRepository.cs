@@ -15,7 +15,7 @@ namespace OpenWindesheartDemoApp.Data.Repository
         public void Add(Sleep sleep)
         {
             var query = "INSERT INTO Sleep(DateTime, SleepType) VALUES(?,?)";
-            var command = _database.Instance.CreateCommand(query, new object[] { sleep.DateTime, sleep.SleepType });
+            var command = _database.Instance.CreateCommand(query, sleep.DateTime, sleep.SleepType);
             command.ExecuteNonQuery();
         }
 
@@ -26,11 +26,11 @@ namespace OpenWindesheartDemoApp.Data.Repository
 
         public void RemoveAll()
         {
-            var sleeps = this.GetAll();
+            var sleeps = GetAll();
             foreach (var sleep in sleeps)
             {
                 var query = "DELETE FROM Sleep WHERE Id = ?";
-                var command = _database.Instance.CreateCommand(query, new object[] { sleep.Id });
+                var command = _database.Instance.CreateCommand(query, sleep.Id);
                 command.ExecuteNonQuery();
             }
         }

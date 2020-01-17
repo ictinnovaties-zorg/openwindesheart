@@ -131,8 +131,8 @@ namespace OpenWindesheartDemoApp.Views
                 HorizontalOptions = LayoutOptions.Start,
                 HeightRequest = Globals.ScreenHeight / 100 * 4.5,
                 BackgroundColor = Color.Transparent,
+                Margin = new Thickness(2, 0, 0, 0),
             };
-            refreshButton.Margin = new Thickness(2, 0, 0, 0);
             refreshButton.Clicked += RefreshButtonClicked;
             grid.Children.Add(frame);
             grid.Children.Add(refreshButton);

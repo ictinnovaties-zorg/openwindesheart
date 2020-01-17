@@ -7,6 +7,7 @@ using SkiaSharp.Views.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
@@ -19,7 +20,7 @@ namespace OpenWindesheartDemoApp.ViewModels
         private readonly IHeartrateRepository _heartrateRepository;
         private int _averageHeartrate;
         private int _peakHeartrate;
-        public DateTime _dateTime;
+        public DateTime DateTime;
         private Chart _chart;
         private IEnumerable<Heartrate> _heartrates;
         private string _daylabelText;
@@ -40,11 +41,11 @@ namespace OpenWindesheartDemoApp.ViewModels
         {
             Interval = 5;
             _dateTime2 = DateTime.Now;
-            _dateTime = DateTime.Now.AddHours(-1);
+            DateTime = DateTime.Now.AddHours(-1);
 
-            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
-            var rates = _heartrateRepository.GetAll();
-            if (rates.Count() != 0)
+            DayLabelText = $"{DateTime.ToString()} - {_dateTime2.ToString()}";
+            var rates = _heartrateRepository.GetAll().ToList();
+            if (rates.Count != 0)
             {
                 _heartrates = rates;
                 DrawLabels();
@@ -59,7 +60,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public string DayLabelText
         {
-            get { return _daylabelText; }
+            get => _daylabelText;
             set
             {
                 _daylabelText = value;
@@ -72,10 +73,10 @@ namespace OpenWindesheartDemoApp.ViewModels
             if (_heartrates != null)
             {
                 var heartrates = _heartrates
-                    .Where(x => x.DateTime >= _dateTime)
+                    .Where(x => x.DateTime >= DateTime)
                     .Where(x => x.DateTime <= _dateTime2)
-                    .Where(x => x.HeartrateValue != 0);
-                if (heartrates.Count() != 0)
+                    .Where(x => x.HeartrateValue != 0).ToList();
+                if (heartrates.Count != 0)
                 {
                     AverageHeartrate = Convert.ToInt32(heartrates?.Select(x => x.HeartrateValue).Average());
                     PeakHeartrate = Convert.ToInt32((heartrates?.Select(x => x.HeartrateValue).Max()));
@@ -86,9 +87,9 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public void PreviousDayBtnClick(object sender, EventArgs args)
         {
-            _dateTime = _dateTime.AddHours(-1);
+            DateTime = DateTime.AddHours(-1);
             _dateTime2 = _dateTime2.AddHours(-1);
-            DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
+            DayLabelText = $"{DateTime.ToString(CultureInfo.InvariantCulture)} - {_dateTime2.ToString(CultureInfo.InvariantCulture)}";
             DrawChart();
             DrawLabels();
 
@@ -99,9 +100,9 @@ namespace OpenWindesheartDemoApp.ViewModels
         {
             if (!(_dateTime2.AddHours(1) > DateTime.Now))
             {
-                _dateTime = _dateTime.AddHours(1);
+                DateTime = DateTime.AddHours(1);
                 _dateTime2 = _dateTime2.AddHours(1);
-                DayLabelText = $"{_dateTime.ToString()} - {_dateTime2.ToString()}";
+                DayLabelText = $"{DateTime.ToString(CultureInfo.InvariantCulture)} - {_dateTime2.ToString(CultureInfo.InvariantCulture)}";
                 DrawChart();
                 DrawLabels();
             }
@@ -116,7 +117,7 @@ namespace OpenWindesheartDemoApp.ViewModels
             if (_heartrates != null)
             {
                 var heartrates = _heartrates
-                    .Where(x => x.DateTime >= _dateTime)
+                    .Where(x => x.DateTime >= DateTime)
                     .Where(x => x.DateTime <= _dateTime2)
                     .Where(x => x.HeartrateValue != 0);
 
@@ -129,8 +130,7 @@ namespace OpenWindesheartDemoApp.ViewModels
                 List<Entry> list = new List<Entry>();
                 foreach (Heartrate heartrate in heartrates)
                 {
-                    Entry entry;
-                    entry = new Entry(heartrate.HeartrateValue)
+                    var entry = new Entry(heartrate.HeartrateValue)
                     {
                         ValueLabel = heartrate.HeartrateValue.ToString(),
                         Color = SKColors.Black,

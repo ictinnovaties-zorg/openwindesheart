@@ -81,7 +81,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public bool IsLoading
         {
-            get { return _isLoading; }
+            get => _isLoading;
             set
             {
                 _isLoading = value;

@@ -131,7 +131,7 @@ namespace OpenWindesheartDemoApp.Views
 
         private void LearnmoreButton_Clicked(object sender, EventArgs e)
         {
-            Device.OpenUri(new Uri("https://github.com/ictinnovaties-zorg/openwindesheart"));
+            Launcher.OpenAsync(new Uri("https://github.com/ictinnovaties-zorg/openwindesheart"));
         }
 
         private void Logo_Clicked(object sender, EventArgs e)

@@ -17,8 +17,7 @@ namespace OpenWindesheartDemoApp.ViewModels
         public void OnAppearing()
         {
             //Set correct settings
-            if (DeviceSettings.TimeFormat24Hour) SettingsPage.HourPicker.SelectedIndex = 0;
-            else SettingsPage.HourPicker.SelectedIndex = 1;
+            SettingsPage.HourPicker.SelectedIndex = DeviceSettings.TimeFormat24Hour ? 0 : 1;
 
             SettingsPage.DatePicker.SelectedIndex = DeviceSettings.DateFormatDMY ? 0 : 1;
 

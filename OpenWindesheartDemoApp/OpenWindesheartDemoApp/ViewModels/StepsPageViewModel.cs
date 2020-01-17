@@ -49,9 +49,9 @@ namespace OpenWindesheartDemoApp.ViewModels
         {
             //Get all steps from DB
             StepInfo = Globals.StepsRepository.GetAll();
-            if (StepInfo.Count() == 0)
+            if (!StepInfo.Any())
             {
-                await Application.Current.MainPage.DisplayAlert("No data", "Unfortunately, no sleep-data was found.", "Ok");
+                await Application.Current.MainPage.DisplayAlert("No data", "Unfortunately, no step-data was found.", "Ok");
             }
 
             //Update chart

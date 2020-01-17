@@ -61,7 +61,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public ObservableCollection<BLEScanResult> DeviceList
         {
-            get { return _deviceList; }
+            get => _deviceList;
             set
             {
                 _deviceList = value;
@@ -71,7 +71,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public string StatusText
         {
-            get { return _statusText; }
+            get => _statusText;
             set
             {
                 _statusText = value;
@@ -81,7 +81,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public string ScanButtonText
         {
-            get { return _scanbuttonText; }
+            get => _scanbuttonText;
             set
             {
                 _scanbuttonText = value;
@@ -91,7 +91,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public bool IsLoading
         {
-            get { return _isLoading; }
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -101,7 +101,7 @@ namespace OpenWindesheartDemoApp.ViewModels
 
         public BLEScanResult SelectedDevice
         {
-            get { return _selectedDevice; }
+            get => _selectedDevice;
             set
             {
                 _selectedDevice = value;

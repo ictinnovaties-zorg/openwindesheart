@@ -5,7 +5,7 @@ namespace OpenWindesheartDemoApp.Models
 {
     public class ButtonRow
     {
-        private List<Button> _buttons;
+        private readonly List<Button> _buttons;
         private int _selectedIndex;
 
         public ButtonRow(List<Button> buttons)

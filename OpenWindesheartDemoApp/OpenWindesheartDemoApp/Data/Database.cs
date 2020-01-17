@@ -7,7 +7,7 @@ namespace OpenWindesheartDemoApp.Data
 {
     public class Database
     {
-        public string DbPath;
+        private string _dbPath;
 
         public SQLiteConnection Instance;
 
@@ -29,11 +29,11 @@ namespace OpenWindesheartDemoApp.Data
         private void CreateDatabase()
         {
             //Set DbPath
-            DbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),
+            _dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal),
                 "WindesHeart.db");
 
             //Set Database
-            Instance = new SQLiteConnection(DbPath);
+            Instance = new SQLiteConnection(_dbPath);
 
             //Create the tables if not existing
             Instance.CreateTable<Heartrate>();

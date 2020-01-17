@@ -21,7 +21,7 @@ namespace OpenWindesheartDemoApp.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             FormsControls.Touch.Main.Init();
-            global::Xamarin.Forms.Forms.Init();
+            Xamarin.Forms.Forms.Init();
             Globals.ScreenHeight = (int)UIScreen.MainScreen.Bounds.Height;
             Globals.ScreenWidth = (int)UIScreen.MainScreen.Bounds.Width;
             LoadApplication(new App());
