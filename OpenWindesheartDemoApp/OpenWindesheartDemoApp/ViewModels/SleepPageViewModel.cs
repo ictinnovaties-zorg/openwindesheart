@@ -1,4 +1,7 @@
 ﻿using Microcharts;
+using OpenWindesheartDemoApp.Models;
+using OpenWindesheartDemoApp.Resources;
+using OpenWindesheartDemoApp.Views;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -7,9 +10,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using OpenWindesheartDemoApp.Models;
-using OpenWindesheartDemoApp.Resources;
-using OpenWindesheartDemoApp.Views;
 using Xamarin.Forms;
 using Entry = Microcharts.Entry;
 
@@ -157,18 +157,15 @@ namespace OpenWindesheartDemoApp.ViewModels
                         switch (data[j].SleepType)
                         {
                             case SleepType.Awake:
-                                Entry awakeEntry = new Entry(1);
-                                awakeEntry.Color = SKColor.Parse(AwakeColor);
+                                Entry awakeEntry = new Entry(1) { Color = SKColor.Parse(AwakeColor) };
                                 entries.Add(awakeEntry);
                                 break;
                             case SleepType.Light:
-                                Entry lightEntry = new Entry(1);
-                                lightEntry.Color = SKColor.Parse(LightColor);
+                                Entry lightEntry = new Entry(1) { Color = SKColor.Parse(LightColor) };
                                 entries.Add(lightEntry);
                                 break;
                             case SleepType.Deep:
-                                Entry deepEntry = new Entry(1);
-                                deepEntry.Color = SKColor.Parse(DeepColor);
+                                Entry deepEntry = new Entry(1) { Color = SKColor.Parse(DeepColor) };
                                 entries.Add(deepEntry);
                                 break;
                         }

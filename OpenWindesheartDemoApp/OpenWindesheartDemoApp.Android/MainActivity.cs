@@ -1,12 +1,7 @@
-﻿
-
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using System.IO;
-using OpenWindesheartDemoApp.Data;
-using OpenWindesheartDemoApp.Data.Repository;
 using OpenWindesheartDemoApp.Resources;
 
 namespace OpenWindesheartDemoApp.Droid
