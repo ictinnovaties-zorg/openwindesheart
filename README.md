@@ -5,7 +5,7 @@ The open-source OpenWindesheart is a library used for scanning, connecting and g
 
 ## Support
 
-This project has been created by students of windesheim university of applied sciences and does not guarantee any support in the future. 
+This project has been created by students of Windesheim University of Applied Sciences and does not guarantee any support in the future. 
 
 This library uses the [ACR Reactive BluetoothLE Plugin](https://github.com/aritchie/bluetoothle) to do anything BluetoothLE related. Our project only supports versions that are supported by this library, because our project depends heavily upon it.
 
