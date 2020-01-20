@@ -27,4 +27,4 @@ The following settings can be configurated to your liking for the Mi band 3, by 
 *It is recommended to set these features once when connecting to the device. This way you will not forget them.*
 
 
-[<---- Back to mainpage](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/)
+[<---- Back to mainpage](https://github.com/ictinnovaties-zorg/openwindesheart/blob/master/)

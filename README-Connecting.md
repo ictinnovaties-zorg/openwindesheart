@@ -44,4 +44,4 @@ WindesHeart always saves your currently connected device to the `Windesheart.Con
 
 The disconnect method is a void. You can assume that it always works.
 
-[<---- Back to mainpage](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/)
+[<---- Back to mainpage](https://github.com/ictinnovaties-zorg/openwindesheart/blob/master/)

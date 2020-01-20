@@ -43,4 +43,4 @@ This method returns the correct BLEDevice dependent of it's name. Please note th
 ![Alt text](https://i.imgur.com/wdEOTcZ.png)
 And that should be it! Now, when scanning for devices it should detect and return your device! Please make sure everything works as expected before submitting a pull request.
 
-[<---- Back to mainpage](https://bitbucket.org/ictinnovaties-zorg/openwindesheart/src/master/)
+[<---- Back to mainpage](https://github.com/ictinnovaties-zorg/openwindesheart/blob/master/)
