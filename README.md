@@ -1,13 +1,13 @@
 
 # OpenWindesheart
 
-The open-source OpenWindesheart is an SDK used for scanning, connecting and getting data from activity-trackers using bluetooth.
+The open-source OpenWindesheart is a library used for scanning, connecting and getting data from activity-trackers using bluetooth.
 
 ## Support
 
-This project has been created by students of Windesheim and does not guarantee any support in the future.  
+This project has been created by students of windesheim university of applied sciences and does not guarantee any support in the future. 
 
-This SDK uses the [ACR Reactive BluetoothLE Plugin](https://github.com/aritchie/bluetoothle) to do anything BluetoothLE related. Our project only supports versions that are supported by this library, because our project depends heavily upon it.
+This library uses the [ACR Reactive BluetoothLE Plugin](https://github.com/aritchie/bluetoothle) to do anything BluetoothLE related. Our project only supports versions that are supported by this library, because our project depends heavily upon it.
 
 The features have been tested with Android/iOS phones in combination with the Mi Band 3/Xiaomi Band 3.  
 
@@ -33,9 +33,9 @@ The features have been tested with Android/iOS phones in combination with the Mi
 
 ## Supported Devices
 
-At this moment the Windesheart SDK only supports the Mi Band 3. 
+At this moment the OpenWindesheart library only supports the Mi Band 3. 
 
-The SDK is designed in a way that other devices can be added easily. If you want to add support for a device, please check out our documentation: [How to add support for a new device](https://github.com/ictinnovaties-zorg/openwindesheart/blob/master/README-SupportNewDevice.md)
+The library is designed in a way that other devices can be added easily. If you want to add support for a device, please check out our documentation: [How to add support for a new device](https://github.com/ictinnovaties-zorg/openwindesheart/blob/master/README-SupportNewDevice.md)
 
 ## Documentation
 
