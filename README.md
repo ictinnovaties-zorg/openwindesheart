@@ -62,6 +62,13 @@ We would like to thank Allan Ritchie for creating the [ACR Reactive BluetoothLE 
 
 To make contributions to this project, please open up a [pull request](https://github.com/ictinnovaties-zorg/openwindesheart/pull/new/master).
 
+## Creators
+
+* R. Abächerli [@ramonb1996](https://github.com/ramonB1996)
+* H. van der Gugten [@hielkeg](https://github.com/hielkeg)
+* T.C. Marschalk [@marstc](https://github.com/marstc)
+* K. van Sloten [@kevinvansloten](https://github.com/kevinvansloten)
+
 ## Copyright
 
 Copyright 2020 Research group ICT innovations in Health Care, Windesheim University of Applied Sciences.
