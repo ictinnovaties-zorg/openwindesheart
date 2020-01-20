@@ -1,4 +1,4 @@
-﻿/* Copyright 2020 Research group ICT innovations
+﻿/* Copyright 2020 Research group ICT innovations in Health Care
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
