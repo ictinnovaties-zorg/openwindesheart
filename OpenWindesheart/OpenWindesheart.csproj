@@ -8,7 +8,7 @@
     <Company>Research group ICT innovations in Health Care - Windesheim University of Applied Sciences</Company>
     <Description>The open-source OpenWindesheart is an SDK used for scanning, connecting and getting data from activity-trackers using bluetooth. 
 Current support: - Mi Band 3 -</Description>
-    <Copyright>Copyright 2020 Research group ICT innovations in Health Care in Health Care, Windesheim University of Applied Sciences</Copyright>
+    <Copyright>Copyright 2020 Research group ICT innovations in Health Care, Windesheim University of Applied Sciences</Copyright>
     <RepositoryUrl>https://github.com/ictinnovaties-zorg/openwindesheart</RepositoryUrl>
     <PackageProjectUrl />
   </PropertyGroup>
